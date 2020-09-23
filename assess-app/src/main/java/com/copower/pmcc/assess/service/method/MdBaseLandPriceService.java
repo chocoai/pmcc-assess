@@ -304,12 +304,9 @@ public class MdBaseLandPriceService {
         }
 
         if (categoryInfo != null) {
-            modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());
-            modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
-            modelAndView.addObject("levelDetailId", categoryInfo.getLandLevel());
+            modelAndView.addObject("basicEstateLandCategoryInfo",categoryInfo);
             DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
             if (levelDetail != null) {
-                modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
                 //基准地价
                 DataLandLevelDetail hasStandardPremiumData = dataLandLevelDetailService.hasStandardPremiumParent(levelDetail.getId());
                 modelAndView.addObject("standardPremium", hasStandardPremiumData.getPrice());

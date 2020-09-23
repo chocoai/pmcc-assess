@@ -435,8 +435,8 @@ public class GenerateMdBaseLandPriceService {
                 }
             }
         }
-        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landLevelFilter2(filterVoList);
-        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landLevelFilter1(listList);
+        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landFirstLevelFilter(filterVoList);
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landSecondLevelFilter(listList);
 
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
@@ -521,8 +521,8 @@ public class GenerateMdBaseLandPriceService {
         DataLandLevelDetailAchievement dataLandLevelDetailAchievement = new DataLandLevelDetailAchievement();
         dataLandLevelDetailAchievement.setLevelDetailId(dataLandLevelDetail.getId());
         List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementList(dataLandLevelDetailAchievement);
-        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landLevelFilter2(dataLandLevelDetailAchievementVoList.stream().map(po -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
-        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landLevelFilter1(listList);
+        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landFirstLevelFilter(dataLandLevelDetailAchievementVoList.stream().map(po -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landSecondLevelFilter(listList);
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
 

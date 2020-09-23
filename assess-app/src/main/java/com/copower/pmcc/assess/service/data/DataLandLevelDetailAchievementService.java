@@ -584,17 +584,17 @@ public class DataLandLevelDetailAchievementService {
     /**
      * 过滤 类型
      *
-     * @param oo
+     * @param levelDetailId
      * @return
      */
     public Set<List<List<DataLandLevelDetailAchievementVo>>> landLevelFilter(Integer levelDetailId) {
         List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = getAchievementsByLandLevelDetailId(levelDetailId);
-        List<List<DataLandLevelDetailAchievementVo>> listList = landLevelFilter2(dataLandLevelDetailAchievementVoList.stream().map(po -> getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
-        Set<List<List<DataLandLevelDetailAchievementVo>>> set = landLevelFilter1(listList);
+        List<List<DataLandLevelDetailAchievementVo>> listList = landFirstLevelFilter(dataLandLevelDetailAchievementVoList.stream().map(po -> getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
+        Set<List<List<DataLandLevelDetailAchievementVo>>> set = landSecondLevelFilter(listList);
         return set;
     }
 
-    public List<List<DataLandLevelDetailAchievementVo>> landLevelFilter2(List<DataLandLevelDetailAchievementVo> dataLandLevelDetailAchievementVoList) {
+    public List<List<DataLandLevelDetailAchievementVo>> landFirstLevelFilter(List<DataLandLevelDetailAchievementVo> dataLandLevelDetailAchievementVoList) {
         Map<String, List<DataLandLevelDetailAchievementVo>> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievementVoList)) {
             dataLandLevelDetailAchievementVoList.forEach(oo -> {
@@ -615,7 +615,7 @@ public class DataLandLevelDetailAchievementService {
         return listList;
     }
 
-    public Set<List<List<DataLandLevelDetailAchievementVo>>> landLevelFilter1(List<List<DataLandLevelDetailAchievementVo>> listList) {
+    public Set<List<List<DataLandLevelDetailAchievementVo>>> landSecondLevelFilter(List<List<DataLandLevelDetailAchievementVo>> listList) {
         Set<List<List<DataLandLevelDetailAchievementVo>>> set = Sets.newHashSet();
         Map<Integer, List<List<DataLandLevelDetailAchievementVo>>> map = Maps.newHashMap();
         if (CollectionUtils.isNotEmpty(listList)) {

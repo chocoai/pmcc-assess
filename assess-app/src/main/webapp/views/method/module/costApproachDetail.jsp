@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="/views/method/module/projectLandAchievementGroup.jsp" %>
 <div class="col-md-12">
     <div class="card full-height">
         <div class="card-header collapse-link">
@@ -166,15 +167,13 @@
                                         <table class="table table-bordered" id="landLevelTableList">
                                             <thead>
                                             <tr>
-                                                <th  width="10%">土地级别类型</th>
-                                                <th  width="10%">土地级别类别</th>
-                                                <th  width="10%">土地级别等级</th>
-                                                <th  width="20%">说明</th>
-                                                <th  width="10%">分值</th>
+                                                <th width="20%">土地级别类型类别</th>
+                                                <th width="30%">土地级别等级</th>
+                                                <th width="30%">说明</th>
+                                                <th width="20%">分值</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="landLevelTabContent">
-
+                                            <tbody>
                                             </tbody>
                                         </table>
                                     </div>
@@ -512,125 +511,33 @@
 </div>
 
 
-<script type="text/html" id="landLevelTabContentBody">
-    <tr class="group">
-        <td>
-            {typeName}
-        </td>
-        <td class="table-cell">
-            {landLevelTypeName}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </td>
-        <td>
-            {gradeName}
-        </td>
-        <td>
-            {reamark}
-        </td>
-        <td>
-            <label name="landFactorTotalScore" class="form-control input-full">{landFactorTotalScore}</label>
-        </td>
-    </tr>
-</script>
-
-
-
-<script type="application/javascript">
-
-
-    $(function () {
-        getLandLevelTabContent();
-    });
-
-
-    //因素条件说明及修正系数
-    function getLandLevelTabContent() {
-        if(!'${landLevelId}'&&!'${levelDetailId}'){
-            notifyInfo("提示","未关联土地级别");
-            return false;
-        }
-        FileUtils.getFileShows({
-            target: "select_land_level_file",
-            formData: {
-                tableName: AssessDBKey.DataLandLevel,
-                tableId: '${landLevelId}'
-            },
-            deleteFlag: false
-        }) ;
-        if (! '${master.landLevelContent}') {
-            return false ;
-        }
-        var jsonContent = JSON.parse('${master.landLevelContent}');
-        var data = caseCommon.landLevelFilter(jsonContent);
-        if (jQuery.isEmptyObject(data)) {
-            return false;
-        }
-        //$("#detailAchievementModal").modal();
-        var target = $("#landLevelTabContent");
-        target.empty();
-
-        var rows = [];
-        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
-        data.forEach(function (dataA, indexM) {
-            $.each(dataA, function (i, obj) {
-                var item;
-                obj.forEach(function (value, index) {
-                    if (value.modelStr == "update") {
-                        item = value;
-                        rows.push(item)
-                    }
-                });
-                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{typeName}/g, item.typeName);
-                    var landLevelTypeName = "";
-                    if(item.classification){
-                        landLevelTypeName+=item.classification;
-                    }
-                    if(item.category){
-                        landLevelTypeName+="/"+item.category;
-                    }
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{gradeName}/g, item.gradeName);
-                    var text = "";
-                    $.each(obj, function (i, n) {
-                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
-                    });
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
-                    target.append(landLevelBodyHtml);
-                }
-            });
-
-
-        });
-        var length = rows.length;// 获取当前表格中tr的个数
-        var mark = 0; //要合并的单元格数
-        var index = 0; //起始行数
-        if(length <= 1){
-        }else{
-            for(var i=0;i < length ;i++){
-                var ford = $("#landLevelTableList tr:gt(0):eq("+i+") td:eq(0)").text();
-                var behind = $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").text();
-                if(ford == behind){
-                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i)+1)+") td:eq(0)").hide();
-                    mark = mark +1;
-                }else if(ford != behind){
-                    index = i-mark;
-                    $("#landLevelTableList tr:gt(0):eq("+index+") td:eq(0)").attr("rowspan",mark+1);//+1 操作标识，将当前的行加入到隐藏
-                    mark = 0;
-                    $("#landLevelTableList tr:gt(0):eq("+(parseInt(i))+") td:eq(0)").hide();
-                }
-            }
-        }
-    };
-</script>
-<%--年平均产值--%>
 <script type="text/javascript">
     $(function () {
         research.prototype.loadDataList(${master.id});
+        loadProjectLandAchievementGroup() ;
     });
+
+
+    /**
+     * 土地因素  测算调用方法
+     */
+    function loadProjectLandAchievementGroup() {
+        if ('${basicEstateLandCategoryInfo}') {
+            var query = {
+                projectId: '${judgeObject.projectId}',
+                dataTableId: '${basicEstateLandCategoryInfo.id}',
+                dataTableName: AssessDBKey.BasicEstateLandCategoryInfo,
+                levelDetailId:'${basicEstateLandCategoryInfo.landLevel}'
+            };
+            var table = $("#landLevelTableList") ;
+            landAchievementGroup.getInitProjectLandAchievementGroupData(query.projectId ,query.dataTableId ,query.dataTableName ,function (dataAll) {
+                if (dataAll && dataAll.length > 0){
+                    landAchievementGroup.detailMethodLoadHtml(dataAll ,table) ;
+                }
+            });
+        }
+    }
+
     var research = function () {
 
     };
@@ -656,10 +563,9 @@
                 }
             });
         }
-    }
-</script>
-<%--税率配置--%>
-<script type="text/javascript">
+    };
+
+    <%--税率配置--%>
     function uploadTaxeHtml(id, typeKey, typeName, standardFirst, standardSecond, price,remark) {
         var html = '';
         html += '<td>' + typeName + '</td>';
@@ -713,5 +619,4 @@
         return html;
 
     }
-
 </script>

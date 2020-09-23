@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:include page="/views/project/tool/rewardRate.jsp"></jsp:include>
-
+<%@include file="/views/method/module/projectLandAchievementGroup.jsp" %>
 
 <div class="col-md-12">
     <div class="card full-height">
@@ -210,7 +210,7 @@
                                                 <div class="input-group">
                                                     <input type="text"
                                                            class="form-control x-percent"
-                                                           name="plotRatioElementAmend"
+                                                           name="plotRatioElementAmend"  onblur="calculationNumeric(this);"
                                                            data-value="${master.plotRatioElementAmend}"
                                                            id="plotRatioElementAmend"
                                                            value="${master.plotRatioElementAmend}">
@@ -225,16 +225,13 @@
                                         <table class="table table-bordered" id="landLevelTableList">
                                             <thead>
                                             <tr>
-                                                <th width="10%">土地级别类型</th>
-                                                <th width="10%">土地级别类别</th>
-                                                <th width="10%">土地级别等级</th>
-                                                <th width="20%">说明</th>
-                                                <th width="10%">分值</th>
-                                                <th width="5%"></th>
+                                                <th width="20%">土地级别类型类别</th>
+                                                <th width="30%">土地级别等级</th>
+                                                <th width="30%">说明</th>
+                                                <th width="20%">分值</th>
                                             </tr>
                                             </thead>
-                                            <tbody id="landLevelTabContent">
-
+                                            <tbody>
                                             </tbody>
                                         </table>
                                     </div>
@@ -756,37 +753,6 @@
 </div>
 
 
-<script type="text/html" id="landLevelTabContentBody">
-    <tr class="group">
-        <td>
-            {typeName}
-        </td>
-        <td class="table-cell">
-            {landLevelTypeName}
-        </td>
-        <td>
-            <select class="form-control input-full" name="landLevelGrade"
-                    onchange="landLevelHandle(this);" onblur="getPlotRatioElementAmend();">
-                {landLevelGradeHTML}
-            </select>
-        </td>
-        <td>
-            <label name="reamark" class="form-control input-full">{reamark}</label>
-        </td>
-        <td>
-            <input type="hidden" class="form-control input-full" name="dataLandLevelAchievement"
-                   value="{dataLandLevelAchievement}">
-            <input type="text" class="form-control input-full  x-percent" name="landFactorTotalScore"
-                   value="{landFactorTotalScore}" onblur="getPlotRatioElementAmend();">
-            <input type="hidden" name="landLevelContent" value='{landLevelContent}'>
-        </td>
-        <td>
-            <input class="btn btn-warning" type="button" value="X"
-                   onclick="landLevelEmpty(this)">
-        </td>
-    </tr>
-</script>
-
 <script>
 
     $(function () {
@@ -796,19 +762,9 @@
                 parcelSettingOuter: '${master.parcelSettingOuter}'
             };
             initParcelSettingData(data);
-            getLandLevelTabContent();
-            if (!'${master.landLevelContent}') {
-                $("#landLevelContent").val('${landLevelContent}');
-            }
-            if (!'${master.plotRatioElementAmend}') {
-                $("#plotRatioElementAmend").val(AssessCommon.pointToPercent('${landFactorTotalScore}'));
-            } else {
-                $("#plotRatioElementAmend").val(AssessCommon.pointToPercent('${master.plotRatioElementAmend}'));
-            }
         }
-
+        loadProjectLandAchievementGroup() ;
         research.prototype.loadDataList(${master.id});
-
         calculationNumeric();
     });
 
@@ -968,253 +924,6 @@
                     $(this).prop("disabled", false);
                     $(this).prop("checked", false);
                 }
-            });
-        }
-    };
-
-
-    //因素条件说明及修正系数
-    function getLandLevelTabContent() {
-        if (!'${landLevelId}' && !'${levelDetailId}') {
-            notifyInfo("提示", "未关联土地级别");
-            return false;
-        }
-        FileUtils.getFileShows({
-            target: "select_land_level_file",
-            formData: {
-                tableName: AssessDBKey.DataLandLevel,
-                tableId: '${landLevelId}'
-            },
-            deleteFlag: false
-        })
-
-        var landLevelContent = $("#landLevelContent").val();
-        if (landLevelContent) {
-            landLevelLoadHtml2(landLevelContent)
-        } else {
-            $.ajax({
-                url: getContextPath() + "/dataLandLevelDetailAchievement/landLevelFilter",
-                type: "get",
-                data: {levelDetailId: '${levelDetailId}'},
-                success: function (result) {
-                    landLevelLoadHtml(result.data);
-                }
-            })
-        }
-    }
-
-
-    function landLevelLoadHtml(data) {
-        if (jQuery.isEmptyObject(data)) {
-            return false;
-        }
-        var target = $("#landLevelTabContent");
-        target.empty();
-
-        var rows = [];
-        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
-        data.forEach(function (dataA, indexM) {
-            $.each(dataA, function (i, obj) {
-                var item = caseCommon.getLandLevelFilter(obj);
-                item.achievement = 0;
-                item.grade = '';
-                rows.push(item);
-                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{typeName}/g, item.typeName);
-                    var landLevelTypeName = "";
-                    if (item.classification) {
-                        landLevelTypeName += item.classification;
-                    }
-                    if (item.category) {
-                        landLevelTypeName += "/" + item.category;
-                    }
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
-                    var text = "";
-                    $.each(obj, function (i, n) {
-                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
-                    });
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
-                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                        target.append(landLevelBodyHtml);
-                    }, false);
-                }
-            });
-        });
-        var length = rows.length;// 获取当前表格中tr的个数
-        var mark = 0; //要合并的单元格数
-        var index = 0; //起始行数
-        if (length <= 1) {
-        } else {
-            for (var i = 0; i < length; i++) {
-                var ford = $("#landLevelTableList tr:gt(0):eq(" + i + ") td:eq(0)").text();
-                var behind = $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").text();
-                if (ford == behind) {
-                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").hide();
-                    mark = mark + 1;
-                } else if (ford != behind) {
-                    index = i - mark;
-                    $("#landLevelTableList tr:gt(0):eq(" + index + ") td:eq(0)").attr("rowspan", mark + 1);//+1 操作标识，将当前的行加入到隐藏
-                    mark = 0;
-                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i)) + ") td:eq(0)").hide();
-                }
-            }
-        }
-    };
-
-    function landLevelLoadHtml2(jsonStr) {
-        var jsonParse = JSON.parse(jsonStr);
-        var data = caseCommon.landLevelFilter(jsonParse);
-        if (jQuery.isEmptyObject(data)) {
-            return false;
-        }
-        var target = $("#landLevelTabContent");
-        target.empty();
-
-        var rows = []
-        //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
-        data.forEach(function (dataA, indexM) {
-            $.each(dataA, function (i, obj) {
-                var item;
-                obj.forEach(function (value, index) {
-                    if (value.modelStr == "update") {
-                        item = value;
-                        rows.push(item);
-                    }
-                });
-                var landLevelBodyHtml = $("#landLevelTabContentBody").html();
-                if (landLevelBodyHtml) {
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{dataLandLevelAchievement}/g, item.id);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landFactorTotalScore}/g, AssessCommon.pointToPercent(item.achievement));
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{typeName}/g, item.typeName);
-                    var landLevelTypeName = "";
-                    if (item.classification) {
-                        landLevelTypeName += item.classification;
-                    }
-                    if (item.category) {
-                        landLevelTypeName += "/" + item.category;
-                    }
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
-                    var text = "";
-                    $.each(obj, function (i, n) {
-                        text += "等级:" + n.gradeName + "，说明:" + n.reamark + "； \r";
-                    });
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, text);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelContent}/g, JSON.stringify(obj));
-                    AssessCommon.loadAsyncDataDicByKey(AssessDicKey.programmeMarketCostapproachGrade, item.grade, function (html, data) {
-                        landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelGradeHTML}/g, html);
-                        target.append(landLevelBodyHtml);
-                    }, false);
-                }
-            });
-
-        });
-        var length = rows.length;// 获取当前表格中tr的个数
-        var mark = 0; //要合并的单元格数
-        var index = 0; //起始行数
-        if (length <= 1) {
-        } else {
-            for (var i = 0; i < length; i++) {
-                var ford = $("#landLevelTableList tr:gt(0):eq(" + i + ") td:eq(0)").text();
-                var behind = $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").text();
-                if (ford == behind) {
-                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i) + 1) + ") td:eq(0)").hide();
-                    mark = mark + 1;
-                } else if (ford != behind) {
-                    index = i - mark;
-                    $("#landLevelTableList tr:gt(0):eq(" + index + ") td:eq(0)").attr("rowspan", mark + 1);//+1 操作标识，将当前的行加入到隐藏
-                    mark = 0;
-                    $("#landLevelTableList tr:gt(0):eq(" + (parseInt(i)) + ") td:eq(0)").hide();
-                }
-            }
-        }
-    };
-
-
-    function getPlotRatioElementAmend() {
-        var landLevelContent = [];
-        var landFactorTotalScoreResult = 0;
-
-        $("#landLevelTableList").find("input[name='landLevelContent']").each(function (i, n) {
-            var group = $(n).closest(".group");
-            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
-            var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
-            landFactorTotalScoreResult += Number(landFactorTotalScore);
-            var obj = JSON.parse($(n).val());
-            var dataObject = [];
-            obj.forEach(function (value, index) {
-                if (value.id == dataLandLevelAchievement) {
-                    value.modelStr = "update";
-                    value.achievement = landFactorTotalScore;
-                } else {
-                    delete value.modelStr;
-                }
-                dataObject.push(value);
-            });
-            landLevelContent.push(dataObject);
-        });
-        if (landLevelContent.length >= 1) {
-            $("#plotRatioElementAmend").val(AssessCommon.pointToPercent(landFactorTotalScoreResult));
-        } else {
-            $("#plotRatioElementAmend").val('');
-        }
-
-        //年期修正等
-        getYearFixed();
-    }
-
-    //删除呀
-    function landLevelEmpty(that) {
-        $(that).parent().parent().remove();
-        getPlotRatioElementAmend();
-    };
-
-    function getLandLevelContent() {
-        var landLevelContent = [];
-
-        $("#landLevelTableList").find("input[name='landLevelContent']").each(function (i, n) {
-            var group = $(n).closest(".group");
-            var dataLandLevelAchievement = group.find("input[name='dataLandLevelAchievement']").val();
-            var landFactorTotalScore = AssessCommon.percentToPoint(group.find("input[name='landFactorTotalScore']").val());
-            var obj = JSON.parse($(n).val());
-            var dataObject = [];
-            obj.forEach(function (value, index) {
-                if (value.id == dataLandLevelAchievement) {
-                    value.modelStr = "update";
-                    value.achievement = landFactorTotalScore;
-                } else {
-                    delete value.modelStr;
-                }
-                dataObject.push(value);
-            });
-            landLevelContent.push(dataObject);
-        });
-
-        return landLevelContent;
-    }
-
-    //change 事件 随着等级变化页面展示不同内容
-    function landLevelHandle(that) {
-        var group = $(that).closest('.group');
-        var landLevelContent = group.find("input[name='landLevelContent']").val();
-        var obj = {};
-        try {
-            obj = JSON.parse(landLevelContent);
-        } catch (e) {
-        }
-        if (caseCommon.isNotBlankObject(obj)) {
-            AssessCommon.getDataDicInfo($(that).val(), function (item) {
-                obj.forEach(function (data, index) {
-                    if (data.gradeName == item.name) {
-                        group.find("input[name='landFactorTotalScore']").attr('data-value', data.achievement);
-                        group.find("input[name='landFactorTotalScore']").val(AssessCommon.pointToPercent(data.achievement));
-                        group.find("input[name='dataLandLevelAchievement']").val(data.id);
-                    }
-                });
             });
         }
     };
@@ -1410,17 +1119,17 @@
             case"data.land.approximation.method.occupation.land": {
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
-                html += '<input type="text" data-rule-number="true" name="standardFirst" class="form-control input-full " value="' + standardFirst + '">';
+                html += '<input type="text" onblur="getThisPrice(this);" data-rule-number="true" name="standardFirst" class="form-control input-full " value="' + standardFirst + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
-                html += '<input type="text"  data-rule-number="true"  name="standardSecond" class="form-control input-full " value="' + standardSecond + '">';
+                html += '<input type="text" onblur="getThisPrice(this);"  data-rule-number="true"  name="standardSecond" class="form-control input-full " value="' + standardSecond + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
-                html += '<input type="text" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
+                html += '<input type="text" onblur="getThisPrice(this);" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
@@ -1445,9 +1154,9 @@
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
                 if (standardFirst) {
-                    html += '<input type="text" data-rule-number="true" name="standardFirst"  class="form-control input-full x-percent" value="' + AssessCommon.pointToPercent(standardFirst) + '">';
+                    html += '<input type="text" onblur="getThisPrice(this)" data-rule-number="true" name="standardFirst"  class="form-control input-full x-percent" value="' + AssessCommon.pointToPercent(standardFirst) + '">';
                 } else {
-                    html += '<input type="text" data-rule-number="true" name="standardFirst"  class="form-control input-full x-percent">';
+                    html += '<input type="text" onblur="getThisPrice(this)" data-rule-number="true" name="standardFirst"  class="form-control input-full x-percent">';
                 }
                 html += '</div>';
                 html += '</td>';
@@ -1456,7 +1165,7 @@
                 html += '</td>';
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
-                html += '<input type="text" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
+                html += '<input type="text" onblur="getThisPrice(this)" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
@@ -1493,9 +1202,46 @@
                 html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
                 html += '</td>';
         }
-
         return html;
+    }
 
+    /**
+     * 土地因素  测算调用方法  触发事件后赋值
+     */
+    function initPlotRatioElementAmendValue(query ,dataAll ,table) {
+        landAchievementGroup.applyMethodLoadHtml(dataAll ,table,function () {
+            landAchievementGroup.countProjectLandAchievementGroupByDataTableIdAndDataTableNameAndProjectId(query.projectId ,query.dataTableId ,query.dataTableName ,function (item) {
+                if (item){
+                    $("#plotRatioElementAmend").val(AssessCommon.pointToPercent(item)).trigger('blur');
+                }else {
+                    $("#plotRatioElementAmend").val('').trigger('blur');
+                }
+            }) ;
+        }) ;
+    }
+
+    /**
+     * 土地因素  测算调用方法
+     */
+    function loadProjectLandAchievementGroup() {
+        if ('${basicEstateLandCategoryInfo}') {
+            var query = {
+                projectId: '${judgeObject.projectId}',
+                dataTableId: '${basicEstateLandCategoryInfo.id}',
+                dataTableName: AssessDBKey.BasicEstateLandCategoryInfo,
+                levelDetailId:'${basicEstateLandCategoryInfo.landLevel}'
+            };
+            var table = $("#landLevelTableList") ;
+            landAchievementGroup.getInitProjectLandAchievementGroupData(query.projectId ,query.dataTableId ,query.dataTableName ,function (dataAll) {
+                if (!dataAll || dataAll.length == 0){
+                    landAchievementGroup.initProjectLandAchievementGroup(query.levelDetailId,query.projectId ,query.dataTableId ,query.dataTableName ,function (data) {
+                        initPlotRatioElementAmendValue(query,data,table) ;
+                    }) ;
+                }else {
+                    initPlotRatioElementAmendValue(query,dataAll,table) ;
+                }
+            });
+        }
     }
 
     //清空重填
@@ -1530,17 +1276,17 @@
         data.remark = remark;
         var farmlandArea = $("#farmlandArea").val();
         if (!farmlandArea) {
-            notifyInfo("提示", "请填写农用地总面积");
+            // notifyInfo("提示", "请填写农用地总面积");
             return false;
         }
         var ploughArea = $("#ploughArea").val();
         if (!ploughArea) {
-            notifyInfo("提示", "请填耕地面积");
+            // notifyInfo("提示", "请填耕地面积");
             return false;
         }
         var populationNumber = $("#populationNumber").val();
         if (!populationNumber) {
-            notifyInfo("提示", "请填人口数");
+            // notifyInfo("提示", "请填人口数");
             return false;
         }
         if (!$("#" + taxes.prototype.config().frm).valid()) {
@@ -1621,8 +1367,8 @@
         formData.landProductionInterestUnit = parseFloat($("#landProductionInterestUnit").text());
         formData.landProductionProfitBhou = parseFloat($("#landProductionProfitBhou").text());
         formData.ploughArearatio = subPointToPercent($("#ploughArearatio").text());
-        formData.noPloughArearatio = subPointToPercent($("#noPloughArearatio").text()) ;
-        formData.yearFixed = subPointToPercent($("#yearFixed").text()) ;
+        formData.noPloughArearatio = subPointToPercent($("#noPloughArearatio").text());
+        formData.yearFixed = subPointToPercent($("#yearFixed").text());
         formData.landAcquisitionBhou = parseFloat($("#landAcquisitionBhou").text());
         formData.parcelBhou = parseFloat($("#parcelBhou").text());
 
@@ -1641,8 +1387,8 @@
     function subPointToPercent(value) {
         if (value) {
             return parseFloat(value) / 100;
-        }else {
-            return "" ;
+        } else {
+            return "";
         }
     }
 
@@ -1660,7 +1406,7 @@
         formDataOther.incrementalBenefit = AssessCommon.percentToPoint($("#incrementalBenefit").val());
         formDataOther.plotRatioAdjust = AssessCommon.percentToPoint($("#plotRatioAdjust").val());
         formDataOther.rewardRate = AssessCommon.percentToPoint($("#rewardRate").val());
-        console.log(formDataOther);
+        // console.log(formDataOther);
         $.ajax({
             url: getContextPath() + "/costApproach/calculationNumeric",
             type: "post",
@@ -1670,7 +1416,7 @@
             success: function (result) {
                 var data = result.data;
                 if (data) {
-                    console.log(data);
+                    // console.log(data);
                     if (data.ploughArearatio) {
                         $("#ploughArearatio").text(AssessCommon.pointToPercent(data.ploughArearatio));
                     }
