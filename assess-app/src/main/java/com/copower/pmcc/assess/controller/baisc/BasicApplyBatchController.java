@@ -561,6 +561,8 @@ public class BasicApplyBatchController extends BaseController {
                 detailsModelAndView.addObject("projectPhase", "caseStudyExtend");
             }
         }
+        BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(basicFormClassifyParamDto.getApplyBatchDetailId());
+        detailsModelAndView.addObject("applyBatchDetail", applyBatchDetail);
         return detailsModelAndView;
     }
 

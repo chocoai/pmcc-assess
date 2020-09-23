@@ -72,7 +72,7 @@ public class MdCostApproachService {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
-    public static BigDecimal Bhou = new BigDecimal("666.67");
+    public static BigDecimal BHOU = new BigDecimal("666.67");
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     public List<MdCostApproach> getObjectList(MdCostApproach mdCostApproach) {
@@ -130,7 +130,7 @@ public class MdCostApproachService {
             landAcquisitionBhou = landAcquisitionBhou.subtract(landAcquisition.getPrice());
         }
         if (landAcquisitionBhou != null) {
-            mdCostApproach.setHaveNotLandAcquisition(landAcquisitionBhou.divide(Bhou, 2, BigDecimal.ROUND_HALF_UP));
+            mdCostApproach.setHaveNotLandAcquisition(landAcquisitionBhou.divide(BHOU, 2, BigDecimal.ROUND_HALF_UP));
         }
         if (mdCostApproach.getId() != null && mdCostApproach.getId().intValue() > 0) {
             costApproachDao.editMdCostApproach(mdCostApproach);
@@ -221,7 +221,7 @@ public class MdCostApproachService {
             return;
         }
         BigDecimal landAcquisitionBhou = getLandAcquisitionBhou(target.getId());
-//        landAcquisitionBhou = new BigDecimal("268.86") ;//测算用
+//        landAcquisitionBhou = new BigDecimal("268.86").multiply(BHOU) ;//测算用
         target.setLandAcquisitionBhou(landAcquisitionBhou);
         getFieldObjectValueHandle(MdCostApproach.Column.noPloughArearatio, target);//不会被递归调用所以单独运行得到数据
         getFieldObjectValueHandle(MdCostApproach.Column.priceCorrectionBhou, target);//不会被递归调用所以单独运行得到数据
@@ -239,7 +239,6 @@ public class MdCostApproachService {
     }
 
     private String getFieldObjectValueHandle(MdCostApproach.Column column, MdCostApproach target) {
-        final BigDecimal BHOU = new BigDecimal("666.67");
         switch (column) {
             case ploughArearatio: {//耕地比例 M5
                 //=L6/L5
@@ -402,7 +401,7 @@ public class MdCostApproachService {
                 if (!ArithmeticUtils.checkNotNull(landRemainingYear)) {
                     return "";
                 }
-                double temp = Math.pow(1 + Double.valueOf(rewardRate), landRemainingYear.doubleValue());
+                double temp = StrictMath.pow(ArithmeticUtils.add(new BigDecimal(1),ArithmeticUtils.createBigDecimal(rewardRate)).doubleValue(), landRemainingYear.doubleValue());
                 //年期修正H33
                 String yearFixed = ArithmeticUtils.sub(String.valueOf(1), ArithmeticUtils.div("1", String.valueOf(temp)), 4);
                 target.setYearFixed(ArithmeticUtils.createBigDecimal(yearFixed));
@@ -612,7 +611,7 @@ public class MdCostApproachService {
                     //耕地比例*标准1*666.67
                     if (mdCostApproachTaxes.getStandardFirst() != null) {
                         mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP)
-                                .multiply(Bhou).setScale(2, BigDecimal.ROUND_HALF_UP));
+                                .multiply(BHOU).setScale(2, BigDecimal.ROUND_HALF_UP));
                     }
                     break;
                 //耕地开垦费
@@ -624,9 +623,9 @@ public class MdCostApproachService {
                     break;
                 //土地管理费
                 case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER:
+                    //=ROUND(SUM(D5:D12)*F13,2)
                     //(土地补偿费+安置补助费+青苗补偿费+住房安置费+农房搬迁奖励基金+菜田建设金+耕地占用税+耕地开垦费)*标准1
                     if (mdCostApproachTaxes.getStandardFirst() != null) {
-                        BigDecimal landManager = new BigDecimal("0");
                         String[] keys = {AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_COMPENSATE,
                                 AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_PLACEMENT_COMPENSATE,
                                 AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_CROPS_COMPENSATE,
@@ -638,15 +637,17 @@ public class MdCostApproachService {
                         List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
                         List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
                         list.addAll(custom);
+                        List<BigDecimal> bigDecimalList = new ArrayList<>(list.size()) ;
                         if (CollectionUtils.isNotEmpty(list)) {
                             for (MdCostApproachTaxes item : list) {
                                 if (item.getPrice() != null) {
-                                    landManager = landManager.add(item.getPrice());
+                                    bigDecimalList.add(item.getPrice()) ;
                                 }
                             }
                         }
-
-                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(landManager).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        BigDecimal add = ArithmeticUtils.add(bigDecimalList);
+                        BigDecimal bigDecimal = ArithmeticUtils.multiply(mdCostApproachTaxes.getStandardFirst() ,add ,2);
+                        mdCostApproachTaxes.setPrice(bigDecimal);
                     }
                     break;
                 //不可预见费
@@ -673,8 +674,8 @@ public class MdCostApproachService {
                                 }
                             }
                         }
-
-                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(cannotForesee).setScale(2, BigDecimal.ROUND_HALF_UP));
+                        BigDecimal bigDecimal = mdCostApproachTaxes.getStandardFirst().multiply(cannotForesee).setScale(2, BigDecimal.ROUND_HALF_UP);
+                        mdCostApproachTaxes.setPrice(bigDecimal);
                     }
                     break;
                 //代征地比例
@@ -703,7 +704,8 @@ public class MdCostApproachService {
                             }
                         }
                         BigDecimal temp = new BigDecimal("1").subtract(mdCostApproachTaxes.getStandardFirst());
-                        mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(cannotForesee).divide(temp, 2, BigDecimal.ROUND_HALF_UP));
+                        BigDecimal bigDecimal = mdCostApproachTaxes.getStandardFirst().multiply(cannotForesee).divide(temp, 2, BigDecimal.ROUND_HALF_UP);
+                        mdCostApproachTaxes.setPrice(bigDecimal);
                     }
                     break;
             }
@@ -875,13 +877,7 @@ public class MdCostApproachService {
         if (basicApply.getLandCategoryId() != null) {
             BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
             if (categoryInfo != null) {
-                modelAndView.addObject("landFactorTotalScore", categoryInfo.getLandFactorTotalScore());
-                modelAndView.addObject("landLevelContent", categoryInfo.getLandLevelContentResult());
-                modelAndView.addObject("levelDetailId", categoryInfo.getLandLevel());
-                DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
-                if (levelDetail != null) {
-                    modelAndView.addObject("landLevelId", levelDetail.getLandLevelId());
-                }
+                modelAndView.addObject("basicEstateLandCategoryInfo",categoryInfo);
             }
         }
     }

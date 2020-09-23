@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.ProjectLandAchievementGroupMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroup">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="data_table_name" jdbcType="VARCHAR" property="dataTableName" />
+    <result column="data_table_id" jdbcType="INTEGER" property="dataTableId" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="classification" jdbcType="VARCHAR" property="classification" />
+    <result column="select_id" jdbcType="INTEGER" property="selectId" />
+    <result column="select_value" jdbcType="VARCHAR" property="selectValue" />
+    <result column="achievement_ids" jdbcType="VARCHAR" property="achievementIds" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroupWithBLOBs">
+    <result column="key_value" jdbcType="LONGVARCHAR" property="keyValue" />
+    <result column="remark" jdbcType="LONGVARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, project_id, data_table_name, data_table_id, type, category, classification, select_id, 
+    select_value, achievement_ids, creator, gmt_created, gmt_modified
+  </sql>
+  <sql id="Blob_Column_List">
+    key_value, remark
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroupExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_project_land_achievement_group
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroupExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_project_land_achievement_group
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_project_land_achievement_group
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_project_land_achievement_group
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroupExample">
+    delete from tb_project_land_achievement_group
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroupWithBLOBs">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_land_achievement_group (project_id, data_table_name, data_table_id, 
+      type, category, classification, 
+      select_id, select_value, achievement_ids, 
+      creator, gmt_created, gmt_modified, 
+      key_value, remark)
+    values (#{projectId,jdbcType=INTEGER}, #{dataTableName,jdbcType=VARCHAR}, #{dataTableId,jdbcType=INTEGER}, 
+      #{type,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR}, 
+      #{selectId,jdbcType=INTEGER}, #{selectValue,jdbcType=VARCHAR}, #{achievementIds,jdbcType=VARCHAR}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, 
+      #{keyValue,jdbcType=LONGVARCHAR}, #{remark,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_project_land_achievement_group
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.projectId != null">
+            project_id,
+          </if>
+          <if test="record.dataTableName != null">
+            data_table_name,
+          </if>
+          <if test="record.dataTableId != null">
+            data_table_id,
+          </if>
+          <if test="record.type != null">
+            type,
+          </if>
+          <if test="record.category != null">
+            category,
+          </if>
+          <if test="record.classification != null">
+            classification,
+          </if>
+          <if test="record.selectId != null">
+            select_id,
+          </if>
+          <if test="record.selectValue != null">
+            select_value,
+          </if>
+          <if test="record.achievementIds != null">
+            achievement_ids,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+          <if test="record.keyValue != null">
+            key_value,
+          </if>
+          <if test="record.remark != null">
+            remark,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.projectId != null">
+            #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataTableName != null">
+            #{record.dataTableName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dataTableId != null">
+            #{record.dataTableId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            #{record.type,jdbcType=VARCHAR},
+          </if>
+          <if test="record.category != null">
+            #{record.category,jdbcType=VARCHAR},
+          </if>
+          <if test="record.classification != null">
+            #{record.classification,jdbcType=VARCHAR},
+          </if>
+          <if test="record.selectId != null">
+            #{record.selectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.selectValue != null">
+            #{record.selectValue,jdbcType=VARCHAR},
+          </if>
+          <if test="record.achievementIds != null">
+            #{record.achievementIds,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.keyValue != null">
+            #{record.keyValue,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.remark != null">
+            #{record.remark,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+  </insert>
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroupExample" resultType="java.lang.Long">
+    select count(*) from tb_project_land_achievement_group
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update tb_project_land_achievement_group
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataTableName != null">
+            data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dataTableId != null">
+            data_table_id = #{record.dataTableId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            type = #{record.type,jdbcType=VARCHAR},
+          </if>
+          <if test="record.category != null">
+            category = #{record.category,jdbcType=VARCHAR},
+          </if>
+          <if test="record.classification != null">
+            classification = #{record.classification,jdbcType=VARCHAR},
+          </if>
+          <if test="record.selectId != null">
+            select_id = #{record.selectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.selectValue != null">
+            select_value = #{record.selectValue,jdbcType=VARCHAR},
+          </if>
+          <if test="record.achievementIds != null">
+            achievement_ids = #{record.achievementIds,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.keyValue != null">
+            key_value = #{record.keyValue,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.remark != null">
+            remark = #{record.remark,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tb_project_land_achievement_group
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
+      data_table_id = #{record.dataTableId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=VARCHAR},
+      classification = #{record.classification,jdbcType=VARCHAR},
+      select_id = #{record.selectId,jdbcType=INTEGER},
+      select_value = #{record.selectValue,jdbcType=VARCHAR},
+      achievement_ids = #{record.achievementIds,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      key_value = #{record.keyValue,jdbcType=LONGVARCHAR},
+      remark = #{record.remark,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update tb_project_land_achievement_group
+    set id = #{record.id,jdbcType=INTEGER},
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
+      data_table_id = #{record.dataTableId,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=VARCHAR},
+      classification = #{record.classification,jdbcType=VARCHAR},
+      select_id = #{record.selectId,jdbcType=INTEGER},
+      select_value = #{record.selectValue,jdbcType=VARCHAR},
+      achievement_ids = #{record.achievementIds,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="map">
+    update tb_project_land_achievement_group
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.dataTableName != null">
+            data_table_name = #{record.dataTableName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.dataTableId != null">
+            data_table_id = #{record.dataTableId,jdbcType=INTEGER},
+          </if>
+          <if test="record.type != null">
+            type = #{record.type,jdbcType=VARCHAR},
+          </if>
+          <if test="record.category != null">
+            category = #{record.category,jdbcType=VARCHAR},
+          </if>
+          <if test="record.classification != null">
+            classification = #{record.classification,jdbcType=VARCHAR},
+          </if>
+          <if test="record.selectId != null">
+            select_id = #{record.selectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.selectValue != null">
+            select_value = #{record.selectValue,jdbcType=VARCHAR},
+          </if>
+          <if test="record.achievementIds != null">
+            achievement_ids = #{record.achievementIds,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.keyValue != null">
+            key_value = #{record.keyValue,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.remark != null">
+            remark = #{record.remark,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroupWithBLOBs">
+    update tb_project_land_achievement_group
+    set project_id = #{projectId,jdbcType=INTEGER},
+      data_table_name = #{dataTableName,jdbcType=VARCHAR},
+      data_table_id = #{dataTableId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      classification = #{classification,jdbcType=VARCHAR},
+      select_id = #{selectId,jdbcType=INTEGER},
+      select_value = #{selectValue,jdbcType=VARCHAR},
+      achievement_ids = #{achievementIds,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      key_value = #{keyValue,jdbcType=LONGVARCHAR},
+      remark = #{remark,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroup">
+    update tb_project_land_achievement_group
+    set project_id = #{projectId,jdbcType=INTEGER},
+      data_table_name = #{dataTableName,jdbcType=VARCHAR},
+      data_table_id = #{dataTableId,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      category = #{category,jdbcType=VARCHAR},
+      classification = #{classification,jdbcType=VARCHAR},
+      select_id = #{selectId,jdbcType=INTEGER},
+      select_value = #{selectValue,jdbcType=VARCHAR},
+      achievement_ids = #{achievementIds,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_project_land_achievement_group
+    (project_id, data_table_name, data_table_id, type, category, classification, select_id, 
+      select_value, achievement_ids, creator, gmt_created, gmt_modified, key_value, remark
+      )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.projectId,jdbcType=INTEGER}, #{item.dataTableName,jdbcType=VARCHAR}, #{item.dataTableId,jdbcType=INTEGER}, 
+        #{item.type,jdbcType=VARCHAR}, #{item.category,jdbcType=VARCHAR}, #{item.classification,jdbcType=VARCHAR}, 
+        #{item.selectId,jdbcType=INTEGER}, #{item.selectValue,jdbcType=VARCHAR}, #{item.achievementIds,jdbcType=VARCHAR}, 
+        #{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}, 
+        #{item.keyValue,jdbcType=LONGVARCHAR}, #{item.remark,jdbcType=LONGVARCHAR})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_project_land_achievement_group (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'project_id'.toString() == column.value">
+          #{item.projectId,jdbcType=INTEGER}
+        </if>
+        <if test="'data_table_name'.toString() == column.value">
+          #{item.dataTableName,jdbcType=VARCHAR}
+        </if>
+        <if test="'data_table_id'.toString() == column.value">
+          #{item.dataTableId,jdbcType=INTEGER}
+        </if>
+        <if test="'type'.toString() == column.value">
+          #{item.type,jdbcType=VARCHAR}
+        </if>
+        <if test="'category'.toString() == column.value">
+          #{item.category,jdbcType=VARCHAR}
+        </if>
+        <if test="'classification'.toString() == column.value">
+          #{item.classification,jdbcType=VARCHAR}
+        </if>
+        <if test="'select_id'.toString() == column.value">
+          #{item.selectId,jdbcType=INTEGER}
+        </if>
+        <if test="'select_value'.toString() == column.value">
+          #{item.selectValue,jdbcType=VARCHAR}
+        </if>
+        <if test="'achievement_ids'.toString() == column.value">
+          #{item.achievementIds,jdbcType=VARCHAR}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'key_value'.toString() == column.value">
+          #{item.keyValue,jdbcType=LONGVARCHAR}
+        </if>
+        <if test="'remark'.toString() == column.value">
+          #{item.remark,jdbcType=LONGVARCHAR}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
+</mapper>
