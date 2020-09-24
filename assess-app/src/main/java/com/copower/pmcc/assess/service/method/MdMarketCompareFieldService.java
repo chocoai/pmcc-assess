@@ -7,6 +7,7 @@ import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicUnitHuxingDao;
+import com.copower.pmcc.assess.dal.basis.dao.method.MdMarketCompareDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.method.MarketCompareItemDto;
 import com.copower.pmcc.assess.dto.output.basic.*;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.data.DataHousePriceIndexService;
 import com.copower.pmcc.assess.service.data.DataPropertyService;
 import com.copower.pmcc.assess.service.data.DataSetUseFieldService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
@@ -35,6 +37,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -95,6 +99,10 @@ public class MdMarketCompareFieldService extends BaseService {
     private GenerateLandFactorService generateLandFactorService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private DataHousePriceIndexService dataHousePriceIndexService;
+    @Autowired
+    private MdMarketCompareDao mdMarketCompareDao;
 
     /**
      * 获取市场比较法各个字段对应值
@@ -103,7 +111,7 @@ public class MdMarketCompareFieldService extends BaseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public String getCompareInfo(SchemeAreaGroup areaGroup, SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
+    public String getCompareInfo(MdMarketCompare mdMarketCompare, SchemeAreaGroup areaGroup, SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             if (basicApply == null) return null;
@@ -186,10 +194,33 @@ public class MdMarketCompareFieldService extends BaseService {
                                 list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_PRICE.getKey(), null, dataSetUseField));
                             break;
                         case TRADING_TIME://交易时间|市场状况
-                            if (isCase)
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(houseTrading.getTradingTime()), dataSetUseField, isCase));
-                            else
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(areaGroup.getValueTimePoint()), dataSetUseField, isCase));
+                            Date date = null;
+                            MarketCompareItemDto marketCompareItemDto = null;
+                            if (isCase) {
+                                date = houseTrading.getTradingTime();
+                                marketCompareItemDto = getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(date), dataSetUseField, isCase);
+                            } else {
+                                date = areaGroup.getValueTimePoint();
+                                marketCompareItemDto = getMarketCompareItemDto(MethodCompareFieldEnum.TRADING_TIME.getKey(), DateUtils.formatDate(date), dataSetUseField, isCase);
+                            }
+                            //根据时间确定市场状况的系数
+                            DataHousePriceIndex priceIndex = dataHousePriceIndexService.getHousePriceIndexByArea(examineEstate.getProvince(), examineEstate.getCity(), examineEstate.getDistrict(), date);
+                            if (priceIndex != null) {
+                                BigDecimal currIndexNumber = dataHousePriceIndexService.getCurrIndexNumber(priceIndex, date);
+                                marketCompareItemDto.setScore(currIndexNumber);
+                                if (isCase) {
+                                    try{
+                                        BigDecimal decimal = mdMarketCompare.getJudgeIndexNumber().divide(currIndexNumber, 4, RoundingMode.HALF_UP);
+                                        marketCompareItemDto.setRatio(decimal);
+                                    }catch (Exception ex){
+                                        log.error(ex.getMessage(),ex);
+                                    }
+                                } else {
+                                    mdMarketCompare.setJudgeIndexNumber(currIndexNumber);
+                                    mdMarketCompareDao.updateMarketCompare(mdMarketCompare);
+                                }
+                            }
+                            list.add(marketCompareItemDto);
                             break;
                         case PRICE_CONNOTATION://单价内涵
                             String priceConnotationName = baseDataDicService.getNameById(houseTrading.getPriceConnotation());
@@ -606,7 +637,7 @@ public class MdMarketCompareFieldService extends BaseService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public String getLandCompareInfo(SchemeAreaGroup areaGroup, SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
+    public String getLandCompareInfo(MdMarketCompare mdMarketCompare, SchemeAreaGroup areaGroup, SchemeJudgeObject judgeObject, BasicApply basicApply, List<DataSetUseField> setUseFieldList, Boolean isCase) {
         try {
             if (CollectionUtils.isEmpty(setUseFieldList)) return null;
             if (basicApply == null) return null;
@@ -673,10 +704,33 @@ public class MdMarketCompareFieldService extends BaseService {
                             list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_TRANSACTION_SITUATION.getKey(), baseDataDicService.getNameById(houseTrading.getTransactionSituation()), dataSetUseField, isCase));
                             break;
                         case LAND_TRADING_TIME://交易时间|市场状况
-                            if (isCase)
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_TIME.getKey(), DateUtils.formatDate(houseTrading.getTradingTime()), dataSetUseField, isCase));
-                            else
-                                list.add(getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_TIME.getKey(), DateUtils.formatDate(areaGroup.getValueTimePoint()), dataSetUseField, isCase));
+                            Date date = null;
+                            MarketCompareItemDto marketCompareItemDto = null;
+                            if (isCase) {
+                                date = houseTrading.getTradingTime();
+                                marketCompareItemDto = getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_TIME.getKey(), DateUtils.formatDate(date), dataSetUseField, isCase);
+                            } else {
+                                date = areaGroup.getValueTimePoint();
+                                marketCompareItemDto = getMarketCompareItemDto(MethodCompareFieldEnum.LAND_TRADING_TIME.getKey(), DateUtils.formatDate(date), dataSetUseField, isCase);
+                            }
+                            //根据时间确定市场状况的系数
+                            DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(examineEstate.getProvince(), examineEstate.getCity(), examineEstate.getDistrict(), date);
+                            if (priceIndex != null) {
+                                BigDecimal currIndexNumber = dataHousePriceIndexService.getCurrIndexNumber(priceIndex, date);
+                                marketCompareItemDto.setScore(currIndexNumber);
+                                if (isCase) {
+                                    try{
+                                        BigDecimal decimal = mdMarketCompare.getJudgeIndexNumber().divide(currIndexNumber, 4, RoundingMode.HALF_UP);
+                                        marketCompareItemDto.setRatio(decimal);
+                                    }catch (Exception ex){
+                                        log.error(ex.getMessage(),ex);
+                                    }
+                                } else {
+                                    mdMarketCompare.setJudgeIndexNumber(currIndexNumber);
+                                    mdMarketCompareDao.updateMarketCompare(mdMarketCompare);
+                                }
+                            }
+                            list.add(marketCompareItemDto);
                             break;
                         case LAND_PRICE_CONNOTATION://单价内涵
                             String priceConnotationName = baseDataDicService.getNameById(houseTrading.getPriceConnotation());

@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface MdMarketCompareMapper {
-    int countByExample(MdMarketCompareExample example);
+    long countByExample(MdMarketCompareExample example);
 
     int deleteByExample(MdMarketCompareExample example);
 

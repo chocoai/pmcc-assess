@@ -416,6 +416,66 @@ public class MdMarketCompareExample {
             return (Criteria) this;
         }
 
+        public Criteria andJudgeIndexNumberIsNull() {
+            addCriterion("judge_index_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberIsNotNull() {
+            addCriterion("judge_index_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberEqualTo(BigDecimal value) {
+            addCriterion("judge_index_number =", value, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberNotEqualTo(BigDecimal value) {
+            addCriterion("judge_index_number <>", value, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberGreaterThan(BigDecimal value) {
+            addCriterion("judge_index_number >", value, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("judge_index_number >=", value, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberLessThan(BigDecimal value) {
+            addCriterion("judge_index_number <", value, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("judge_index_number <=", value, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberIn(List<BigDecimal> values) {
+            addCriterion("judge_index_number in", values, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberNotIn(List<BigDecimal> values) {
+            addCriterion("judge_index_number not in", values, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("judge_index_number between", value1, value2, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andJudgeIndexNumberNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("judge_index_number not between", value1, value2, "judgeIndexNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andPriceIsNull() {
             addCriterion("price is null");
             return (Criteria) this;

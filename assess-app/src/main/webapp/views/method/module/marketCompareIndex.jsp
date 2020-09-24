@@ -44,7 +44,7 @@
                 <label for="cbxScore">修正指数</label>
             </span>
                 <span class="col-sm-1  checkbox-inline">
-                <input id="cbxRatio" type="checkbox"  value="ratio"
+                <input id="cbxRatio" type="checkbox" value="ratio"
                        onclick="marketCompare.toggle(this);">
                 <label for="cbxRatio">测算值</label>
             </span>
@@ -551,7 +551,23 @@
                 var price = table.find('tr[data-bisprice="true"]').closest('tbody').find('td[data-item-id=' + item + '].p_text a').text();
                 if (price && AssessCommon.isNumber(price)) {
                     var specificPrice = price = parseFloat(price);
+
                     if (marketCompare.isLand) {
+                        var situationTr = table.find('tr[data-group="land.trading.transaction.situation"][data-name="ratio"]');
+                        var situationRatio = situationTr.find('td[data-item-id=' + item + ']').text();
+                        situationRatio = AssessCommon.isNumber(situationRatio) ? situationRatio : 1;
+                        situationRatio = iTofixed(parseFloat(situationRatio), 4);//交易情况因素
+
+                        var tradingTimeTr = table.find('tr[data-group="land.trading.time"][data-name="ratio"]');
+                        var tradingTimeRatio = tradingTimeTr.find('td[data-item-id=' + item + ']').text();
+                        tradingTimeRatio = AssessCommon.isNumber(tradingTimeRatio) ? tradingTimeRatio : 1;
+                        tradingTimeRatio = iTofixed(parseFloat(tradingTimeRatio), 4);//市场状况因素
+
+                        var priceConnotationTr = table.find('tr[data-group="land.price.connotation"][data-name="ratio"]');
+                        var priceConnotationRatio = priceConnotationTr.find('td[data-item-id=' + item + ']').text();
+                        priceConnotationRatio = AssessCommon.isNumber(priceConnotationRatio) ? priceConnotationRatio : 1;
+                        priceConnotationRatio = iTofixed(parseFloat(priceConnotationRatio), 4);//单价内容因素
+
                         var locationConditionRatio = marketCompare.getGroupFactorValue("land.area.factor", item);//区位修正因素
                         var equityConditionRatio = marketCompare.getGroupFactorValue("land.equity.condition", item);//权益修正因素
                         var entityConditionRatio = marketCompare.getGroupFactorValue("land.individual.factor", item);//实体修正因素
@@ -559,7 +575,8 @@
                         equityConditionRatio = AssessCommon.isNumber(equityConditionRatio) ? equityConditionRatio : 1;
                         entityConditionRatio = AssessCommon.isNumber(entityConditionRatio) ? entityConditionRatio : 1;
 
-                        specificPrice = price * parseFloat(locationConditionRatio) * parseFloat(equityConditionRatio) * parseFloat(entityConditionRatio);
+                        specificPrice = price * parseFloat(situationRatio) * parseFloat(tradingTimeRatio) * parseFloat(priceConnotationRatio)
+                            * parseFloat(locationConditionRatio) * parseFloat(equityConditionRatio) * parseFloat(entityConditionRatio);
                         table.find('input[data-name="locationFactorRatio"][data-item-id=' + item + ']').val(locationConditionRatio);
                         table.find('input[data-name="equityFactorRatio"][data-item-id=' + item + ']').val(equityConditionRatio);
                         table.find('input[data-name="entityFactorRatio"][data-item-id=' + item + ']').val(entityConditionRatio);
@@ -1079,19 +1096,9 @@
                         },
                         success: function (result) {
                             if (result.ret) {
-                                //更新页面相关数据 重新测算一次
-                                if (result.data && result.data.length > 0) {
-                                    var annualTr = $("#tb_md_mc_item_list").find('tr[data-name="annualCoefficient"]');
-                                    $.each(result.data, function (i, item) {
-                                        var annualTd = annualTr.find('td[data-item-id=' + item.key + ']');
-                                        if (annualTd.find('span').length > 0) {
-                                            annualTd.find('span').text(item.value);
-                                        } else {
-                                            annualTd.text(item.value);
-                                        }
-                                    })
-                                }
-                                marketCompare.calculation();
+                                marketCompare.save(function () {
+                                    window.location.href = window.location.href;
+                                })
                             } else {
                                 notifyInfo('错误', result.errmsg);
                             }

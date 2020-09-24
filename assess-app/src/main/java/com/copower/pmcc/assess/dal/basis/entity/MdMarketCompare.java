@@ -14,6 +14,8 @@ public class MdMarketCompare {
 
     private Integer rewardRateId;
 
+    private BigDecimal judgeIndexNumber;
+
     private BigDecimal price;
 
     private String creator;
@@ -60,6 +62,14 @@ public class MdMarketCompare {
 
     public void setRewardRateId(Integer rewardRateId) {
         this.rewardRateId = rewardRateId;
+    }
+
+    public BigDecimal getJudgeIndexNumber() {
+        return judgeIndexNumber;
+    }
+
+    public void setJudgeIndexNumber(BigDecimal judgeIndexNumber) {
+        this.judgeIndexNumber = judgeIndexNumber;
     }
 
     public BigDecimal getPrice() {

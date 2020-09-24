@@ -181,6 +181,31 @@ public class DataHousePriceIndexService {
     }
 
     /**
+     * 获取当前指数
+     * @param priceIndex
+     * @param valueDate
+     * @return
+     */
+    public BigDecimal getCurrIndexNumber(DataHousePriceIndex priceIndex, Date valueDate){
+        if (priceIndex == null || valueDate == null) return null;
+        Date currDate = DateUtils.convertDate(valueDate, DateUtils.MONTH_PATTERN);
+        List<DataHousePriceIndexDetail> priceIndexDetails = housePriceIndexDetailService.getPriceIndexDetailListByMasterId(priceIndex.getId());
+        if (CollectionUtils.isEmpty(priceIndexDetails)) return null;
+        DataHousePriceIndexDetail currPriceIndexDetails = null;
+        for (DataHousePriceIndexDetail priceIndexDetail : priceIndexDetails) {
+            Date startDate = DateUtils.convertDate(priceIndexDetail.getStartDate(), DateUtils.MONTH_PATTERN);
+            Date endDate = DateUtils.convertDate(priceIndexDetail.getEndDate(), DateUtils.MONTH_PATTERN);
+            if (DateUtils.compareDate(currDate, startDate) > -1 && DateUtils.compareDate(endDate, currDate) > -1) {
+                currPriceIndexDetails = priceIndexDetail;
+            }
+        }
+        if (currPriceIndexDetails == null) {
+            currPriceIndexDetails = priceIndexDetails.get(priceIndexDetails.size() - 1);
+        }
+        return currPriceIndexDetails.getIndexNumber();
+    }
+
+    /**
      * 获取期日修正系数
      *
      * @param priceIndex
