@@ -378,10 +378,13 @@ public class DeclareRealtyRealEstateCertService {
         }
         AssessProjectTypeEnum projectTypeEnum = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
         //项目为房产则取房产的证载面积  项目为土地则去土地的宗地面积
-        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectTypeEnum))
+        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectTypeEnum)){
+            declareRecord.setCertUse(declareRealtyRealEstateCert.getHouseCertUseCategory());
             declareRecord.setFloorArea(declareRealtyRealEstateCert.getEvidenceArea());
-        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectTypeEnum))
+        }else if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectTypeEnum)){
             declareRecord.setFloorArea(declareRealtyRealEstateCert.getUseRightArea());
+            declareRecord.setCertUse(declareRealtyRealEstateCert.getLandCertUseCategory());
+        }
         declareRecord.setSeat(declareRealtyRealEstateCert.getBeLocated());
         declareRecord.setStreetNumber(declareRealtyRealEstateCert.getStreetNumber());
         declareRecord.setAttachedNumber(declareRealtyRealEstateCert.getAttachedNumber());
@@ -389,7 +392,7 @@ public class DeclareRealtyRealEstateCertService {
         declareRecord.setUnit(declareRealtyRealEstateCert.getUnit());
         declareRecord.setFloor(declareRealtyRealEstateCert.getFloor());
         declareRecord.setRoomNumber(declareRealtyRealEstateCert.getRoomNumber());
-        declareRecord.setCertUse(declareRealtyRealEstateCert.getHouseCertUseCategory());
+
         declareRecord.setHousingStructure(declareRealtyRealEstateCert.getHousingStructure());
         declareRecord.setNature(baseDataDicService.getNameById(declareRealtyRealEstateCert.getNature()));
         declareRecord.setLandCertUse(declareRealtyRealEstateCert.getLandCertUse());

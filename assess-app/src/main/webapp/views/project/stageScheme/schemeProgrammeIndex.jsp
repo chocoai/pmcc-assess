@@ -867,7 +867,7 @@
                                         </label>
                                         <div class="col-sm-2 x-valid">
                                             <input class="form-control input-full" type="text" required
-                                                   name="setPlotRatio{id}" data-name="setPlotRatio"
+                                                   name="setPlotRatio{id}" data-name="setPlotRatio" onblur="programme.saveProgrammeJudge(this);"
                                                    placeholder="设定容积率" value="{setPlotRatio}">
                                         </div>
                                         <label class="col-sm-1 control-label">
@@ -1539,6 +1539,7 @@
         data.propertyScope = $(areaPanel).find('[name="propertyScope"]').val();
         data.scopeInclude = $(areaPanel).find('[name="scopeInclude"]').val();
         data.scopeNotInclude = $(areaPanel).find('[name="scopeNotInclude"]').val();
+
         return data;
     };
 

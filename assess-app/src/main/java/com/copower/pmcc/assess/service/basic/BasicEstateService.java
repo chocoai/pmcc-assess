@@ -629,6 +629,10 @@ public class BasicEstateService extends BasicEntityAbstract {
             synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateStreetInfo.class));
             sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼盘 街道号sql
 
+            synchronousDataDto.setSourceTable(FormatUtils.entityNameConvertToTableName(BasicEstateVillage.class));
+            synchronousDataDto.setTargeTable(FormatUtils.entityNameConvertToTableName(BasicEstateVillage.class));
+            sqlBuilder.append(publicService.getSynchronousSql(synchronousDataDto));//楼盘 街道号sql
+
             ddlMySqlAssist.customTableDdl(sqlBuilder.toString());//执行sql
         }
         return targetBasicEstate;

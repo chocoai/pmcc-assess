@@ -241,17 +241,15 @@ public class DataLandLevelDetailVolumeService {
     public BigDecimal getAmend(List<DataLandLevelDetailVolume> detailList, BigDecimal volumetricRate) {
         if (detailList.size() >= 2) {
             //排序
-            Ordering<DataLandLevelDetailVolume> ordering = Ordering.from((o1, o2) -> {
-                return (o1.getPlotRatio().compareTo(o2.getPlotRatio()));
-            });
+            Ordering<DataLandLevelDetailVolume> ordering = Ordering.from((o1, o2) -> { return (o1.getPlotRatio().compareTo(o2.getPlotRatio())); });
             detailList.sort(ordering);
             //如果在两个值间
             for (int i = 0; i < detailList.size() - 1; i++) {
                 if (detailList.get(i).getPlotRatio().compareTo(volumetricRate) == -1 &&
                         volumetricRate.compareTo(detailList.get(i + 1).getPlotRatio()) == -1) {
-                    BigDecimal cardinalNumber = detailList.get(i + 1).getCorrectionFactor().subtract(detailList.get(i).getCorrectionFactor()).divide(detailList.get(i + 1).getPlotRatio().subtract(detailList.get(i).getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal cardinalNumber = detailList.get(i + 1).getCorrectionFactor().subtract(detailList.get(i).getCorrectionFactor()).divide(detailList.get(i + 1).getPlotRatio().subtract(detailList.get(i).getPlotRatio()), 6, BigDecimal.ROUND_HALF_UP);
                     BigDecimal amend = detailList.get(i).getCorrectionFactor().add(cardinalNumber.multiply(volumetricRate.subtract(detailList.get(i).getPlotRatio())));
-                    return amend;
+                    return amend.setScale(6,BigDecimal.ROUND_HALF_UP);
                 }
             }
             //最小值
@@ -261,16 +259,16 @@ public class DataLandLevelDetailVolumeService {
             //小于最小值
             if (minValue.getPlotRatio().compareTo(volumetricRate) == 1) {
                 DataLandLevelDetailVolume tempValue = detailList.get(1);
-                BigDecimal cardinalNumber = tempValue.getCorrectionFactor().subtract(minValue.getCorrectionFactor()).divide(tempValue.getPlotRatio().subtract(minValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal cardinalNumber = tempValue.getCorrectionFactor().subtract(minValue.getCorrectionFactor()).divide(tempValue.getPlotRatio().subtract(minValue.getPlotRatio()), 6, BigDecimal.ROUND_HALF_UP);
                 BigDecimal amend = minValue.getCorrectionFactor().subtract(cardinalNumber.multiply(minValue.getPlotRatio().subtract(volumetricRate)));
-                return amend;
+                return amend.setScale(6,BigDecimal.ROUND_HALF_UP);
             }
             //大于最大值
             if (volumetricRate.compareTo(maxValue.getPlotRatio()) == 1) {
                 DataLandLevelDetailVolume tempValue = detailList.get(detailList.size() - 2);
-                BigDecimal cardinalNumber = maxValue.getCorrectionFactor().subtract(tempValue.getCorrectionFactor()).divide(maxValue.getPlotRatio().subtract(tempValue.getPlotRatio()), 2, BigDecimal.ROUND_HALF_UP);
+                BigDecimal cardinalNumber = maxValue.getCorrectionFactor().subtract(tempValue.getCorrectionFactor()).divide(maxValue.getPlotRatio().subtract(tempValue.getPlotRatio()), 6, BigDecimal.ROUND_HALF_UP);
                 BigDecimal amend = maxValue.getCorrectionFactor().add(cardinalNumber.multiply(volumetricRate.subtract(maxValue.getPlotRatio())));
-                return amend;
+                return amend.setScale(6,BigDecimal.ROUND_HALF_UP);
             }
         }
         return null;

@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.basic.BasicApplyTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessExamineTaskConstant;
@@ -61,6 +62,10 @@ public class SurveyCommonService {
     private BasicHouseService basicHouseService;
     @Autowired
     private BaseService baseService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
 
     /**
@@ -131,17 +136,22 @@ public class SurveyCommonService {
      * @param projectPlanDetails
      */
     public void updateDeclarePracticalUse(ProjectPlanDetails projectPlanDetails) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        AssessProjectTypeEnum projectTypeEnum = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(projectPlanDetails.getId());
         if (CollectionUtils.isNotEmpty(basicApplyList)) {
             for (BasicApply basicApply : basicApplyList) {
                 BasicHouse house = basicHouseService.getHouseByBasicApply(basicApply);
-                if (house != null && house.getPracticalUse() != null) {
-                    DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(basicApply.getDeclareRecordId());
-                    if (declareRecord != null) {
-                        declareRecord.setPracticalUse(house.getPracticalUse());
-                        declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
-                    }
+                if (house == null) continue;
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(basicApply.getDeclareRecordId());
+                if (declareRecord != null) continue;
+                if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectTypeEnum)) {
+                    declareRecord.setPracticalUse(house.getPracticalUse());
+                } else if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectTypeEnum)) {
+                    BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(house.getId());
+                    declareRecord.setPracticalUse(landCategoryInfo.getLandUseCategory());
                 }
+                declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             }
         }
     }

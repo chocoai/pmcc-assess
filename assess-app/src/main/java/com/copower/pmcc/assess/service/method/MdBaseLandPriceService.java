@@ -315,18 +315,13 @@ public class MdBaseLandPriceService {
                 modelAndView.addObject("legalAge", hasLegalAgeData.getLegalAge());
                 //容积率修正
                 DataLandLevelDetail parentLandLevel = dataLandLevelDetailService.hasVolumeFractionAmendParent(levelDetail.getId());
-                BigDecimal amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(levelDetail.getVolumeRate(), parentLandLevel.getId());
-                if (amendValue == null) {
-                    //当为null的时候取父级的
-                    amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(parentLandLevel.getVolumeRate(), parentLandLevel.getId());
+                BigDecimal amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(schemeJudgeObject.getSetPlotRatio(), parentLandLevel.getId());
+                if (amendValue == null) {//当为null的时候取父级的
+                    amendValue = dataLandLevelDetailVolumeService.getAmendByVolumetricRate(schemeJudgeObject.getSetPlotRatio(), parentLandLevel.getId());
                 }
-                String volumeFractionAmend = "未配置";
-                if (amendValue != null) {
-                    volumeFractionAmend = String.format("%.2f", amendValue);
-                }
-                modelAndView.addObject("volumeFractionAmend", volumeFractionAmend);
+                modelAndView.addObject("volumeFractionAmend", amendValue);
                 modelAndView.addObject("hasVolumeFractionAmendId", parentLandLevel.getId());
-                modelAndView.addObject("volumetricRate", categoryInfo.getPlotRatio());
+                modelAndView.addObject("volumetricRate", schemeJudgeObject.getSetPlotRatio());
             }
         }
         //期日修正系数

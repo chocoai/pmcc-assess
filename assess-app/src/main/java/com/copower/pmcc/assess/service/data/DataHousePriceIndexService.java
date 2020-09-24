@@ -194,13 +194,17 @@ public class DataHousePriceIndexService {
         if (CollectionUtils.isEmpty(priceIndexDetails)) return null;
         List<DataHousePriceIndexDetail> basePriceIndexDetails = LangUtils.filter(priceIndexDetails, o -> Boolean.TRUE.equals(o.getBisBase()));
         if (CollectionUtils.isEmpty(basePriceIndexDetails)) return null;
+        DataHousePriceIndexDetail currPriceIndexDetails = null;
         for (DataHousePriceIndexDetail priceIndexDetail : priceIndexDetails) {
             Date startDate = DateUtils.convertDate(priceIndexDetail.getStartDate(), DateUtils.MONTH_PATTERN);
             Date endDate = DateUtils.convertDate(priceIndexDetail.getEndDate(), DateUtils.MONTH_PATTERN);
             if (DateUtils.compareDate(currDate, startDate) > -1 && DateUtils.compareDate(endDate, currDate) > -1) {
-                return priceIndexDetail.getIndexNumber().divide(basePriceIndexDetails.get(0).getIndexNumber(), 2, RoundingMode.HALF_UP);
+                currPriceIndexDetails = priceIndexDetail;
             }
         }
-        return null;
+        if (currPriceIndexDetails == null) {
+            currPriceIndexDetails = priceIndexDetails.get(priceIndexDetails.size() - 1);
+        }
+        return currPriceIndexDetails.getIndexNumber().divide(basePriceIndexDetails.get(0).getIndexNumber(), 4, RoundingMode.HALF_UP);
     }
 }
