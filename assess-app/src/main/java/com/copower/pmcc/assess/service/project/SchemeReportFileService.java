@@ -202,12 +202,25 @@ public class SchemeReportFileService extends BaseService {
         }
         sysAttachmentDto.setFileName("位置示意图.jpg");
         BasicUnit basicUnit = basicUnitService.getBasicUnitByApplyId(basicApply.getId());
-        BasicEstateTagging where = new BasicEstateTagging();
-        where.setType(BasicFormClassifyEnum.UNIT.getKey());
-        where.setTableId(basicUnit.getId());
-        List<BasicEstateTagging> taggings = basicEstateTaggingService.getBasicEstateTaggingList(where);
+        BasicEstateTagging where = null;
+        List<BasicEstateTagging> taggings = null;
+        if (basicUnit != null) {
+            where = new BasicEstateTagging();
+            where.setType(BasicFormClassifyEnum.UNIT.getKey());
+            where.setTableId(basicUnit.getId());
+            taggings = basicEstateTaggingService.getBasicEstateTaggingList(where);
+        }
+        if (CollectionUtils.isEmpty(taggings)) {
+            BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+            if (basicEstate != null) {
+                where = new BasicEstateTagging();
+                where.setType(BasicFormClassifyEnum.ESTATE.getKey());
+                where.setTableId(basicEstate.getId());
+                taggings = basicEstateTaggingService.getBasicEstateTaggingList(where);
+            }
+        }
         if (CollectionUtils.isNotEmpty(taggings)) {
-            taggings.forEach(o -> publicService.downLoadLocationImage(o.getLng(), o.getLat(), sysAttachmentDto));
+            publicService.downLoadLocationImage(taggings.get(0).getLng(), taggings.get(0).getLat(), sysAttachmentDto);
         }
     }
 

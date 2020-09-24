@@ -683,47 +683,45 @@
                         </div>
                     </div>
                 </div>
+<%--                <div class="row form-group">--%>
+<%--                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">--%>
+<%--                        <div class="form-inline x-valid">--%>
+<%--                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">--%>
+<%--                                土地还原率--%>
+<%--                            </label>--%>
+<%--                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">--%>
+<%--                                <div class="input-group">--%>
+<%--                                    <input type="text" readonly="readonly" class="form-control x-percent"--%>
+<%--                                           name="remunerationRate" value="${mdDevelopment.remunerationRate}"--%>
+<%--                                           placeholder="土地还原率" data-value="${mdDevelopment.remunerationRate}"--%>
+<%--                                           onblur="loadParamsValue(this);">--%>
 
-                <div class="row form-group">
-                    <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                        <div class="form-inline x-valid">
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                土地还原率
-                            </label>
-                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                <div class="input-group">
-                                    <input type="text" readonly="readonly" class="form-control x-percent"
-                                           name="remunerationRate" value="${mdDevelopment.remunerationRate}"
-                                           placeholder="土地还原率" data-value="${mdDevelopment.remunerationRate}"
-                                           onblur="loadParamsValue(this);">
-
-                                    <div class="input-group-append">
-                                        <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">
-                                        <input type="button" class="btn btn-info btn-sm" value="土地还原率"
-                                               onclick="landEngineering.getRewardRate(this);"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                法定年限
-                            </label>
-                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                <input type="text" placeholder="法定年限" class="form-control input-full"
-                                       name="statutoryLife"
-                                       onblur="loadParamsValue(this);" value="${mdDevelopment.statutoryLife}">
-                            </div>
-                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                剩余年限
-                            </label>
-                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                <input type="text" placeholder="剩余年限" class="form-control input-full"
-                                       name="remainingYears" onblur="loadParamsValue(this);"
-                                       value="${mdDevelopment.remainingYears}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+<%--                                    <div class="input-group-append">--%>
+<%--                                        <input type="hidden" name="rewardRateId" value="${mdDevelopment.rewardRateId}">--%>
+<%--                                        <input type="button" class="btn btn-info btn-sm" value="土地还原率"--%>
+<%--                                               onclick="landEngineering.getRewardRate(this);"/>--%>
+<%--                                    </div>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
+<%--                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">--%>
+<%--                                法定年限--%>
+<%--                            </label>--%>
+<%--                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">--%>
+<%--                                <input type="text" placeholder="法定年限" class="form-control input-full"--%>
+<%--                                       name="statutoryLife"--%>
+<%--                                       onblur="loadParamsValue(this);" value="${mdDevelopment.statutoryLife}">--%>
+<%--                            </div>--%>
+<%--                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">--%>
+<%--                                剩余年限--%>
+<%--                            </label>--%>
+<%--                            <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">--%>
+<%--                                <input type="text" placeholder="剩余年限" class="form-control input-full"--%>
+<%--                                       name="remainingYears" onblur="loadParamsValue(this);"--%>
+<%--                                       value="${mdDevelopment.remainingYears}">--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
                 <div class="row form-group">
                     <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                         <div class="form-inline x-valid">

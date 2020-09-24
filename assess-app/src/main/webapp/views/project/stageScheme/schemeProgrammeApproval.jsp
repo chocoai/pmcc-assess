@@ -507,7 +507,7 @@
                                 </div>
                             </div>
                         </div>
-                        <c:if test="${projectCategoryId eq 'landCategoryId'}">
+                        <c:if test="${projectCategory eq 'land'}">
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <div class="form-inline">

@@ -2216,52 +2216,62 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioEqualTo(BigDecimal value) {
+        public Criteria andPlanPlotRatioEqualTo(String value) {
             addCriterion("plan_plot_ratio =", value, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioNotEqualTo(BigDecimal value) {
+        public Criteria andPlanPlotRatioNotEqualTo(String value) {
             addCriterion("plan_plot_ratio <>", value, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioGreaterThan(BigDecimal value) {
+        public Criteria andPlanPlotRatioGreaterThan(String value) {
             addCriterion("plan_plot_ratio >", value, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioGreaterThanOrEqualTo(BigDecimal value) {
+        public Criteria andPlanPlotRatioGreaterThanOrEqualTo(String value) {
             addCriterion("plan_plot_ratio >=", value, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioLessThan(BigDecimal value) {
+        public Criteria andPlanPlotRatioLessThan(String value) {
             addCriterion("plan_plot_ratio <", value, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioLessThanOrEqualTo(BigDecimal value) {
+        public Criteria andPlanPlotRatioLessThanOrEqualTo(String value) {
             addCriterion("plan_plot_ratio <=", value, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioIn(List<BigDecimal> values) {
+        public Criteria andPlanPlotRatioLike(String value) {
+            addCriterion("plan_plot_ratio like", value, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioNotLike(String value) {
+            addCriterion("plan_plot_ratio not like", value, "planPlotRatio");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlanPlotRatioIn(List<String> values) {
             addCriterion("plan_plot_ratio in", values, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioNotIn(List<BigDecimal> values) {
+        public Criteria andPlanPlotRatioNotIn(List<String> values) {
             addCriterion("plan_plot_ratio not in", values, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andPlanPlotRatioBetween(String value1, String value2) {
             addCriterion("plan_plot_ratio between", value1, value2, "planPlotRatio");
             return (Criteria) this;
         }
 
-        public Criteria andPlanPlotRatioNotBetween(BigDecimal value1, BigDecimal value2) {
+        public Criteria andPlanPlotRatioNotBetween(String value1, String value2) {
             addCriterion("plan_plot_ratio not between", value1, value2, "planPlotRatio");
             return (Criteria) this;
         }

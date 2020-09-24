@@ -70,7 +70,7 @@ public class SchemeJudgeObject {
 
     private BigDecimal setPlotRatio;
 
-    private BigDecimal planPlotRatio;
+    private String planPlotRatio;
 
     private BigDecimal actualPlotRatio;
 
@@ -376,12 +376,12 @@ public class SchemeJudgeObject {
         this.setPlotRatio = setPlotRatio;
     }
 
-    public BigDecimal getPlanPlotRatio() {
+    public String getPlanPlotRatio() {
         return planPlotRatio;
     }
 
-    public void setPlanPlotRatio(BigDecimal planPlotRatio) {
-        this.planPlotRatio = planPlotRatio;
+    public void setPlanPlotRatio(String planPlotRatio) {
+        this.planPlotRatio = planPlotRatio == null ? null : planPlotRatio.trim();
     }
 
     public BigDecimal getActualPlotRatio() {

@@ -329,7 +329,7 @@ public class SchemeAreaGroupService {
             schemeJudgeObject.setEvaluationArea(basicApply.getArea());
             if (isLand && economicIndicators != null) {
                 if (StringUtils.isNotEmpty(economicIndicators.getVolumetricRate())) {
-                    schemeJudgeObject.setPlanPlotRatio(new BigDecimal(economicIndicators.getVolumetricRate()));
+                    schemeJudgeObject.setPlanPlotRatio(economicIndicators.getVolumetricRate());
                     schemeJudgeObject.setSetPlotRatio(new BigDecimal(economicIndicators.getVolumetricRate()));
                 }
                 schemeJudgeObject.setParcelSettingInnerDevelop(economicIndicators.getParcelSettingInner());

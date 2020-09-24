@@ -3791,6 +3791,7 @@ public class GenerateBaseDataService {
      */
     public void buildResultSetTable(ProjectInfo projectInfo, List<SchemeJudgeObject> schemeJudgeObjectList, DocumentBuilder builder) throws Exception {
         //1.当项目为抵押评估时有法定优先受偿款和抵押价值，否则表格没有这两项
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
         boolean mortgageFlag = Objects.equal(projectInfo.getEntrustPurpose(), baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE_MORTGAGE).getId());
         builder.startTable();
         generateCommonMethod.settingBuildingTable(builder);
@@ -3805,10 +3806,12 @@ public class GenerateBaseDataService {
         builder.write("证载用途");
         builder.insertCell();
         builder.write("实际用途");
-        builder.insertCell();
-        builder.write("房屋总层数");
-        builder.insertCell();
-        builder.write("所在层数");
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(assessProjectType.getKey())){
+            builder.insertCell();
+            builder.write("房屋总层数");
+            builder.insertCell();
+            builder.write("所在层数");
+        }
         builder.insertCell();
         builder.write("评估面积(㎡)");
         builder.insertCell();
@@ -3856,22 +3859,25 @@ public class GenerateBaseDataService {
                 builder.insertCell();
                 builder.write(StringUtils.defaultString(practicalUse));
 
-                builder.insertCell();
-                GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
-                BasicBuildingVo buildingVo = generateBaseExamineService.getBasicBuilding();
-                if (buildingVo != null) {
-                    if (buildingVo.getCurrBuildingDifference() != null) {
-                        floorCount = String.valueOf(buildingVo.getCurrBuildingDifference().getMaxFloor());
-                    } else {
-                        floorCount = String.valueOf(buildingVo.getFloorCount());
+                if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(assessProjectType.getKey())){
+                    builder.insertCell();
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    BasicBuildingVo buildingVo = generateBaseExamineService.getBasicBuilding();
+                    if (buildingVo != null) {
+                        if (buildingVo.getCurrBuildingDifference() != null) {
+                            floorCount = String.valueOf(buildingVo.getCurrBuildingDifference().getMaxFloor());
+                        } else {
+                            floorCount = String.valueOf(buildingVo.getFloorCount());
+                        }
+                        builder.write(floorCount);//4
                     }
-                    builder.write(floorCount);//4
+
+                    builder.insertCell();
+                    BasicHouseVo basicHouse = generateBaseExamineService.getBasicHouse();
+                    if (basicHouse != null && basicHouse.getFloor() != null)
+                        builder.write(basicHouse.getFloor());
                 }
 
-                builder.insertCell();
-                BasicHouseVo basicHouse = generateBaseExamineService.getBasicHouse();
-                if (basicHouse != null && basicHouse.getFloor() != null)
-                    builder.write(basicHouse.getFloor());
 
                 builder.insertCell();
                 builder.write(ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getEvaluationArea()));
@@ -3927,11 +3933,13 @@ public class GenerateBaseDataService {
                         builder.insertCell();
                         builder.write(practicalUse);
 
-                        builder.insertCell();
-                        builder.write(floorCount);
+                        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(assessProjectType.getKey())){
+                            builder.insertCell();
+                            builder.write(floorCount);
 
-                        builder.insertCell();
-                        builder.write(huxingPrice.getFloor());
+                            builder.insertCell();
+                            builder.write(huxingPrice.getFloor());
+                        }
 
                         if (huxingPrice.getArea() != null) {
                             areaTotal = areaTotal.add(huxingPrice.getArea());
@@ -3970,8 +3978,10 @@ public class GenerateBaseDataService {
         builder.insertCell();
         builder.insertCell();
         builder.insertCell();
-        builder.insertCell();
-        builder.insertCell();
+        if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.getKey().equals(assessProjectType.getKey())){
+            builder.insertCell();
+            builder.insertCell();
+        }
         builder.insertCell();
         builder.insertCell();
         builder.write(areaTotal.toString());

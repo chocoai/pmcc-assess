@@ -615,35 +615,35 @@
             </div>
         </div>
         <div class="card-body ">
-            <div class="row form-group">
-                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
-                    <div class="form-inline x-valid">
-                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            土地还原率
-                        </label>
-                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                            <div class="input-group">
-                                <label class="form-control">
-                                    <fmt:formatNumber value="${mdDevelopment.remunerationRate}" type="percent"
-                                                      maxFractionDigits="4"/>
-                                </label>
-                            </div>
-                        </div>
-                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            法定年限
-                        </label>
-                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                            <label class="form-control input-full">${mdDevelopment.statutoryLife}</label>
-                        </div>
-                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                            剩余年限
-                        </label>
-                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                            <label class="form-control input-full">${mdDevelopment.remainingYears}</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<%--            <div class="row form-group">--%>
+<%--                <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">--%>
+<%--                    <div class="form-inline x-valid">--%>
+<%--                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">--%>
+<%--                            土地还原率--%>
+<%--                        </label>--%>
+<%--                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">--%>
+<%--                            <div class="input-group">--%>
+<%--                                <label class="form-control">--%>
+<%--                                    <fmt:formatNumber value="${mdDevelopment.remunerationRate}" type="percent"--%>
+<%--                                                      maxFractionDigits="4"/>--%>
+<%--                                </label>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">--%>
+<%--                            法定年限--%>
+<%--                        </label>--%>
+<%--                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">--%>
+<%--                            <label class="form-control input-full">${mdDevelopment.statutoryLife}</label>--%>
+<%--                        </div>--%>
+<%--                        <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">--%>
+<%--                            剩余年限--%>
+<%--                        </label>--%>
+<%--                        <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">--%>
+<%--                            <label class="form-control input-full">${mdDevelopment.remainingYears}</label>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
             <div class="row form-group">
                 <div class="col-xs-12  col-sm-12  col-md-12  col-lg-12">
                     <div class="form-inline x-valid">

@@ -35,7 +35,7 @@
     <result column="factor" jdbcType="VARCHAR" property="factor" />
     <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
     <result column="set_plot_ratio" jdbcType="DECIMAL" property="setPlotRatio" />
-    <result column="plan_plot_ratio" jdbcType="DECIMAL" property="planPlotRatio" />
+    <result column="plan_plot_ratio" jdbcType="VARCHAR" property="planPlotRatio" />
     <result column="actual_plot_ratio" jdbcType="DECIMAL" property="actualPlotRatio" />
     <result column="standard_judge_id" jdbcType="INTEGER" property="standardJudgeId" />
     <result column="standard_judge_explain" jdbcType="VARCHAR" property="standardJudgeExplain" />
@@ -190,7 +190,7 @@
       #{setUseClassify,jdbcType=INTEGER}, #{setUse,jdbcType=INTEGER}, #{bestUse,jdbcType=INTEGER}, 
       #{floorArea,jdbcType=DECIMAL}, #{evaluationArea,jdbcType=DECIMAL}, #{evaluationNumber,jdbcType=DECIMAL}, 
       #{evaluationNumberUnit,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{factor,jdbcType=VARCHAR}, 
-      #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, #{planPlotRatio,jdbcType=DECIMAL}, 
+      #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, #{planPlotRatio,jdbcType=VARCHAR}, 
       #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, #{standardJudgeExplain,jdbcType=VARCHAR}, 
       #{judgeFunction,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, #{mergeExplain,jdbcType=VARCHAR}, 
       #{splitExplain,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, #{parcelOuterDevelop,jdbcType=VARCHAR}, 
@@ -464,7 +464,7 @@
         #{setPlotRatio,jdbcType=DECIMAL},
       </if>
       <if test="planPlotRatio != null">
-        #{planPlotRatio,jdbcType=DECIMAL},
+        #{planPlotRatio,jdbcType=VARCHAR},
       </if>
       <if test="actualPlotRatio != null">
         #{actualPlotRatio,jdbcType=DECIMAL},
@@ -637,7 +637,7 @@
         set_plot_ratio = #{record.setPlotRatio,jdbcType=DECIMAL},
       </if>
       <if test="record.planPlotRatio != null">
-        plan_plot_ratio = #{record.planPlotRatio,jdbcType=DECIMAL},
+        plan_plot_ratio = #{record.planPlotRatio,jdbcType=VARCHAR},
       </if>
       <if test="record.actualPlotRatio != null">
         actual_plot_ratio = #{record.actualPlotRatio,jdbcType=DECIMAL},
@@ -739,7 +739,7 @@
       factor = #{record.factor,jdbcType=VARCHAR},
       original_price = #{record.originalPrice,jdbcType=DECIMAL},
       set_plot_ratio = #{record.setPlotRatio,jdbcType=DECIMAL},
-      plan_plot_ratio = #{record.planPlotRatio,jdbcType=DECIMAL},
+      plan_plot_ratio = #{record.planPlotRatio,jdbcType=VARCHAR},
       actual_plot_ratio = #{record.actualPlotRatio,jdbcType=DECIMAL},
       standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
       standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
@@ -864,7 +864,7 @@
         set_plot_ratio = #{setPlotRatio,jdbcType=DECIMAL},
       </if>
       <if test="planPlotRatio != null">
-        plan_plot_ratio = #{planPlotRatio,jdbcType=DECIMAL},
+        plan_plot_ratio = #{planPlotRatio,jdbcType=VARCHAR},
       </if>
       <if test="actualPlotRatio != null">
         actual_plot_ratio = #{actualPlotRatio,jdbcType=DECIMAL},
@@ -963,7 +963,7 @@
       factor = #{factor,jdbcType=VARCHAR},
       original_price = #{originalPrice,jdbcType=DECIMAL},
       set_plot_ratio = #{setPlotRatio,jdbcType=DECIMAL},
-      plan_plot_ratio = #{planPlotRatio,jdbcType=DECIMAL},
+      plan_plot_ratio = #{planPlotRatio,jdbcType=VARCHAR},
       actual_plot_ratio = #{actualPlotRatio,jdbcType=DECIMAL},
       standard_judge_id = #{standardJudgeId,jdbcType=INTEGER},
       standard_judge_explain = #{standardJudgeExplain,jdbcType=VARCHAR},

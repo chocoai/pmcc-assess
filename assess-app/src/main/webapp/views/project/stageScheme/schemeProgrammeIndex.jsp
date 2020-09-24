@@ -854,7 +854,9 @@
                                             规划容积率
                                         </label>
                                         <div class="col-sm-2 x-valid">
-                                            <label class="form-control input-full" data-name="planPlotRatio">{planPlotRatio}</label>
+                                            <input class="form-control input-full" type="text" required
+                                                   name="planPlotRatio{id}" data-name="planPlotRatio" onblur="programme.saveProgrammeJudge(this);"
+                                                   placeholder="规划容积率" value="{planPlotRatio}">
                                         </div>
                                         <label class="col-sm-1 control-label">
                                             实际容积率
