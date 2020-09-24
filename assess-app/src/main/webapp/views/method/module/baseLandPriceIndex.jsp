@@ -431,7 +431,7 @@
      */
     function initPlotRatioElementAmendValue(query ,dataAll ,table) {
         landAchievementGroup.applyMethodLoadHtml(dataAll ,table,function () {
-            landAchievementGroup.countProjectLandAchievementGroupByDataTableIdAndDataTableNameAndProjectId(query.projectId ,query.targetTableId ,query.targetTableName ,function (item) {
+            landAchievementGroup.countProjectLandAchievementGroupByDataTableIdAndDataTableNameAndProjectId(query.projectId ,query.dataTableId ,query.dataTableName ,function (item) {
                 if (item){
                     $("#areaAndSeveralAmend").val(AssessCommon.pointToPercent(item)).trigger('blur');
                 }else {
@@ -455,9 +455,9 @@
                 targetTableName:AssessDBKey.MdBaseLandPrice
             };
             var table = $("#landLevelTableList") ;
-            landAchievementGroup.getInitProjectLandAchievementGroupData(query.projectId ,query.targetTableId ,query.targetTableName ,function (dataAll) {
+            landAchievementGroup.getInitProjectLandAchievementGroupData(query.projectId ,query.dataTableId ,query.dataTableName ,function (dataAll) {
                 if (!dataAll || dataAll.length == 0){
-                    landAchievementGroup.initProjectLandAchievement(query.levelDetailId,query.projectId ,query.dataTableId ,query.dataTableName ,query.targetTableId ,query.targetTableName ,function (data) {
+                    landAchievementGroup.initProjectLandAchievementGroup(query.levelDetailId,query.projectId ,query.dataTableId ,query.dataTableName ,function (data) {
                         initPlotRatioElementAmendValue(query,data,table) ;
                     }) ;
                 }else {
