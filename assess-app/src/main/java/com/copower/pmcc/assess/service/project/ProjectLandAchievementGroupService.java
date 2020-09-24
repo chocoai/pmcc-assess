@@ -91,6 +91,48 @@ public class ProjectLandAchievementGroupService {
         return handleGrouping(groupWithBLOBsList);
     }
 
+
+    /**
+     * 土地因素 过滤形成 可以使用的数据
+     * @param levelDetailId
+     * @param projectId
+     * @param dataTableId
+     * @param dataTableName
+     * @param targetTableId
+     * @param targetTableName
+     * @return
+     */
+    public List<List<ProjectLandAchievementGroupWithBLOBs>> initProjectLandAchievement(Integer levelDetailId, Integer projectId, Integer dataTableId, String dataTableName, Integer targetTableId, String targetTableName) {
+        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = null;
+        List<List<DataLandLevelDetailAchievementVo>> listList = null;
+        List<ProjectLandAchievementGroupWithBLOBs> groupWithBLOBsList = null;
+        groupWithBLOBsList = projectLandAchievementGroupDao.getProjectLandAchievementGroupByDataTableIdAndDataTableNameAndProjectId(projectId, dataTableId, dataTableName);
+        if (CollectionUtils.isEmpty(groupWithBLOBsList)) {
+            if (levelDetailId != null) {
+                dataLandLevelDetailAchievementVoList = dataLandLevelDetailAchievementService.getAchievementsByLandLevelDetailId(levelDetailId);
+            }
+            if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievementVoList)) {
+                listList = dataLandLevelDetailAchievementService.landFirstLevelFilter(dataLandLevelDetailAchievementVoList.stream().map(po -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
+            }
+            if (CollectionUtils.isNotEmpty(listList)) {
+                groupWithBLOBsList = initProjectLandAchievementGroup(projectId, dataTableId, dataTableName, listList);
+            }
+        }
+        //将 查勘和土地因素的数据转移至 测算方法中使用
+        if (targetTableId != null && StringUtils.isNotBlank(targetTableName) && CollectionUtils.isNotEmpty(groupWithBLOBsList)) {
+            List<ProjectLandAchievementGroupWithBLOBs> groupWithBLOBs = new ArrayList<>(groupWithBLOBsList.size());
+            for (ProjectLandAchievementGroupWithBLOBs obj:groupWithBLOBsList){
+                obj.setDataTableName(targetTableName);
+                obj.setDataTableId(targetTableId);
+                obj.setId(null);
+                groupWithBLOBs.add(obj) ;
+            }
+            batchInsert(groupWithBLOBs);
+            groupWithBLOBsList = groupWithBLOBs ;
+        }
+        return handleGrouping(groupWithBLOBsList);
+    }
+
     private List<List<ProjectLandAchievementGroupWithBLOBs>> handleGrouping(List<ProjectLandAchievementGroupWithBLOBs> groupWithBLOBsList) {
         Map<String, List<ProjectLandAchievementGroupWithBLOBs>> map = new HashMap<>(2);
         List<List<ProjectLandAchievementGroupWithBLOBs>> lists = new ArrayList<>();

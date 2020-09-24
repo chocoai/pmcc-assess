@@ -63,9 +63,9 @@ public class ProjectLandAchievementGroupController {
     }
 
     @PostMapping(value = "/initProjectLandAchievementGroup", name = "初始化获取数据  假如已经初始化了那么返回曾经初始化过的数据  ==> 会分组")
-    public HttpResult initProjectLandAchievementGroup(Integer levelDetailId, Integer projectId, Integer dataTableId, String dataTableName) {
+    public HttpResult initProjectLandAchievementGroup(Integer levelDetailId, Integer projectId, Integer dataTableId, String dataTableName ,Integer targetTableId, String targetTableName) {
         try {
-            return HttpResult.newCorrectResult(200, projectLandAchievementGroupService.initProjectLandAchievementGroup(levelDetailId, projectId, dataTableId, dataTableName));
+            return HttpResult.newCorrectResult(200, projectLandAchievementGroupService.initProjectLandAchievement(levelDetailId, projectId, dataTableId, dataTableName ,targetTableId,targetTableName));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult(500, e.getMessage());

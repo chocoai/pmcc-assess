@@ -143,11 +143,28 @@
      * @param callback
      */
     landAchievementGroup.initProjectLandAchievementGroup = function (levelDetailId, projectId, dataTableId, dataTableName, callback) {
+        landAchievementGroup.initProjectLandAchievement(levelDetailId,projectId,dataTableId,dataTableName,null,null,callback) ;
+    };
+
+
+    /**
+     * 初始化
+     * @param levelDetailId
+     * @param projectId
+     * @param dataTableId
+     * @param dataTableName
+     * @param targetTableId
+     * @param targetTableName
+     * @param callback
+     */
+    landAchievementGroup.initProjectLandAchievement = function (levelDetailId, projectId, dataTableId, dataTableName,targetTableId,targetTableName , callback) {
         var param = {
             levelDetailId: levelDetailId,
             projectId: projectId,
             dataTableId: dataTableId,
-            dataTableName: dataTableName
+            dataTableName: dataTableName,
+            targetTableId: targetTableId,
+            targetTableName: targetTableName
         };
         AssessCommon.ajaxServerMethod(param, "/projectLandAchievementGroup/initProjectLandAchievementGroup", "post", callback);
     };
@@ -300,6 +317,9 @@
      */
     landAchievementGroup.landLevelLoadHtml = function (data, target, html) {
         target.empty();
+        if (!data) {
+            return false ;
+        }
         //由于js来筛选 有大量json 解析或者字符串化 影响代码阅读度，因此改为了后台直接处理,第一次的时候有2此筛选分类这样确实代码可读性差
         data.forEach(function (dataA, indexM) {
             $.each(dataA, function (i, obj) {
