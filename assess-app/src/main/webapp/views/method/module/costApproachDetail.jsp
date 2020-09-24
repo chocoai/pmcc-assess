@@ -525,9 +525,8 @@
         if ('${basicEstateLandCategoryInfo}') {
             var query = {
                 projectId: '${judgeObject.projectId}',
-                dataTableId: '${basicEstateLandCategoryInfo.id}',
-                dataTableName: AssessDBKey.BasicEstateLandCategoryInfo,
-                levelDetailId:'${basicEstateLandCategoryInfo.landLevel}'
+                dataTableId: '${master.id}',
+                dataTableName: AssessDBKey.MdCostApproach
             };
             var table = $("#landLevelTableList") ;
             landAchievementGroup.getInitProjectLandAchievementGroupData(query.projectId ,query.dataTableId ,query.dataTableName ,function (dataAll) {

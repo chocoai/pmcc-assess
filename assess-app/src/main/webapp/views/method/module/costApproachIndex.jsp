@@ -1202,9 +1202,10 @@
      */
     function initPlotRatioElementAmendValue(query ,dataAll ,table) {
         landAchievementGroup.applyMethodLoadHtml(dataAll ,table,function () {
-            landAchievementGroup.countProjectLandAchievementGroupByDataTableIdAndDataTableNameAndProjectId(query.projectId ,query.dataTableId ,query.dataTableName ,function (item) {
+            landAchievementGroup.countProjectLandAchievementGroupByDataTableIdAndDataTableNameAndProjectId(query.projectId ,query.targetTableId ,query.targetTableName ,function (item) {
                 if (item){
-                    $("#plotRatioElementAmend").val(AssessCommon.pointToPercent(item)).trigger('blur');
+                    console.log(item) ;
+                    $("#plotRatioElementAmend").val(AssessCommon.pointToPercent(item)).attr("data-value",item).trigger('blur');
                 }else {
                     $("#plotRatioElementAmend").val('').trigger('blur');
                 }
@@ -1221,12 +1222,14 @@
                 projectId: '${judgeObject.projectId}',
                 dataTableId: '${basicEstateLandCategoryInfo.id}',
                 dataTableName: AssessDBKey.BasicEstateLandCategoryInfo,
-                levelDetailId:'${basicEstateLandCategoryInfo.landLevel}'
+                levelDetailId:'${basicEstateLandCategoryInfo.landLevel}',
+                targetTableId:'${master.id}',
+                targetTableName:AssessDBKey.MdCostApproach
             };
             var table = $("#landLevelTableList") ;
-            landAchievementGroup.getInitProjectLandAchievementGroupData(query.projectId ,query.dataTableId ,query.dataTableName ,function (dataAll) {
+            landAchievementGroup.getInitProjectLandAchievementGroupData(query.projectId ,query.targetTableId ,query.targetTableName ,function (dataAll) {
                 if (!dataAll || dataAll.length == 0){
-                    landAchievementGroup.initProjectLandAchievementGroup(query.levelDetailId,query.projectId ,query.dataTableId ,query.dataTableName ,function (data) {
+                    landAchievementGroup.initProjectLandAchievement(query.levelDetailId,query.projectId ,query.dataTableId ,query.dataTableName ,query.targetTableId ,query.targetTableName  ,function (data) {
                         initPlotRatioElementAmendValue(query,data,table) ;
                     }) ;
                 }else {

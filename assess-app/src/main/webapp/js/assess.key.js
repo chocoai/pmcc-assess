@@ -86,6 +86,8 @@ AssessDBKey.MdCalculatingMethodEngineeringCost = "tb_md_calculating_method_engin
 AssessDBKey.MdCost = "tb_md_cost";
 AssessDBKey.MdDevelopment = "tb_md_development";
 AssessDBKey.MdIncome = "tb_md_income";
+AssessDBKey.MdBaseLandPrice = "tb_md_base_land_price";
+AssessDBKey.MdCostApproach = "tb_md_cost_approach";
 
 AssessDBKey.ProjectChangeLog = "tb_project_change_log";
 AssessDBKey.ProjectSubsequent = "tb_project_subsequent";
