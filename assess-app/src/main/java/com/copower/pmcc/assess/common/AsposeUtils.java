@@ -16,9 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -88,7 +86,7 @@ public class AsposeUtils {
                     imagePath = String.join("", targetFolder, File.separator, UUID.randomUUID().toString(), extension);
                     suffix = FilenameUtils.getExtension(imagePath);
                 } else {
-                    imagePath = String.join("", targetFolder, File.separator, UUID.randomUUID().toString(), ".",suffix);
+                    imagePath = String.join("", targetFolder, File.separator, UUID.randomUUID().toString(), ".", suffix);
                 }
                 if (linkedList != null) {
                     linkedList.add(imagePath);
@@ -413,20 +411,20 @@ public class AsposeUtils {
                 }
             }
         }
-        saveWord(filePath,doc);
+        saveWord(filePath, doc);
         return stringMap;
     }
 
-    public static void replaceText(String filePath,String key,String value)throws Exception{
-        if (StringUtils.isEmpty(key)){
+    public static void replaceText(String filePath, String key, String value) throws Exception {
+        if (StringUtils.isEmpty(key)) {
             return;
         }
-        if (StringUtils.isEmpty(value)){
+        if (StringUtils.isEmpty(value)) {
             return;
         }
         Document doc = new Document(filePath);
         doc.getRange().replace(key, value, false, false);
-        saveWord(filePath,doc);
+        saveWord(filePath, doc);
     }
 
     /**
@@ -550,54 +548,52 @@ public class AsposeUtils {
     }
 
     /**
-     * 图片插入到word中
+     * 图片插入到表格中  简单处理
      *
      * @param imgPathList
      * @param colCount
      * @param builder
      * @throws Exception
      */
-    public static void imageInsertToWrod(List<String> imgPathList, Integer colCount, DocumentBuilder builder) throws Exception {
+    public static void imageInsertToWordSimple(List<String> imgPathList, Integer colCount, DocumentBuilder builder) throws Exception {
         if (CollectionUtils.isEmpty(imgPathList)) throw new RuntimeException("imgPathList empty");
         if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
         if (builder == null) throw new RuntimeException("builder empty");
-        Table table = builder.startTable();
-        int rowLength = imgPathList.size() % colCount > 0 ? (imgPathList.size() / colCount) + 1 : imgPathList.size() / colCount;//行数
-        Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
         int maxWidth = 435;
         int cellWidth = maxWidth / colCount;
-        int imageMaxWidth = cellWidth - (60 / colCount);
-        for (int j = 0; j < rowLength; j++) {
-            for (int k = 0; k < colCount; k++) {
+        int width = maxWidth / colCount;
+        int height = maxWidth / colCount;
+        if (imgPathList.size() == 1) {
+            height = 250;
+        }
+        //设置样式
+        builder.getCellFormat().getBorders().setColor(Color.white);
+        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+        builder.getCellFormat().setWidth(cellWidth);
+        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        builder.getRowFormat().setAlignment(RowAlignment.CENTER);
+        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        List<List<String>> splitsList = new ExcelImportUtils.SplitsList<String>().splitsList(imgPathList, colCount);
+        if (CollectionUtils.isEmpty(splitsList)) {
+            return;
+        }
+        builder.startTable();
+        for (List<String> paths : splitsList) {
+            if (CollectionUtils.isEmpty(paths)) {
+                continue;
+            }
+            for (String imgPath : paths) {
                 builder.insertCell();
-                index = j * colCount + k;
-                if (index < imgPathList.size()) {
-                    String imgPath = imgPathList.get(index);
-                    File file = new File(imgPath);
-                    BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
-                    int width = maxWidth / colCount;
-                    int height = maxWidth / colCount;
-                    if (imgPathList.size() == 1) {
-                        height = 250;
-                    }
-                    builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
-                            RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
-                    //设置样式
-                    builder.getCellFormat().getBorders().setColor(Color.white);
-                    builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
-                    builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
-                    builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
-                    builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-                    builder.getCellFormat().setWidth(cellWidth);
-                    builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-                    builder.getRowFormat().setAlignment(RowAlignment.CENTER);
-                    builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                }
+                builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
+                        RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
             }
             builder.endRow();
         }
-        //table.setBorders(0, 0, Color.white);
+        builder.endTable();
     }
 
     public static int getImageTargeHeight(int sourceWidth, int targeWidth, int sourceHeight) {
@@ -605,7 +601,7 @@ public class AsposeUtils {
         return targetHeight;
     }
 
-    public static void imageInsertToWrod2(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder, List<String> paths) throws Exception {
+    public static void imageInsertToWordHelp(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder, List<String> paths) throws Exception {
         if (CollectionUtils.isEmpty(imgList)) {
             imgList = Lists.newArrayList();
         }
@@ -616,78 +612,79 @@ public class AsposeUtils {
                 imgList.add(map);
             }
         }
-        imageInsertToWrod2A(imgList, colCount, builder);
+        imageInsertToWord(imgList, colCount, builder);
     }
 
-    private static void imageInsertToWrod2A(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder) throws Exception {
+    /**
+     * 图片插入到表格中
+     * 注意这里的list 中的map 一个map表示一个单元格
+     * @param imgList
+     * @param colCount 分组数量
+     * @param builder
+     * @throws Exception
+     */
+    public static void imageInsertToWord(List<Map<String, String>> imgList, Integer colCount, DocumentBuilder builder) throws Exception {
         if (CollectionUtils.isEmpty(imgList)) {
             return;
         }
         if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
         if (builder == null) throw new RuntimeException("builder empty");
-        Table table = builder.startTable();
-        int rowLength = (imgList.size() % colCount > 0 ? (imgList.size() / colCount) + 1 : imgList.size() / colCount) * 2;//行数
-        Integer index = 0;
         //根据不同列数设置 表格与图片的宽度 总宽度为560
         int maxWidth = 432;
         int cellWidth = maxWidth / colCount;
         int imageMaxWidth = cellWidth - (60 / colCount);
-        for (int j = 0; j < rowLength; j++) {
-            //插入图片
-            if (j % 2 == 0) {
-                for (int k = 0; k < colCount; k++) {
-                    builder.insertCell();
-                    index = j / 2 * colCount + k;
-                    if (index < imgList.size()) {
-                        Map<String, String> stringStringMap = imgList.get(index);
-                        String imgPath = "";
-                        for (String key : stringStringMap.keySet()) {
-                            imgPath = key;
-                        }
-                        File file = new File(imgPath);
-                        BufferedImage sourceImg = ImageIO.read(new FileInputStream(file));
-                        int targetWidth = sourceImg.getWidth() > imageMaxWidth ? imageMaxWidth : sourceImg.getWidth();
-                        int targeHeight = getImageTargeHeight(sourceImg.getWidth(), targetWidth, sourceImg.getHeight());
-                        if (imgList.size() == 1) {
-                            targeHeight = 250;
-                        }
-                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
-                                RelativeVerticalPosition.MARGIN, 0, maxWidth, 200, WrapType.INLINE);
-                        //设置样式
-                        builder.getCellFormat().getBorders().setColor(Color.white);
-                        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-                        builder.getCellFormat().setWidth(cellWidth);
-                        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-                        builder.getRowFormat().setAlignment(RowAlignment.CENTER);
-                        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                    }
-                }
-                builder.endRow();
-            }
-            //插入名称
-            if (j % 2 != 0) {
-                for (int k = 0; k < colCount; k++) {
-                    builder.insertCell();
-                    index = j / 2 * colCount + k;
-                    if (index < imgList.size()) {
-                        Map<String, String> stringStringMap = imgList.get(index);
-                        String imgName = "";
-                        for (String key : stringStringMap.keySet()) {
-                            imgName = stringStringMap.get(key);
-                        }
-                        //设置样式
-                        builder.write(imgName);
-                    }
-                }
-                builder.endRow();
-            }
-
+        //设置样式
+        builder.getCellFormat().getBorders().setColor(Color.white);
+        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+        builder.getCellFormat().setWidth(cellWidth);
+        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        builder.getRowFormat().setAlignment(RowAlignment.CENTER);
+        builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
+        List<List<Map<String, String>>> splitsList = new ExcelImportUtils.SplitsList<Map<String, String>>().splitsList(imgList, colCount);
+        if (CollectionUtils.isEmpty(splitsList)) {
+            return;
         }
-
-        // table.setBorders(0, 0, Color.white);
+        builder.startTable();
+        for (List<Map<String, String>> mapList : splitsList) {
+            if (CollectionUtils.isEmpty(mapList)) {
+                continue;
+            }
+            for (Map<String, String> map : mapList) {
+                if (map.isEmpty()) {
+                    continue;
+                }
+                builder.insertCell();
+                //对多张图片进行合并
+                Set<String> stringSet = map.keySet();
+                String imgPath = null;
+                try {
+                    imgPath = FileUtils.getCombinationOfhead(Lists.newArrayList(stringSet));
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                    continue;
+                }
+                if (StringUtils.isBlank(imgPath)) {
+                    continue;
+                }
+                builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 10,
+                        RelativeVerticalPosition.MARGIN, 0, maxWidth, 200, WrapType.INLINE);
+            }
+            builder.endRow();
+            for (Map<String, String> map : mapList) {
+                if (map.isEmpty()) {
+                    continue;
+                }
+                builder.insertCell();
+                //多个值进行合并
+                Collection<String> values = map.values();
+                String value = CollectionUtils.isNotEmpty(values) ? StringUtils.join(values, ",") : "";
+                builder.write(value);
+            }
+        }
+        builder.endTable();
     }
 
     public static void insertBreakValue(String path, String nextPage, String lastPage, List<String> stringList) throws Exception {
@@ -789,14 +786,14 @@ public class AsposeUtils {
     public static void writeWordTitle(DocumentBuilder builder, LinkedList<String> titles) throws Exception {
         if (CollectionUtils.isNotEmpty(titles)) {
             for (String title : titles) {
-                try{
+                try {
                     builder.insertCell();
-                    if (title == null){
-                        title = "" ;
+                    if (title == null) {
+                        title = "";
                     }
                     builder.write(title);
-                }catch (Exception e){
-                    logger.error(e.getMessage(),e);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
                 }
             }
             builder.endRow();
@@ -813,7 +810,7 @@ public class AsposeUtils {
                 cell.getCellFormat().setWidth(doubleLinkedList.get(i).doubleValue());
                 String s = linkedLists.get(i);
                 if (s == null) {
-                    s = "" ;
+                    s = "";
                 }
                 builder.write(s);
             }
@@ -821,7 +818,7 @@ public class AsposeUtils {
         }
     }
 
-    public static Cell insertCell(String name,DocumentBuilder builder)throws Exception{
+    public static Cell insertCell(String name, DocumentBuilder builder) throws Exception {
         Cell insertCell = builder.insertCell();
         builder.write(name);
         return insertCell;
@@ -899,7 +896,7 @@ public class AsposeUtils {
         }
     }
 
-    public static void setDefaultTable(DocumentBuilder documentBuilder){
+    public static void setDefaultTable(DocumentBuilder documentBuilder) {
         //设置具体宽度自动适应
         PreferredWidth preferredWidth = PreferredWidth.AUTO;
         documentBuilder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
@@ -1140,48 +1137,47 @@ public class AsposeUtils {
         }
     }
 
-    public static String getValue(BigDecimal bigDecimal){
-        if (bigDecimal == null){
-            return "" ;
+    public static String getValue(BigDecimal bigDecimal) {
+        if (bigDecimal == null) {
+            return "";
         }
-        return ArithmeticUtils.getBigDecimalString(bigDecimal) ;
+        return ArithmeticUtils.getBigDecimalString(bigDecimal);
     }
 
-    public static String getValue(Integer integer){
-        if (integer == null){
-            return "" ;
+    public static String getValue(Integer integer) {
+        if (integer == null) {
+            return "";
         }
-        return integer.toString() ;
+        return integer.toString();
     }
 
-    public static String getValue(Date date){
-        if (date == null){
-            return "" ;
+    public static String getValue(Date date) {
+        if (date == null) {
+            return "";
         }
-        return DateUtils.format(date,DateUtils.DATE_CHINESE_PATTERN) ;
+        return DateUtils.format(date, DateUtils.DATE_CHINESE_PATTERN);
     }
 
-    public static String getValue(String value){
-        if (StringUtils.isBlank(value)){
-            return "" ;
+    public static String getValue(String value) {
+        if (StringUtils.isBlank(value)) {
+            return "";
         }
-        return value ;
+        return value;
     }
 
-    public static String getValue(List<String> list){
-        if (CollectionUtils.isEmpty(list)){
-            return "" ;
+    public static String getValue(List<String> list) {
+        if (CollectionUtils.isEmpty(list)) {
+            return "";
         }
         Iterator<String> iterator = list.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             String s = iterator.next();
-            if (StringUtils.isBlank(s)){
+            if (StringUtils.isBlank(s)) {
                 iterator.remove();
             }
         }
-        return StringUtils.join(list,"-") ;
+        return StringUtils.join(list, "-");
     }
-
 
 
 }

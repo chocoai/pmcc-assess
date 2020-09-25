@@ -13,7 +13,6 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeReportFileItemDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.data.DataLocaleSurveyPictureVo;
-import com.copower.pmcc.assess.dto.output.project.declare.DeclareRecordVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReportFileItemVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -25,6 +24,7 @@ import com.copower.pmcc.assess.service.data.DataLocaleSurveyService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeReimbursementService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -43,6 +43,8 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -111,6 +113,9 @@ public class SchemeReportFileService extends BaseService {
     private SchemeReportFileService schemeReportFileService;
     @Autowired
     private SchemeJudgeObjectDao schemeJudgeObjectDao;
+    @Autowired
+    private SchemeReimbursementService schemeReimbursementService;
+    private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
 
     /**
@@ -586,7 +591,7 @@ public class SchemeReportFileService extends BaseService {
         //关联的土地证附件
         Integer landCertId = getLandCertId(declareRecordId);
         if (landCertId != null) {
-            List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(landCertId, null, "tb_declare_realty_land_cert");
+            List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(landCertId, null, FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class));
             if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
                 for (SysAttachmentDto item : attachmentDtoList) {
                     String path = baseAttachmentService.downloadFtpFileToLocal(item.getId());
@@ -705,18 +710,15 @@ public class SchemeReportFileService extends BaseService {
      * @param projectId
      * @return
      */
-    public Map<Integer, List<SysAttachmentDto>> getReimbursementFileList(Integer projectId) {
-        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordByProjectId(projectId);
-        if (CollectionUtils.isEmpty(declareRecordList)) return null;
+    public Map<Integer, List<SysAttachmentDto>> getReimbursementFileList(Integer projectId, Integer areaId) {
         Map<Integer, List<SysAttachmentDto>> map = Maps.newHashMap();
-        for (DeclareRecord declareRecord : declareRecordList) {
-            List<SchemeReimbursement> reimbursements = null;
-            if (CollectionUtils.isNotEmpty(reimbursements)) {
-                SchemeReimbursement schemeReimbursement = reimbursements.get(0);
-                List<SysAttachmentDto> dtos = baseAttachmentService.getByField_tableId(schemeReimbursement.getId(), null, FormatUtils.entityNameConvertToTableName(SchemeReimbursement.class));
-                if (CollectionUtils.isNotEmpty(dtos))
-                    map.put(declareRecord.getId(), dtos);
-            }
+        List<SchemeReimbursement> schemeReimbursementList = schemeReimbursementService.getSchemeReimbursementList(projectId, areaId);
+        if (CollectionUtils.isEmpty(schemeReimbursementList)) {
+            return map;
+        }
+        for (SchemeReimbursement schemeReimbursement:schemeReimbursementList){
+            List<SysAttachmentDto> dtos = baseAttachmentService.getByField_tableId(schemeReimbursement.getId(), null, FormatUtils.entityNameConvertToTableName(SchemeReimbursement.class));
+            map.put(schemeReimbursement.getId(), dtos);
         }
         return map;
     }
@@ -981,9 +983,9 @@ public class SchemeReportFileService extends BaseService {
             if (CollectionUtils.isNotEmpty(schemeReportFileItemList)) {
                 builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
                 if (schemeReportFileItemList.size() > 1) {
-                    generateCommonMethod.imageInsertToWrod3(schemeReportFileItemList, 3, builder);
+                    generateCommonMethod.InsertSchemeReportFileItemImageToWord(schemeReportFileItemList, 3, builder);
                 } else {
-                    generateCommonMethod.imageInsertToWrod3(schemeReportFileItemList, 1, builder);
+                    generateCommonMethod.InsertSchemeReportFileItemImageToWord(schemeReportFileItemList, 1, builder);
                 }
             }
             document.save(localPath);
@@ -1035,5 +1037,58 @@ public class SchemeReportFileService extends BaseService {
         vo.setTotal(page.getTotal());
         vo.setRows(CollectionUtils.isEmpty(schemeJudgeObjects) ? new ArrayList<SchemeJudgeObject>() : schemeJudgeObjects);
         return vo;
+    }
+
+
+    public Map<SchemeReportFileItem, List<String>> transform(List<SchemeReportFileItem> schemeReportFileList, SysAttachmentDto baseQuery) {
+        Map<SchemeReportFileItem, List<String>> map = new HashMap<>();
+        if (CollectionUtils.isEmpty(schemeReportFileList)) {
+            return map;
+        }
+        Integer tableId = baseQuery.getTableId();
+        String tableName = baseQuery.getTableName();
+        Map<Integer,List<String>> listMap = new HashMap<>() ;
+        Iterator<SchemeReportFileItem> iterator = schemeReportFileList.iterator();
+        while (iterator.hasNext()) {
+            SchemeReportFileItem fileItem = iterator.next();
+            if (tableId == null) {
+                baseQuery.setTableId(fileItem.getId());
+            }
+            if (StringUtils.isBlank(tableName)) {
+                baseQuery.setTableName(FormatUtils.entityNameConvertToTableName(SchemeReportFileItem.class));
+            }
+            List<SysAttachmentDto> serviceAttachmentList = baseAttachmentService.getAttachmentList(baseQuery);
+            List<String> paths = new ArrayList<>();
+            if (CollectionUtils.isNotEmpty(serviceAttachmentList)) {
+                for (SysAttachmentDto sysAttachmentDto:serviceAttachmentList){
+                    String path = null;
+                    try {
+                        path = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto);
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                    if (StringUtils.isBlank(path)) {
+                        continue;
+                    }
+                    if (FileUtils.checkImgSuffix(path)) {
+                        paths.add(path);
+                    }
+                }
+            }
+            listMap.put(fileItem.getId(),paths) ;
+        }
+        if (!listMap.isEmpty()) {
+            Iterator<Map.Entry<Integer, List<String>>> entryIterator = listMap.entrySet().iterator();
+            while (entryIterator.hasNext()) {
+                Map.Entry<Integer, List<String>> entry = entryIterator.next();
+                List<SchemeReportFileItem> filter = LangUtils.filter(schemeReportFileList, obj -> obj.getId().equals(entry.getKey()));
+                if (CollectionUtils.isEmpty(filter)) {
+                    continue;
+                }
+                SchemeReportFileItem fileItem = filter.get(0);
+                map.put(fileItem,entry.getValue()) ;
+            }
+        }
+        return map;
     }
 }

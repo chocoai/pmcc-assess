@@ -1,10 +1,9 @@
 package com.copower.pmcc.assess.service.project.generate;
 
 import com.aspose.words.*;
-import com.copower.pmcc.assess.common.ArithmeticUtils;
+import com.copower.pmcc.assess.common.*;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.FileUtils;
-import com.copower.pmcc.assess.common.StreamUtils;
 import com.copower.pmcc.assess.common.enums.basic.BasicFormClassifyEnum;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
@@ -33,6 +32,8 @@ import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -90,6 +91,7 @@ public class GenerateCommonMethod {
     @Autowired
     private GenerateReportGroupService generateReportGroupService;
     public static final String SchemeJudgeObjectName = "委估对象";
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
 
     //房地产总价
@@ -405,7 +407,7 @@ public class GenerateCommonMethod {
         }
         List<String> stringList = FormatUtils.transformString2List(schemeJudgeObject.getNumber(), ",");
         //单独一个估价对象  拆分情况
-        if (stringList.size() == 1  && schemeJudgeObject.getSplitNumber() != null) {
+        if (stringList.size() == 1 && schemeJudgeObject.getSplitNumber() != null) {
             stringList.clear();
             stringList.add(String.join(spliter, schemeJudgeObject.getNumber(), schemeJudgeObject.getSplitNumber().toString()));
         }
@@ -432,8 +434,8 @@ public class GenerateCommonMethod {
                 if (i == 0) {
                     if (NumberUtils.isNumber(string2List.get(0))) {
                         splits.add(convertNumber(Lists.newArrayList(Integer.parseInt(string2List.get(0)))));
-                    }else {
-                        splits.add(string2List.get(0)) ;
+                    } else {
+                        splits.add(string2List.get(0));
                     }
                 } else {
                     splits.add(string2List.get(i));
@@ -1405,7 +1407,7 @@ public class GenerateCommonMethod {
         if (schemeJudgeObject.getDeclareRecordId() == null) {
             return null;
         }
-        return  basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+        return basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
     }
 
     public BasicApplyBatch getBasicApplyBatchBySchemeJudgeObject(SchemeJudgeObject schemeJudgeObject) {
@@ -1475,164 +1477,91 @@ public class GenerateCommonMethod {
         return String.format("%s%d%d", StringUtils.join(fieldsName, "_"), reportGroup.getAreaGroupId(), reportGroup.getId());
     }
 
-    //拼接2-4张图片
-    public String getCombinationOfhead(List<String> paths) throws IOException {
-        if (paths.size() == 1) return paths.get(0);
-        List<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
-        // 压缩图片所有的图片生成尺寸 250x250
-        for (int i = 0; i < paths.size(); i++) {
-            bufferedImages.add(resize2(paths.get(i), 250, 247, true));
-        }
-        int width = 514; // 这是画板的宽高
-        int height = 510; // 这是画板的高度
-        BufferedImage outImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        // 生成画布
-        Graphics g = outImage.getGraphics();
-        Graphics2D g2d = (Graphics2D) g;
-        // 设置背景色 白色
-        g2d.setBackground(new Color(255, 255, 255));
-        // 通过使用当前绘图表面的背景色进行填充来清除指定的矩形。
-        g2d.clearRect(0, 0, width, height);
-        // 开始拼凑 根据图片的数量判断该生成那种样式的组合头像目前为4中
-        int j = 1;
-        for (int i = 1; i <= bufferedImages.size(); i++) {
-            if (bufferedImages.size() <= 4) {
-                if (i <= 2) {
-                    g2d.drawImage(bufferedImages.get(i - 1), 250 * i + 10 * i
-                            - 260, 0, null);
-                } else {
-                    g2d.drawImage(bufferedImages.get(i - 1), 250 * j + 10 * j
-                            - 260, 260, null);
-                    j++;
-                }
-            }
-        }
-        String replace = UUID.randomUUID().toString().replace("-", "");
-        String strDayTempDirName = DateUtils.formatNowToYMD();
-        String basePath = "/temporary";
-        String localDirPath = this.servletContext.getRealPath(basePath + "/" + strDayTempDirName);
-        String localFileName = String.format("%s.%s", replace, "jpg");
-        String localFullPath = localDirPath + File.separator + localFileName;
-        ImageIO.write(outImage, "JPG", new File(localFullPath));
-        return localFullPath;
-    }
-
     /**
-     * 图片缩放
-     *
-     * @param filePath 图片路径
-     * @param height   高度
-     * @param width    宽度
-     * @param bb       比例不对时是否需要补白
+     * 实况照片 插入 以表格方式插入
+     * 以前方法名称叫imageInsertToWrod3
+     * zch 重新构造 目的是不能因为某张图片 无效而影响到报告并且当单张图片出问题其余图片可以正常显示
+     * 插入思路是  先插入相同列的图片，然后再插入相同列的名称  这样就做到了图片和列相同  使得名称看起来在图片下面  起到美观作用
+     * @param schemeReportFileList
+     * @param colCount
+     * @param builder
+     * @throws Exception
      */
-    public static BufferedImage resize2(String filePath, int height, int width,
-                                        boolean bb) {
-        try {
-            File f = new File(filePath);
-            BufferedImage bi = ImageIO.read(f);
-            Image itemp = bi.getScaledInstance(width, height,
-                    Image.SCALE_SMOOTH);
-            if (bb) {
-                BufferedImage image = new BufferedImage(width, height,
-                        BufferedImage.TYPE_INT_RGB);
-                Graphics2D g = image.createGraphics();
-                g.setColor(Color.white);
-                g.fillRect(0, 0, width, height);
-                if (width == itemp.getWidth(null))
-                    g.drawImage(itemp, 0, (height - itemp.getHeight(null)) / 2,
-                            itemp.getWidth(null), itemp.getHeight(null),
-                            Color.white, null);
-                else
-                    g.drawImage(itemp, (width - itemp.getWidth(null)) / 2, 0,
-                            itemp.getWidth(null), itemp.getHeight(null),
-                            Color.white, null);
-                g.dispose();
-                itemp = image;
-            }
-            return (BufferedImage) itemp;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void imageInsertToWrod3(List<SchemeReportFileItem> schemeReportFileList, Integer colCount, DocumentBuilder builder) throws Exception {
-        if (CollectionUtils.isEmpty(schemeReportFileList)) throw new RuntimeException("imgPathList empty");
-        if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
-        if (builder == null) throw new RuntimeException("builder empty");
-        Table table = builder.startTable();
-        int rowLength = (schemeReportFileList.size() % colCount > 0 ? (schemeReportFileList.size() / colCount) + 1 : schemeReportFileList.size() / colCount) * 2;//行数
-        Integer index = 0;
+    public void InsertSchemeReportFileItemImageToWord(List<SchemeReportFileItem> schemeReportFileList, Integer colCount, DocumentBuilder builder) throws Exception {
         //根据不同列数设置 表格与图片的宽度 总宽度为560
         int maxWidth = 325;
         int cellWidth = maxWidth / colCount;
-        for (int j = 0; j < rowLength; j++) {
-            //插入图片
-            if (j % 2 == 0) {
-                for (int k = 0; k < colCount; k++) {
-                    index = j / 2 * colCount + k;
-                    if (index < schemeReportFileList.size()) {
-                        SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
-                        List<SysAttachmentDto> attachmentList = schemeReportFileService.getAttachmentListBySchemeReportFile(schemeReportFileItem);
-                        if (CollectionUtils.isEmpty(attachmentList)) continue;
-                        builder.insertCell();
-                        String imgPath = "";
-                        List<String> paths = Lists.newArrayList();
-                        for (SysAttachmentDto item : attachmentList) {
-                            String itemImgPath = baseAttachmentService.downloadFtpFileToLocal(item.getId());
-                            if (StringUtils.isNotEmpty(itemImgPath) && FileUtils.checkImgSuffix(itemImgPath)) {
-                                paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
-                            }
-                        }
-                        if (paths.size() == 0) continue;
-                        imgPath = this.getCombinationOfhead(paths);
-
-                        int width = maxWidth / colCount;
-                        int height = maxWidth / colCount;
-                        if (schemeReportFileList.size() == 1) {
-                            height = 145;
-                        }
-                        builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 0,
-                                RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
-                        //设置样式
-                        builder.getCellFormat().getBorders().setColor(Color.white);
-                        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
-                        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
-                        builder.getCellFormat().setWidth(cellWidth);
-                        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
-//                        builder.getRowFormat().setAlignment(RowAlignment.LEFT);
-                        // builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
-                    }
-                }
-                builder.endRow();
-            }
-            //插入名称
-            if (j % 2 != 0) {
-                for (int k = 0; k < colCount; k++) {
-                    index = j / 2 * colCount + k;
-                    if (index < schemeReportFileList.size()) {
-                        SchemeReportFileItem schemeReportFileItem = schemeReportFileList.get(index);
-                        List<SysAttachmentDto> attachmentList = schemeReportFileService.getAttachmentListBySchemeReportFile(schemeReportFileItem);
-                        if (CollectionUtils.isEmpty(attachmentList)) continue;
-                        List<String> paths = Lists.newArrayList();
-                        for (SysAttachmentDto item : attachmentList) {
-                            String itemImgPath = baseAttachmentService.downloadFtpFileToLocal(item.getId());
-                            if (StringUtils.isNotEmpty(itemImgPath) && FileUtils.checkImgSuffix(itemImgPath)) {
-                                paths.add(baseAttachmentService.downloadFtpFileToLocal(item.getId()));
-                            }
-                        }
-                        if (paths.size() == 0) continue;
-                        builder.insertCell();
-                        builder.getFont().setName("宋体");
-                        builder.getFont().setSize(10.5);
-                        builder.write(schemeReportFileItem.getFileName());
-                    }
-                }
-                builder.endRow();
-            }
+        int width = maxWidth / colCount;
+        int height = maxWidth / colCount;
+        if (schemeReportFileList.size() == 1) {
+            height = 145;
         }
+        if (CollectionUtils.isEmpty(schemeReportFileList)) throw new RuntimeException("imgPathList empty");
+        if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
+        if (builder == null) throw new RuntimeException("builder empty");
+        SysAttachmentDto baseQuery = new SysAttachmentDto() ;
+        baseQuery.setFieldsName("live_situation_select_supplement");
+        baseQuery.setTableName(FormatUtils.entityNameConvertToTableName(SchemeJudgeObject.class));
+        Map<SchemeReportFileItem, List<String>> map = schemeReportFileService.transform(schemeReportFileList, baseQuery);
+        if (map.isEmpty()) {
+            try {
+                throw new Exception("没有正确的获取到图片");
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
+            return;
+        }
+        //设置样式
+        builder.getFont().setName("宋体");
+        builder.getFont().setSize(10.5);
+        builder.getCellFormat().getBorders().setColor(Color.white);
+        builder.getCellFormat().getBorders().getLeft().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getRight().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getTop().setLineWidth(1.0);
+        builder.getCellFormat().getBorders().getBottom().setLineWidth(1.0);
+        builder.getCellFormat().setWidth(cellWidth);
+        builder.getCellFormat().setVerticalMerge(CellVerticalAlignment.CENTER);
+        Set<SchemeReportFileItem> itemSet = map.keySet();
+        List<List<SchemeReportFileItem>> splitsList = new ExcelImportUtils.SplitsList<SchemeReportFileItem>().splitsList(Lists.newArrayList(itemSet), colCount);
+        builder.startTable();
+        for (List<SchemeReportFileItem>  list:splitsList){
+            if (CollectionUtils.isEmpty(list)) {
+                continue;
+            }
+            List<String> names = new ArrayList<>(list.size()) ;
+            //传入图片
+            for (SchemeReportFileItem schemeReportFileItem:list){
+                builder.insertCell();
+                List<Map.Entry<SchemeReportFileItem, List<String>>> filter = LangUtils.filter(map.entrySet(), obj -> obj.getKey().getId().equals(schemeReportFileItem.getId()));
+                if (CollectionUtils.isEmpty(filter)) {
+                    continue;
+                }
+                List<String> paths = filter.get(0).getValue();//刚好一个所以取0
+                String  imgPath = null;
+                try {
+                    imgPath = FileUtils.getCombinationOfhead(paths);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(),e);
+                    continue;
+                }
+                if (StringUtils.isNotBlank(imgPath)) {
+                    builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 0,
+                            RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
+                }
+                names.add(schemeReportFileItem.getFileName()) ;
+            }
+            builder.endRow();
+            //在图片下面一行继续插入一行作为显示图片的名称
+            if (CollectionUtils.isEmpty(names)) {
+                continue;
+            }
+            for (String name:names) {
+                builder.insertCell();
+                builder.writeln(AsposeUtils.getValue(name));
+            }
+            builder.endRow();
+        }
+        builder.endTable();
     }
 
 }

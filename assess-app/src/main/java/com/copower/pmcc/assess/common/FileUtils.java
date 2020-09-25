@@ -1,5 +1,7 @@
 package com.copower.pmcc.assess.common;
 
+import com.copower.pmcc.erp.common.utils.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -11,9 +13,12 @@ import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -87,6 +92,91 @@ public class FileUtils {
         out.close();
     }
 
+    //拼接2-4张图片
+    public static String getCombinationOfhead(List<String> paths) throws IOException {
+        if (paths.size() == 1) return paths.get(0);
+        List<BufferedImage> bufferedImages = new ArrayList<BufferedImage>();
+        // 压缩图片所有的图片生成尺寸 250x250
+        for (int i = 0; i < paths.size(); i++) {
+            bufferedImages.add(FileUtils.resize(paths.get(i), 250, 247, true));
+        }
+        int width = 514; // 这是画板的宽高
+        int height = 510; // 这是画板的高度
+        BufferedImage outImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        // 生成画布
+        Graphics g = outImage.getGraphics();
+        Graphics2D g2d = (Graphics2D) g;
+        // 设置背景色 白色
+        g2d.setBackground(new Color(255, 255, 255));
+        // 通过使用当前绘图表面的背景色进行填充来清除指定的矩形。
+        g2d.clearRect(0, 0, width, height);
+        // 开始拼凑 根据图片的数量判断该生成那种样式的组合头像目前为4中
+        int j = 1;
+        for (int i = 1; i <= bufferedImages.size(); i++) {
+            if (bufferedImages.size() <= 4) {
+                if (i <= 2) {
+                    g2d.drawImage(bufferedImages.get(i - 1), 250 * i + 10 * i
+                            - 260, 0, null);
+                } else {
+                    g2d.drawImage(bufferedImages.get(i - 1), 250 * j + 10 * j
+                            - 260, 260, null);
+                    j++;
+                }
+            }
+        }
+        String replace = UUID.randomUUID().toString().replace("-", "");
+        String localFileName = String.format("%s.%s", replace, "jpg");
+        String strDayTempDirName = DateUtils.formatNowToYMD();
+        String localDirPath = String.join(File.separator, org.apache.commons.io.FileUtils.getTempDirectoryPath() ,strDayTempDirName);
+        String localFullPath = localDirPath + File.separator + localFileName;
+        File file = new File(localDirPath) ;
+        if (!file.exists()){
+            file.mkdirs();
+        }
+        ImageIO.write(outImage, "jpg", new File(localFullPath));
+        return localFullPath;
+    }
+
+
+    /**
+     * 图片缩放
+     *
+     * @param filePath 图片路径
+     * @param height   高度
+     * @param width    宽度
+     * @param bb       比例不对时是否需要补白
+     */
+    public static BufferedImage resize(String filePath, int height, int width,
+                                        boolean bb) {
+        try {
+            File f = new File(filePath);
+            BufferedImage bi = ImageIO.read(f);
+            Image itemp = bi.getScaledInstance(width, height,
+                    Image.SCALE_SMOOTH);
+            if (bb) {
+                BufferedImage image = new BufferedImage(width, height,
+                        BufferedImage.TYPE_INT_RGB);
+                Graphics2D g = image.createGraphics();
+                g.setColor(Color.white);
+                g.fillRect(0, 0, width, height);
+                if (width == itemp.getWidth(null))
+                    g.drawImage(itemp, 0, (height - itemp.getHeight(null)) / 2,
+                            itemp.getWidth(null), itemp.getHeight(null),
+                            Color.white, null);
+                else
+                    g.drawImage(itemp, (width - itemp.getWidth(null)) / 2, 0,
+                            itemp.getWidth(null), itemp.getHeight(null),
+                            Color.white, null);
+                g.dispose();
+                itemp = image;
+            }
+            return (BufferedImage) itemp;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     /**
      * 注意： 该方法适用的图片格式为 bmp/gif/jpg/png
@@ -95,17 +185,38 @@ public class FileUtils {
      * @return
      */
     public static boolean checkImgSuffix(String path) {
-        File file = new File(path);
+        if (StringUtils.isBlank(path)){
+            return false;
+        }
+        FileInputStream fi = null;
         try {
+            fi = new FileInputStream(new File(path));
+            BufferedImage sourceImg = ImageIO.read(fi);//判断图片是否损坏
+            int picWidth = sourceImg.getWidth(); //确保图片是正确的（正确的图片可以取得宽度）
             // 通过ImageReader来解码这个file并返回一个BufferedImage对象
             // 如果找不到合适的ImageReader则会返回null，我们可以认为这不是图片文件
             // 或者在解析过程中报错，也返回false
-            Image image = ImageIO.read(file);
-            return image != null;
-        } catch (IOException ex) {
+        } catch (Exception e) {
+            if (fi != null) {
+                try {
+                    fi.close();
+                } catch (IOException e1) {
+
+                }
+            }
             return false;
+        } finally {
+            if (fi != null) {
+                try {
+                    fi.close();
+                } catch (IOException e2) {
+
+                }
+            }
         }
+        return true;
     }
+
 
     /**
      * @param base64String base64编码字符串

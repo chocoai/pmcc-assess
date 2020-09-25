@@ -15,6 +15,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.*;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,6 +46,7 @@ public class BaseAttachmentService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
+    private final Logger logger = LoggerFactory.getLogger(getClass()) ;
 
     private final static String TEMP_UPLOAD_PATH = "Temp";//临时文件存放目录
 
@@ -309,12 +312,20 @@ public class BaseAttachmentService {
      */
     public String downloadFtpFileToLocal(Integer attachmentId) throws Exception {
         SysAttachmentDto attachmentDto = erpRpcAttachmentService.getAttachmentDtoById(attachmentId);
-        try {
-            String local = ftpUtilsExtense.downloadFileToLocal(attachmentDto);
-            return local;
-        }catch (Exception e){
+        return downloadFtpFileToLocal(attachmentDto);
+    }
+
+    public String downloadFtpFileToLocal(SysAttachmentDto attachmentDto) throws Exception {
+        if (attachmentDto == null) {
             return null;
         }
+        String local = null;
+        try {
+             local = ftpUtilsExtense.downloadFileToLocal(attachmentDto);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
+        }
+        return local;
     }
 
     /**
@@ -430,7 +441,11 @@ public class BaseAttachmentService {
         //清除今天以前的临时文件
         FileUtils.deleteDir(servletContext.getRealPath(basePath), Lists.newArrayList(DateUtils.formatNowToYMD()));
         FileUtils.folderMake(localDirPath);
-        ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFileName(), sysAttachment.getFilePath(), localFileName, localDirPath);
+        try {
+            ftpUtilsExtense.downloadFileToLocal(sysAttachment.getFtpFileName(), sysAttachment.getFilePath(), localFileName, localDirPath);
+        } catch (Exception e) {
+            return  null;
+        }
         Stream<String> stringStream = Arrays.stream(new String[]{basePath, DateUtils.formatNowToYMD(), localFileName});
         return StringUtils.join(stringStream.collect(Collectors.toList()), File.separator);
     }
