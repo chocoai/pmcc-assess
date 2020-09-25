@@ -5,6 +5,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DeclareRecord;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
+import com.copower.pmcc.assess.dto.output.basic.SurveyAssetInventoryVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoGroupService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
@@ -106,8 +107,8 @@ public class SurveyAssetInfoGroupController {
     }
 
 
-    @GetMapping(value = "/view/{groupId}", name = "申请或者修改")
-    public ModelAndView applyView(@PathVariable(name = "groupId", required = true) Integer groupId) {
+    @GetMapping(value = "/inventory/{groupId}", name = "分组清查")
+    public ModelAndView inventory(@PathVariable(name = "groupId", required = true) Integer groupId) {
         ModelAndView modelAndView = commonService.baseView("/project/stageSurvey/inventory/groupAssetInventoryIndex");
         SurveyAssetInfoGroup assetInfoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(groupId);
         if (assetInfoGroup != null) {
@@ -115,14 +116,30 @@ public class SurveyAssetInfoGroupController {
             modelAndView.addObject("taxArrearsEntity", surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getTaxArrearsId()));
             modelAndView.addObject("damageEntity", surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getDamageId()));
             modelAndView.addObject("transferEntity", surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getTransferId()));
+            modelAndView.addObject("assetInfoGroup",assetInfoGroup);
+        }
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/inventoryDetail/{groupId}", name = "分组清查详情")
+    public ModelAndView inventoryDetail(@PathVariable(name = "groupId", required = true) Integer groupId) {
+        ModelAndView modelAndView = commonService.baseView("/project/stageSurvey/inventory/groupAssetInventoryDetail");
+        SurveyAssetInfoGroup assetInfoGroup = surveyAssetInfoGroupService.getSurveyAssetInfoGroupById(groupId);
+        if (assetInfoGroup != null) {
+            SurveyAssetInventoryVo viewSpiltEntityVo = surveyAssetInventoryService.getSurveyAssetInventoryVo(surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getViewSpiltId()));
+            modelAndView.addObject("viewSpiltEntity", viewSpiltEntityVo);
+            modelAndView.addObject("taxArrearsEntity", surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getTaxArrearsId()));
+            modelAndView.addObject("damageEntity", surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getDamageId()));
+            modelAndView.addObject("transferEntity", surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoGroup.getTransferId()));
+            modelAndView.addObject("assetInfoGroup",assetInfoGroup);
         }
         return modelAndView;
     }
 
     @PostMapping(value = "/saveGroupInventoryData", name = "保存分组的清查信息")
-    public HttpResult saveGroupInventoryData(String formData) {
+    public HttpResult saveGroupInventoryData(String formData,Integer groupId) {
         try {
-            surveyAssetInfoGroupService.saveGroupInventoryData(formData);
+            surveyAssetInfoGroupService.saveGroupInventoryData(formData,groupId);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, String.join("", STRING, e.getMessage()));

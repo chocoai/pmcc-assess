@@ -177,7 +177,9 @@
                                                        class="form-control input-full">
                                             </div>
                                             <div class="col-sm-2">
-                                                <button type="button" class="btn btn-success btn-sm" onclick=" projectStagePlan.addPhaseName(this);">＋</button>
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick=" projectStagePlan.addPhaseName(this);">＋
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -314,7 +316,9 @@
                            class="form-control input-full">
                 </div>
                 <div class="col-sm-2">
-                    <button type="button" class="btn btn-warning btn-sm" onclick="$(this).closest('.form-group').remove();">－</button>
+                    <button type="button" class="btn btn-warning btn-sm"
+                            onclick="$(this).closest('.form-group').remove();">－
+                    </button>
                 </div>
             </div>
         </div>
@@ -406,7 +410,7 @@
             cols.push({
                 field: 'opt', title: '操作', width: '7%', formatter: function (value, row, index) {
                     var str = "";
-                    if (row.canReplay) {
+                    if (row.canReplay && !row.excuteUrl) {
                         str += "<button type='button' onclick='projectStagePlan.replyTask(" + row.id + ")' style='margin-left: 5px;' title='重启' class='btn btn-xs btn-primary'  ><i class='fa fa-reply fa-white'></i></button>";
                     }
                     if (row.excuteUrl) {
@@ -484,7 +488,7 @@
                         projectStagePlan.stageTable.bootstrapTable('refresh');
 
                     } else {
-                        AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                        AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                     }
                 }
             })
@@ -544,7 +548,7 @@
         <%--}--%>
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyInfo('提示',"还未选择相关任务");
+            notifyInfo('提示', "还未选择相关任务");
         }
         var idArray = [];
         $.each(rows, function (i, item) {
@@ -595,7 +599,7 @@
                 $(_this).val(data.name);
                 $(_this).closest("form").find("[name='executeUserAccount']").val(data.account);
             } else {
-                notifyInfo("提示","还未选择任何人员");
+                notifyInfo("提示", "还未选择任何人员");
             }
         });
     };
@@ -638,7 +642,7 @@
                 }
             },
             error: function (result) {
-                AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
             }
         });
     };
@@ -654,7 +658,7 @@
         <%--}--%>
         var rows = projectStagePlan.stageTable.bootstrapTable('getSelections');
         if (!rows || rows.length <= 0) {
-            notifyInfo('提示',"还未选择相关任务");
+            notifyInfo('提示', "还未选择相关任务");
             return false;
         }
         var idArray = [];
@@ -679,7 +683,7 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result.errmsg);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);
                 }
             });
 

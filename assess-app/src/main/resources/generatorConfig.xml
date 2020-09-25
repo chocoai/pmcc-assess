@@ -43,7 +43,10 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_md_market_compare" domainObjectName="MdMarketCompare" >
+        <table tableName="tb_survey_asset_info_group" domainObjectName="SurveyAssetInfoGroup" >
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
+        <table tableName="tb_survey_asset_inventory_content" domainObjectName="SurveyAssetInventoryContent" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

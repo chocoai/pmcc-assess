@@ -246,11 +246,7 @@ public class SurveyAssetInfoService implements ProjectPhaseInterface {
                 if (infoGroup.getInventoryId() == null) {
                     continue;
                 }
-                List<Integer> integers = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(infoGroup.getId());
-                if (CollectionUtils.isEmpty(integers)) {
-                    continue;
-                }
-                List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemByIds(integers);
+                List<SurveyAssetInfoItem> assetInfoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemsByGroupId(infoGroup.getId());
                 if (CollectionUtils.isEmpty(assetInfoItems)) {
                     continue;
                 }

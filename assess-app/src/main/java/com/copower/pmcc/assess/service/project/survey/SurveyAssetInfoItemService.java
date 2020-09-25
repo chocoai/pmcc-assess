@@ -220,23 +220,21 @@ public class SurveyAssetInfoItemService {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(oo, declareIds);
     }
 
-    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList( List<Integer> declareIds) {
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemLikeList(List<Integer> declareIds) {
         return surveyAssetInfoItemDao.getSurveyAssetInfoItemLikeList(null, declareIds);
     }
 
 
-    public List<Integer> getSurveyAssetInfoItemIdsByGroupId(Integer groupId) {
+    public List<SurveyAssetInfoItem> getSurveyAssetInfoItemsByGroupId(Integer groupId) {
+        if (groupId == null) return null;
         SurveyAssetInfoItem query = new SurveyAssetInfoItem();
         query.setGroupId(groupId);
-        List<Integer> integerList = new ArrayList<>();
         List<SurveyAssetInfoItem> infoItems = getSurveyAssetInfoItemListByQuery(query);
-        if (CollectionUtils.isNotEmpty(infoItems)) {
-            integerList.addAll(infoItems.stream().map(oo -> oo.getId()).collect(Collectors.toSet()));
-        }
-        return integerList;
+        return infoItems;
     }
 
     public List<SurveyAssetInfoItem> getItemsByAssetInfoId(Integer assetInfoId) {
+        if (assetInfoId == null) return null;
         SurveyAssetInfoItem query = new SurveyAssetInfoItem();
         query.setAssetInfoId(assetInfoId);
         List<SurveyAssetInfoItem> infoItems = getSurveyAssetInfoItemListByQuery(query);
@@ -289,35 +287,25 @@ public class SurveyAssetInfoItemService {
      * @param assetInfoItemIds
      */
     public void checkUniformityBatch(String assetInfoItemIds) {
-        //1.先确定该项是否已做过清查，如果没有做过清查，先初始化清查必要数据
-        //2.找到需清查的数据项依次判断是否为一致
         if (StringUtils.isBlank(assetInfoItemIds)) return;
         List<Integer> list = FormatUtils.transformString2Integer(assetInfoItemIds);
         for (Integer integer : list) {
+            //1.先清除数据再，重新生成对应的数据
+            surveyAssetInventoryContentService.deleteInventoryContentByItemId(integer);
             try {
                 SurveyAssetInfoItem assetInfoItem = getSurveyAssetInfoItemById(integer);
-                SurveyAssetInventory targetInventory = null;
-                List<SurveyAssetInventoryContent> inventoryContents = null;
-                if (assetInfoItem.getInventoryId() == null) {
-                    targetInventory = new SurveyAssetInventory();
-                    SurveyAssetInfo surveyAssetInfo = surveyAssetInfoService.getSurveyAssetInfoById(assetInfoItem.getAssetInfoId());
-                    targetInventory.setProjectId(surveyAssetInfo.getProjectId());
-                    targetInventory.setPlanDetailId(surveyAssetInfo.getPlanDetailId());
-                    targetInventory.setDeclareRecordId(assetInfoItem.getDeclareId());
-                    targetInventory.setCreator(commonService.thisUserAccount());
-                    surveyAssetInventoryService.addSurveyAssetInventory(targetInventory);
-                } else {
-                    targetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(assetInfoItem.getInventoryId());
+                List<SurveyAssetInventoryContent> inventoryContents = surveyAssetInventoryContentService.initContentByInfoItem(assetInfoItem);
+                if (CollectionUtils.isNotEmpty(inventoryContents)) {
+                    Boolean isAllUniformity = true;
+                    for (SurveyAssetInventoryContent inventoryContent : inventoryContents) {
+                        if (!"一致".equals(inventoryContent.getAreConsistent())) {
+                            isAllUniformity = false;
+                            continue;
+                        }
+                    }
+                    assetInfoItem.setBisFinishUniformity(isAllUniformity);
+                    updateSurveyAssetInfoItem(assetInfoItem, false);
                 }
-                inventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(targetInventory.getId());
-                if (CollectionUtils.isEmpty(inventoryContents)) {
-                    surveyAssetInventoryContentService.initContentByInventoryId(assetInfoItem, targetInventory.getId());
-                }else {
-                    surveyAssetInventoryContentService.setContentInitialValue(targetInventory.getId(),inventoryContents);
-                }
-                assetInfoItem.setBisFinishUniformity(true);
-                assetInfoItem.setInventoryId(targetInventory.getId());
-                updateSurveyAssetInfoItem(assetInfoItem, false);
             } catch (Exception e) {
                 baseService.writeExceptionInfo(e);
             }

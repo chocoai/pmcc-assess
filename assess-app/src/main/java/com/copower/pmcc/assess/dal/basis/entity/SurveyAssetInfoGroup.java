@@ -23,6 +23,8 @@ public class SurveyAssetInfoGroup {
 
     private String status;
 
+    private String remark;
+
     private String creator;
 
     private Date gmtCreated;
@@ -107,6 +109,14 @@ public class SurveyAssetInfoGroup {
 
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark == null ? null : remark.trim();
     }
 
     public String getCreator() {

@@ -119,7 +119,7 @@ public class SurveyAssetInventoryService extends BaseService {
         targetInventory.setDeclareRecordId(assetInfoItem.getDeclareId());
         targetInventory.setCreator(commonService.thisUserAccount());
         addSurveyAssetInventory(targetInventory);
-        surveyAssetInventoryContentService.initContentByInventoryId(assetInfoItem, targetInventory.getId());
+        surveyAssetInventoryContentService.initContentByInfoItem(assetInfoItem);
 
         assetInfoItem.setInventoryId(targetInventory.getId());
         surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem, false);

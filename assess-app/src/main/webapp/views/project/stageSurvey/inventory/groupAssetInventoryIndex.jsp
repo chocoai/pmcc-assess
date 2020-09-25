@@ -166,178 +166,6 @@
                             </div>
                         </div>
                     </c:if>
-                    <!-- 一致性清查 -->
-                    <c:if test="${not empty inventoryContentList}">
-                        <div class="col-md-12">
-                            <div class="card full-height">
-                                <div class="card-header collapse-link">
-                                    <div class="card-head-row">
-                                        <div class="card-title">
-                                            清查内容
-                                        </div>
-                                        <div class="card-tools">
-                                            <button class="btn  btn-link btn-primary btn-xs"><span
-                                                    class="fa fa-angle-down"></span>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <form id="frm_asset_inventory_content" class="form-horizontal">
-                                        <table id="tb_surveyList">
-                                            <thead>
-                                            <tr>
-                                                <th style="width: 6%">是否一致</th>
-                                                <th style="width: 10%">一致性内容</th>
-                                                <th style="width: 10%">登记<span
-                                                        style="color:red;font-size:10px;">(没有登记信息则填无)</span></th>
-                                                <th style="width: 10%">实际</th>
-                                                <th style="width: 10%">差异原因</th>
-                                                <th style="width: 10%">证明文件</th>
-                                                <th style="width: 7%">证明文件附件</th>
-                                                <th style="width: 7%">证明人</th>
-                                                <th style="width: 8%">调查时间</th>
-                                                <th style="width: 8%">确认一致</th>
-                                                <th style="width: 6%">操作</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c:forEach items="${surveyAssetInventoryContentVos}" var="item"
-                                                       varStatus="s">
-                                                <tr>
-                                                    <td>
-                                                        <div class="x-valid ">
-                                                            <div class="form-check" style="justify-content:left">
-                                                                <label class="form-check-label">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                           id="areConsistent${item.id}"
-                                                                           onclick="survey.areConsistentEvent(this) ;"
-                                                                           name="areConsistent${item.id}"
-                                                                           value="一致">
-                                                                    <span class="form-check-sign">一致</span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <input type="hidden" name="id" value="${item.id}">
-                                                    <td>${item.inventoryContentName}</td>
-                                                    <td>
-                                                        <div class="x-valid">
-                                                            <input type="text" data-rule-maxlength="50" placeholder="登记"
-                                                                   required
-                                                                   id="registration${item.id}"
-                                                                   onblur="survey.isAgreement(this);"
-                                                                   name="registration${item.id}"
-                                                                   data-name="registration"
-                                                                   class="form-control input-full "
-                                                                   value="${item.registration}">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="x-valid">
-                                                            <input type="text" data-rule-maxlength="50" placeholder="实际"
-                                                                   required
-                                                                   id="actual${item.id}"
-                                                                   onblur="survey.isAgreement(this);"
-                                                                   name="actual${item.id}" data-name="actual"
-                                                                   class="form-control input-full "
-                                                                   value="${item.actual}">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="x-valid show-hide"
-                                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                            <input type="text" data-rule-maxlength="50"
-                                                                   placeholder="差异原因"
-                                                                   required
-                                                                   id="differenceReason${item.id}"
-                                                                   name="differenceReason${item.id}"
-                                                                   class="form-control input-full"
-                                                                   value="${item.differenceReason}">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="x-valid show-hide"
-                                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                            <input type="text" data-rule-maxlength="50"
-                                                                   placeholder="证明文件"
-                                                                   required
-                                                                   id="credential${item.id}" name="credential"
-                                                                   class="form-control input-full"
-                                                                   value="${item.credential}">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="show-hide"
-                                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                            <input id="credentialAccessory${item.id}"
-                                                                   name="credentialAccessory${item.id}" type="file"
-                                                                   multiple="false">
-                                                            <div id="_credentialAccessory${item.id}"></div>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="x-valid show-hide"
-                                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                            <input type="text" data-rule-maxlength="50"
-                                                                   placeholder="证明人"
-                                                                   required
-                                                                   id="voucher${item.id}" name="voucher${item.id}"
-                                                                   class="form-control input-full"
-                                                                   value="${item.voucher}">
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="x-valid show-hide"
-                                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                            <input placeholder="调查时间" id="surveyTime${item.id}"
-                                                                   name="surveyTime${item.id}" required
-                                                                   data-date-format="yyyy-mm-dd"
-                                                                   class="form-control input-full date-picker dbdate"
-                                                                   readonly="readonly"
-                                                                   value='<fmt:formatDate value="${item.surveyTime}" pattern="yyyy-MM-dd"/>'>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="x-valid show-hide"
-                                                             style="display: ${item.areConsistent eq '一致'?'none':'block'}">
-                                                            <select class="form-control input-full"
-                                                                    id="sureConsistent${item.id}"
-                                                                    name="sureConsistent${item.id}" required>
-                                                                <option value=""></option>
-                                                                <option value="一致" ${item.sureConsistent eq '一致'?'selected':''}>
-                                                                    一致
-                                                                </option>
-                                                                <option value="不一致" ${item.sureConsistent eq '不一致'?'selected':''}>
-                                                                    不一致
-                                                                </option>
-                                                            </select>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-xs btn-danger"
-                                                                onclick="$(this).closest('tr').find('input').val('') ;">
-                                                            清空
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                                <script type="text/javascript">
-                                                    $(function () {
-                                                        //清查内容附件上传和加载
-                                                        survey.uploadFileCommon("${item.id}");
-                                                        survey.showFileCommon("${item.id}");
-                                                        survey.initAgreement('#areConsistent${item.id}', '${item.areConsistent}');
-                                                    })
-                                                </script>
-                                            </c:forEach>
-
-                                            </tbody>
-                                        </table>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </c:if>
                     <!-- 税费、工程、物管欠款调查 start -->
                     <c:if test="${not empty taxArrearsEntity}">
                         <div class="col-md-12">
@@ -847,43 +675,6 @@
         }
     };
 
-    /**
-     * 初始化
-     */
-    survey.initAgreement = function (selector, areConsistent) {
-        var tr = $(selector).closest('tr');
-        if (areConsistent == "一致") {
-            tr.find('.show-hide').hide();
-            tr.find("input[type=checkbox]").prop('checked', true);
-        } else {
-            tr.find('.show-hide').show();
-            tr.find("input[type=checkbox]").prop('checked', false);
-        }
-    };
-
-    /**
-     * 验证登记与实际是否一致，如果不一致需填写相关内容
-     * @param _this
-     */
-    survey.isAgreement = function (_this) {
-        var value = $(_this).val();
-        if (!value) {
-            return false;
-        }
-        var tr = $(_this).closest('tr');
-        var registration = $.trim(tr.find('[name^=registration]').val());//登记
-        var actual = $.trim(tr.find('[name^=actual]').val());//实际
-        if (actual && registration) {
-            if (actual == registration) {
-                tr.find('.show-hide').hide();
-                tr.find("input[type=checkbox]").prop('checked', true);
-            } else {
-                tr.find('.show-hide').show();
-                tr.find("input[type=checkbox]").prop('checked', false);
-            }
-        }
-    };
-
     //select2 change事件的处理
     survey.influenceFactorEvent = function (_this, id) {
         var frm = $(_this).closest("form");
@@ -935,28 +726,6 @@
             viewSpiltData.influenceFactorRemarkText = resultData.join(",");
             formData.viewSpilt = viewSpiltData;
         }
-        //------------------------------------------------------------------------------------------
-        var trs = $("#tb_surveyList").find('tbody tr');
-        var dataItem = [];
-        $.each(trs, function (i, tr) {
-            var item = {};
-            item.registration = $(tr).find('[name^="registration"]').val();    //登记面积
-            item.actual = $(tr).find('[name^="actual"]').val();//实际面积
-            var areConsistentEle = $(tr).find('[name^="areConsistent"]'); //是否一致
-            if (areConsistentEle.prop("checked")) {
-                item.areConsistent = areConsistentEle.val();
-            } else {
-                item.areConsistent = '不一致';
-            }
-            item.differenceReason = $(tr).find('[name^="differenceReason"]').val(); //差异原因
-            item.credential = $(tr).find('[name^="credential"]').val(); //证明文件
-            item.voucher = $(tr).find('[name^="voucher"]').val(); //证明人
-            item.surveyTime = $(tr).find('[name^="surveyTime"]').val(); //查勘时间
-            item.sureConsistent = $(tr).find('[name^="sureConsistent"]').val();   //确认一致
-            item.id = $(tr).find('[name="id"]').val();    //id
-            dataItem.push(item);
-        });
-        formData.assetInventoryContentList = dataItem;
         //------------------------------------------------------------------------------------------
         var taxArrearsData = formParams("frm_taxesPayment");
         if (taxArrearsData) {
@@ -1035,12 +804,9 @@
     }
 
     function newGetFormData(callback) {
-        if ($("#frm_asset") && !$("#frm_asset").valid()) {
+        if ($("#frm_asset").length > 0 && !$("#frm_asset").valid()) {
             return false;
         }
-        // if ($("#frm_asset_inventory_content") && !$("#frm_asset_inventory_content").valid()) {
-        //     return false;
-        // }
         if ($("#frm_damage").length > 0 && !$("#frm_damage").valid()) {
             return false;
         }

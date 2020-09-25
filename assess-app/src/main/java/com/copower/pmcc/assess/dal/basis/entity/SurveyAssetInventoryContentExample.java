@@ -225,6 +225,66 @@ public class SurveyAssetInventoryContentExample {
             return (Criteria) this;
         }
 
+        public Criteria andInfoItemIdIsNull() {
+            addCriterion("info_item_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdIsNotNull() {
+            addCriterion("info_item_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdEqualTo(Integer value) {
+            addCriterion("info_item_id =", value, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdNotEqualTo(Integer value) {
+            addCriterion("info_item_id <>", value, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdGreaterThan(Integer value) {
+            addCriterion("info_item_id >", value, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("info_item_id >=", value, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdLessThan(Integer value) {
+            addCriterion("info_item_id <", value, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdLessThanOrEqualTo(Integer value) {
+            addCriterion("info_item_id <=", value, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdIn(List<Integer> values) {
+            addCriterion("info_item_id in", values, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdNotIn(List<Integer> values) {
+            addCriterion("info_item_id not in", values, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdBetween(Integer value1, Integer value2) {
+            addCriterion("info_item_id between", value1, value2, "infoItemId");
+            return (Criteria) this;
+        }
+
+        public Criteria andInfoItemIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("info_item_id not between", value1, value2, "infoItemId");
+            return (Criteria) this;
+        }
+
         public Criteria andGroupIdIsNull() {
             addCriterion("group_id is null");
             return (Criteria) this;

@@ -107,7 +107,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12" style="display: none;">
+                    <div class="col-md-12">
                         <div class="card full-height">
                             <div class="card-header collapse-link">
                                 <div class="card-head-row">
@@ -124,17 +124,6 @@
 
                             <div class="card-body">
                                 <form class="form-horizontal">
-                                    <div id="baseInfoGroupToolbar">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="组名称" name="groupName">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-info btn-sm" type="button"
-                                                        onclick="assetInfo.loadSurveyAssetInfoGroupList(this);">
-                                                    <i class="fa fa-search"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <table class="table table-bordered" id="tbSurveyAssetInfoGroupList"></table>
                                 </form>
 
@@ -187,8 +176,6 @@
                             </div>
                         </div>
                     </div>
-
-
                     <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
@@ -197,13 +184,9 @@
     </div>
 </div>
 </body>
-
-
-<script>
+<script type="text/javascript">
 
     var assetInfo = {};
-
-
     assetInfo.groupTable = $("#tbSurveyAssetInfoGroupList");
     assetInfo.groupBox = $("#boxSurveyAssetInfoGroup");
     assetInfo.InfoItemTable = $("#tb_infoItem_list");
@@ -303,6 +286,21 @@
             }
         });
         cols.push({
+            field: 'bisFinishUniformity', title: '一致性清查', width: "10%", formatter: function (value, row, index) {
+                var str = "";
+                if (true == value) {
+                    str += "<span class='label label-success'>";
+                    str += "完成";
+                    str += "</span>";
+                } else {
+                    str += "<span class='label label-info'>";
+                    str += "未处理";
+                    str += "</span>";
+                }
+                return str;
+            }
+        });
+        cols.push({
             field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
                 var str = "";
                 if (value) {
@@ -323,9 +321,10 @@
         cols.push({
             field: 'id', title: '操作', width: "10%", formatter: function (value, row, index) {
                 var str = "";
-                if (row.groupId) {
-
-                } else {
+                str += '<button type="button" onclick="assetInfo.uniformityInventoryHandle(' + value + ')" style="margin-left: 5px;" class="btn btn-primary btn-xs tooltips"  data-placement="bottom" data-original-title="一致性">';
+                str += '<i class="fa fa-align-justify"></i>';
+                str += '</button>';
+                if (!row.groupId) {
                     str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看清查业务数据">';
                     str += '<i class="fa fa-search"></i>';
                     str += '</button>';
@@ -368,39 +367,17 @@
         });
         var target = assetInfo.handleJquery(assetInfo.groupTable);
         var cols = [];
-        cols.push({field: 'groupName', title: '组名称', width: "30%"});
+        cols.push({field: 'groupName', title: '组名称', width: "50%"});
         cols.push({
             field: 'id', title: '操作', width: "30%", formatter: function (value, row, index) {
                 var str = "";
+                str += '<button type="button" onclick="assetInfo.findSurveyAssetInfoGroupDetail(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看包含的权证列表">';
+                str += '<i class="fa fa-address-card"></i>';
+                str += '</button>';
 
-                str += '<button type="button" onclick="assetInfo.groupHandel(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看清查业务数据">';
+                str += '<button type="button" onclick="assetInfo.surveyAssetInventoryGroup(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看清查业务数据">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
-
-
-                str += '<button type="button" onclick="assetInfo.findSurveyAssetInfoGroupDetail(' + row.id + ')" style="margin-left: 5px;" class="btn   btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看包含的权证列表">';
-                str += '包含的权证列表 <i class="fa fa-search"></i>';
-                str += '</button>';
-
-
-                return str;
-            }
-        });
-        cols.push({
-            field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
-                var str = "";
-                if (value) {
-                    if (value == 'runing') {
-                        str += "<span class='label label-info'>";
-                        str += "待清查";
-                        str += "</span>";
-                    }
-                    if (value == 'finish') {
-                        str += "<span class='label label-success'>";
-                        str += "已清查";
-                        str += "</span>";
-                    }
-                }
                 return str;
             }
         });
@@ -410,7 +387,6 @@
             showColumns: false,
             showRefresh: false,
             search: false,
-            toolbar: "#baseInfoGroupToolbar",
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
             }
@@ -438,6 +414,53 @@
             search: false,
             onLoadSuccess: function () {
                 $(".tooltips").tooltip();   //提示
+            }
+        });
+    };
+
+    /**
+     * 一致性清查
+     * @param inventoryId
+     * @param declareId
+     * @param type
+     * @param masterId
+     */
+    assetInfo.uniformityInventoryHandle = function (assetInfoItemId) {
+        var frame = layer.open({
+            type: 2,
+            title: '',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['90%', '90%'],
+            content: '${pageContext.request.contextPath}/surveyAssetInfoItem/inventoryDetail/' + assetInfoItemId,
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];//放弃按钮 不需要做处理
+            },
+            btnAlign: 'c',
+            btn: ['关闭'],
+            btn2: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+            }
+        });
+    };
+
+    assetInfo.surveyAssetInventoryGroup = function (groupId) {
+        var frame = layer.open({
+            type: 2,
+            title: '',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['90%', '90%'],
+            content: '${pageContext.request.contextPath}/surveyAssetInfoGroup/inventoryDetail/' + groupId,
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+            },
+            btnAlign: 'c',
+            btn: ['关闭'],
+            btn2: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
             }
         });
     };

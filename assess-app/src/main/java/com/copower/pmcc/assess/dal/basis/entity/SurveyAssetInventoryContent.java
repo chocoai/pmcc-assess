@@ -7,6 +7,8 @@ public class SurveyAssetInventoryContent {
 
     private Integer masterId;
 
+    private Integer infoItemId;
+
     private Integer groupId;
 
     private Integer projectId;
@@ -55,6 +57,14 @@ public class SurveyAssetInventoryContent {
 
     public void setMasterId(Integer masterId) {
         this.masterId = masterId;
+    }
+
+    public Integer getInfoItemId() {
+        return infoItemId;
+    }
+
+    public void setInfoItemId(Integer infoItemId) {
+        this.infoItemId = infoItemId;
     }
 
     public Integer getGroupId() {

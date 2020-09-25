@@ -121,14 +121,23 @@ public class SurveyAssetInventoryContentService {
         return surveyAssetInventoryContentDao.getSurveyAssetInventoryContentListByMasterId(masterId);
     }
 
+    public List<SurveyAssetInventoryContent> getInventoryContentListByItemId(Integer itemId) {
+        return surveyAssetInventoryContentDao.getInventoryContentListByItemId(itemId);
+    }
+
+    public boolean deleteInventoryContentByItemId(Integer itemId) {
+        if (itemId == null) return false;
+        return surveyAssetInventoryContentDao.deleteInventoryContentByItemId(itemId);
+    }
+
     /**
      * 初始化清查项
      *
-     * @param inventoryId
+     * @param infoItem
      * @return
      */
-    public List<SurveyAssetInventoryContent> initContentByInventoryId(SurveyAssetInfoItem infoItem, Integer inventoryId) throws BusinessException {
-        if (inventoryId == null) return null;
+    public List<SurveyAssetInventoryContent> initContentByInfoItem(SurveyAssetInfoItem infoItem) throws BusinessException {
+        if (infoItem == null) return null;
         SurveyAssetInfo assetInfo = surveyAssetInfoService.getSurveyAssetInfoById(infoItem.getAssetInfoId());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(assetInfo.getProjectId());
         AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
@@ -140,7 +149,7 @@ public class SurveyAssetInventoryContentService {
                     continue;
                 }
                 SurveyAssetInventoryContent inventoryContent = new SurveyAssetInventoryContent();
-                inventoryContent.setMasterId(inventoryId);
+                inventoryContent.setInfoItemId(infoItem.getId());
                 inventoryContent.setProjectId(assetInfo.getProjectId());
                 inventoryContent.setPlanDetailsId(assetInfo.getPlanDetailId());
                 inventoryContent.setDeclareId(declareRecord.getId());
@@ -149,23 +158,21 @@ public class SurveyAssetInventoryContentService {
                 saveAssetInventoryContent(inventoryContent);
             }
         }
-        List<SurveyAssetInventoryContent> list = getSurveyAssetInventoryContentListByMasterId(inventoryId);
-        setContentInitialValue(inventoryId, list);
+        List<SurveyAssetInventoryContent> list = getInventoryContentListByItemId(infoItem.getId());
+        setContentInitialValue(infoItem, list);
         return list;
     }
 
     /**
      * 为清查项设置初始值
      *
-     * @param inventoryId
+     * @param infoItem
      * @param inventoryContents
      */
-    public void setContentInitialValue(Integer inventoryId, List<SurveyAssetInventoryContent> inventoryContents) {
-        if (inventoryId == null) return;
+    public void setContentInitialValue(SurveyAssetInfoItem infoItem, List<SurveyAssetInventoryContent> inventoryContents) {
+        if (infoItem == null) return;
         if (CollectionUtils.isEmpty(inventoryContents)) return;
-        SurveyAssetInventory surveyAssetInventory = surveyAssetInventoryService.getSurveyAssetInventoryById(inventoryId);
-        if (surveyAssetInventory == null) return;
-        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(surveyAssetInventory.getDeclareRecordId());
+        DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(infoItem.getDeclareId());
         BasicBuilding basicBuilding = null;
         BasicUnit basicUnit = null;
         BasicHouse basicHouse = null;
@@ -202,7 +209,7 @@ public class SurveyAssetInventoryContentService {
                     }
                     Boolean isBuildingNumberSame = false;
                     if (basicBuilding != null && StringUtils.isNotBlank(basicBuilding.getBuildingNumber())) {
-                        if(StringUtils.isNotBlank(inventoryContent.getActual())){
+                        if (StringUtils.isNotBlank(inventoryContent.getActual())) {
                             inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicBuilding.getBuildingNumber());
                         }
                         if (basicBuilding.getBuildingNumber().contains(StringUtils.defaultString(declareRecord.getBuildingNumber()))) {
@@ -211,7 +218,7 @@ public class SurveyAssetInventoryContentService {
                     }
                     Boolean isUnitNumberSame = false;
                     if (basicUnit != null && StringUtils.isNotBlank(basicUnit.getUnitNumber())) {
-                        if(StringUtils.isNotBlank(inventoryContent.getActual())){
+                        if (StringUtils.isNotBlank(inventoryContent.getActual())) {
                             inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicUnit.getUnitNumber());
                         }
                         if (basicUnit.getUnitNumber().contains(StringUtils.defaultString(declareRecord.getUnit()))) {
@@ -220,7 +227,7 @@ public class SurveyAssetInventoryContentService {
                     }
                     Boolean isHouseNumberSame = false;
                     if (basicHouse != null && StringUtils.isNotBlank(basicHouse.getHouseNumber())) {
-                        if(StringUtils.isNotBlank(inventoryContent.getActual())){
+                        if (StringUtils.isNotBlank(inventoryContent.getActual())) {
                             inventoryContent.setActual(StringUtils.defaultString(inventoryContent.getActual()) + basicHouse.getHouseNumber());
                         }
                         if (basicHouse.getHouseNumber().contains(StringUtils.defaultString(declareRecord.getRoomNumber()))) {
@@ -291,6 +298,9 @@ public class SurveyAssetInventoryContentService {
             if (houseCert != null) {
                 inventoryContent.setActual(houseCert.getBeLocated());
             }
+        }
+        if(StringUtils.isBlank(inventoryContent.getActual())){
+            inventoryContent.setActual(inventoryContent.getRegistration());
         }
     }
 }

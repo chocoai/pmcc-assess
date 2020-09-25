@@ -172,38 +172,6 @@
                                                             onclick="assetInfo.checkUniformityBatch() ;"><span
                                                             class="btn-label"><i class="fa fa-bars"></i></span>一致性清查
                                                     </button>
-                                                    <button class="btn btn-primary btn-sm"
-                                                            type="button" data-toggle="modal"
-                                                            onclick="assetInfo.showEntityDamageModal() ;"><span
-                                                            class="btn-label"><i class="fa fa-car-crash"></i></span>损坏调查
-                                                    </button>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <button type="button" class="btn btn-info btn-sm"
-                                                            onclick="assetInfo.taskCopy(this) ;"><i
-                                                            class="fa fa-copy" aria-hidden="true"></i> 拷贝
-                                                    </button>
-                                                    <button type="button" class="btn btn-warning btn-sm"
-                                                            onclick="assetInfo.taskPaste(this) ;"><i
-                                                            class="fa fa-clipboard" aria-hidden="true"></i>粘贴
-                                                    </button>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <div class="input-group ">
-                                                        <input type="hidden" name="copyId">
-                                                        <input type="text" readonly="readonly" name="copyName"
-                                                               class="form-control form-control-sm"
-                                                               placeholder="无拷贝数据">
-                                                        <div class="input-group-prepend ">
-                                                            <button class="btn btn-warning btn-sm"
-                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
-                                                                    type="button"
-                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
-                                                                <i class="fa "></i>
-                                                                清空
-                                                            </button>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -297,12 +265,6 @@
                         <label class="form-check-label">
                             <input class="form-check-input" type="checkbox" checked="checked" value="viewSpilt">
                             <span class="form-check-sign">权证与分割</span>
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" checked="checked" value="uniformity">
-                            <span class="form-check-sign">一致性清查</span>
                         </label>
                     </div>
                     <div class="form-check">
@@ -670,10 +632,6 @@
         assetInfo.ajaxServerFun({id: id}, "/surveyAssetInfoItem/getSurveyAssetInfoItemById", "get", callback);
     };
 
-    assetInfo.getSurveyAssetInfoItemIdsByGroupId = function (groupId, callback) {
-        assetInfo.ajaxServerFun({groupId: groupId}, "/surveyAssetInfoItem/getSurveyAssetInfoItemIdsByGroupId", "get", callback);
-    };
-
     /**
      * 资产清查 查询
      * @param data
@@ -778,30 +736,12 @@
         });
         var target = assetInfo.handleJquery(assetInfo.groupTable);
         var cols = [];
-        cols.push({field: 'groupName', title: '组名称', width: "30%"});
-        cols.push({
-            field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
-                var str = "";
-                if (value) {
-                    if (value == 'runing') {
-                        str += "<span class='label label-info'>";
-                        str += "待清查";
-                        str += "</span>";
-                    }
-                    if (value == 'finish') {
-                        str += "<span class='label label-success'>";
-                        str += "已清查";
-                        str += "</span>";
-                    }
-                }
-                return str;
-            }
-        });
+        cols.push({field: 'groupName', title: '组名称', width: "50%"});
         cols.push({
             field: 'id', title: '操作', width: "30%", formatter: function (value, row, index) {
                 var str = "";
                 str += '<button type="button" onclick="assetInfo.showGroupInfoItemModal(' + row.id + ')" style="margin-left: 5px;" class="btn btn-info btn-xs tooltips"  data-placement="bottom" data-original-title="绑定权证">';
-                str += '<i class="fa fa-align-justify"></i>';
+                str += '<i class="fa fa-address-card"></i>';
                 str += '</button>';
 
                 str += '<button type="button" onclick="assetInfo.surveyAssetInventoryGroup(' + row.id + ')"  style="margin-left: 5px;"  class="btn   btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="清查">';
@@ -873,21 +813,6 @@
             }
         });
         cols.push({
-            field: 'bisFinishDamage', title: '损坏调查', width: "10%", formatter: function (value, row, index) {
-                var str = "";
-                if (true == value) {
-                    str += "<span class='label label-success'>";
-                    str += "完成";
-                    str += "</span>";
-                } else {
-                    str += "<span class='label label-info'>";
-                    str += "未处理";
-                    str += "</span>";
-                }
-                return str;
-            }
-        });
-        cols.push({
             field: 'status', title: '状态', width: "10%", formatter: function (value, row, index) {
                 var str = "";
                 if (value == 'runing') {
@@ -906,8 +831,11 @@
         cols.push({
             field: 'id', title: '操作', width: "10%", formatter: function (value, row, index) {
                 var str = "";
+                str += '<button type="button" onclick="assetInfo.uniformityInventoryHandle(' + value + ')" style="margin-left: 5px;" class="btn btn-primary btn-xs tooltips"  data-placement="bottom" data-original-title="一致性">';
+                str += '<i class="fa fa-align-justify"></i>';
+                str += '</button>';
                 if (!row.groupId) {
-                    str += '<button type="button" onclick="assetInfo.itemHandel(' + value + ')" style="margin-left: 5px;" class="btn btn-primary btn-xs tooltips"  data-placement="bottom" data-original-title="清查操作">';
+                    str += '<button type="button" onclick="assetInfo.surveyAssetInventoryHandle(' + value + ')" style="margin-left: 5px;" class="btn btn-primary btn-xs tooltips"  data-placement="bottom" data-original-title="清查操作">';
                     str += '<i class="fa fa-quidditch"></i>';
                     str += '</button>';
                 }
@@ -1069,11 +997,47 @@
         });
     };
 
+
     /**
-     * 单个权证   清查数据
+     * 一致性清查
+     * @param inventoryId
+     * @param declareId
+     * @param type
+     * @param masterId
      */
-    assetInfo.itemHandel = function (id) {
-        assetInfo.surveyAssetInventoryHandle(id);
+    assetInfo.uniformityInventoryHandle = function (assetInfoItemId) {
+        var frame = layer.open({
+            type: 2,
+            title: '',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['90%', '90%'],
+            content: '${pageContext.request.contextPath}/surveyAssetInfoItem/inventory/' + assetInfoItemId,
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];//放弃按钮 不需要做处理
+            },
+            btnAlign: 'c',
+            btn: ['保存', '关闭'],
+            yes: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                iframe.newGetFormData(function (data) {
+                    $.post('${pageContext.request.contextPath}/surveyAssetInfoItem/saveInventoryContent', {
+                        formData: JSON.stringify(data)
+                    }, function (result) {
+                        if (result.ret) {
+                            notifySuccess("成功", "操作成功!");
+                            assetInfo.loadSurveyAssetInfoItemBaseList();
+                        } else {
+                            AlertError("操作失败，失败原因:" + result.errmsg);
+                        }
+                    })
+                });
+            },
+            btn2: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+            }
+        });
     };
 
     /**
@@ -1145,15 +1109,16 @@
 
     //清查组 delete
     assetInfo.delSurveyAssetInfoGroup = function (id) {
-        assetInfo.getSurveyAssetInfoItemIdsByGroupId(id, function (data) {
-            if (data.length >= 1) {
-                notifyWarning("提示", "请先移除组中的数据!");
-                return false;
-            }
-            assetInfo.deleteSurveyAssetInfoGroupById(id, function () {
+        $.post('${pageContext.request.contextPath}/surveyAssetInfoGroup/deleteSurveyAssetInfoGroupById', {
+            id: id
+        }, function (result) {
+            if (result.ret) {
+                AlertSuccess("成功", "删除成功!");
                 assetInfo.loadSurveyAssetInfoGroupList();
-            })
-        });
+            } else {
+                AlertError("操作失败，失败原因:" + result.errmsg);
+            }
+        })
     };
 
     //显示清查组权证信息弹窗
@@ -1258,8 +1223,6 @@
 
     //分组清查
     assetInfo.surveyAssetInventoryGroup = function (groupId) {
-        <%--window.open('${pageContext.request.contextPath}/surveyAssetInfoGroup/view/' + groupId);--%>
-        <%--return false;--%>
         var frame = layer.open({
             type: 2,
             title: '',
@@ -1267,10 +1230,9 @@
             shade: true,
             maxmin: true, //开启最大化最小化按钮
             area: ['90%', '90%'],
-            content: '${pageContext.request.contextPath}/surveyAssetInfoGroup/view/' + groupId,
+            content: '${pageContext.request.contextPath}/surveyAssetInfoGroup/inventory/' + groupId,
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
-                //放弃按钮 不需要做处理
             },
             btnAlign: 'c',
             btn: ['保存', '关闭'],
@@ -1278,10 +1240,12 @@
                 var iframe = window[layero.find('iframe')[0]['name']];
                 iframe.newGetFormData(function (data) {
                     $.post('${pageContext.request.contextPath}/surveyAssetInfoGroup/saveGroupInventoryData', {
-                        formData: JSON.stringify(data)
+                        formData: JSON.stringify(data),
+                        groupId: groupId
                     }, function (result) {
                         if (result.ret) {
                             notifySuccess("成功", "操作成功!");
+                            layer.closeAll('iframe');
                             assetInfo.loadSurveyAssetInfoGroupList();
                         } else {
                             AlertError("操作失败，失败原因:" + result.errmsg);
@@ -1353,7 +1317,7 @@
                     var html = '<option value="">请选择</option>';
                     $.each(result.data, function (i, item) {
                         html += '<option value="' + item.id + '" data-apply-batch-id="' + item.applyBatchId + '">' + item.name + '</option>';
-                    })
+                    });
                     childControl.empty().append(html);
                 }
             }

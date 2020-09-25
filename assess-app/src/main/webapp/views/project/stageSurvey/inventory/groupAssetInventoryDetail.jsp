@@ -11,371 +11,272 @@
             <div class="page-inner">
                 <div class="row mt--2">
                     <!-- 填写表单 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        ${masterName} 清查业务
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
+                    <c:if test="${not empty viewSpiltEntity}">
+                        <div class="col-md-12">
+                            <div class="card full-height">
+                                <div class="card-header collapse-link">
+                                    <div class="card-head-row">
+                                        <div class="card-title">
+                                                ${masterName} 清查业务
+                                        </div>
+                                        <div class="card-tools">
+                                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                                    class="fa fa-angle-down"></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body">
-                                <form id="frm_asset" class="form-horizontal">
-                                    <input type="hidden" name="id" value="${surveyAssetInventory.id}">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">查看原件<span
-                                                        class="symbol required"></span></label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full"> ${surveyAssetInventory.bisCheckOriginal eq true? '是':'否'}</label>
+                                <div class="card-body">
+                                    <form id="frm_asset" class="form-horizontal">
+                                        <input type="hidden" name="id" value="${viewSpiltEntity.id}">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 col-form-label">查看原件<span
+                                                            class="symbol required"></span></label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full"> ${viewSpiltEntity.bisCheckOriginal eq true? '是':'否'}</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <c:if test="${surveyAssetInventory.bisCheckOriginal}">
+                                        <c:if test="${viewSpiltEntity.bisCheckOriginal}">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 col-form-label">
+                                                            核对日期<span class="symbol required"></span></label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full"><fmt:formatDate
+                                                                    value="${viewSpiltEntity.checkDate}"
+                                                                    pattern="yyyy-MM-dd"/></label>
+
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">
+                                                            说明
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${viewSpiltEntity.remark}</label>
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">
+                                                            证明文件
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <div id="_checkOriginalFile"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:if>
+
+                                        <c:if test="${! viewSpiltEntity.bisCheckOriginal}">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 col-form-label">
+                                                            查看方法
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${viewSpiltEntity.findMethodName}</label>
+                                                        </div>
+                                                        <label class="col-sm-1 col-form-label">
+                                                            查看结果附件</label>
+                                                        <div class="col-sm-3">
+                                                            <div id="_networkFindFile"></div>
+                                                        </div>
+                                                        <label class="col-sm-1 col-form-label">
+                                                            查看说明
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${viewSpiltEntity.networkRemark}</label>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:if>
+
+
+                                        <c:if test="${!empty viewSpiltEntity.networkAddress}">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 control-label">
+                                                            查询的地址
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${viewSpiltEntity.networkAddress}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:if>
+
+                                        <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
+                                            color="#6f5499" size="10"/>
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 col-form-label">
-                                                        核对日期<span class="symbol required"></span></label>
+                                                        分割限制<span class="symbol required"></span></label>
                                                     <div class="col-sm-3">
-                                                        <label class="form-control input-full"><fmt:formatDate
-                                                                value="${surveyAssetInventory.checkDate}"
-                                                                pattern="yyyy-MM-dd"/></label>
-
+                                                        <label class="form-control input-full">${viewSpiltEntity.segmentationLimit}</label>
                                                     </div>
-                                                    <label class="col-sm-1 control-label">
-                                                        说明
+                                                    <label class="col-sm-1 col-form-label">
+                                                        影响对象
                                                     </label>
                                                     <div class="col-sm-3">
-                                                        <label class="form-control input-full">${surveyAssetInventory.remark}</label>
-                                                    </div>
-                                                    <label class="col-sm-1 control-label">
-                                                        证明文件
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <div id="_checkOriginalFile"></div>
+                                                        <label class="form-control input-full">${viewSpiltEntity.affectedName}</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </c:if>
 
-                                    <c:if test="${! surveyAssetInventory.bisCheckOriginal}">
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 col-form-label">
-                                                        查看方法
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full">${surveyAssetInventory.findMethodName}</label>
-                                                    </div>
-                                                    <label class="col-sm-1 col-form-label">
-                                                        查看结果附件</label>
-                                                    <div class="col-sm-3">
-                                                        <div id="_networkFindFile"></div>
-                                                    </div>
-                                                    <label class="col-sm-1 col-form-label">
-                                                        查看说明
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full">${surveyAssetInventory.networkRemark}</label>
-
+                                        <c:forEach items="${viewSpiltEntity.influenceFactorRemarkList}" var="item">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline x-valid">
+                                                        <label class="col-sm-1 col-form-label">
+                                                            影响要素
+                                                        </label>
+                                                        <div class="col-sm-3">
+                                                            <label class="form-control input-full">${item.key}</label>
+                                                        </div>
+                                                        <label class="col-sm-1 col-form-label">
+                                                            说明
+                                                        </label>
+                                                        <div class="col-sm-7">
+                                                            <label class="form-control input-full">${item.value}</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </c:if>
-
-
-                                    <c:if test="${!empty surveyAssetInventory.networkAddress}">
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 control-label">
-                                                        查询的地址
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full">${surveyAssetInventory.networkAddress}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:if>
-
-                                    <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
-                                        color="#6f5499" size="10"/>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    分割限制<span class="symbol required"></span></label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.segmentationLimit}</label>
-                                                </div>
-                                                <label class="col-sm-1 col-form-label">
-                                                    影响对象
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.affectedName}</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <c:forEach items="${surveyAssetInventory.influenceFactorRemarkList}" var="item">
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1 col-form-label">
-                                                        影响要素
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full">${item.key}</label>
-                                                    </div>
-                                                    <label class="col-sm-1 col-form-label">
-                                                        说明
-                                                    </label>
-                                                    <div class="col-sm-7">
-                                                        <label class="form-control input-full">${item.value}</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-
-
-
-
-
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 清查内容 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        清查内容
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <form id="frm_asset_inventory_content" class="form-horizontal">
-                                    <table id="tb_List">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 6%">是否一致</th>
-                                            <th style="width: 10%">一致性内容</th>
-                                            <th style="width: 10%">登记</th>
-                                            <th style="width: 10%">实际</th>
-                                            <th style="width: 10%">差异原因</th>
-                                            <th style="width: 10%">证明文件</th>
-                                            <th style="width: 10%">证明文件附件</th>
-                                            <th style="width: 5%">证明人</th>
-                                            <th style="width: 8%">调查时间</th>
-                                            <th style="width: 6%">确认一致</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach items="${surveyAssetInventoryContentVos}" var="item" varStatus="s">
-                                        <tr>
-                                            <td>
-                                                <label class="form-control input-full">${item.areConsistent}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control input-full">${item.inventoryContentName}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control input-full">${item.registration}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control input-full">${item.actual}</label>
-                                            </td>
-                                            <c:if test="${item.areConsistent != '一致'}">
-                                                <td>
-                                                    <label class="form-control input-full">${item.differenceReason}</label>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">${item.credential}</label>
-                                                </td>
-                                                <td>
-                                                    <div id="_credentialAccessory${item.id}"></div>
-                                                    <script type="text/javascript">
-                                                        $(function () {
-                                                            //清查内容附件加载
-                                                            showFileCommon("${item.id}");
-                                                        })
-                                                    </script>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">${item.voucher}</label>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">
-                                                        <fmt:formatDate value="${item.surveyTime}"
-                                                                        pattern="yyyy-MM-dd"/>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">${item.sureConsistent}</label>
-                                                </td>
-                                            </c:if>
-                                        </tr>
                                         </c:forEach>
-                                    </table>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </c:if>
 
 
                     <!-- 税费、工程、物管欠款调查 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        税费、工程、物管欠款调查
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
+                    <c:if test="${not empty taxArrearsEntity}">
+                        <div class="col-md-12">
+                            <div class="card full-height">
+                                <div class="card-header collapse-link">
+                                    <div class="card-head-row">
+                                        <div class="card-title">
+                                            税费、工程、物管欠款调查
+                                        </div>
+                                        <div class="card-tools">
+                                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                                    class="fa fa-angle-down"></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="card-body">
-                                <form id="taxesPaymentSurvey" class="form-horizontal">
-
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    缴纳情况
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.paymentStatus}
+                                <div class="card-body">
+                                    <form id="taxesPaymentSurvey" class="form-horizontal">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 col-form-label">
+                                                        缴纳情况
                                                     </label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full">${taxArrearsEntity.paymentStatus}
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="paymentItem">
-                                    </div>
-                                    <div class="row form-group" id="showUploadFile" style="display: none">
-                                        <div class="col-md-12">
-                                            <div class="form-inline  x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    附件
-                                                </label>
-                                                <div class="col-sm-11">
-                                                    <div id="_paymentStatusFile"></div>
+                                        <div class="paymentItem">
+                                        </div>
+                                        <div class="row form-group" id="showUploadFile" style="display: none">
+                                            <div class="col-md-12">
+                                                <div class="form-inline  x-valid">
+                                                    <label class="col-sm-1 col-form-label">
+                                                        附件
+                                                    </label>
+                                                    <div class="col-sm-11">
+                                                        <div id="_paymentStatusFile"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </c:if>
 
                     <!-- 损坏调查表 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        损坏调查表
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
+                    <c:if test="${not empty damageEntity}">
+                        <div class="col-md-12">
+                            <div class="card full-height">
+                                <div class="card-header collapse-link">
+                                    <div class="card-head-row">
+                                        <div class="card-title">
+                                            损坏调查表
+                                        </div>
+                                        <div class="card-tools">
+                                            <button class="btn  btn-link btn-primary btn-xs"><span
+                                                    class="fa fa-angle-down"></span>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="card-body">
-                                <form id="damageSurvey" class="form-horizontal">
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    区位是否损坏
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.rimIsNormal}
+                                <div class="card-body">
+                                    <form id="damageSurvey" class="form-horizontal">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 col-form-label">
+                                                        区位是否损坏
                                                     </label>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full">${damageEntity.rimIsNormal}
+                                                        </label>
+                                                    </div>
                                                 </div>
-
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="zoneBit">
-
-                                    </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-12">
-                                            <div class="form-inline x-valid">
-                                                <label class="col-sm-1 col-form-label">
-                                                    实物状况是否损坏
-                                                </label>
-                                                <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.entityIsDamage}
+                                        <div class="zoneBit"></div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="form-inline x-valid">
+                                                    <label class="col-sm-1 col-form-label">
+                                                        实物状况是否损坏
                                                     </label>
-                                                </div>
+                                                    <div class="col-sm-3">
+                                                        <label class="form-control input-full">${damageEntity.entityIsDamage}
+                                                        </label>
+                                                    </div>
 
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="entity">
-
-                                    </div>
-                                    <c:if test="${projectInfo.projectCategoryId == houseLand}">
+                                        <div class="entity"></div>
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
                                                     <label class="col-sm-1 col-form-label">
                                                         影响评估的其他事项
                                                     </label>
-                                                    <div class="col-sm-3">
-                                                        <div class="btn btn-xs btn-success"
-                                                             onclick="appendHTML('otherProjectName','otherProjectItem','otherProject',this)">
-                                                            <i class="fa fa-plus"></i></div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="otherProject">
-
-                                        </div>
-                                    </c:if>
-                                </form>
+                                        <div class="otherProject"></div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </c:if>
 
                     <!-- 转让限制 start -->
-                    <c:if test="${projectInfo.projectCategoryId != houseLand}">
+                    <c:if test="${not empty transferEntity}">
                         <div class="col-md-12">
                             <div class="card full-height">
                                 <div class="card-header collapse-link">
@@ -390,7 +291,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="card-body">
                                     <form class="form-horizontal">
                                         <div class="row form-group">
@@ -413,7 +313,7 @@
                                                         转让限制
                                                     </label>
                                                     <div class="col-sm-11">
-                                                        <label class="form-control input-full">${surveyAssetInventory.transferLimit}
+                                                        <label class="form-control input-full">${transferEntity.transferLimit}
                                                         </label>
                                                     </div>
                                                 </div>
@@ -431,7 +331,6 @@
     </div>
 </div>
 </body>
-
 
 <script type="application/javascript">
 
@@ -597,7 +496,6 @@
             html += "<div class='col-sm-2'>";
             html += "<label class='form-control input-full'>" + n["money"];
             html += "</div>";
-
 
             html += "</div>";
             html += "</div>";

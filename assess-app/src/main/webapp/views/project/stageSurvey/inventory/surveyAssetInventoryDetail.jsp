@@ -152,100 +152,10 @@
                                             </div>
                                         </div>
                                     </c:forEach>
-
-
-
-
-
-
                                 </form>
                             </div>
                         </div>
                     </div>
-                    <!-- 清查内容 start -->
-                    <div class="col-md-12">
-                        <div class="card full-height">
-                            <div class="card-header collapse-link">
-                                <div class="card-head-row">
-                                    <div class="card-title">
-                                        清查内容
-                                    </div>
-                                    <div class="card-tools">
-                                        <button class="btn  btn-link btn-primary btn-xs"><span
-                                                class="fa fa-angle-down"></span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <form id="frm_asset_inventory_content" class="form-horizontal">
-                                    <table id="tb_List">
-                                        <thead>
-                                        <tr>
-                                            <th style="width: 6%">是否一致</th>
-                                            <th style="width: 10%">一致性内容</th>
-                                            <th style="width: 10%">登记</th>
-                                            <th style="width: 10%">实际</th>
-                                            <th style="width: 10%">差异原因</th>
-                                            <th style="width: 10%">证明文件</th>
-                                            <th style="width: 10%">证明文件附件</th>
-                                            <th style="width: 5%">证明人</th>
-                                            <th style="width: 8%">调查时间</th>
-                                            <th style="width: 6%">确认一致</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <c:forEach items="${surveyAssetInventoryContentVos}" var="item" varStatus="s">
-                                        <tr>
-                                            <td>
-                                                <label class="form-control input-full">${item.areConsistent}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control input-full">${item.inventoryContentName}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control input-full">${item.registration}</label>
-                                            </td>
-                                            <td>
-                                                <label class="form-control input-full">${item.actual}</label>
-                                            </td>
-                                            <c:if test="${item.areConsistent != '一致'}">
-                                                <td>
-                                                    <label class="form-control input-full">${item.differenceReason}</label>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">${item.credential}</label>
-                                                </td>
-                                                <td>
-                                                    <div id="_credentialAccessory${item.id}"></div>
-                                                    <script type="text/javascript">
-                                                        $(function () {
-                                                            //清查内容附件加载
-                                                            showFileCommon("${item.id}");
-                                                        })
-                                                    </script>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">${item.voucher}</label>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">
-                                                        <fmt:formatDate value="${item.surveyTime}"
-                                                                        pattern="yyyy-MM-dd"/>
-                                                    </label>
-                                                </td>
-                                                <td>
-                                                    <label class="form-control input-full">${item.sureConsistent}</label>
-                                                </td>
-                                            </c:if>
-                                        </tr>
-                                        </c:forEach>
-                                    </table>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-
 
                     <!-- 税费、工程、物管欠款调查 start -->
                     <div class="col-md-12">
@@ -262,10 +172,8 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="card-body">
                                 <form id="taxesPaymentSurvey" class="form-horizontal">
-
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">

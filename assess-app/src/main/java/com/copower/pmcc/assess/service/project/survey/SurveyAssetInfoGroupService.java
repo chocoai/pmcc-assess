@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.survey;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoGroupDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
@@ -47,7 +48,6 @@ public class SurveyAssetInfoGroupService {
     private SurveyAssetInventoryDao surveyAssetInventoryDao;
 
     private final String viewSpilt = "viewSpilt";
-    private final String uniformity = "uniformity";
     private final String taxArrears = "taxArrears";
     private final String damage = "damage";
     private final String transfer = "transfer";
@@ -74,55 +74,25 @@ public class SurveyAssetInfoGroupService {
         List<String> list = FormatUtils.transformString2List(formType);
         SurveyAssetInventory inventory = null;
         for (String s : list) {
+            inventory = new SurveyAssetInventory();
+            inventory.setGroupId(group.getId());
+            surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
             switch (s) {
                 case viewSpilt:
-                    inventory = new SurveyAssetInventory();
-                    inventory.setGroupId(group.getId());
-                    surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
                     group.setViewSpiltId(inventory.getId());
                     break;
-                case uniformity:
-
-                    break;
                 case taxArrears:
-                    inventory = new SurveyAssetInventory();
-                    inventory.setGroupId(group.getId());
-                    surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
                     group.setTaxArrearsId(inventory.getId());
                     break;
                 case damage:
-                    inventory = new SurveyAssetInventory();
-                    inventory.setGroupId(group.getId());
-                    surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
                     group.setDamageId(inventory.getId());
                     break;
                 case transfer:
-                    inventory = new SurveyAssetInventory();
-                    inventory.setGroupId(group.getId());
-                    surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
                     group.setTransferId(inventory.getId());
                     break;
             }
         }
         surveyAssetInfoGroupDao.updateSurveyAssetInfoGroup(group, false);
-    }
-
-    private void removeFileByTableId(Integer tableId) throws Exception {
-        if (tableId == null) {
-            return;
-        }
-        List<Integer> integers = surveyAssetInfoItemService.getSurveyAssetInfoItemIdsByGroupId(tableId);
-        if (CollectionUtils.isNotEmpty(integers)) {
-            throw new Exception("存在子类,请删除子类以后在删除本数据");
-        }
-        SysAttachmentDto sysAttachmentDto = new SysAttachmentDto();
-        sysAttachmentDto.setTableId(tableId);
-        sysAttachmentDto.setTableName(FormatUtils.entityNameConvertToTableName(SurveyAssetInfoGroup.class));
-        List<SysAttachmentDto> sysAttachmentDtoList = baseAttachmentService.getAttachmentList(sysAttachmentDto);
-        if (CollectionUtils.isEmpty(sysAttachmentDtoList)) {
-            return;
-        }
-        sysAttachmentDtoList.forEach(sysAttachmentDto1 -> baseAttachmentService.deleteAttachment(sysAttachmentDto1.getId()));
     }
 
     @Transactional(rollbackFor = {Exception.class})
@@ -132,14 +102,27 @@ public class SurveyAssetInfoGroupService {
         }
         List<Integer> ids = FormatUtils.transformString2Integer(id);
         if (CollectionUtils.isNotEmpty(ids)) {
-            if (ids.size() == 1) {
-                removeFileByTableId(ids.get(0));
-                surveyAssetInfoGroupDao.deleteSurveyAssetInfoGroupById(ids.get(0));
-            } else {
-                for (Integer integer : ids) {
-                    removeFileByTableId(integer);
-                    surveyAssetInfoGroupDao.deleteSurveyAssetInfoGroupById(integer);
+            for (Integer integer : ids) {
+                SurveyAssetInfoItem where = new SurveyAssetInfoItem();
+                where.setGroupId(integer);
+                List<SurveyAssetInfoItem> infoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemListByQuery(where);
+                if (CollectionUtils.isNotEmpty(infoItems)) {
+                    infoItems.forEach(o -> {
+                        o.setGroupId(0);
+                        surveyAssetInfoItemService.updateSurveyAssetInfoItem(o, false);
+                    });
                 }
+                SurveyAssetInfoGroup assetInfoGroup = getSurveyAssetInfoGroupById(integer);
+                if (assetInfoGroup.getViewSpiltId() != null)
+                    surveyAssetInventoryDao.deleteSurveyAssetInventory(assetInfoGroup.getViewSpiltId());
+                if (assetInfoGroup.getViewSpiltId() != null)
+                    surveyAssetInventoryDao.deleteSurveyAssetInventory(assetInfoGroup.getViewSpiltId());
+                if (assetInfoGroup.getViewSpiltId() != null)
+                    surveyAssetInventoryDao.deleteSurveyAssetInventory(assetInfoGroup.getViewSpiltId());
+                if (assetInfoGroup.getViewSpiltId() != null)
+                    surveyAssetInventoryDao.deleteSurveyAssetInventory(assetInfoGroup.getViewSpiltId());
+
+                surveyAssetInfoGroupDao.deleteSurveyAssetInfoGroupById(integer);
             }
         }
     }
@@ -196,10 +179,13 @@ public class SurveyAssetInfoGroupService {
         }
     }
 
-    /**保存分组的清查信息
+    /**
+     * 保存分组的清查信息
+     *
      * @param formData
      */
-    public void saveGroupInventoryData(String formData) throws BusinessException {
+    @Transactional(rollbackFor = Exception.class)
+    public void saveGroupInventoryData(String formData, Integer groupId) throws BusinessException {
         if (StringUtils.isBlank(formData))
             throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
         JSONObject jsonObject = JSON.parseObject(formData);
@@ -212,10 +198,17 @@ public class SurveyAssetInfoGroupService {
             for (String s : list) {
                 if (StringUtils.isNotBlank(s)) {
                     SurveyAssetInventory inventory = JSON.parseObject(s, SurveyAssetInventory.class);
-                    if (inventory != null) {
+                    if (inventory != null && inventory.getId() != null) {
                         surveyAssetInventoryDao.updateSurveyAssetInventory(inventory);
                     }
                 }
+            }
+        }
+        List<SurveyAssetInfoItem> infoItems = surveyAssetInfoItemService.getSurveyAssetInfoItemsByGroupId(groupId);
+        if (CollectionUtils.isNotEmpty(infoItems)) {
+            for (SurveyAssetInfoItem infoItem : infoItems) {
+                infoItem.setStatus(ProjectStatusEnum.FINISH.getKey());
+                surveyAssetInfoItemService.updateSurveyAssetInfoItem(infoItem, false);
             }
         }
     }

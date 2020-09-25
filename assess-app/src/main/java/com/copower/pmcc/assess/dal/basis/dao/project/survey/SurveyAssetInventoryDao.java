@@ -23,13 +23,17 @@ public class SurveyAssetInventoryDao {
         return i > 0;
     }
 
-    public SurveyAssetInventory getSurveyAssetInventoryById(Integer id){
-        return surveyAssetInventoryMapper.selectByPrimaryKey(id) ;
+    public SurveyAssetInventory getSurveyAssetInventoryById(Integer id) {
+        return surveyAssetInventoryMapper.selectByPrimaryKey(id);
     }
 
     public int addSurveyAssetInventory(SurveyAssetInventory surveyAssetInventory) {
         surveyAssetInventoryMapper.insertSelective(surveyAssetInventory);
         return surveyAssetInventory.getId();
+    }
+
+    public boolean deleteSurveyAssetInventory(Integer id) {
+        return surveyAssetInventoryMapper.deleteByPrimaryKey(id) > 0;
     }
 
     public SurveyAssetInventory getDataByProcessInsId(String processInsId) {
