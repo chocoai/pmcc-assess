@@ -243,6 +243,13 @@ public class SchemeReimbursementService {
         return schemeReimbursementDao.getSchemeReimbursement(where);
     }
 
+    public List<SchemeReimbursement> getSchemeReimbursementList(Integer project, Integer areaId) {
+        SchemeReimbursement where = new SchemeReimbursement();
+        where.setProjectId(project);
+        where.setAreaId(areaId);
+        return schemeReimbursementDao.getObjectList(where);
+    }
+
     /**
      * 删除数据
      *
