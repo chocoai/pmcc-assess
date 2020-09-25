@@ -32,17 +32,20 @@
                                     <div class="form-group form-inline">
                                         <label for="queryProjectName" class="col-md-1 col-form-label">项目名称</label>
                                         <div class="col-md-2 p-0">
-                                            <input id="queryProjectName" name="queryProjectName" class="form-control input-full"  placeholder="项目名称"/>
+                                            <input id="queryProjectName" name="queryProjectName"
+                                                   class="form-control input-full" placeholder="项目名称"/>
                                         </div>
                                         <label class="col-md-1 col-form-label">阶段名称</label>
                                         <div class="col-md-2 p-0">
-                                            <input id="queryWorkStageName" name="queryWorkStageName" class="form-control input-full"
+                                            <input id="queryWorkStageName" name="queryWorkStageName"
+                                                   class="form-control input-full"
                                                    placeholder="阶段名称"/>
                                         </div>
 
                                         <label class="col-md-1 col-form-label">事项名称</label>
                                         <div class="col-md-2 p-0">
-                                            <input id="queryPhaseName" name="queryPhaseName" class="form-control input-full"
+                                            <input id="queryPhaseName" name="queryPhaseName"
+                                                   class="form-control input-full"
                                                    placeholder="事项名称"/>
                                         </div>
                                         <label class="col-md-1 col-form-label">项目经理</label>
@@ -50,16 +53,19 @@
                                             <input type="hidden" id="queryUserAccount" name="queryUserAccount">
                                             <input type="text" data-rule-maxlength="50" readonly
                                                    placeholder="项目经理" onclick="personSelect(this)"
-                                                   id="queryUserAccountName" name="queryUserAccountName" class="form-control input-full">
+                                                   id="queryUserAccountName" name="queryUserAccountName"
+                                                   class="form-control input-full">
                                         </div>
                                     </div>
                                     <div class="form-group form-inline">
                                         <label class="col-md-1 col-form-label">责任人</label>
                                         <div class="col-md-2 p-0">
-                                            <input type="hidden" id="queryExecuteUserAccount" name="queryExecuteUserAccount">
+                                            <input type="hidden" id="queryExecuteUserAccount"
+                                                   name="queryExecuteUserAccount">
                                             <input type="text" data-rule-maxlength="50" readonly
                                                    placeholder="责任人" onclick="personSelect(this)"
-                                                   id="queryExecuteUserAccountName" name="queryExecuteUserAccountName" class="form-control input-full">
+                                                   id="queryExecuteUserAccountName" name="queryExecuteUserAccountName"
+                                                   class="form-control input-full">
                                         </div>
                                         <label class="col-md-1 col-form-label">开始时间</label>
                                         <div class="col-md-2 p-0">
@@ -80,11 +86,41 @@
 											</span>
                                             查询
                                         </button>
+                                        <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button" onclick="$('#query_form').clearAll()">
+                                            <span class="fa fa-undo-alt" aria-hidden="true"></span>
+                                            重置
+                                        </button>
                                     </div>
                                 </form>
-                                <iframe id="report_iframe" width="100%" height="100%"
-                                        src="${pageContext.request.contextPath}/ureport/preview?_u=erp:projectWorkItem.ureport.xml&_i=1&_r=1"
-                                        frameborder="0" scrolling="auto"></iframe>
+                            </div>
+
+                            <div class="card-body">
+                                <ul class="nav nav-pills nav-secondary" role="tablist">
+                                    <li class="nav-item submenu">
+                                        <!-- 设置为默认选中 -->
+                                        <a class="nav-link active show" data-toggle="pill"
+                                           href="#reportBasicDataTab" role="tab" aria-selected="true">基础统计</a>
+                                    </li>
+                                    <li class="nav-item submenu">
+                                        <a class="nav-link" data-toggle="pill"
+                                           href="#reportApplyStatisticsTab" role="tab"
+                                           aria-selected="false">按项目统计</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content mt-2 mb-3">
+                                    <div class="tab-pane fade show active" id="reportBasicDataTab" role="tabpanel">
+                                        <iframe id="report_iframe" width="100%" height="100%"
+                                                src="${pageContext.request.contextPath}/ureport/preview?_u=erp:projectWorkItem.ureport.xml&_i=1&_r=1"
+                                                frameborder="0" scrolling="auto"></iframe>
+                                    </div>
+                                    <div class="tab-pane fade" id="reportApplyStatisticsTab"
+                                         role="tabpanel">
+                                        <iframe id="report_group_iframe" width="100%" height="100%"
+                                                src="${pageContext.request.contextPath}/ureport/preview?_u=erp:projectWorkItemGroup.ureport.xml&_i=1&_r=1"
+                                                frameborder="0" scrolling="auto"></iframe>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -101,6 +137,10 @@
 
 <script type="text/javascript" src="/pmcc-crm/js/crm-customer-utils.js?v=1.0"></script>
 <script type="application/javascript">
+    var arr = [{id: "report_group_iframe", xml: "projectWorkItemGroup.ureport.xml"}, {
+        id: "report_iframe",
+        xml: "projectWorkItem.ureport.xml"
+    }];
     $(function () {
         changeFrameHeight();
     });
@@ -108,14 +148,19 @@
 
     function statisticsByCondition() {
         var data = formParams("query_form");
-        document.getElementById('report_iframe').src = "${pageContext.request.contextPath}/ureport/preview?_u=erp:projectWorkItem.ureport.xml&_i=1&_r=1&queryProjectName=" + data.queryProjectName + "&queryWorkStageName=" + data.queryWorkStageName +
-            "&queryPhaseName=" + data.queryPhaseName + "&queryUserAccount=" + data.queryUserAccount + "&queryExecuteUserAccount=" + data.queryExecuteUserAccount+ "&queryStartTime=" + data.queryStartTime+ "&queryEndTime=" + data.queryEndTime;
+        $.each(arr, function (k, obj) {
+            var url = "${pageContext.request.contextPath}/ureport/preview?_u=erp:" + obj.xml;
+            document.getElementById(obj.id).src = url + "&_i=1&_r=1&queryProjectName=" + data.queryProjectName + "&queryWorkStageName=" + data.queryWorkStageName +
+                "&queryPhaseName=" + data.queryPhaseName + "&queryUserAccount=" + data.queryUserAccount + "&queryExecuteUserAccount=" + data.queryExecuteUserAccount + "&queryStartTime=" + data.queryStartTime + "&queryEndTime=" + data.queryEndTime;
+        });
     }
 
 
     function changeFrameHeight() {
-        var ifm = document.getElementById("report_iframe");
-        ifm.height = document.documentElement.clientHeight - 56;
+        $.each(arr, function (k, obj) {
+            var ifm = document.getElementById(obj.id);
+            ifm.height = document.documentElement.clientHeight - 56;
+        });
     }
 
     window.onresize = function () {
@@ -144,14 +189,13 @@
 
 
     //选择人员
-    function personSelect (_this) {
+    function personSelect(_this) {
         erpEmployee.select({
             onSelected: function (data) {
                 if (data.account) {
                     $(_this).val(data.name);
                     $(_this).prev().val(data.account);
-                }
-                else {
+                } else {
                     $(_this).val("");
                     $(_this).prev().val("");
                 }

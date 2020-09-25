@@ -27,8 +27,8 @@ import java.util.Map;
 /**
  * Created by kings on 2019-8-2.
  */
-@Service("projectWorkItemService")
-public class ProjectWorkItemService {
+@Service("projectWorkItemGroupService")
+public class ProjectWorkItemGroupService {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private DdlMySqlAssist ddlMySqlAssist;
@@ -83,13 +83,12 @@ public class ProjectWorkItemService {
             queryEndTime = DateUtils.format(endTimeParse);
         }
         StringBuilder sql = new StringBuilder();
-        sql.append("SELECT A.id,A.project_id,A.project_phase_name,A.actual_hours,A.status,A.task_submit_time,A.execute_user_account," +
+        sql.append("SELECT A.id,A.project_id,A.project_phase_name,sum(A.actual_hours) as actual_hours,A.status,A.task_submit_time,A.execute_user_account," +
                 " B.project_name,C.work_stage_name,D.user_account_manager FROM tb_project_plan_details A" +
                 " LEFT JOIN tb_project_info B ON A.project_id=B.id" +
                 " LEFT JOIN tb_project_work_stage C ON A.project_work_stage_id=C.id" +
                 " LEFT JOIN tb_project_member D ON A.project_id=D.project_id" +
                 " WHERE A.actual_hours is not null");
-
         if (StringUtil.isNotEmpty(queryProjectName)) {
             sql.append(String.format(" AND B.project_name LIKE '%s%s%s'", "%", queryProjectName, "%"));
         }
@@ -111,7 +110,7 @@ public class ProjectWorkItemService {
         if (StringUtil.isNotEmpty(queryEndTime)) {
             sql.append(String.format(" AND Date(A.task_submit_time) < '%s'", queryEndTime));
         }
-        sql.append(" ORDER BY  A.id desc") ;
+        sql.append(" GROUP BY A.project_id ORDER BY  A.project_id desc") ;
         List<ProjectWorkItemVo> list = Lists.newArrayList();
         Page<PageInfo> page = PageHelper.startPage(pageIndex, fixRows);
         List<Map> mapList = ddlMySqlAssist.customTableSelect(sql.toString());
