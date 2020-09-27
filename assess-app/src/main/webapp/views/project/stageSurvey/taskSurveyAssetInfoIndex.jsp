@@ -1027,6 +1027,7 @@
                     }, function (result) {
                         if (result.ret) {
                             notifySuccess("成功", "操作成功!");
+                            layer.closeAll('iframe');
                             assetInfo.loadSurveyAssetInfoItemBaseList();
                         } else {
                             AlertError("操作失败，失败原因:" + result.errmsg);

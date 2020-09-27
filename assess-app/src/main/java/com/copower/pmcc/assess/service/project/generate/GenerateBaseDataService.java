@@ -1976,7 +1976,7 @@ public class GenerateBaseDataService {
                 for (SchemeInfo schemeInfo : infoList) {
                     if (schemeInfo.getMethodDataId() != null) {
                         MdIncome income = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
-                        if (income != null && income.getLeaseMode().equals(0)) {
+                        if (income != null && income.getLeaseMode() != null && income.getLeaseMode().equals(0)) {
                             SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeInfo.getJudgeObjectId());
                             stringList.add(String.format("%s%s%s", judgeObject.getName(), income.getRestrictionExplain(), StringUtils.repeat(ControlChar.LINE_BREAK, 1)));
                         }
@@ -5851,7 +5851,7 @@ public class GenerateBaseDataService {
             try {
                 imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
             } catch (Exception e) {
-                logger.error(e.getMessage(),e);
+                logger.error(e.getMessage(), e);
             }
             if (FileUtils.checkImgSuffix(imgPath)) {
                 imgPathList.add(imgPath);
@@ -5981,7 +5981,7 @@ public class GenerateBaseDataService {
         if (CollectionUtils.isNotEmpty(this.schemeJudgeObjectDeclareList)) {
             Map<Integer, List<SysAttachmentDto>> inventoryAddressFileList = schemeReportFileService.getInventoryAddressFileList(projectId);
             for (SchemeJudgeObject schemeJudgeObject : this.schemeJudgeObjectDeclareList) {
-                if (schemeJudgeObject.getDeclareRecordId() == null){
+                if (schemeJudgeObject.getDeclareRecordId() == null) {
                     continue;
                 }
                 //1.先取地址不一致附件
@@ -5997,16 +5997,16 @@ public class GenerateBaseDataService {
         }
 
         //2.法定优先受偿款附件
-        Map<Integer, List<SysAttachmentDto>> schemeReimbursementMap = schemeReportFileService.getReimbursementFileList(projectId,areaId);
+        Map<Integer, List<SysAttachmentDto>> schemeReimbursementMap = schemeReportFileService.getReimbursementFileList(projectId, areaId);
         if (!schemeReimbursementMap.isEmpty()) {
             Collection<List<SysAttachmentDto>> values = schemeReimbursementMap.values();
-            List<SysAttachmentDto> sysAttachmentDtoList = new ArrayList<>() ;
+            List<SysAttachmentDto> sysAttachmentDtoList = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(values)) {
-                for (List<SysAttachmentDto> sysAttachmentDtos:values){
+                for (List<SysAttachmentDto> sysAttachmentDtos : values) {
                     if (CollectionUtils.isEmpty(sysAttachmentDtos)) {
                         continue;
                     }
-                    sysAttachmentDtoList.addAll(sysAttachmentDtos) ;
+                    sysAttachmentDtoList.addAll(sysAttachmentDtos);
                 }
             }
             builder.getParagraphFormat().setAlignment(ParagraphAlignment.CENTER);
@@ -6072,7 +6072,7 @@ public class GenerateBaseDataService {
             List<SysAttachmentDto> attachmentDtoList = JSON.parseArray(adCompanyQualificationDto.getStandardImageJson(), SysAttachmentDto.class);
             if (CollectionUtils.isEmpty(attachmentDtoList)) return null;
             this.imgComposingByAttachmentDtoList(attachmentDtoList, builder);
-            if (CollectionUtils.isEmpty(attachmentDtoList)){
+            if (CollectionUtils.isEmpty(attachmentDtoList)) {
                 return null;
             }
             List<String> images = Lists.newArrayList();
@@ -6081,7 +6081,7 @@ public class GenerateBaseDataService {
                 try {
                     imgPath = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
                 } catch (Exception e) {
-                    logger.error(e.getMessage(),e);
+                    logger.error(e.getMessage(), e);
                 }
                 if (StringUtils.isNotBlank(imgPath) && FileUtils.checkImgSuffix(imgPath)) {
                     images.add(imgPath);
