@@ -53,14 +53,15 @@ import java.util.stream.Collectors;
 /**
  * @author: huhao
  * @date: 2019/2/12 16:43
- * @description:收益法报告字段处理
+ * @description:成本逼近法报告字段处理
  */
 public class GenerateMdCostApproachService implements Serializable {
     private final LinkedList<String> chineseNumbers = Lists.newLinkedList(Arrays.asList("一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"));
     private Integer miId;
     private Integer areaId;
+    private Integer judgeObjectId;
+    private Integer projectId;
     private MdCostApproach mdCostApproach;
-    private SchemeInfo schemeInfo;
     private SchemeAreaGroup schemeAreaGroup;
     private SchemeJudgeObject schemeJudgeObject;
 
@@ -882,14 +883,11 @@ public class GenerateMdCostApproachService implements Serializable {
         return errorStr;
     }
 
-    private SchemeInfo getSchemeInfo() {
-        return schemeInfo;
-    }
 
     private SchemeJudgeObject getSchemeJudgeObject() {
         if (schemeJudgeObject == null) {
-            if (getSchemeInfo().getJudgeObjectId() != null) {
-                schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(getSchemeInfo().getJudgeObjectId());
+            if (judgeObjectId != null) {
+                schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
             }
             if (schemeJudgeObject == null) {
                 schemeJudgeObject = new SchemeJudgeObject();
@@ -906,8 +904,13 @@ public class GenerateMdCostApproachService implements Serializable {
     }
 
     public GenerateMdCostApproachService(SchemeInfo schemeInfo, Integer areaId) {
-        this.miId = schemeInfo.getMethodDataId();
-        this.schemeInfo = schemeInfo;
+        new GenerateMdCostApproachService(schemeInfo.getProjectId(),areaId,schemeInfo.getMethodDataId(),schemeInfo.getJudgeObjectId()) ;
+    }
+
+    public GenerateMdCostApproachService(Integer projectId, Integer areaId ,Integer mlId,Integer  judgeObjectId) {
+        this.miId = mlId;
+        this.judgeObjectId = judgeObjectId;
+        this.projectId = projectId;
         this.areaId = areaId;
         this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);

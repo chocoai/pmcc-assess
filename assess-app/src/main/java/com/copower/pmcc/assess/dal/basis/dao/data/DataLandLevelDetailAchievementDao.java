@@ -45,6 +45,14 @@ public class DataLandLevelDetailAchievementDao {
         return mapper.selectByExample(example);
     }
 
+    public List<DataLandLevelDetailAchievement> getDataLandLevelDetailAchievementListByIds(List<Integer> ids) {
+        DataLandLevelDetailAchievementExample example = new DataLandLevelDetailAchievementExample();
+        DataLandLevelDetailAchievementExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIsNotNull();
+        criteria.andIdIn(ids) ;
+        return mapper.selectByExample(example);
+    }
+
     public void deleteDataLandLevelDetailAchievementList(DataLandLevelDetailAchievement oo) {
         DataLandLevelDetailAchievementExample example = getExample(oo);
         mapper.deleteByExample(example);

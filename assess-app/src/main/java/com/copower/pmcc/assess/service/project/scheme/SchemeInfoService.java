@@ -44,6 +44,10 @@ public class SchemeInfoService {
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
 
+    public SchemeInfoDao getSchemeInfoDao(){
+        return schemeInfoDao;
+    }
+
     /**
      * 保存信息
      *
