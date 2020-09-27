@@ -87,6 +87,8 @@ public class EvaluationHypothesisService {
     private SchemeAreaGroupService schemeAreaGroupService;
     @Autowired
     private SurveyAssetInfoService surveyAssetInfoService;
+    @Autowired
+    private SurveyAssetInfoItemService surveyAssetInfoItemService;
 
 
     /**
@@ -290,41 +292,36 @@ public class EvaluationHypothesisService {
                     if (judgeObject.getDeclareRecordId() == null || judgeObject.getDeclareRecordId() == 0) {
                         continue;
                     }
-                    List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(judgeObject.getDeclareRecordId());
-                    if (CollectionUtils.isEmpty(surveyAssetInventories)) {
-                        continue;
-                    }
-                    //对应资产清查内容
-                    for (SurveyAssetInventory surveyAssetInventory : surveyAssetInventories) {
-                        List<SurveyAssetInventoryContent> SurveyAssetInventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(surveyAssetInventory.getId());
-                        if (CollectionUtils.isEmpty(SurveyAssetInventoryContents)) {
-                            continue;
-                        }
-                        for (SurveyAssetInventoryContent item : SurveyAssetInventoryContents) {
-                            if (item.getInventoryContent() == null) continue;
-                            String fieldName = baseDataDicService.getCacheDataDicById(item.getInventoryContent()).getFieldName();
-                            if (StringUtils.isBlank(fieldName)) continue;
-                            if ("不一致".equals(item.getAreConsistent())) {
-                                DataReportTemplateItem dataReportTemplateByField = null;
-                                if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS.equals(fieldName))
-                                    dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOAD_ADDRESS);
-                                if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS.equals(fieldName))
-                                    dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTERED_ADDRESS);
-                                if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE.equals(fieldName))
-                                    dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTRATION_PURPOSES);
-                                if (dataReportTemplateByField != null) {
-                                    String template = dataReportTemplateByField.getTemplate()
-                                            .replace("#{委估对象号}", generateCommonMethod.getSchemeJudgeObjectShowName2(judgeObject, judgeObjectList))
-                                            .replace("#{登记信息}", StringUtils.defaultString(item.getRegistration()))
-                                            .replace("#{实际信息}", StringUtils.defaultString(item.getActual()))
-                                            .replace("#{证明人}", StringUtils.defaultString(item.getVoucher()))
-                                            .replace("#{证明文件}", StringUtils.defaultString(item.getCredential()))
-                                            .replace("#{一致结论}", StringUtils.defaultString(item.getSureConsistent()));
-                                    stringConsistent.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(template)));
-                                }
+                    SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemByDeclareId(judgeObject.getDeclareRecordId());
+                    if (assetInfoItem == null) continue;
+                    List<SurveyAssetInventoryContent> SurveyAssetInventoryContents = surveyAssetInventoryContentService.getInventoryContentListByItemId(assetInfoItem.getId());
+                    if (CollectionUtils.isEmpty(SurveyAssetInventoryContents)) continue;
+                    for (SurveyAssetInventoryContent item : SurveyAssetInventoryContents) {
+                        if (item.getInventoryContent() == null) continue;
+                        String fieldName = baseDataDicService.getCacheDataDicById(item.getInventoryContent()).getFieldName();
+                        if (StringUtils.isBlank(fieldName)) continue;
+                        if ("不一致".equals(item.getAreConsistent())) {
+                            DataReportTemplateItem dataReportTemplateByField = null;
+                            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS.equals(fieldName))
+                                dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.LOAD_ADDRESS);
+                            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_ACTUAL_ADDRESS.equals(fieldName))
+                                dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTERED_ADDRESS);
+                            if (AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_USE.equals(fieldName))
+                                dataReportTemplateByField = dataReportTemplateItemService.getDataReportTemplateByField(AssessReportFieldConstant.REGISTRATION_PURPOSES);
+                            if (dataReportTemplateByField != null) {
+                                String template = dataReportTemplateByField.getTemplate()
+                                        .replace("#{委估对象号}", generateCommonMethod.getSchemeJudgeObjectShowName2(judgeObject, judgeObjectList))
+                                        .replace("#{登记信息}", StringUtils.defaultString(item.getRegistration()))
+                                        .replace("#{实际信息}", StringUtils.defaultString(item.getActual()))
+                                        .replace("#{证明人}", StringUtils.defaultString(item.getVoucher()))
+                                        .replace("#{证明文件}", StringUtils.defaultString(item.getCredential()))
+                                        .replace("#{一致结论}", StringUtils.defaultString(item.getSureConsistent()));
+                                stringConsistent.append(generateCommonMethod.getIndentHtml(publicService.tagfilter(template)));
                             }
                         }
                     }
+                    List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(judgeObject.getDeclareRecordId());
+                    if (CollectionUtils.isEmpty(surveyAssetInventories)) continue;
                 }
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s、%s", ++order2, basis.getName())));
                 if (stringConsistent.length() <= 0) {

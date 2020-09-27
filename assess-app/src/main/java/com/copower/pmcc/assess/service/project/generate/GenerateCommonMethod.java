@@ -18,6 +18,7 @@ import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoItemService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
@@ -79,7 +80,7 @@ public class GenerateCommonMethod {
     @Autowired
     private SurveyAssetInfoService surveyAssetInfoService;
     @Autowired
-    private SchemeAreaGroupService schemeAreaGroupService;
+    private SurveyAssetInfoItemService surveyAssetInfoItemService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
@@ -90,6 +91,7 @@ public class GenerateCommonMethod {
     private BasicEstateService basicEstateService;
     @Autowired
     private GenerateReportGroupService generateReportGroupService;
+
     public static final String SchemeJudgeObjectName = "委估对象";
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -120,17 +122,14 @@ public class GenerateCommonMethod {
     public String getAssetInventoryCommon(String fieldName, BaseDataDic type, Integer declareRecordId, ProjectInfo projectInfo) throws Exception {
         Set<SurveyAssetInventoryContent> surveyAssetInventoryContentSet = Sets.newHashSet();
         Set<String> stringSet = Sets.newHashSet();
-        List<SurveyAssetInventory> surveyAssetInventories = surveyAssetInfoService.getSurveyAssetInventoryListByDeclareRecordId(declareRecordId);
+        SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemByDeclareId(declareRecordId);
+        if (assetInfoItem == null) return null;
         List<SurveyAssetInventoryContent> contentList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(surveyAssetInventories)) {
-            for (SurveyAssetInventory surveyAssetInventory : surveyAssetInventories) {
-                List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(surveyAssetInventory.getId());
-                if (CollectionUtils.isEmpty(surveyAssetInventoryContents)) {
-                    continue;
-                }
-                contentList.addAll(surveyAssetInventoryContents);
-            }
+        List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getInventoryContentListByItemId(assetInfoItem.getId());
+        if (CollectionUtils.isEmpty(surveyAssetInventoryContents)) {
+            return null;
         }
+        contentList.addAll(surveyAssetInventoryContents);
         if (CollectionUtils.isNotEmpty(contentList)) {
             for (SurveyAssetInventoryContent o : contentList) {
                 if (com.google.common.base.Objects.equal("不一致", o.getAreConsistent()) && com.google.common.base.Objects.equal(type.getId(), o.getInventoryContent()))
@@ -1482,6 +1481,7 @@ public class GenerateCommonMethod {
      * 以前方法名称叫imageInsertToWrod3
      * zch 重新构造 目的是不能因为某张图片 无效而影响到报告并且当单张图片出问题其余图片可以正常显示
      * 插入思路是  先插入相同列的图片，然后再插入相同列的名称  这样就做到了图片和列相同  使得名称看起来在图片下面  起到美观作用
+     *
      * @param schemeReportFileList
      * @param colCount
      * @param builder
@@ -1499,7 +1499,7 @@ public class GenerateCommonMethod {
         if (CollectionUtils.isEmpty(schemeReportFileList)) throw new RuntimeException("imgPathList empty");
         if (colCount == null || colCount <= 0) throw new RuntimeException("colCount empty");
         if (builder == null) throw new RuntimeException("builder empty");
-        SysAttachmentDto baseQuery = new SysAttachmentDto() ;
+        SysAttachmentDto baseQuery = new SysAttachmentDto();
         baseQuery.setFieldsName("live_situation_select_supplement");
         baseQuery.setTableName(FormatUtils.entityNameConvertToTableName(SchemeJudgeObject.class));
         Map<SchemeReportFileItem, List<String>> map = schemeReportFileService.transform(schemeReportFileList, baseQuery);
@@ -1507,7 +1507,7 @@ public class GenerateCommonMethod {
             try {
                 throw new Exception("没有正确的获取到图片");
             } catch (Exception e) {
-                logger.error(e.getMessage(),e);
+                logger.error(e.getMessage(), e);
             }
             return;
         }
@@ -1524,38 +1524,38 @@ public class GenerateCommonMethod {
         Set<SchemeReportFileItem> itemSet = map.keySet();
         List<List<SchemeReportFileItem>> splitsList = new ExcelImportUtils.SplitsList<SchemeReportFileItem>().splitsList(Lists.newArrayList(itemSet), colCount);
         builder.startTable();
-        for (List<SchemeReportFileItem>  list:splitsList){
+        for (List<SchemeReportFileItem> list : splitsList) {
             if (CollectionUtils.isEmpty(list)) {
                 continue;
             }
-            List<String> names = new ArrayList<>(list.size()) ;
+            List<String> names = new ArrayList<>(list.size());
             //传入图片
-            for (SchemeReportFileItem schemeReportFileItem:list){
+            for (SchemeReportFileItem schemeReportFileItem : list) {
                 builder.insertCell();
                 List<Map.Entry<SchemeReportFileItem, List<String>>> filter = LangUtils.filter(map.entrySet(), obj -> obj.getKey().getId().equals(schemeReportFileItem.getId()));
                 if (CollectionUtils.isEmpty(filter)) {
                     continue;
                 }
                 List<String> paths = filter.get(0).getValue();//刚好一个所以取0
-                String  imgPath = null;
+                String imgPath = null;
                 try {
                     imgPath = FileUtils.getCombinationOfhead(paths);
                 } catch (Exception e) {
-                    logger.error(e.getMessage(),e);
+                    logger.error(e.getMessage(), e);
                     continue;
                 }
                 if (StringUtils.isNotBlank(imgPath)) {
                     builder.insertImage(imgPath, RelativeHorizontalPosition.MARGIN, 0,
                             RelativeVerticalPosition.MARGIN, 0, width, height, WrapType.INLINE);
                 }
-                names.add(schemeReportFileItem.getFileName()) ;
+                names.add(schemeReportFileItem.getFileName());
             }
             builder.endRow();
             //在图片下面一行继续插入一行作为显示图片的名称
             if (CollectionUtils.isEmpty(names)) {
                 continue;
             }
-            for (String name:names) {
+            for (String name : names) {
                 builder.insertCell();
                 builder.writeln(AsposeUtils.getValue(name));
             }
