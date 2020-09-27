@@ -621,6 +621,10 @@ public class MdCostApproachService {
                         mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP));
                     }
                     break;
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD:{
+                    mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP));
+                    break;
+                }
                 //土地管理费
                 case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_LAND_MANAGER:
                     //=ROUND(SUM(D5:D12)*F13,2)

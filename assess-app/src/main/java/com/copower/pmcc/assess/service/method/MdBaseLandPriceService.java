@@ -151,8 +151,8 @@ public class MdBaseLandPriceService {
         MdBaseLandPrice obj = new MdBaseLandPrice();
         obj.setName(schemeJudgeObject.getName());
         obj.setCreator(processControllerComponent.getThisUser());
-        mdBaseLandPriceDao.addMdBaseLandPrice(obj);
         obj.setJudgeObjectId(judgeObjectId);
+        mdBaseLandPriceDao.addMdBaseLandPrice(obj);
         return obj;
     }
 

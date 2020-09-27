@@ -100,7 +100,7 @@
                 var iframe = window[layero.find('iframe')[0]['name']];
                 iframe.saveResult(function (mcId, price) {
                     target.find('[name=mcId]').val(mcId);
-                    target.find('[name=landPurchasePrice]').val(price);
+                    target.find('[name=landPurchasePrice]').val(price).trigger('blur');
                     layer.closeAll('iframe');
                 });
             },
@@ -109,6 +109,70 @@
                 if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {
                     target.find('[name=mcId]').val(iframe.marketCompare.mcId);
                 }
+            }
+        });
+        layer.full(frame);
+    };
+
+    construction.callBaseLandMethod = function (this_) {
+        var target = $(construction.target.selector);
+        var ele = target.find('[name=baseLandId]') ;
+        var dataId = ele.val();
+        var frame = layer.open({
+            type: 2,
+            title: '基准地价法',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['80%', '80%'],
+            content: '${pageContext.request.contextPath}/baseLandPrice/index?dataId=' + dataId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+            },
+            btnAlign: 'c',
+            btn: ['确定', '关闭'],
+            yes: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                iframe.saveResult(function (dataId, price) {
+                    target.find("[name='landPurchasePrice']").val(price).attr("data-value",price).trigger('blur');
+                    ele.val(dataId);
+                    layer.closeAll('iframe');
+                });
+            },
+            btn2: function (index, layero) {
+
+            }
+        });
+        layer.full(frame);
+    };
+
+    construction.callApproachMethod = function (this_) {
+        var target = $(construction.target.selector);
+        var ele = target.find('[name=approachId]') ;
+        var dataId = ele.val();
+        var frame = layer.open({
+            type: 2,
+            title: '成本逼近法',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['80%', '80%'],
+            content: '${pageContext.request.contextPath}/costApproach/index?dataId=' + dataId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+            },
+            btnAlign: 'c',
+            btn: ['确定', '关闭'],
+            yes: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+                iframe.saveResult(function (dataId, price) {
+                    target.find("[name='landPurchasePrice']").val(price).attr("data-value",price).trigger('blur');
+                    ele.val(dataId);
+                    layer.closeAll('iframe');
+                });
+            },
+            btn2: function (index, layero) {
+
             }
         });
         layer.full(frame);

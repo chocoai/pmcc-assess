@@ -344,7 +344,7 @@ public class MdMarketCostService {
     }
 
     public String calculationNumeric(MdCostConstruction target) {
-        mdCostConstructionDao.updateEstateNetwork(target);
+//        mdCostConstructionDao.updateEstateNetwork(target);
         String value = getFieldObjectValue(ReportFieldCostMethodEnum.MarketCost_constructionAssessmentPriceCorrecting, target);
         if (target.getId() != null && target.getId() != 0) {
             mdCostConstructionDao.updateEstateNetwork(target);

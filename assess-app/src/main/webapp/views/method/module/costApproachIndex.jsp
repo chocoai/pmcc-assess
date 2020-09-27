@@ -1096,19 +1096,66 @@
         html += '<td><input type="hidden" name="id" value="' + id + '">';
         html += '<input type="hidden" name="typeKey" value="' + typeKey + '">' + typeName + '</td>';
         switch (typeKey) {
+            case"data.land.approximation.method.occupation.land": {
+
+            }
+            case"data.land.approximation.method.plough.reclaim": {
+            }
+            case"data.land.approximation.method.vegetable.build": {
+                html += '<td>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" onblur="getThisPrice(this);" data-rule-number="true" name="standardFirst" class="form-control input-full " value="' + standardFirst + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '/';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" onblur="getThisPrice(this)" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" name="remark" class="form-control input-full " value="' + remark + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<a class="btn btn-xs btn-danger" onclick="getThisPrice(this)">计算价格</a>';
+                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
+                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '</td>';
+                break;
+            }
+            case "data.land.approximation.method.removal.award": {
+                html += '<td>';
+                html += '<input type="hidden"  data-rule-number="true" name="standardFirst" value="0"  >';
+                html += '/';
+                html += '</td>';
+                html += '<td>';
+                html += '/';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" onblur="getThisPrice(this)" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<div class="form-inline x-valid">';
+                html += '<input type="text" name="remark" class="form-control input-full " value="' + remark + '">';
+                html += '</div>';
+                html += '</td>';
+                html += '<td>';
+                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
+                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '</td>';
+                break;
+            }
             case "data.land.approximation.method.land.compensate": {
             }
             case "data.land.approximation.method.placement.compensate": {
             }
             case "data.land.approximation.method.house.compensate": {
-            }
-            case "data.land.approximation.method.removal.award": {
-            }
-            case"data.land.approximation.method.vegetable.build": {
-            }
-            case"data.land.approximation.method.plough.reclaim": {
-            }
-            case"data.land.approximation.method.occupation.land": {
                 html += '<td>';
                 html += '<div class="form-inline x-valid">';
                 html += '<input type="text" onblur="getThisPrice(this);" data-rule-number="true" name="standardFirst" class="form-control input-full " value="' + standardFirst + '">';
@@ -1143,7 +1190,7 @@
             case "data.land.approximation.method.cannot.foresee": {
             }
             case "data.land.approximation.method.land.acquisition": {
-                html += '<td>';
+                html += '<td >';
                 html += '<div class="form-inline x-valid">';
                 if (standardFirst) {
                     html += '<input type="text" onblur="getThisPrice(this)" data-rule-number="true" name="standardFirst"  class="form-control input-full x-percent" value="' + AssessCommon.pointToPercent(standardFirst) + '">';
@@ -1155,7 +1202,7 @@
                 html += '<td>';
                 html += '/';
                 html += '</td>';
-                html += '<td>';
+                html += '<td >';
                 html += '<div class="form-inline x-valid">';
                 html += '<input type="text" onblur="getThisPrice(this)" data-rule-number="true" name="price" class="form-control input-full " value="' + price + '">';
                 html += '</div>';
