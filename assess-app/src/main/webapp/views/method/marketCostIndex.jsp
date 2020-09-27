@@ -18,7 +18,7 @@
 
                 <input type="hidden" name="type" value="${mdCostVo.type==null?1:mdCostVo.type}">
 
-                <input type="hidden" name="mcId" value="${mdCostVo.mdCostConstruction.mcId}">
+
                 <input type="hidden" name="planDetailsId" value="${projectPlanDetails.id}">
                 <input type="hidden" name="economicId" value="${mdCostVo.mdCostConstruction.economicId}"
                        onblur="cost.checkParams(this);">
@@ -171,13 +171,16 @@
                                            onblur="cost.checkParams(this);"
                                            class="form-control input-full" required="required"
                                            value="${mdCostVo.mdCostConstruction.landPurchasePrice}">
-
-                                    <%--<div class="input-group">--%>
-                                    <%--<span class="input-group-btn">--%>
-                                    <%--<input type="button" class="btn btn-primary" value="市场比较法"--%>
-                                    <%--onclick="construction.callCompareMethod(this);">--%>
-                                    <%--</span>--%>
-                                    <%--</div>--%>
+                                    <input type="hidden" name="mcId" value="${mdCostVo.mdCostConstruction.mcId}">
+                                    <input type="hidden" name="baseLandId" value="${mdCostVo.mdCostConstruction.baseLandId}">
+                                    <input type="hidden" name="approachId" value="${mdCostVo.mdCostConstruction.approachId}">
+                                    <div class="input-group ">
+                                        <span class="input-group-btn">
+                                            <%--<button onclick="construction.callCompareMethod(this);" class="btn btn-primary btn-sm" type="button">市场比较法</button>--%>
+                                            <button onclick="construction.callBaseLandMethod(this);" class="btn btn-primary btn-sm" type="button">基准地价法</button>
+                                            <button onclick="construction.callApproachMethod(this);" class="btn btn-primary btn-sm" type="button">成本逼近法</button>
+                                        </span>
+                                    </div>
                                 </div>
                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                                     价格说明

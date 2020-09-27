@@ -71,8 +71,6 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostApproachApproval", processInsId, boxId, taskId, agentUserAccount);
         MdCostApproach data = mdCostApproachService.getMdCostApproachVo(mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("master", data);
-        List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(data.getId());
-        modelAndView.addObject("taxesVos", list);
         mdCostApproachService.setViewParam(data, projectPlanDetails.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
@@ -82,8 +80,6 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostApproachIndex", processInsId, boxId, taskId, agentUserAccount);
         MdCostApproach data = mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId());
         modelAndView.addObject("master", data);
-        List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(data.getId());
-        modelAndView.addObject("taxesVos", list);
         mdCostApproachService.setViewParam(data, projectPlanDetails.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
@@ -93,8 +89,6 @@ public class ProjectTaskCostApproachAssist implements ProjectTaskInterface {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/stageScheme/taskCostApproachApproval", projectPlanDetails.getProcessInsId(), boxId, "-1", "");
         MdCostApproach data = mdCostApproachService.getMdCostApproachVo(mdCostApproachService.getDataByPlanDetailsId(projectPlanDetails.getId()));
         modelAndView.addObject("master", data);
-        List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(data.getId());
-        modelAndView.addObject("taxesVos", list);
         mdCostApproachService.setViewParam(data, projectPlanDetails.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }

@@ -134,6 +134,16 @@
                             </label>
                             <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
                                 <label class="form-control input-full">${mdCostVo.mdCostConstruction.landPurchasePrice}</label>
+                                <div class="input-group ">
+                                        <span class="input-group-btn">
+                                            <c:if test="${!empty mdCostVo.mdCostConstruction.baseLandId}" >
+                                                <button onclick="construction.callBaseLandMethod('${mdCostVo.mdCostConstruction.baseLandId}');" class="btn btn-primary btn-sm" type="button">基准地价法</button>
+                                            </c:if>
+                                             <c:if test="${!empty mdCostVo.mdCostConstruction.approachId}" >
+                                                <button onclick="construction.callApproachMethod('${mdCostVo.mdCostConstruction.approachId}');" class="btn btn-primary btn-sm" type="button">成本逼近法</button>
+                                             </c:if>
+                                        </span>
+                                </div>
                             </div>
                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                                 价格说明
@@ -749,6 +759,56 @@
         } else {
             notifyInfo('提示','未使用过比较法!');
         }
+    };
+
+    construction.callBaseLandMethod = function (dataId) {
+        if (!dataId) {
+            notifyInfo('提示','未使用此方法法!');
+            return false ;
+        }
+        var frame = layer.open({
+            type: 2,
+            title: '基准地价法',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['80%', '80%'],
+            content: '${pageContext.request.contextPath}/baseLandPrice/detail?dataId=' + dataId ,
+            cancel: function (index, layero) {
+                var iframe = window[layero.find('iframe')[0]['name']];
+            },
+            btnAlign: 'c',
+            btn: ['关闭'],
+            btn2: function (index, layero) {
+
+            }
+        });
+        layer.full(frame);
+    };
+
+    construction.callApproachMethod = function (dataId) {
+        if (!dataId) {
+            notifyInfo('提示','未使用此方法法!');
+            return false ;
+        }
+        var frame = layer.open({
+            type: 2,
+            title: '成本逼近法',
+            shadeClose: true,
+            shade: true,
+            maxmin: true, //开启最大化最小化按钮
+            area: ['80%', '80%'],
+            content: '${pageContext.request.contextPath}/costApproach/detail?dataId=' + dataId ,
+            cancel: function (index, layero) {
+
+            },
+            btnAlign: 'c',
+            btn: ['关闭'],
+            btn2: function (index, layero) {
+
+            }
+        });
+        layer.full(frame);
     };
 
     $(function () {
