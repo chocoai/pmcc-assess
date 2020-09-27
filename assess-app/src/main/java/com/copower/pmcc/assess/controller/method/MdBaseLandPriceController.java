@@ -75,7 +75,7 @@ public class MdBaseLandPriceController {
         }
         modelAndView.addObject("master", mdBaseLandPrice);
         modelAndView.addObject("apply", "apply");
-        mdBaseLandPriceService.setViewParam(judgeObjectId,mdBaseLandPrice, modelAndView);
+        mdBaseLandPriceService.setViewParam(judgeObjectId, mdBaseLandPrice, modelAndView);
         return modelAndView;
     }
 
@@ -84,17 +84,22 @@ public class MdBaseLandPriceController {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/marketBaseLandPriceDetail");
         MdBaseLandPrice mdBaseLandPrice = mdBaseLandPriceService.getMdBaseLandPriceDao().getMdBaseLandPrice(dataId);
         modelAndView.addObject("master", mdBaseLandPrice);
-        mdBaseLandPriceService.setViewParam(mdBaseLandPrice.getJudgeObjectId(),mdBaseLandPrice, modelAndView);
+        mdBaseLandPriceService.setViewParam(mdBaseLandPrice.getJudgeObjectId(), mdBaseLandPrice, modelAndView);
         return modelAndView;
     }
 
 
     @RequestMapping(value = "/getLandPriceIndexByJudgeId", name = "获取土地指数信息", method = RequestMethod.GET)
     public HttpResult getLandPriceIndexByJudgeId(Integer judgeObjectId) {
+        DataHousePriceIndex priceIndex = null;
         try {
             SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
-            SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-            DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
+            if (schemeJudgeObject.getAreaGroupId() != null && schemeJudgeObject.getAreaGroupId() != 0) {
+                SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
+                if (areaGroup != null) {
+                    priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
+                }
+            }
             return HttpResult.newCorrectResult(priceIndex);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

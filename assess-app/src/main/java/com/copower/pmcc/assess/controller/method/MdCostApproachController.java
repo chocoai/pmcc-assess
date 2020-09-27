@@ -68,8 +68,8 @@ public class MdCostApproachController {
             mdCostApproach = new MdCostApproach();
             mdCostApproach.setJudgeObjectId(judgeObjectId);
             mdCostApproachService.saveMdCostApproach(mdCostApproach);
+            mdCostApproachService.initTaxeItem(mdCostApproach);
         }
-        mdCostApproachService.initTaxeItem(mdCostApproach);
         modelAndView.addObject("master", mdCostApproach);
         modelAndView.addObject("apply", "apply");
         mdCostApproachService.setViewParam(mdCostApproach, judgeObjectId, modelAndView);
@@ -80,18 +80,16 @@ public class MdCostApproachController {
     public ModelAndView detail(Integer dataId) {
         ModelAndView modelAndView = processControllerComponent.baseModelAndView("/method/maketCostApproachDetail");
         MdCostApproach mdCostApproach = costApproachService.getDataById(dataId);
-        List<MdCostApproachTaxes> list = mdCostApproachService.getMdCostApproachTaxesListByMasterId(mdCostApproach.getId());
-        modelAndView.addObject("taxesVos", list);
         modelAndView.addObject("master", costApproachService.getMdCostApproachVo(mdCostApproach));
         mdCostApproachService.setViewParam(mdCostApproach, mdCostApproach.getJudgeObjectId(), modelAndView);
         return modelAndView;
     }
 
     @RequestMapping(value = "/saveResult", name = "保存数据", method = RequestMethod.POST)
-    public HttpResult saveResult(String formData){
+    public HttpResult saveResult(String formData) {
         try {
             MdCostApproach mdCostApproach = costApproachService.applyCommit(formData);
-            return HttpResult.newCorrectResult(200,mdCostApproach);
+            return HttpResult.newCorrectResult(200, mdCostApproach);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");

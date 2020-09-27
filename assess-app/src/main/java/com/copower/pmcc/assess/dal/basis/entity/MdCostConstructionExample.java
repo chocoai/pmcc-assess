@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class MdCostConstructionExample {
+    /**
+     * tb_md_cost_construction
+     */
     protected String orderByClause;
 
+    /**
+     * tb_md_cost_construction
+     */
     protected boolean distinct;
 
+    /**
+     * tb_md_cost_construction
+     */
     protected List<Criteria> oredCriteria;
 
     public MdCostConstructionExample() {
@@ -65,6 +74,9 @@ public class MdCostConstructionExample {
         distinct = false;
     }
 
+    /**
+     * tb_md_cost_construction
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1023,6 +1035,126 @@ public class MdCostConstructionExample {
 
         public Criteria andEconomicIdNotBetween(Integer value1, Integer value2) {
             addCriterion("economic_id not between", value1, value2, "economicId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdIsNull() {
+            addCriterion("base_land_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdIsNotNull() {
+            addCriterion("base_land_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdEqualTo(Integer value) {
+            addCriterion("base_land_id =", value, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdNotEqualTo(Integer value) {
+            addCriterion("base_land_id <>", value, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdGreaterThan(Integer value) {
+            addCriterion("base_land_id >", value, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("base_land_id >=", value, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdLessThan(Integer value) {
+            addCriterion("base_land_id <", value, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdLessThanOrEqualTo(Integer value) {
+            addCriterion("base_land_id <=", value, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdIn(List<Integer> values) {
+            addCriterion("base_land_id in", values, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdNotIn(List<Integer> values) {
+            addCriterion("base_land_id not in", values, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdBetween(Integer value1, Integer value2) {
+            addCriterion("base_land_id between", value1, value2, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andBaseLandIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("base_land_id not between", value1, value2, "baseLandId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdIsNull() {
+            addCriterion("approach_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdIsNotNull() {
+            addCriterion("approach_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdEqualTo(Integer value) {
+            addCriterion("approach_id =", value, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdNotEqualTo(Integer value) {
+            addCriterion("approach_id <>", value, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdGreaterThan(Integer value) {
+            addCriterion("approach_id >", value, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("approach_id >=", value, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdLessThan(Integer value) {
+            addCriterion("approach_id <", value, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdLessThanOrEqualTo(Integer value) {
+            addCriterion("approach_id <=", value, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdIn(List<Integer> values) {
+            addCriterion("approach_id in", values, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdNotIn(List<Integer> values) {
+            addCriterion("approach_id not in", values, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdBetween(Integer value1, Integer value2) {
+            addCriterion("approach_id between", value1, value2, "approachId");
+            return (Criteria) this;
+        }
+
+        public Criteria andApproachIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("approach_id not between", value1, value2, "approachId");
             return (Criteria) this;
         }
 
@@ -3336,76 +3468,6 @@ public class MdCostConstructionExample {
             return (Criteria) this;
         }
 
-        public Criteria andJsonContentIsNull() {
-            addCriterion("json_content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentIsNotNull() {
-            addCriterion("json_content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentEqualTo(String value) {
-            addCriterion("json_content =", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotEqualTo(String value) {
-            addCriterion("json_content <>", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentGreaterThan(String value) {
-            addCriterion("json_content >", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentGreaterThanOrEqualTo(String value) {
-            addCriterion("json_content >=", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLessThan(String value) {
-            addCriterion("json_content <", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLessThanOrEqualTo(String value) {
-            addCriterion("json_content <=", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentLike(String value) {
-            addCriterion("json_content like", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotLike(String value) {
-            addCriterion("json_content not like", value, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentIn(List<String> values) {
-            addCriterion("json_content in", values, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotIn(List<String> values) {
-            addCriterion("json_content not in", values, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentBetween(String value1, String value2) {
-            addCriterion("json_content between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andJsonContentNotBetween(String value1, String value2) {
-            addCriterion("json_content not between", value1, value2, "jsonContent");
-            return (Criteria) this;
-        }
-
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -3604,6 +3666,9 @@ public class MdCostConstructionExample {
         }
     }
 
+    /**
+     * tb_md_cost_construction
+     */
     public static class Criterion {
         private String condition;
 
