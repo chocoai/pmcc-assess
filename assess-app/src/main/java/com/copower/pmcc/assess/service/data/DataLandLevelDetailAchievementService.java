@@ -532,6 +532,10 @@ public class DataLandLevelDetailAchievementService {
         return dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementList(oo);
     }
 
+    public List<DataLandLevelDetailAchievement> getDataLandLevelDetailAchievementListByIds(List<Integer> ids){
+        return dataLandLevelDetailAchievementDao.getDataLandLevelDetailAchievementListByIds(ids) ;
+    }
+
     public BootstrapTableVo getBootstrapTableVo(DataLandLevelDetailAchievement oo) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();

@@ -27,7 +27,6 @@ import com.copower.pmcc.assess.service.method.MdArchitecturalObjService;
 import com.copower.pmcc.assess.service.method.MdEconomicIndicatorsService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.ProjectPlanDetailsService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
@@ -40,15 +39,12 @@ import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.ApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -67,7 +63,6 @@ public class GenerateMdCostService {
     private Integer projectId;
 
     private SchemeJudgeObjectService schemeJudgeObjectService;
-    private DeclareRecordService declareRecordService;
     private BaseDataDicService baseDataDicService;
     private SchemeAreaGroupService schemeAreaGroupService;
     private GenerateCommonMethod generateCommonMethod;
@@ -82,7 +77,6 @@ public class GenerateMdCostService {
     private MdEconomicIndicatorsService mdEconomicIndicatorsService;
     private DataBuildingInstallCostService dataBuildingInstallCostService;
     private DataMethodFormulaService dataMethodFormulaService;
-    private ApplicationContext applicationContext;
 
 
     public synchronized String generateCompareFile() throws Exception {
@@ -152,7 +146,7 @@ public class GenerateMdCostService {
         }
         try {
             if (!fileMap.isEmpty()) {
-                Document fileDoc = new Document(localPath) ;
+                Document fileDoc = new Document(localPath);
                 for (Map.Entry<String, String> stringStringEntry : fileMap.entrySet()) {
                     Pattern compile = Pattern.compile(AsposeUtils.escapeExprSpecialWord(stringStringEntry.getKey()));
                     IReplacingCallback callback = new IReplacingCallback() {
@@ -301,29 +295,29 @@ public class GenerateMdCostService {
             }
             case MarketCost_unforeseenExpensesTotal: {//成本法不可预见费总计
                 String type = getMdCostVo().getType();
-                if ("1".equals(type)){
+                if ("1".equals(type)) {
                     String param1 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_constructionSubtotal);
                     String param2 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_managementExpenseTotal);
                     BigDecimal decimal = ArithmeticUtils.add(param1, param2);
                     BigDecimal bigDecimal = ArithmeticUtils.multiply(decimal, target.getUnforeseenExpenses());
                     return ArithmeticUtils.round(bigDecimal.toString(), 2);
-                }else {
+                } else {
                     String param1 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_constructionSubtotal);
-                    BigDecimal bigDecimal = ArithmeticUtils.mul(param1 ,target.getUnforeseenExpenses().toString());
+                    BigDecimal bigDecimal = ArithmeticUtils.mul(param1, target.getUnforeseenExpenses().toString());
                     return ArithmeticUtils.round(bigDecimal.toString(), 2);
                 }
             }
             case MarketCost_managementExpenseTotal: {//成本法管理费总计
                 String type = getMdCostVo().getType();
-                if ("1".equals(type)){
+                if ("1".equals(type)) {
                     BigDecimal bigDecimal = ArithmeticUtils.mul(target.getConstructionSubtotal(), target.getManagementExpense().toString());
                     return ArithmeticUtils.round(bigDecimal.toString(), 2);
-                }else {
+                } else {
                     String param1 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_landGetCostTotal);
                     String param2 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_constructionSubtotal);
                     String param3 = getReportDataValue(target, ReportFieldCostMethodEnum.MarketCost_unforeseenExpensesTotal);
-                    String add = ArithmeticUtils.add(new String[]{param1,param2,param3});
-                    BigDecimal bigDecimal = ArithmeticUtils.mul(add ,target.getManagementExpense().toString());
+                    String add = ArithmeticUtils.add(new String[]{param1, param2, param3});
+                    BigDecimal bigDecimal = ArithmeticUtils.mul(add, target.getManagementExpense().toString());
                     return ArithmeticUtils.round(bigDecimal, 2);
                 }
             }
@@ -430,10 +424,10 @@ public class GenerateMdCostService {
             }
             case MarketCost_formula: {
                 DataMethodFormula formula = new DataMethodFormula();
-                if(StringUtils.equals("1",mdCostVo.getType())){
+                if (StringUtils.equals("1", mdCostVo.getType())) {
                     formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.COST_BUILDING);
                 }
-                if(StringUtils.equals("2",mdCostVo.getType())){
+                if (StringUtils.equals("2", mdCostVo.getType())) {
                     formula = dataMethodFormulaService.getMethodFormulaByMethodKey(AssessDataDicKeyConstant.COST_ENGINEERING);
                 }
                 generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), formula.getFormula());
@@ -492,16 +486,38 @@ public class GenerateMdCostService {
             }
             break;
             case MarketCost_Method: {
-                if (mdCostVo.getMdCostConstruction().getMcId() != null) {
+                //基准地价法
+                if (mdCostVo.getMdCostConstruction().getBaseLandId() != null) {
                     try {
-                        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), mdCostVo.getMdCostConstruction().getMcId(), schemeAreaGroup.getId());
-                        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), generateMdCompareService.generateCompareFile());
+                        GenerateMdBaseLandPriceService landPriceService = new GenerateMdBaseLandPriceService(projectId, areaId, mdCostVo.getMdCostConstruction().getBaseLandId(), getSchemeJudgeObject().getId());
+                        String priceFile = landPriceService.generateBaseLandPriceFile();
+                        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), priceFile);
+
                     } catch (Exception e) {
                         baseService.writeExceptionInfo(e);
                     }
-                } else {
-                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "市场比较法");
                 }
+                //成本逼近法
+                if (mdCostVo.getMdCostConstruction().getApproachId() != null) {
+                    try {
+                        GenerateMdCostApproachService approachService = new GenerateMdCostApproachService(projectId, areaId ,mdCostVo.getMdCostConstruction().getApproachId() ,getSchemeJudgeObject().getId());
+                        String approachFile = approachService.generateCostApproachFile();
+//                        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), approachFile);
+                    } catch (Exception e) {
+                        baseService.writeExceptionInfo(e);
+                    }
+                }
+                //市场比较法
+//                if (mdCostVo.getMdCostConstruction().getMcId() != null) {
+//                    try {
+//                        GenerateMdCompareService generateMdCompareService = new GenerateMdCompareService(schemeJudgeObject.getId(), mdCostVo.getMdCostConstruction().getMcId(), schemeAreaGroup.getId());
+//                        generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, key.getName(), generateMdCompareService.generateCompareFile());
+//                    } catch (Exception e) {
+//                        baseService.writeExceptionInfo(e);
+//                    }
+//                } else {
+//                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, key.getName(), "市场比较法");
+//                }
             }
             break;
             case MarketCost_extraterritorial_reality: {
@@ -866,9 +882,7 @@ public class GenerateMdCostService {
         this.projectId = projectId;
         this.schemeInfo = schemeInfo;
         this.areaId = areaId;
-        this.applicationContext = SpringContextUtils.getApplicationContext();
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
-        this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);

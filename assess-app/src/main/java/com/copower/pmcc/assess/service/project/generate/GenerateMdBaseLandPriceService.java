@@ -35,6 +35,7 @@ import com.copower.pmcc.assess.service.data.DataLandLevelDetailVolumeService;
 import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectLandAchievementGroupService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
@@ -66,8 +67,8 @@ public class GenerateMdBaseLandPriceService {
     private Integer mlId;
     private SchemeInfo schemeInfo;
     private Integer projectId;
+    private Integer judgeObjectId;
     private SchemeJudgeObject schemeJudgeObject;
-    ;
     private Integer areaId;
     private MdBaseLandPrice mdBaseLandPrice;
     private SchemeAreaGroup schemeAreaGroup;
@@ -95,6 +96,7 @@ public class GenerateMdBaseLandPriceService {
     private DataLandLevelDetailAchievementService dataLandLevelDetailAchievementService;
     private BaseProjectClassifyService baseProjectClassifyService;
     private BaseService baseService;
+    private ProjectLandAchievementGroupService projectLandAchievementGroupService;
 
 
     /**
@@ -196,9 +198,9 @@ public class GenerateMdBaseLandPriceService {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPricePlotRatioAmendExplain());
                 }
                 //基准地价权利状况修正
-//                if (Objects.equal(name, BaseReportFieldMdBaseLandPriceEnum.BaseLandPriceRightStateAmend.getName())) {
-//                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceRightStateAmend());
-//                }
+                if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceRightStateAmend.getName())) {
+//                    generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getMdBaseLandPrice().getEvaluationArea().toString());
+                }
                 //基准地价开发程度修正说明
                 if (Objects.equal(name, ReportFieldMdBaseLandPriceEnum.BaseLandPriceDevelopmentLevelAmendExplain.getName())) {
                     generateCommonMethod.putValue(true, true, false, textMap, bookmarkMap, fileMap, name, getBaseLandPriceDevelopmentLevelAmendExplain());
@@ -407,6 +409,30 @@ public class GenerateMdBaseLandPriceService {
         return localPath;
     }
 
+    public List<List<ProjectLandAchievementGroupWithBLOBs>> getFilterProjectLandAchievementGroup() {
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(getSchemeJudgeObject().getBasicApplyId());
+        if (basicApply == null) {
+            return null;
+        }
+        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+        if (basicEstate == null) {
+            return null;
+        }
+        BasicEstateLandCategoryInfo categoryInfo = null;
+        if (basicApply.getLandCategoryId() != null) {
+            categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+        } else {
+            List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
+            categoryInfo = categoryInfoList.get(0);
+        }
+        if (categoryInfo == null) {
+            return null;
+        }
+        //地价因素修正数据
+        List<List<ProjectLandAchievementGroupWithBLOBs>> achievementGroupData = projectLandAchievementGroupService.getInitProjectLandAchievementGroupData(projectId, categoryInfo.getId(), FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
+        return achievementGroupData;
+    }
+
 
     /**
      * 基准地价因素修正表
@@ -414,6 +440,11 @@ public class GenerateMdBaseLandPriceService {
      * @return
      */
     public String getBaseLandPriceFactorAmend() throws Exception {
+        //地价因素修正数据
+        List<List<ProjectLandAchievementGroupWithBLOBs>> achievementGroupData = getFilterProjectLandAchievementGroup();
+        if (CollectionUtils.isEmpty(achievementGroupData)) {
+            return null;
+        }
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
@@ -421,77 +452,57 @@ public class GenerateMdBaseLandPriceService {
         Table table = builder.startTable();
         //土地级别类别	土地级别类型	土地级别等级	说明  分值
         generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("土地级别类别", "土地级别类型", "土地级别等级", "说明", "分值")));
-        //地价因素修正数据
-        String landLevelContent = getMdBaseLandPrice().getLandLevelContent();
-        JSONArray objects = JSON.parseArray(landLevelContent);
-        List<DataLandLevelDetailAchievementVo> filterVoList = new ArrayList<>();
-        if (objects != null && objects.size() > 0) {
-            for (int i = 0; i < objects.size(); i++) {
-                List<DataLandLevelDetailAchievementVo> vos = JSON.parseArray(JSON.toJSONString(objects.get(i)), DataLandLevelDetailAchievementVo.class);
-                for (DataLandLevelDetailAchievementVo item : vos) {
-                    if ("update".equals(item.getModelStr())) {
-                        filterVoList.add(item);
-                    }
-                }
-            }
-        }
-        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landFirstLevelFilter(filterVoList);
-        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landSecondLevelFilter(listList);
-
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-
         final String nullValue = "";
         LinkedList<String> linkedList = Lists.newLinkedList();
-        if (CollectionUtils.isNotEmpty(set)) {
-            Integer endRowIndex = 0;
-            for (List<List<DataLandLevelDetailAchievementVo>> types : set) {
-                for (int i = 0; i < types.size(); i++) {
-                    if (i == 0) {
-                        mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
-                        endRowIndex += types.size();
-                    }
-                    if (StringUtils.isNotEmpty(types.get(i).get(0).getTypeName())) {
-                        linkedList.add(types.get(i).get(0).getTypeName());
-                    } else {
-                        linkedList.add(nullValue);
-                    }
-
-
-                    for (DataLandLevelDetailAchievementVo item : types.get(i)) {
-                        if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) || StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
-                            StringBuilder s = new StringBuilder();
-                            if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) && StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
-                                s.append(types.get(i).get(0).getClassification()).append("/").append(types.get(i).get(0).getCategory());
-                            } else if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification())) {
-                                s.append(types.get(i).get(0).getClassification());
-                            } else {
-                                s.append(types.get(i).get(0).getCategory());
-                            }
-                            linkedList.add(s.toString());
-                        } else {
-                            linkedList.add(nullValue);
-                        }
-                        if (StringUtils.isNotEmpty(item.getGradeName())) {
-                            linkedList.add(item.getGradeName());
-                        } else {
-                            linkedList.add(nullValue);
-                        }
-                        if (StringUtils.isNotEmpty(item.getReamark())) {
-                            linkedList.add(item.getReamark());
-                        } else {
-                            linkedList.add(nullValue);
-                        }
-                        if (item.getAchievement() != null) {
-                            linkedList.add(item.getAchievement().stripTrailingZeros().toString());
-                        } else {
-                            linkedList.add(nullValue);
-                        }
-                    }
-
-                    generateCommonMethod.writeWordTitle(builder, linkedList);
-                    linkedList.clear();
+        Integer endRowIndex = 0;
+        for (List<ProjectLandAchievementGroupWithBLOBs> types : achievementGroupData) {
+            for (int i = 0; i < types.size(); i++) {
+                ProjectLandAchievementGroupWithBLOBs group = types.get(i);
+                if (i == 0) {
+                    mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
+                    endRowIndex += types.size();
                 }
+                if (StringUtils.isNotEmpty(group.getType())) {
+                    linkedList.add(group.getType());
+                } else {
+                    linkedList.add(nullValue);
+                }
+                DataLandLevelDetailAchievementVo achievement = new DataLandLevelDetailAchievementVo();
+                if (group.getSelectId() != null) {
+                    achievement = dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementById(group.getSelectId()));
+                }
+                if (StringUtils.isNotEmpty(group.getClassification()) || StringUtils.isNotEmpty(group.getCategory())) {
+                    StringBuilder s = new StringBuilder();
+                    if (StringUtils.isNotEmpty(group.getClassification()) && StringUtils.isNotEmpty(group.getCategory())) {
+                        s.append(group.getClassification()).append("/").append(group.getCategory());
+                    } else if (StringUtils.isNotEmpty(group.getClassification())) {
+                        s.append(group.getClassification());
+                    } else {
+                        s.append(group.getCategory());
+                    }
+                    linkedList.add(s.toString());
+                } else {
+                    linkedList.add(nullValue);
+                }
+                if (StringUtils.isNotEmpty(achievement.getGradeName())) {
+                    linkedList.add(achievement.getGradeName());
+                } else {
+                    linkedList.add(nullValue);
+                }
+                if (StringUtils.isNotEmpty(achievement.getReamark())) {
+                    linkedList.add(achievement.getReamark());
+                } else {
+                    linkedList.add(nullValue);
+                }
+                if (achievement.getAchievement() != null) {
+                    linkedList.add(ArithmeticUtils.getPercentileSystem(achievement.getAchievement(), 4));
+                } else {
+                    linkedList.add(nullValue);
+                }
+                generateCommonMethod.writeWordTitle(builder, linkedList);
+                linkedList.clear();
             }
         }
         generateCommonMethod.mergeCellTable(mergeCellModelList, table);
@@ -506,6 +517,11 @@ public class GenerateMdBaseLandPriceService {
      * @return
      */
     public String getBaseLandPriceFactorExplain(boolean index) throws Exception {
+        //地价因素修正数据
+        List<List<ProjectLandAchievementGroupWithBLOBs>> achievementGroupData = getFilterProjectLandAchievementGroup();
+        if (CollectionUtils.isEmpty(achievementGroupData)) {
+            return null;
+        }
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
@@ -513,84 +529,70 @@ public class GenerateMdBaseLandPriceService {
         Table table = builder.startTable();
         //表头
         generateCommonMethod.writeWordTitle(builder, Lists.newLinkedList(Lists.newArrayList("土地级别类别", "土地级别类型", "优", "较优", "一般", "较劣", "劣")));
-        //获取土地级别id
-        SchemeJudgeObject schemeJudgeObject = getSchemeJudgeObject();
-        DataLandLevelDetail dataLandLevelDetail = getDataLandLevelDetail(schemeJudgeObject);
-
-        //拿到土地因素数据
-        DataLandLevelDetailAchievement dataLandLevelDetailAchievement = new DataLandLevelDetailAchievement();
-        dataLandLevelDetailAchievement.setLevelDetailId(dataLandLevelDetail.getId());
-        List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementVoList = dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementList(dataLandLevelDetailAchievement);
-        List<List<DataLandLevelDetailAchievementVo>> listList = dataLandLevelDetailAchievementService.landFirstLevelFilter(dataLandLevelDetailAchievementVoList.stream().map(po -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(po)).collect(Collectors.toList()));
-        Set<List<List<DataLandLevelDetailAchievementVo>>> set = dataLandLevelDetailAchievementService.landSecondLevelFilter(listList);
         //需要合并的单元格
         Set<MergeCellModel> mergeCellModelList = Sets.newHashSet();
-
         final String nullValue = "";
         LinkedList<String> linkedList = Lists.newLinkedList();
-        if (CollectionUtils.isNotEmpty(set)) {
-            Integer endRowIndex = 0;
-            for (List<List<DataLandLevelDetailAchievementVo>> types : set) {
-                for (int i = 0; i < types.size(); i++) {
-                    if (i == 0) {
-                        mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
-                        endRowIndex += types.size();
+        Integer endRowIndex = 0;
+        for (List<ProjectLandAchievementGroupWithBLOBs> types : achievementGroupData) {
+            for (int i = 0; i < types.size(); i++) {
+                ProjectLandAchievementGroupWithBLOBs group = types.get(i);
+                List<DataLandLevelDetailAchievementVo> landLevelDetailAchievementList = new ArrayList<>();
+                if (StringUtils.isNotBlank(group.getAchievementIds())) {
+                    List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementList = dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementListByIds(FormatUtils.transformString2Integer(group.getAchievementIds()));
+                    if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievementList)) {
+                        landLevelDetailAchievementList = LangUtils.transform(dataLandLevelDetailAchievementList ,obj -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(obj)) ;
                     }
-                    if (StringUtils.isNotEmpty(types.get(i).get(0).getTypeName())) {
-                        linkedList.add(types.get(i).get(0).getTypeName());
-                    } else {
-                        linkedList.add(nullValue);
-                    }
-                    if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) || StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
-                        StringBuilder s = new StringBuilder();
-                        if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification()) && StringUtils.isNotEmpty(types.get(i).get(0).getCategory())) {
-                            s.append(types.get(i).get(0).getClassification()).append("/").append(types.get(i).get(0).getCategory());
-                        } else if (StringUtils.isNotEmpty(types.get(i).get(0).getClassification())) {
-                            s.append(types.get(i).get(0).getClassification());
-                        } else {
-                            s.append(types.get(i).get(0).getCategory());
-                        }
-                        linkedList.add(s.toString());
-                    } else {
-                        linkedList.add(nullValue);
-                    }
-                    for (DataLandLevelDetailAchievementVo item : types.get(i)) {
-                        if (index) {
-                            if (item.getAchievement() != null) {
-                                linkedList.add(item.getAchievement().toString());
-                            } else {
-                                linkedList.add(nullValue);
-                            }
-                        } else {
-                            if (StringUtils.isNotEmpty(item.getReamark())) {
-                                linkedList.add(item.getReamark());
-                            } else {
-                                linkedList.add(nullValue);
-                            }
-                        }
-                    }
-                    generateCommonMethod.writeWordTitle(builder, linkedList);
-                    linkedList.clear();
                 }
-
+                if (CollectionUtils.isEmpty(landLevelDetailAchievementList)) {
+                    continue;
+                }
+                if (i == 0) {
+                    mergeCellModelList.add(new MergeCellModel(endRowIndex + 1, 0, endRowIndex + types.size(), 0));
+                    endRowIndex += types.size();
+                }
+                if (StringUtils.isNotEmpty(group.getType())) {
+                    linkedList.add(group.getType());
+                } else {
+                    linkedList.add(nullValue);
+                }
+                if (StringUtils.isNotEmpty(group.getClassification()) || StringUtils.isNotEmpty(group.getCategory())) {
+                    StringBuilder s = new StringBuilder();
+                    if (StringUtils.isNotEmpty(group.getClassification()) && StringUtils.isNotEmpty(group.getCategory())) {
+                        s.append(group.getClassification()).append("/").append(group.getCategory());
+                    } else if (StringUtils.isNotEmpty(group.getClassification())) {
+                        s.append(group.getClassification());
+                    } else {
+                        s.append(group.getCategory());
+                    }
+                    linkedList.add(s.toString());
+                } else {
+                    linkedList.add(nullValue);
+                }
+                for (DataLandLevelDetailAchievementVo item : landLevelDetailAchievementList) {
+                    if (index) {
+                        if (item.getAchievement() != null) {
+                            linkedList.add(ArithmeticUtils.getPercentileSystem(item.getAchievement(), 4));
+                        } else {
+                            linkedList.add(nullValue);
+                        }
+                    } else {
+                        if (StringUtils.isNotEmpty(item.getReamark())) {
+                            linkedList.add(item.getReamark());
+                        } else {
+                            linkedList.add(nullValue);
+                        }
+                    }
+                }
+                generateCommonMethod.writeWordTitle(builder, linkedList);
+                linkedList.clear();
             }
+
         }
         generateCommonMethod.mergeCellTable(mergeCellModelList, table);
         builder.endTable();
         document.save(localPath);
         return localPath;
-    }
-
-    public void writeAchievement(DocumentBuilder builder, DataLandLevelDetailAchievement data, boolean isIndex) throws Exception {
-        if (data != null) {
-            if (isIndex) {
-                builder.write(data.getAchievement().toString());
-            } else {
-                builder.write(data.getReamark());
-            }
-        } else {
-            builder.write("");
-        }
     }
 
 
@@ -602,9 +604,9 @@ public class GenerateMdBaseLandPriceService {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
         List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId(),null);
+        dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId(), null);
         if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId(),null);
+            dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId(), null);
         }
         StringBuilder content = new StringBuilder();
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
@@ -823,9 +825,9 @@ public class GenerateMdBaseLandPriceService {
         //找到评估基准日对应的土地因素
         BaseDataDic dataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_INDEX_LAND_TYPE);
         List<DataHousePriceIndex> dataHouseIndexList = Lists.newArrayList();
-        dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId(),null);
+        dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), declareRecord.getDistrict(), dataDic.getId(), null);
         if (CollectionUtils.isEmpty(dataHouseIndexList)) {
-            dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId(),null);
+            dataHouseIndexList = dataHousePriceIndexDao.getDataPriceIndexList(declareRecord.getProvince(), declareRecord.getCity(), null, dataDic.getId(), null);
         }
         if (CollectionUtils.isNotEmpty(dataHouseIndexList)) {
             Integer masterId = dataHouseIndexList.get(0).getId();
@@ -976,24 +978,6 @@ public class GenerateMdBaseLandPriceService {
         return jsonObject;
     }
 
-    //int转罗马数字
-    public String intToRoman(int num) {
-        if (num > 3999 || num < 0) {
-            return "";
-        }
-        String result = "";
-        //千位数字 分别代表 千位没有值 1000 2000 3000
-        String[] kb = new String[]{"", "M", "MM", "MMM"};
-        //百位 分别代表 百位没有值 100 200 300 400 500 600 700 800 900
-        String[] hundreds = new String[]{"", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"};
-        //十位
-        String[] decade = new String[]{"", "Ⅹ", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"};
-        //个位
-        String[] unit = new String[]{"", "Ⅰ", "Ⅱ", "Ⅲ", "Ⅳ", "Ⅴ", "Ⅵ", "Ⅶ", "Ⅷ", "Ⅸ"};
-        result = kb[num / 1000] + hundreds[num % 1000 / 100] + decade[num % 100 / 10] + unit[num % 10];
-        return String.format("%s%s", result, "级");
-    }
-
 
     //对应土地级别从表拥个人区域的类别
     public List<String> getCategoryFromLandLevelDetail(List<DataLandLevelDetailAchievement> list) {
@@ -1012,12 +996,14 @@ public class GenerateMdBaseLandPriceService {
     }
 
     public GenerateMdBaseLandPriceService(SchemeInfo schemeInfo, Integer areaId) throws Exception {
-        this.mlId = schemeInfo.getMethodDataId();
-        ;
-        this.schemeInfo = schemeInfo;
+        new GenerateMdBaseLandPriceService(schemeInfo.getProjectId(), areaId, schemeInfo.getMethodDataId(), schemeInfo.getJudgeObjectId());
+    }
+
+    public GenerateMdBaseLandPriceService(Integer projectId, Integer areaId, Integer mlId, Integer judgeObjectId) throws Exception {
+        this.mlId = mlId;
+        this.judgeObjectId = judgeObjectId;
         this.areaId = areaId;
-        this.projectId = schemeInfo.getProjectId();
-        ;
+        this.projectId = projectId;
         this.mdBaseLandPriceService = SpringContextUtils.getBean(MdBaseLandPriceService.class);
         this.baseReportFieldService = SpringContextUtils.getBean(BaseReportFieldService.class);
         this.baseAttachmentService = SpringContextUtils.getBean(BaseAttachmentService.class);
@@ -1042,6 +1028,7 @@ public class GenerateMdBaseLandPriceService {
         this.dataLandLevelDetailAchievementService = SpringContextUtils.getBean(DataLandLevelDetailAchievementService.class);
         this.baseProjectClassifyService = SpringContextUtils.getBean(BaseProjectClassifyService.class);
         this.baseService = SpringContextUtils.getBean(BaseService.class);
+        this.projectLandAchievementGroupService = SpringContextUtils.getBean(ProjectLandAchievementGroupService.class);
     }
 
     /**
@@ -1076,8 +1063,8 @@ public class GenerateMdBaseLandPriceService {
 
     private SchemeJudgeObject getSchemeJudgeObject() {
         if (schemeJudgeObject == null) {
-            if (getSchemeInfo().getJudgeObjectId() != null) {
-                schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(getSchemeInfo().getJudgeObjectId());
+            if (judgeObjectId != null) {
+                schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
             }
             if (schemeJudgeObject == null) {
                 schemeJudgeObject = new SchemeJudgeObject();
@@ -1086,9 +1073,6 @@ public class GenerateMdBaseLandPriceService {
         return schemeJudgeObject;
     }
 
-    private SchemeInfo getSchemeInfo() {
-        return schemeInfo;
-    }
 
     /**
      * 功能描述: 设置默认字体

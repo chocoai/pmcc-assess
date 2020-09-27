@@ -34,6 +34,10 @@ public class ProjectLandAchievementGroupService {
     @Autowired
     private DataLandLevelDetailAchievementService dataLandLevelDetailAchievementService;
 
+    public ProjectLandAchievementGroupDao getProjectLandAchievementGroupDao(){
+        return projectLandAchievementGroupDao ;
+    }
+
     public List<List<ProjectLandAchievementGroupWithBLOBs>> getInitProjectLandAchievementGroupData(Integer projectId, Integer dataTableId, String dataTableName) {
         List<ProjectLandAchievementGroupWithBLOBs> groupWithBLOBsList = projectLandAchievementGroupDao.getProjectLandAchievementGroupByDataTableIdAndDataTableNameAndProjectId(projectId, dataTableId, dataTableName);
         return handleGrouping(groupWithBLOBsList);
