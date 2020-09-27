@@ -179,6 +179,6 @@ public class DataBlockService {
     }
 
     public void updateOldData(String processInsId) throws Exception {
-
+        //1.inventory_content的数据直接关联到info_item表上
     }
 }

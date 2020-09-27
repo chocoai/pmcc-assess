@@ -50,12 +50,14 @@ AssessDBKey.BasicUnitDecorate = "tb_basic_unit_decorate";
 AssessDBKey.BasicEstateSurveyRecord = "tb_basic_estate_survey_record";
 
 AssessDBKey.SurveyExaminePurenessLand = "tb_survey_examine_pureness_land";
+AssessDBKey.SurveyAssetInfo = "tb_survey_asset_info";
 AssessDBKey.SurveyAssetInventory = "tb_survey_asset_inventory";
+AssessDBKey.SurveyAssetInfoItem = "tb_survey_asset_info_item";
+AssessDBKey.SurveyAssetInfoGroup = "tb_survey_asset_info_group";
 AssessDBKey.SurveyAssetInventoryContent = "tb_survey_asset_inventory_content";
+
 AssessDBKey.SurveyAssetInventoryRight = "tb_survey_asset_inventory_right";
 AssessDBKey.SurveyAssetInventoryRightRecord = "tb_survey_asset_inventory_right_record";
-AssessDBKey.SurveyAssetInfoItem = "tb_survey_asset_info_item";
-AssessDBKey.SurveyAssetInfo = "tb_survey_asset_info";
 
 AssessDBKey.SurveyAssetRightItem = "tb_survey_asset_right_item";
 AssessDBKey.SurveyAssetRightGroup = "tb_survey_asset_right_group";

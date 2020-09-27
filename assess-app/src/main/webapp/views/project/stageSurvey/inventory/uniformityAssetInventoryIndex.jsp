@@ -60,6 +60,7 @@
                                                     </div>
                                                 </td>
                                                 <input type="hidden" name="id" value="${item.id}">
+                                                <input type="hidden" name="infoItemId" value="${item.infoItemId}">
                                                 <td>${item.inventoryContentName}</td>
                                                 <td>
                                                     <div class="x-valid">
@@ -529,6 +530,7 @@
             item.voucher = $(tr).find('[name^="voucher"]').val(); //证明人
             item.surveyTime = $(tr).find('[name^="surveyTime"]').val(); //查勘时间
             item.sureConsistent = $(tr).find('[name^="sureConsistent"]').val();   //确认一致
+            item.infoItemId = $(tr).find('[name="infoItemId"]').val();    //infoItemId
             item.id = $(tr).find('[name="id"]').val();    //id
             dataItem.push(item);
         });

@@ -175,8 +175,10 @@ public class SurveyAssetInfoItemController {
                     surveyAssetInventoryContentService.saveAssetInventoryContent(content);
                 }
                 SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(contentList.get(0).getInfoItemId());
-                assetInfoItem.setBisFinishUniformity(true);
-                surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem, false);
+                if (assetInfoItem != null) {
+                    assetInfoItem.setBisFinishUniformity(true);
+                    surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem, false);
+                }
             }
             return HttpResult.newCorrectResult();
         } catch (Exception e) {

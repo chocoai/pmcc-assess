@@ -1109,15 +1109,17 @@
 
     //清查组 delete
     assetInfo.delSurveyAssetInfoGroup = function (id) {
-        $.post('${pageContext.request.contextPath}/surveyAssetInfoGroup/deleteSurveyAssetInfoGroupById', {
-            id: id
-        }, function (result) {
-            if (result.ret) {
-                AlertSuccess("成功", "删除成功!");
-                assetInfo.loadSurveyAssetInfoGroupList();
-            } else {
-                AlertError("操作失败，失败原因:" + result.errmsg);
-            }
+        AlertConfirm("是否确认删除当前数据", "删除相应的数据后将不可恢复", function (flag) {
+            $.post('${pageContext.request.contextPath}/surveyAssetInfoGroup/deleteSurveyAssetInfoGroupById', {
+                id: id
+            }, function (result) {
+                if (result.ret) {
+                    AlertSuccess("成功", "删除成功!");
+                    assetInfo.loadSurveyAssetInfoGroupList();
+                } else {
+                    AlertError("操作失败，失败原因:" + result.errmsg);
+                }
+            })
         })
     };
 

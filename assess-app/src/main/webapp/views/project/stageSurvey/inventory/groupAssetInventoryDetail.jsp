@@ -167,7 +167,7 @@
                                 <div class="card-header collapse-link">
                                     <div class="card-head-row">
                                         <div class="card-title">
-                                            税费、工程、物管欠款调查
+                                            税费、工程、物管欠款调查1
                                         </div>
                                         <div class="card-tools">
                                             <button class="btn  btn-link btn-primary btn-xs"><span
@@ -192,9 +192,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="paymentItem">
-                                        </div>
-                                        <div class="row form-group" id="showUploadFile" style="display: none">
+                                        <div class="paymentItem"></div>
+                                        <div class="row form-group" id="showUploadFile">
                                             <div class="col-md-12">
                                                 <div class="form-inline  x-valid">
                                                     <label class="col-sm-1 col-form-label">
@@ -333,6 +332,30 @@
 </body>
 
 <script type="application/javascript">
+    $(function () {
+        var frm = $("#frm_asset");
+        //附件
+        var arr = ["checkOriginalFile",'paymentStatusFile', "networkFindFile", AssessUploadKey.INVENTORY_PAYMENT_STATUS, AssessUploadKey.INVENTORY_CHECK_ORIGINAL];
+
+        $.each(arr, function (i, n) {
+            survey.showFile(n, AssessDBKey.SurveyAssetInfoItem, '${assetInfoGroup.id}', false);
+        });
+        showLimit();
+
+        if ('${viewSpiltEntity}'.length>0) {
+            showOther();
+        }
+
+        if ('${taxArrearsEntity}'.length>0) {//税费欠缴
+            writePaymentHTMLData('${taxArrearsEntity.paymentContent}');
+        }
+
+        if ('${damageEntity}'.length>0) {//损坏调查
+            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', '${damageEntity.zoneDamage}');
+            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', '${damageEntity.entityDamage}');
+            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', '${damageEntity.otherProject}');
+        }
+    });
 
     var survey = {};
 
@@ -380,34 +403,8 @@
         return false;
     };
 
-    $(function () {
-        var frm = $("#frm_asset");
-        //附件
-        var arr = ["checkOriginalFile", "paymentStatusFile", "networkFindFile", AssessUploadKey.INVENTORY_PAYMENT_STATUS, AssessUploadKey.INVENTORY_CHECK_ORIGINAL];
-
-        $.each(arr, function (i, n) {
-            survey.showFile(n, AssessDBKey.SurveyAssetInventory, '${surveyAssetInventory.id}', false);
-        });
-        showLimit();
-
-
-        if ("${surveyAssetInventory}") {
-            showOther();
-
-            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', ${surveyAssetInventory.zoneDamage});
-            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', ${surveyAssetInventory.entityDamage});
-            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', ${surveyAssetInventory.otherProject});
-            writePaymentHTMLData(${surveyAssetInventory.paymentContent});
-        }
-    });
-
-    //显示附件通用
-    function showFileCommon(tableId) {
-        survey.showFile("credentialAccessory" + tableId, AssessDBKey.SurveyAssetInventoryContent, tableId, false);
-    }
-
     function showOther() {
-        if ("${surveyAssetInventory.segmentationLimit}" == "可分") {
+        if ("${viewSpiltEntity.segmentationLimit}" == "可分") {
             $(".showCertificate").show();
             $("#showUse").show();
         } else {
@@ -415,15 +412,10 @@
             $("#showUse").hide();
 
         }
-        if ("${surveyAssetInventory.paymentStatus}" == "不正常") {
-            $("#showUploadFile").show();
-        } else {
-            $("#showUploadFile").hide();
-        }
     }
 
     function showLimit() {
-        if ("${surveyAssetInventory.transferLimit}") {
+        if ("${transferEntity.transferLimit}") {
             $("#bisLimit").text("是");
             $(".showLimit").show();
         } else {
@@ -467,7 +459,7 @@
             $("." + item).append(html);
             console.log(fileName) ;
             if (fileName) {
-                survey.showFile(fileName, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}' ,false);
+                survey.showFile(fileName, AssessDBKey.SurveyAssetInfoItem, '${damageEntity.id}' ,false);
             }
         })
     }

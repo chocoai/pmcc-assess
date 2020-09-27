@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInfoGroupDao;
 import com.copower.pmcc.assess.dal.basis.dao.project.survey.SurveyAssetInventoryDao;
+import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfo;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoGroup;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInfoItem;
 import com.copower.pmcc.assess.dal.basis.entity.SurveyAssetInventory;
@@ -41,7 +42,7 @@ public class SurveyAssetInfoGroupService {
     @Autowired
     private SurveyAssetInfoGroupDao surveyAssetInfoGroupDao;
     @Autowired
-    private BaseAttachmentService baseAttachmentService;
+    private SurveyAssetInfoService surveyAssetInfoService;
     @Autowired
     private SurveyAssetInfoItemService surveyAssetInfoItemService;
     @Autowired
@@ -73,8 +74,11 @@ public class SurveyAssetInfoGroupService {
         surveyAssetInfoGroupDao.addSurveyAssetInfoGroup(group);
         List<String> list = FormatUtils.transformString2List(formType);
         SurveyAssetInventory inventory = null;
+        SurveyAssetInfo assetInfo = surveyAssetInfoService.getSurveyAssetInfoById(assetInfoId);
         for (String s : list) {
             inventory = new SurveyAssetInventory();
+            inventory.setProjectId(assetInfo.getProjectId());
+            inventory.setPlanDetailId(assetInfo.getPlanDetailId());
             inventory.setGroupId(group.getId());
             surveyAssetInventoryDao.addSurveyAssetInventory(inventory);
             switch (s) {
@@ -174,6 +178,7 @@ public class SurveyAssetInfoGroupService {
         if (CollectionUtils.isNotEmpty(assetInfoItems)) {
             for (SurveyAssetInfoItem assetInfoItem : assetInfoItems) {
                 assetInfoItem.setGroupId(0);
+                assetInfoItem.setStatus(ProjectStatusEnum.RUNING.getKey());
                 surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem, false);
             }
         }

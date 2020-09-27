@@ -214,8 +214,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="paymentItem">
-                                        </div>
+                                        <div class="paymentItem"></div>
                                         <div class="row form-group" id="showUploadFile" style="display: none">
                                             <div class="col-md-12">
                                                 <div class="form-inline  x-valid">
@@ -479,11 +478,11 @@
         if (fileArr) {
             $.each(fileArr, function (i, n) {
                 if (bisDetail == false) {
-                    survey.showFile(n, tableName, survey.isNotBlank(item.id) ? item.id : '0', false);
-                    survey.fileUpload(n, tableName, survey.isNotBlank(item.id) ? item.id : '0', false);
+                    survey.showFile(n, tableName, '${assetInfoGroup.id}', false);
+                    survey.fileUpload(n, tableName, '${assetInfoGroup.id}', false);
                 } else {
-                    survey.showFile(n, tableName, survey.isNotBlank(item.id) ? item.id : '0', true);
-                    survey.fileUpload(n, tableName, survey.isNotBlank(item.id) ? item.id : '0', true);
+                    survey.showFile(n, tableName, '${assetInfoGroup.id}', true);
+                    survey.fileUpload(n, tableName, '${assetInfoGroup.id}', true);
                 }
             });
         }
@@ -498,10 +497,10 @@
     survey.initSurveyAssetInventoryForm = function (data) {
         var frm = survey.handleJquery(survey.frm);
         //附件
-        var arr = ["checkOriginalFile", "paymentStatusFile", "networkFindFile", AssessUploadKey.INVENTORY_PAYMENT_STATUS, AssessUploadKey.INVENTORY_CHECK_ORIGINAL];
+        var arr = ["checkOriginalFile",'paymentStatusFile', "networkFindFile", AssessUploadKey.INVENTORY_PAYMENT_STATUS, AssessUploadKey.INVENTORY_CHECK_ORIGINAL];
         //日期
         var inputArr = ["checkDate"];
-        survey.initFormData(frm, data, arr, false, AssessDBKey.SurveyAssetInventory, inputArr);
+        survey.initFormData(frm, data, arr, false, AssessDBKey.SurveyAssetInfoItem, inputArr);
         if (data.transferLimit) {
             $("#bisLimit").val("是");
         } else {
@@ -584,31 +583,6 @@
                 }
             })
         });
-
-        if (data.id) {
-            if (data.transferLimit) {
-                $("#transferLimit").val(data.transferLimit).trigger('change');
-            }
-            if (data.entityIsDamage) {
-                $("#entityIsDamage").val(data.entityIsDamage).trigger('change');
-            }
-            if (data.rimIsNormal) {
-                $("#rimIsNormal").val(data.rimIsNormal).trigger('change');
-            }
-            if (data.paymentStatus) {
-                $("#paymentStatus").val(data.paymentStatus).trigger('change');
-            }
-            if (data.zoneDamage) {
-                writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', data.zoneDamage);
-            }
-            if (data.entityDamage) {
-                writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', data.entityDamage);
-            }
-            if (data.otherProject) {
-                writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', data.otherProject);
-            }
-            writePaymentHTMLData(${surveyAssetInventory.paymentContent});
-        }
         try {
             if (data.bisCheckOriginal != null && data.bisCheckOriginal != undefined) {
                 if (data.bisCheckOriginal) {
@@ -621,6 +595,7 @@
             }
         } catch (e) {
         }
+
         frm.find("[name=bisCheckOriginal]").change(function () {
             var value = $(this).val();
             if (value == '1') {
@@ -689,17 +664,6 @@
         }
     };
 
-
-    //上传附件通用
-    survey.uploadFileCommon = function (tableId) {
-        survey.fileUpload("credentialAccessory" + tableId, AssessDBKey.SurveyAssetInventoryContent, tableId, true);
-    };
-
-    //显示附件
-    survey.showFileCommon = function (tableId) {
-        survey.showFile("credentialAccessory" + tableId, AssessDBKey.SurveyAssetInventoryContent, tableId, true);
-    };
-
     //获取需要保存的数据
     function getFormData() {
         var formData = {};
@@ -727,8 +691,9 @@
             formData.viewSpilt = viewSpiltData;
         }
         //------------------------------------------------------------------------------------------
-        var taxArrearsData = formParams("frm_taxesPayment");
+        var taxArrearsData = {};
         if (taxArrearsData) {
+            taxArrearsData.id = $('#frm_taxesPayment').find('[name=id]').val();
             taxArrearsData.paymentStatus = $("#paymentStatus").val();
             taxArrearsData.paymentContent = [];
             $("#frm_taxesPayment").find('.form-group').each(function () {
@@ -807,10 +772,10 @@
         if ($("#frm_asset").length > 0 && !$("#frm_asset").valid()) {
             return false;
         }
-        if ($("#frm_damage").length > 0 && !$("#frm_damage").valid()) {
+        if ($("#frm_taxesPayment").length > 0 && !$("#frm_taxesPayment").valid()) {
             return false;
         }
-        if ($("#frm_taxesPayment").length > 0 && !$("#frm_taxesPayment").valid()) {
+        if ($("#frm_damage").length > 0 && !$("#frm_damage").valid()) {
             return false;
         }
         if ($("#frm_transfer").length > 0 && !$("#frm_transfer").valid()) {
@@ -872,8 +837,8 @@
 
         num++;
         $("." + item).append(html);
-        survey.showFile(fileId, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}');
-        survey.fileUpload(fileId, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}');
+        survey.showFile(fileId, AssessDBKey.SurveyAssetInfoItem, '${damageEntity.id}');
+        survey.fileUpload(fileId, AssessDBKey.SurveyAssetInfoItem, '${damageEntity.id}');
     }
 
     function cleanHTMLData(_this) {
@@ -921,8 +886,8 @@
             html += "</div>";
             html += "</div>";
             $("." + item).append(html);
-            survey.showFile(fileName, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}');
-            survey.fileUpload(fileName, AssessDBKey.SurveyAssetInfoItem, '${surveyAssetInventory.id}');
+            survey.showFile(fileName, AssessDBKey.SurveyAssetInfoItem, '${damageEntity.id}');
+            survey.fileUpload(fileName, AssessDBKey.SurveyAssetInfoItem, '${damageEntity.id}');
         })
     }
 
@@ -949,7 +914,6 @@
         html += "<div class='col-sm-2'>";
         html += "<input type='text' required class='form-control input-full' name='money" + num + "' data-rule-number='true'>";
         html += "</div>";
-
 
         html += " <div class='col-sm-1'>";
         html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
@@ -1032,6 +996,39 @@
         if ('${viewSpiltEntity}'.length > 0) {
             survey.initSurveyAssetInventoryForm(JSON.parse('${el:toJsonString(viewSpiltEntity)}'));
         }
+
+        //--------------------税费欠缴
+        if ('${taxArrearsEntity.paymentStatus}'.length > 0) {
+            $("#paymentStatus").val('${taxArrearsEntity.paymentStatus}').trigger('change');
+        }
+        writePaymentHTMLData(${taxArrearsEntity.paymentContent});
+        //----------------------
+
+        //--------------------损坏调查
+        if ('${damageEntity.entityIsDamage}'.length > 0) {
+            $("#entityIsDamage").val('${damageEntity.entityIsDamage}').trigger('change');
+        }
+        if ('${damageEntity.rimIsNormal}'.length > 0) {
+            $("#rimIsNormal").val('${damageEntity.rimIsNormal}').trigger('change');
+        }
+        if ('${damageEntity.zoneDamage}'.length > 0) {
+            writeHTMLData('zoneProjectName', 'zoneProjectItem', 'zoneBit', '${damageEntity.zoneDamage}');
+        }
+        if ('${damageEntity.entityDamage}'.length > 0) {
+            writeHTMLData('entityProjectName', 'entityProjectItem', 'entity', '${damageEntity.entityDamage}');
+        }
+        if ('${damageEntity.otherProject}'.length > 0) {
+            writeHTMLData('otherProjectName', 'otherProjectItem', 'otherProject', '${damageEntity.otherProject}');
+        }
+        //----------------------
+
+        //--------------------转让限制
+        if ('${transferEntity.transferLimit}'.length > 0) {
+            $('#bisLimit').val('是').trigger('change');
+            $("#transferLimit").val('${transferEntity.transferLimit}');
+        }
+        //--------------------
+
         showLimit();
         showButton();
     });
