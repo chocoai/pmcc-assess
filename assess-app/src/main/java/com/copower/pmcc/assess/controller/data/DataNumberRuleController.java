@@ -96,4 +96,15 @@ public class DataNumberRuleController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getDataNumberRuleList", name = "取得文号规则", method = RequestMethod.POST)
+    public HttpResult getDataNumberRuleList(String projectType,Integer reportType) {
+        try {
+            List<DataNumberRule> ruleList = dataNumberRuleService.getDataNumberRuleList(projectType, reportType);
+            return HttpResult.newCorrectResult(ruleList);
+        } catch (Exception e) {
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
 }

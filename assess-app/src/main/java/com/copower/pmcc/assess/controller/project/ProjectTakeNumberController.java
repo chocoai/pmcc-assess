@@ -75,7 +75,8 @@ public class ProjectTakeNumberController extends BaseController {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject("projectId", projectInfo.getId());
-
+        modelAndView.addObject("projectType",projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey());
+        modelAndView.addObject("companyName",baseParameterService.getBaseParameter(BaseParameterEnum.COMPANY_NAME));
         return modelAndView;
     }
 
@@ -91,13 +92,15 @@ public class ProjectTakeNumberController extends BaseController {
     }
 
     @RequestMapping(value = "/approvalView", name = "项目拿号审批页")
-    public ModelAndView approvalView(Integer boxId, String processInsId, String taskId, String agentUserAccount) {
+    public ModelAndView approvalView(Integer boxId, String processInsId, String taskId, String agentUserAccount) throws BusinessException {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/takeNumber/approval", processInsId, boxId, taskId, agentUserAccount);
         ProjectTakeNumber data = projectTakeNumberService.getDataByProcessInsId(processInsId);
         ProjectTakeNumberVo projectTakeNumberVo = projectTakeNumberService.getProjectTakeNumberVo(data, null);
         modelAndView.addObject("projectTakeNumber", projectTakeNumberVo);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(data.getProjectId());
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
+        modelAndView.addObject("projectType",projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey());
+        modelAndView.addObject("companyName",baseParameterService.getBaseParameter(BaseParameterEnum.COMPANY_NAME));
         //详情页
         if (taskId.equals("-1")) {
             if (data.getNumberRecordId() != null) {
@@ -109,7 +112,7 @@ public class ProjectTakeNumberController extends BaseController {
     }
 
     @RequestMapping(value = "/detailView", name = "详情页", method = RequestMethod.GET)
-    public ModelAndView detailsView(Integer boxId, String processInsId) {
+    public ModelAndView detailsView(Integer boxId, String processInsId) throws BusinessException {
         if (boxId == null) {
             BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
             boxId = boxRuDto.getBoxId();
@@ -129,14 +132,15 @@ public class ProjectTakeNumberController extends BaseController {
     }
 
     @RequestMapping(value = "/editView", name = "返回修改视图", method = RequestMethod.GET)
-    public ModelAndView editView(Integer boxId, String processInsId, String taskId, String agentUserAccount) {
+    public ModelAndView editView(Integer boxId, String processInsId, String taskId, String agentUserAccount) throws BusinessException {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("project/takeNumber/apply", processInsId, boxId, taskId, agentUserAccount);
         ProjectTakeNumber data = projectTakeNumberService.getDataByProcessInsId(processInsId);
         modelAndView.addObject("projectTakeNumber", data);
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(data.getProjectId());
         modelAndView.addObject("projectInfo", projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject("projectId", projectInfo.getId());
-
+        modelAndView.addObject("projectType",projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId()).getKey());
+        modelAndView.addObject("companyName",baseParameterService.getBaseParameter(BaseParameterEnum.COMPANY_NAME));
         return modelAndView;
     }
 
@@ -167,10 +171,10 @@ public class ProjectTakeNumberController extends BaseController {
             projectTakeNumber.setNumberValue(sysSymbolListDto.getSymbol());
             BeanUtils.copyProperties(projectTakeNumber, projectTakeNumberDetail);
             projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail, false);
-            return HttpResult.newCorrectResult(200, projectTakeNumberDetail);
+            return HttpResult.newCorrectResult(projectTakeNumberDetail);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult(e);
         }
     }
 
@@ -179,10 +183,10 @@ public class ProjectTakeNumberController extends BaseController {
         try {
             ProjectTakeNumberDetail projectTakeNumberDetail = JSONObject.parseObject(formData, ProjectTakeNumberDetail.class);
             projectTakeNumberDetailService.saveAndUpdateProjectTakeNumberDetail(projectTakeNumberDetail, updateNull);
-            return HttpResult.newCorrectResult(200, projectTakeNumberDetail);
+            return HttpResult.newCorrectResult(projectTakeNumberDetail);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult(e);
         }
     }
 
@@ -190,20 +194,20 @@ public class ProjectTakeNumberController extends BaseController {
     public HttpResult deleteProjectTakeNumberDetailById(String id) {
         try {
             projectTakeNumberDetailService.deleteProjectTakeNumberDetailById(id);
-            return HttpResult.newCorrectResult(200, "");
+            return HttpResult.newCorrectResult("");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult(e);
         }
     }
 
     @GetMapping(value = "/getProjectTakeNumberDetailById", name = "拿号 get")
     public HttpResult getProjectTakeNumberDetailById(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200, projectTakeNumberDetailService.getProjectTakeNumberDetailById(id));
+            return HttpResult.newCorrectResult(projectTakeNumberDetailService.getProjectTakeNumberDetailById(id));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult(e);
         }
     }
 
@@ -223,10 +227,10 @@ public class ProjectTakeNumberController extends BaseController {
                 query.setFieldsName(sysAttachmentDto.getFieldsName());
                 projectTakeNumberService.replaceDocument(attachmentIds, projectTakeNumberDetail.getNumberValue(), query);
             }
-            return HttpResult.newCorrectResult(200, sysAttachmentDto);
+            return HttpResult.newCorrectResult(sysAttachmentDto);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
-            return HttpResult.newErrorResult(500, e);
+            return HttpResult.newErrorResult(e);
         }
     }
 

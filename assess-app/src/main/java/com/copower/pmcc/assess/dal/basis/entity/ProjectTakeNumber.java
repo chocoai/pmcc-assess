@@ -21,6 +21,10 @@ public class ProjectTakeNumber {
 
     private Integer reportType;
 
+    private Integer erpRuleId;
+
+    private String erpNumberRule;
+
     private Integer numberRecordId;
 
     private String numberValue;
@@ -121,6 +125,22 @@ public class ProjectTakeNumber {
 
     public void setReportType(Integer reportType) {
         this.reportType = reportType;
+    }
+
+    public Integer getErpRuleId() {
+        return erpRuleId;
+    }
+
+    public void setErpRuleId(Integer erpRuleId) {
+        this.erpRuleId = erpRuleId;
+    }
+
+    public String getErpNumberRule() {
+        return erpNumberRule;
+    }
+
+    public void setErpNumberRule(String erpNumberRule) {
+        this.erpNumberRule = erpNumberRule == null ? null : erpNumberRule.trim();
     }
 
     public Integer getNumberRecordId() {

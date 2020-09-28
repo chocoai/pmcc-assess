@@ -85,7 +85,7 @@ public class ProjectNumberRecordService {
      * @param reportType
      * @return
      */
-    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId,Integer groupId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
+    public ProjectNumberRecord getProjectNumberRecord(Integer projectId, Integer areaId, Integer groupId, AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
         ProjectNumberRecord where = new ProjectNumberRecord();
         where.setProjectId(projectId);
         where.setAreaId(areaId);
@@ -142,7 +142,9 @@ public class ProjectNumberRecordService {
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-    public SysSymbolListDto getReportNumber(ProjectInfo projectInfo, Integer areaId,Integer groupId, AssessProjectTypeEnum assessProjectType, Integer reportType, Boolean isMustTakeNew) throws BusinessException {
+    public SysSymbolListDto getReportNumber(ProjectInfo projectInfo, Integer areaId, Integer groupId,
+                                            AssessProjectTypeEnum assessProjectType, Integer reportType,
+                                            Boolean isMustTakeNew, Integer erpRuleId) throws BusinessException {
         //1.根据文号规则走号
         //2.生成报告号之后将其存储
         if (projectInfo == null || areaId == null || reportType == null)
@@ -150,21 +152,25 @@ public class ProjectNumberRecordService {
         SysSymbolListDto sysSymbolListDto = new SysSymbolListDto();
         int year = DateUtils.getYear(DateUtils.today());
         if (isMustTakeNew == Boolean.FALSE) {
-            ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId,groupId, year, assessProjectType.getKey(), reportType);
+            ProjectNumberRecord numberRecord = projectNumberRecordDao.getProjectNumberRecord(projectInfo.getId(), areaId, groupId, year, assessProjectType.getKey(), reportType);
             if (numberRecord != null) {
                 sysSymbolListDto.setSymbol(numberRecord.getNumberValue());
                 return sysSymbolListDto;
             }
         }
-        DataNumberRule numberRule = dataNumberRuleService.getDataNumberRule(assessProjectType, reportType);
-        if (numberRule == null)
-            throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+        if (erpRuleId == null) {
+            DataNumberRule numberRule = dataNumberRuleService.getDataNumberRule(assessProjectType, reportType);
+            if (numberRule == null)
+                throw new BusinessException(HttpReturnEnum.NOTFIND.getName());
+            erpRuleId = numberRule.getErpRuleId();
+        }
 
-        List<SysSymbolListDto> sysSymbolList = erpRpcToolsService.getSysSymbolList(applicationConstant.getAppKey(), numberRule.getErpRuleId(), year);
+
+        List<SysSymbolListDto> sysSymbolList = erpRpcToolsService.getSysSymbolList(applicationConstant.getAppKey(), erpRuleId, year);
         if (CollectionUtils.isNotEmpty(sysSymbolList))
             sysSymbolListDto = sysSymbolList.get(0);
         else
-            sysSymbolListDto = getSymbolDto(numberRule.getErpRuleId(), year);
+            sysSymbolListDto = getSymbolDto(erpRuleId, year);
         if (sysSymbolListDto != null) {
             ProjectNumberRecord projectNumberRecord = new ProjectNumberRecord();
             projectNumberRecord.setProjectId(projectInfo.getId());
@@ -231,7 +237,7 @@ public class ProjectNumberRecordService {
             }
             assessProjectTypeEnum = typeEnum;
         }
-        return getReportNumber(projectInfo, areaId,0, assessProjectTypeEnum, reportType, false);
+        return getReportNumber(projectInfo, areaId, 0, assessProjectTypeEnum, reportType, false, null);
     }
 
 

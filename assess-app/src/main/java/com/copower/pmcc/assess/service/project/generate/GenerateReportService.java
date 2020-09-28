@@ -378,7 +378,7 @@ public class GenerateReportService {
                 numberRecord.setBisDelete(true);
                 projectNumberRecordService.updateProjectNumberRecord(numberRecord);
                 //将已经老旧的文号替换为最新的文号
-                SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfoVo, generateReportInfo.getAreaGroupId(), reportGroup.getId(), assessProjectType, reportType.getId(), false);
+                SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfoVo, generateReportInfo.getAreaGroupId(), reportGroup.getId(), assessProjectType, reportType.getId(), false,null);
                 String value = symbolListDto.getSymbol();
                 for (String dir : paths) {
                     AsposeUtils.replaceText(dir, numberRecord.getNumberValue(), value);

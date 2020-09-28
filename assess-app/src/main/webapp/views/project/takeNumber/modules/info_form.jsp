@@ -30,33 +30,50 @@
                                 报告类型<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-3">
-                                <select name="reportType" class="form-control input-full search-select select2"
-                                        required>
+                                <select name="reportType" onchange="projectTakeNumber.reportTypeChange(this);"
+                                        class="form-control input-full" required>
                                 </select>
                             </div>
-                            <div class="col-sm-3">
-                                <div class="form-check" style="justify-content:left">
-                                    <label class="form-check-label">
-                                        <input class="form-check-input" type="checkbox" name="bisQrcode"
-                                        ${true eq projectTakeNumber.bisQrcode?'checked="checked"':''}
-                                               onclick="projectTakeNumber.triggerQrcode(this)" value="true">
-                                        <span class="form-check-sign">生成二维码</span>
-                                    </label>
+                            <c:if test="${companyName eq 'xiehe'}">
+                                <div class="col-sm-3">
+                                    <div class="form-check" style="justify-content:left">
+                                        <label class="form-check-label">
+                                            <input class="form-check-input" type="checkbox" name="bisQrcode"
+                                                ${true eq projectTakeNumber.bisQrcode?'checked="checked"':''}
+                                                   onclick="projectTakeNumber.triggerQrcode(this)" value="true">
+                                            <span class="form-check-sign">生成二维码</span>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
-                            <label class="col-sm-1 col-form-label report-group" style="display: none;">
-                                报告分组<span class="symbol required"></span>
+                                <label class="col-sm-1 col-form-label report-group" style="display: none;">
+                                    报告分组<span class="symbol required"></span>
+                                </label>
+                                <div class="col-sm-3 report-group"
+                                     style="display: ${true eq projectTakeNumber.bisQrcode?'':'none'}">
+                                    <input type="hidden" name="areaGroupId" value="${projectTakeNumber.areaGroupId}">
+                                    <input type="hidden" name="reportGroupId"
+                                           value="${projectTakeNumber.reportGroupId}">
+                                    <input type="hidden" name="reportGroupName"
+                                           value="${projectTakeNumber.reportGroupName}">
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                            onclick="projectTakeNumber.showReportGroupModal()">选择分组
+                                    </button>
+                                    <span data-name="reportGroupName">${projectTakeNumber.reportGroupName}</span>
+                                </div>
+                            </c:if>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
+                                文号规则<span class="symbol required"></span>
                             </label>
-                            <div class="col-sm-3 report-group"
-                                 style="display: ${true eq projectTakeNumber.bisQrcode?'':'none'}">
-                                <input type="hidden" name="areaGroupId" value="${projectTakeNumber.areaGroupId}">
-                                <input type="hidden" name="reportGroupId" value="${projectTakeNumber.reportGroupId}">
-                                <input type="hidden" name="reportGroupName"
-                                       value="${projectTakeNumber.reportGroupName}">
-                                <button type="button" class="btn btn-sm btn-primary"
-                                        onclick="projectTakeNumber.showReportGroupModal()">选择分组
-                                </button>
-                                <span data-name="reportGroupName">${projectTakeNumber.reportGroupName}</span>
+                            <div class="col-sm-3">
+                                <input type="hidden" name="erpNumberRule" value="${projectTakeNumber.erpNumberRule}">
+                                <select name="erpRuleId" onchange="projectTakeNumber.erpRuleChange(this);"
+                                        class="form-control input-full" required></select>
                             </div>
                         </div>
                     </div>
@@ -234,10 +251,50 @@
         $('#reportGroupModal').modal('hide');
     }
 
+    //报告类型change
+    projectTakeNumber.reportTypeChange = function (_this, callback) {
+        var reportType = $(_this).val();
+        var erpRuleElement = $("#project_takeNumber_form").find("select[name='erpRuleId']");
+        erpRuleElement.empty();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/numberRule/getDataNumberRuleList',
+            data: {
+                projectType: '${projectType}',
+                reportType: reportType
+            },
+            type: 'post',
+            dataType: 'json',
+            success: function (result) {
+                if (result.ret && result.data) {
+                    var html = '';
+                    $.each(result.data, function (i, item) {
+                        if (i == 0) {
+                            html += '<option selected="selected" value="' + item.erpRuleId + '">' + item.erpNumberRule + '</option>';
+                        } else {
+                            html += '<option value="' + item.erpRuleId + '">' + item.erpNumberRule + '</option>';
+                        }
+                    })
+                    erpRuleElement.append(html).trigger('change');
+                    if (callback) {
+                        callback();
+                    }
+                }
+            }
+        })
+    }
+
+    //文号规则change
+    projectTakeNumber.erpRuleChange = function (_this) {
+        $(_this).closest('form').find("input[name='erpNumberRule']").val($(_this).find('option[selected]').text());
+    }
+
     $(function () {
         AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_TYPE, '${projectTakeNumber.reportType}', function (html, data) {
             $("#project_takeNumber_form").find("select[name='reportType']").empty().html(html).trigger('change');
+
+            if('${projectTakeNumber.erpRuleId}'.length>0){
+                $("#project_takeNumber_form").find("select[name='erpRuleId']").val('${projectTakeNumber.erpRuleId}').trigger('change');
+            }
         });
     });
-
 </script>

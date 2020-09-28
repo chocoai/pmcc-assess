@@ -17,6 +17,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +62,12 @@ public class DataNumberRuleService {
         });
     }
 
+    public List<DataNumberRule> getDataNumberRuleList(String projectType, Integer reportType) {
+        if (StringUtils.isBlank(projectType) || reportType == null) return null;
+        List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(projectType, reportType);
+        return dataNumberRulesList;
+    }
+
     public DataNumberRule getDataNumberRule(AssessProjectTypeEnum assessProjectTypeEnum, Integer reportType) {
         List<DataNumberRule> dataNumberRulesList = dataNumberRuleDao.getDataNumberRule(assessProjectTypeEnum.getKey(), reportType);
         if (CollectionUtils.isEmpty(dataNumberRulesList)) return null;
@@ -80,7 +87,6 @@ public class DataNumberRuleService {
 
     public boolean delete(Integer id) throws BusinessException {
         if (id == null) throw new BusinessException(HttpReturnEnum.EMPTYPARAM.getName());
-        ;
         return dataNumberRuleDao.delete(id);
     }
 

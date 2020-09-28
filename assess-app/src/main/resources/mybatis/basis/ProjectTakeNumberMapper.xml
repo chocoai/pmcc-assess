@@ -11,6 +11,8 @@
     <result column="report_group_id" jdbcType="INTEGER" property="reportGroupId" />
     <result column="report_group_name" jdbcType="VARCHAR" property="reportGroupName" />
     <result column="report_type" jdbcType="INTEGER" property="reportType" />
+    <result column="erp_rule_id" jdbcType="INTEGER" property="erpRuleId" />
+    <result column="erp_number_rule" jdbcType="VARCHAR" property="erpNumberRule" />
     <result column="number_record_id" jdbcType="INTEGER" property="numberRecordId" />
     <result column="number_value" jdbcType="VARCHAR" property="numberValue" />
     <result column="qualification_type" jdbcType="VARCHAR" property="qualificationType" />
@@ -89,10 +91,10 @@
   </sql>
   <sql id="Base_Column_List">
     id, process_ins_id, project_id, plan_details_id, assess_project_type, area_group_id, 
-    report_group_id, report_group_name, report_type, number_record_id, number_value, 
-    qualification_type, investigations_start_date, investigations_end_date, report_issuance_date, 
-    home_work_end_time, real_estate_appraiser, status, remark, bis_qrcode, creator, gmt_created, 
-    gmt_modified
+    report_group_id, report_group_name, report_type, erp_rule_id, erp_number_rule, number_record_id, 
+    number_value, qualification_type, investigations_start_date, investigations_end_date, 
+    report_issuance_date, home_work_end_time, real_estate_appraiser, status, remark, 
+    bis_qrcode, creator, gmt_created, gmt_modified
   </sql>
   <sql id="Blob_Column_List">
     qrcode
@@ -151,8 +153,9 @@
     </selectKey>
     insert into tb_project_take_number (process_ins_id, project_id, plan_details_id, 
       assess_project_type, area_group_id, report_group_id, 
-      report_group_name, report_type, number_record_id, 
-      number_value, qualification_type, investigations_start_date, 
+      report_group_name, report_type, erp_rule_id, 
+      erp_number_rule, number_record_id, number_value, 
+      qualification_type, investigations_start_date, 
       investigations_end_date, report_issuance_date, 
       home_work_end_time, real_estate_appraiser, 
       status, remark, bis_qrcode, 
@@ -160,8 +163,9 @@
       qrcode)
     values (#{processInsId,jdbcType=VARCHAR}, #{projectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{assessProjectType,jdbcType=VARCHAR}, #{areaGroupId,jdbcType=INTEGER}, #{reportGroupId,jdbcType=INTEGER}, 
-      #{reportGroupName,jdbcType=VARCHAR}, #{reportType,jdbcType=INTEGER}, #{numberRecordId,jdbcType=INTEGER}, 
-      #{numberValue,jdbcType=VARCHAR}, #{qualificationType,jdbcType=VARCHAR}, #{investigationsStartDate,jdbcType=TIMESTAMP}, 
+      #{reportGroupName,jdbcType=VARCHAR}, #{reportType,jdbcType=INTEGER}, #{erpRuleId,jdbcType=INTEGER}, 
+      #{erpNumberRule,jdbcType=VARCHAR}, #{numberRecordId,jdbcType=INTEGER}, #{numberValue,jdbcType=VARCHAR}, 
+      #{qualificationType,jdbcType=VARCHAR}, #{investigationsStartDate,jdbcType=TIMESTAMP}, 
       #{investigationsEndDate,jdbcType=TIMESTAMP}, #{reportIssuanceDate,jdbcType=TIMESTAMP}, 
       #{homeWorkEndTime,jdbcType=TIMESTAMP}, #{realEstateAppraiser,jdbcType=VARCHAR}, 
       #{status,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{bisQrcode,jdbcType=BIT}, 
@@ -197,6 +201,12 @@
       </if>
       <if test="reportType != null">
         report_type,
+      </if>
+      <if test="erpRuleId != null">
+        erp_rule_id,
+      </if>
+      <if test="erpNumberRule != null">
+        erp_number_rule,
       </if>
       <if test="numberRecordId != null">
         number_record_id,
@@ -268,6 +278,12 @@
       </if>
       <if test="reportType != null">
         #{reportType,jdbcType=INTEGER},
+      </if>
+      <if test="erpRuleId != null">
+        #{erpRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="erpNumberRule != null">
+        #{erpNumberRule,jdbcType=VARCHAR},
       </if>
       <if test="numberRecordId != null">
         #{numberRecordId,jdbcType=INTEGER},
@@ -352,6 +368,12 @@
       <if test="record.reportType != null">
         report_type = #{record.reportType,jdbcType=INTEGER},
       </if>
+      <if test="record.erpRuleId != null">
+        erp_rule_id = #{record.erpRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.erpNumberRule != null">
+        erp_number_rule = #{record.erpNumberRule,jdbcType=VARCHAR},
+      </if>
       <if test="record.numberRecordId != null">
         number_record_id = #{record.numberRecordId,jdbcType=INTEGER},
       </if>
@@ -413,6 +435,8 @@
       report_group_id = #{record.reportGroupId,jdbcType=INTEGER},
       report_group_name = #{record.reportGroupName,jdbcType=VARCHAR},
       report_type = #{record.reportType,jdbcType=INTEGER},
+      erp_rule_id = #{record.erpRuleId,jdbcType=INTEGER},
+      erp_number_rule = #{record.erpNumberRule,jdbcType=VARCHAR},
       number_record_id = #{record.numberRecordId,jdbcType=INTEGER},
       number_value = #{record.numberValue,jdbcType=VARCHAR},
       qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
@@ -443,6 +467,8 @@
       report_group_id = #{record.reportGroupId,jdbcType=INTEGER},
       report_group_name = #{record.reportGroupName,jdbcType=VARCHAR},
       report_type = #{record.reportType,jdbcType=INTEGER},
+      erp_rule_id = #{record.erpRuleId,jdbcType=INTEGER},
+      erp_number_rule = #{record.erpNumberRule,jdbcType=VARCHAR},
       number_record_id = #{record.numberRecordId,jdbcType=INTEGER},
       number_value = #{record.numberValue,jdbcType=VARCHAR},
       qualification_type = #{record.qualificationType,jdbcType=VARCHAR},
@@ -487,6 +513,12 @@
       </if>
       <if test="reportType != null">
         report_type = #{reportType,jdbcType=INTEGER},
+      </if>
+      <if test="erpRuleId != null">
+        erp_rule_id = #{erpRuleId,jdbcType=INTEGER},
+      </if>
+      <if test="erpNumberRule != null">
+        erp_number_rule = #{erpNumberRule,jdbcType=VARCHAR},
       </if>
       <if test="numberRecordId != null">
         number_record_id = #{numberRecordId,jdbcType=INTEGER},
@@ -546,6 +578,8 @@
       report_group_id = #{reportGroupId,jdbcType=INTEGER},
       report_group_name = #{reportGroupName,jdbcType=VARCHAR},
       report_type = #{reportType,jdbcType=INTEGER},
+      erp_rule_id = #{erpRuleId,jdbcType=INTEGER},
+      erp_number_rule = #{erpNumberRule,jdbcType=VARCHAR},
       number_record_id = #{numberRecordId,jdbcType=INTEGER},
       number_value = #{numberValue,jdbcType=VARCHAR},
       qualification_type = #{qualificationType,jdbcType=VARCHAR},
@@ -573,6 +607,8 @@
       report_group_id = #{reportGroupId,jdbcType=INTEGER},
       report_group_name = #{reportGroupName,jdbcType=VARCHAR},
       report_type = #{reportType,jdbcType=INTEGER},
+      erp_rule_id = #{erpRuleId,jdbcType=INTEGER},
+      erp_number_rule = #{erpNumberRule,jdbcType=VARCHAR},
       number_record_id = #{numberRecordId,jdbcType=INTEGER},
       number_value = #{numberValue,jdbcType=VARCHAR},
       qualification_type = #{qualificationType,jdbcType=VARCHAR},

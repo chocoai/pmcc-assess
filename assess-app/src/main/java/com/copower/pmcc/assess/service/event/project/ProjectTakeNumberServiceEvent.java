@@ -52,7 +52,8 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
         projectTakeNumber.setStatus(ProcessStatusEnum.FINISH.getValue());
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectTakeNumber.getProjectId());
         AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-        SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, 0, 0, assessProjectType, projectTakeNumber.getReportType(), true);
+        SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, 0, 0,
+                assessProjectType, projectTakeNumber.getReportType(), true, projectTakeNumber.getErpRuleId());
         projectTakeNumber.setNumberValue(symbolListDto.getSymbol());
         projectTakeNumber.setAssessProjectType(assessProjectType.getKey());
         projectTakeNumberService.editData(projectTakeNumber);

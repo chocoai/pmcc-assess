@@ -675,6 +675,136 @@ public class ProjectTakeNumberExample {
             return (Criteria) this;
         }
 
+        public Criteria andErpRuleIdIsNull() {
+            addCriterion("erp_rule_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdIsNotNull() {
+            addCriterion("erp_rule_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdEqualTo(Integer value) {
+            addCriterion("erp_rule_id =", value, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdNotEqualTo(Integer value) {
+            addCriterion("erp_rule_id <>", value, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdGreaterThan(Integer value) {
+            addCriterion("erp_rule_id >", value, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("erp_rule_id >=", value, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdLessThan(Integer value) {
+            addCriterion("erp_rule_id <", value, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdLessThanOrEqualTo(Integer value) {
+            addCriterion("erp_rule_id <=", value, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdIn(List<Integer> values) {
+            addCriterion("erp_rule_id in", values, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdNotIn(List<Integer> values) {
+            addCriterion("erp_rule_id not in", values, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdBetween(Integer value1, Integer value2) {
+            addCriterion("erp_rule_id between", value1, value2, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpRuleIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("erp_rule_id not between", value1, value2, "erpRuleId");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleIsNull() {
+            addCriterion("erp_number_rule is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleIsNotNull() {
+            addCriterion("erp_number_rule is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleEqualTo(String value) {
+            addCriterion("erp_number_rule =", value, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleNotEqualTo(String value) {
+            addCriterion("erp_number_rule <>", value, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleGreaterThan(String value) {
+            addCriterion("erp_number_rule >", value, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleGreaterThanOrEqualTo(String value) {
+            addCriterion("erp_number_rule >=", value, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleLessThan(String value) {
+            addCriterion("erp_number_rule <", value, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleLessThanOrEqualTo(String value) {
+            addCriterion("erp_number_rule <=", value, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleLike(String value) {
+            addCriterion("erp_number_rule like", value, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleNotLike(String value) {
+            addCriterion("erp_number_rule not like", value, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleIn(List<String> values) {
+            addCriterion("erp_number_rule in", values, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleNotIn(List<String> values) {
+            addCriterion("erp_number_rule not in", values, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleBetween(String value1, String value2) {
+            addCriterion("erp_number_rule between", value1, value2, "erpNumberRule");
+            return (Criteria) this;
+        }
+
+        public Criteria andErpNumberRuleNotBetween(String value1, String value2) {
+            addCriterion("erp_number_rule not between", value1, value2, "erpNumberRule");
+            return (Criteria) this;
+        }
+
         public Criteria andNumberRecordIdIsNull() {
             addCriterion("number_record_id is null");
             return (Criteria) this;

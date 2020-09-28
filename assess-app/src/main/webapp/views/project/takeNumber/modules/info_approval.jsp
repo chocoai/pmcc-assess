@@ -63,6 +63,18 @@
                     <div class="col-md-12">
                         <div class="form-inline x-valid">
                             <label class="col-sm-1 control-label">
+                                文号规则
+                            </label>
+                            <div class="col-sm-3">
+                                <label class="form-control input-full">${projectTakeNumber.erpNumberRule}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="form-inline x-valid">
+                            <label class="col-sm-1 control-label">
                                 说明<span class="symbol required"></span>
                             </label>
                             <div class="col-sm-11">
