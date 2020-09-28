@@ -678,6 +678,76 @@ public class MdCostApproachExample {
             return (Criteria) this;
         }
 
+        public Criteria andRewardRateRemarkIsNull() {
+            addCriterion("reward_rate_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkIsNotNull() {
+            addCriterion("reward_rate_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkEqualTo(String value) {
+            addCriterion("reward_rate_remark =", value, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkNotEqualTo(String value) {
+            addCriterion("reward_rate_remark <>", value, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkGreaterThan(String value) {
+            addCriterion("reward_rate_remark >", value, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("reward_rate_remark >=", value, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkLessThan(String value) {
+            addCriterion("reward_rate_remark <", value, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkLessThanOrEqualTo(String value) {
+            addCriterion("reward_rate_remark <=", value, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkLike(String value) {
+            addCriterion("reward_rate_remark like", value, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkNotLike(String value) {
+            addCriterion("reward_rate_remark not like", value, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkIn(List<String> values) {
+            addCriterion("reward_rate_remark in", values, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkNotIn(List<String> values) {
+            addCriterion("reward_rate_remark not in", values, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkBetween(String value1, String value2) {
+            addCriterion("reward_rate_remark between", value1, value2, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRewardRateRemarkNotBetween(String value1, String value2) {
+            addCriterion("reward_rate_remark not between", value1, value2, "rewardRateRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andRewardRateIsNull() {
             addCriterion("reward_rate is null");
             return (Criteria) this;
