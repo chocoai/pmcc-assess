@@ -58,6 +58,7 @@ public class ProjectTakeNumberServiceEvent extends BaseProcessEvent {
         projectTakeNumber.setAssessProjectType(assessProjectType.getKey());
         projectTakeNumberService.editData(projectTakeNumber);
         erpRpcToolsService.bindSymbol(applicationConstant.getAppKey(), projectTakeNumber.getNumberValue(), projectInfo.getPublicProjectId(), projectTakeNumber.getId(), FormatUtils.entityNameConvertToTableName(ProjectTakeNumber.class));
+        erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), projectTakeNumber.getNumberValue());
 
         //如果需要生成二维码则需将二维码生成并记录
         if (Boolean.TRUE.equals(projectTakeNumber.getBisQrcode())) {

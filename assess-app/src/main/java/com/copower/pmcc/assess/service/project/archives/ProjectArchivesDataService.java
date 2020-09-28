@@ -606,7 +606,6 @@ public class ProjectArchivesDataService {
                             continue;
                         }
 
-
                         //评估报告
                         if (StringUtils.contains(adPlaceFileItemDto.getName(), ArchivesFileProfessionEnum.EVALUATION_REPORT.getName())) {
                             GenerateReportGroup group = new GenerateReportGroup();
@@ -680,8 +679,9 @@ public class ProjectArchivesDataService {
     public SysSymbolListDto getSymbolDto(Integer ruleId) throws Exception {
         int year = DateUtils.getYear(DateUtils.today());
         SysSymbolListDto sysSymbol = erpRpcToolsService.getSysSymbol(applicationConstant.getAppKey(), ruleId, year);
-        if (sysSymbol != null)
-            erpRpcToolsService.updateSymbolExamine(applicationConstant.getAppKey(), sysSymbol.getSymbol());
+        if (sysSymbol != null){
+            erpRpcToolsService.updateSymbolUsed(applicationConstant.getAppKey(), sysSymbol.getSymbol());
+        }
         return sysSymbol;
     }
 

@@ -174,28 +174,4 @@ public class GenerateService {
             });
         }
     }
-
-    /**
-     * 更新为审核状态
-     */
-    public void updateSymbolExamine(Integer projectId) {
-        List<ProjectNumberRecord> projectNumberRecords = getProjectNumberRecords(projectId);
-        if (CollectionUtils.isNotEmpty(projectNumberRecords)) {
-            projectNumberRecords.forEach(o -> {
-                erpRpcToolsService.updateSymbolExamine(applicationConstant.getAppKey(), o.getNumberValue());
-            });
-        }
-    }
-
-    /**
-     * 更新为可用状态
-     */
-    public void updateSymbolEnable(Integer projectId) {
-        List<ProjectNumberRecord> projectNumberRecords = getProjectNumberRecords(projectId);
-        if (CollectionUtils.isNotEmpty(projectNumberRecords)) {
-            projectNumberRecords.forEach(o -> {
-                erpRpcToolsService.updateSymbolEnable(applicationConstant.getAppKey(), o.getNumberValue());
-            });
-        }
-    }
 }
