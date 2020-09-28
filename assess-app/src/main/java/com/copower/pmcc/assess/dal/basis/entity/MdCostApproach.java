@@ -53,6 +53,11 @@ public class MdCostApproach implements Serializable {
     private Integer rewardRateId;
 
     /**
+     * 还原率说明
+     */
+    private String rewardRateRemark;
+
+    /**
      * 还原率
      */
     private String rewardRate;
@@ -444,6 +449,22 @@ public class MdCostApproach implements Serializable {
      */
     public void setRewardRateId(Integer rewardRateId) {
         this.rewardRateId = rewardRateId;
+    }
+
+    /**
+     * 还原率说明
+     * @return reward_rate_remark 还原率说明
+     */
+    public String getRewardRateRemark() {
+        return rewardRateRemark;
+    }
+
+    /**
+     * 还原率说明
+     * @param rewardRateRemark 还原率说明
+     */
+    public void setRewardRateRemark(String rewardRateRemark) {
+        this.rewardRateRemark = rewardRateRemark == null ? null : rewardRateRemark.trim();
     }
 
     /**
@@ -1347,6 +1368,15 @@ public class MdCostApproach implements Serializable {
         }
 
         /**
+         * 还原率说明
+         * @param rewardRateRemark 还原率说明
+         */
+        public Builder rewardRateRemark(String rewardRateRemark) {
+            obj.setRewardRateRemark(rewardRateRemark);
+            return this;
+        }
+
+        /**
          * 宗地外流通费用
          * @param circulationExpense 宗地外流通费用
          */
@@ -1784,6 +1814,7 @@ public class MdCostApproach implements Serializable {
         ploughArea("plough_area", "ploughArea", "DECIMAL", false),
         populationNumber("population_number", "populationNumber", "INTEGER", false),
         rewardRateId("reward_rate_id", "rewardRateId", "INTEGER", false),
+        rewardRateRemark("reward_rate_remark", "rewardRateRemark", "VARCHAR", false),
         rewardRate("reward_rate", "rewardRate", "VARCHAR", false),
         circulationExpense("circulation_expense", "circulationExpense", "DECIMAL", false),
         circulationExpenseRemark("circulation_expense_remark", "circulationExpenseRemark", "VARCHAR", false),

@@ -27,7 +27,8 @@
                                     <div class="card-header">
                                         <div class="card-title">土地类型</div>
                                     </div>
-                                    <%@include file="/views/project/stageSurvey/commonDetail/estateLandUseCategory.jsp" %>
+                                    <%@include
+                                            file="/views/project/stageSurvey/commonDetail/estateLandUseCategory.jsp" %>
                                     <form id="basicHouseFrm" class="form-horizontal" style="display: none">
                                         <input type="hidden" name="id" value="${basicHouse.id}">
                                         <input type="hidden" name="houseNumber" value="${basicHouse.houseNumber}">
@@ -49,16 +50,19 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div id="basicHouseLandTradingAppend"></div>
-                                        <%@include file="/views/project/stageSurvey/commonDetail/houseTradingLandCase.jsp" %>
+                                        <%@include
+                                                file="/views/project/stageSurvey/commonDetail/houseTradingLandCase.jsp" %>
                                     </c:if>
 
                                 </div>
 
                                 <div class="x_content">
-                                <c:if test="${projectPhase ne 'caseStudyExtend'}">
-                                    <%@include file="/views/project/stageSurvey/commonDetail/houseTradingLandSurvey.jsp" %>
-                                </c:if>
-                                <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
+                                    <c:if test="${projectPhase ne 'caseStudyExtend'}">
+                                        <%@include
+                                                file="/views/project/stageSurvey/commonDetail/houseTradingLandSurvey.jsp" %>
+                                    </c:if>
+                                    <%@include file="/views/project/stageSurvey/commonDetail/houseFaceStreet.jsp" %>
+                                    <%@include file="/views/method/module/projectLandAchievementGroup.jsp" %>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +145,7 @@
 <script>
     $(function () {
         houseCommon.initDetailById('${basicHouse.id}', '', false);
-        if(${projectPhase eq 'caseStudyExtend'}){
+        if (${projectPhase eq 'caseStudyExtend'}) {
             houseLandTrading.init();
         }
     })

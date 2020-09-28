@@ -11,6 +11,7 @@
     <result column="plough_area" jdbcType="DECIMAL" property="ploughArea" />
     <result column="population_number" jdbcType="INTEGER" property="populationNumber" />
     <result column="reward_rate_id" jdbcType="INTEGER" property="rewardRateId" />
+    <result column="reward_rate_remark" jdbcType="VARCHAR" property="rewardRateRemark" />
     <result column="reward_rate" jdbcType="VARCHAR" property="rewardRate" />
     <result column="circulation_expense" jdbcType="DECIMAL" property="circulationExpense" />
     <result column="circulation_expense_remark" jdbcType="VARCHAR" property="circulationExpenseRemark" />
@@ -123,11 +124,11 @@
   </sql>
   <sql id="Base_Column_List">
     id, name, judge_object_id, plan_details_id, process_ins_id, farmland_area, plough_area, 
-    population_number, reward_rate_id, reward_rate, circulation_expense, circulation_expense_remark, 
-    flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, 
-    calculated_interest_remark, profit_margin, profit_margin_remark, incremental_benefit, 
-    incremental_benefit_remark, plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, 
-    plot_ratio_element_amend_remark, land_remaining_year, land_remaining_year_remark, 
+    population_number, reward_rate_id, reward_rate_remark, reward_rate, circulation_expense, 
+    circulation_expense_remark, flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, 
+    calculated_interest, calculated_interest_remark, profit_margin, profit_margin_remark, 
+    incremental_benefit, incremental_benefit_remark, plot_ratio_adjust, plot_ratio_adjust_remark, 
+    plot_ratio_element_amend, plot_ratio_element_amend_remark, land_remaining_year, land_remaining_year_remark, 
     parcel_setting_outer, parcel_setting_inner, land_use_bhou, land_use_price, year_fixed, 
     parcel_bhou, parcel_unit, land_cost_price_unit, land_cost_price_bhou, land_acquisition_unit, 
     land_production_profit_bhou, land_production_profit_unit, land_production_interest_unit, 
@@ -193,8 +194,8 @@
     </selectKey>
     insert into tb_md_cost_approach (name, judge_object_id, plan_details_id, 
       process_ins_id, farmland_area, plough_area, 
-      population_number, reward_rate_id, reward_rate, 
-      circulation_expense, circulation_expense_remark, 
+      population_number, reward_rate_id, reward_rate_remark, 
+      reward_rate, circulation_expense, circulation_expense_remark, 
       flat_expense, flat_expense_remark, machine_cycle, 
       machine_cycle_remark, calculated_interest, 
       calculated_interest_remark, profit_margin, 
@@ -217,8 +218,8 @@
       creator, land_level_content)
     values (#{name,jdbcType=VARCHAR}, #{judgeObjectId,jdbcType=INTEGER}, #{planDetailsId,jdbcType=INTEGER}, 
       #{processInsId,jdbcType=VARCHAR}, #{farmlandArea,jdbcType=DECIMAL}, #{ploughArea,jdbcType=DECIMAL}, 
-      #{populationNumber,jdbcType=INTEGER}, #{rewardRateId,jdbcType=INTEGER}, #{rewardRate,jdbcType=VARCHAR}, 
-      #{circulationExpense,jdbcType=DECIMAL}, #{circulationExpenseRemark,jdbcType=VARCHAR}, 
+      #{populationNumber,jdbcType=INTEGER}, #{rewardRateId,jdbcType=INTEGER}, #{rewardRateRemark,jdbcType=VARCHAR}, 
+      #{rewardRate,jdbcType=VARCHAR}, #{circulationExpense,jdbcType=DECIMAL}, #{circulationExpenseRemark,jdbcType=VARCHAR}, 
       #{flatExpense,jdbcType=DECIMAL}, #{flatExpenseRemark,jdbcType=VARCHAR}, #{machineCycle,jdbcType=DECIMAL}, 
       #{machineCycleRemark,jdbcType=VARCHAR}, #{calculatedInterest,jdbcType=VARCHAR}, 
       #{calculatedInterestRemark,jdbcType=VARCHAR}, #{profitMargin,jdbcType=VARCHAR}, 
@@ -276,6 +277,9 @@
           </if>
           <if test="record.rewardRateId != null">
             reward_rate_id,
+          </if>
+          <if test="record.rewardRateRemark != null">
+            reward_rate_remark,
           </if>
           <if test="record.rewardRate != null">
             reward_rate,
@@ -460,6 +464,9 @@
           </if>
           <if test="record.rewardRateId != null">
             #{record.rewardRateId,jdbcType=INTEGER},
+          </if>
+          <if test="record.rewardRateRemark != null">
+            #{record.rewardRateRemark,jdbcType=VARCHAR},
           </if>
           <if test="record.rewardRate != null">
             #{record.rewardRate,jdbcType=VARCHAR},
@@ -656,6 +663,9 @@
           <if test="record.rewardRateId != null">
             reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
           </if>
+          <if test="record.rewardRateRemark != null">
+            reward_rate_remark = #{record.rewardRateRemark,jdbcType=VARCHAR},
+          </if>
           <if test="record.rewardRate != null">
             reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
           </if>
@@ -821,6 +831,7 @@
       plough_area = #{record.ploughArea,jdbcType=DECIMAL},
       population_number = #{record.populationNumber,jdbcType=INTEGER},
       reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+      reward_rate_remark = #{record.rewardRateRemark,jdbcType=VARCHAR},
       reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
       circulation_expense = #{record.circulationExpense,jdbcType=DECIMAL},
       circulation_expense_remark = #{record.circulationExpenseRemark,jdbcType=VARCHAR},
@@ -885,6 +896,7 @@
       plough_area = #{record.ploughArea,jdbcType=DECIMAL},
       population_number = #{record.populationNumber,jdbcType=INTEGER},
       reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+      reward_rate_remark = #{record.rewardRateRemark,jdbcType=VARCHAR},
       reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
       circulation_expense = #{record.circulationExpense,jdbcType=DECIMAL},
       circulation_expense_remark = #{record.circulationExpenseRemark,jdbcType=VARCHAR},
@@ -971,6 +983,9 @@
           </if>
           <if test="record.rewardRateId != null">
             reward_rate_id = #{record.rewardRateId,jdbcType=INTEGER},
+          </if>
+          <if test="record.rewardRateRemark != null">
+            reward_rate_remark = #{record.rewardRateRemark,jdbcType=VARCHAR},
           </if>
           <if test="record.rewardRate != null">
             reward_rate = #{record.rewardRate,jdbcType=VARCHAR},
@@ -1134,6 +1149,7 @@
       plough_area = #{ploughArea,jdbcType=DECIMAL},
       population_number = #{populationNumber,jdbcType=INTEGER},
       reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
+      reward_rate_remark = #{rewardRateRemark,jdbcType=VARCHAR},
       reward_rate = #{rewardRate,jdbcType=VARCHAR},
       circulation_expense = #{circulationExpense,jdbcType=DECIMAL},
       circulation_expense_remark = #{circulationExpenseRemark,jdbcType=VARCHAR},
@@ -1195,6 +1211,7 @@
       plough_area = #{ploughArea,jdbcType=DECIMAL},
       population_number = #{populationNumber,jdbcType=INTEGER},
       reward_rate_id = #{rewardRateId,jdbcType=INTEGER},
+      reward_rate_remark = #{rewardRateRemark,jdbcType=VARCHAR},
       reward_rate = #{rewardRate,jdbcType=VARCHAR},
       circulation_expense = #{circulationExpense,jdbcType=DECIMAL},
       circulation_expense_remark = #{circulationExpenseRemark,jdbcType=VARCHAR},
@@ -1248,37 +1265,37 @@
   <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
     insert into tb_md_cost_approach
     (name, judge_object_id, plan_details_id, process_ins_id, farmland_area, plough_area, 
-      population_number, reward_rate_id, reward_rate, circulation_expense, circulation_expense_remark, 
-      flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, calculated_interest, 
-      calculated_interest_remark, profit_margin, profit_margin_remark, incremental_benefit, 
-      incremental_benefit_remark, plot_ratio_adjust, plot_ratio_adjust_remark, plot_ratio_element_amend, 
-      plot_ratio_element_amend_remark, land_remaining_year, land_remaining_year_remark, 
-      parcel_setting_outer, parcel_setting_inner, land_use_bhou, land_use_price, year_fixed, 
-      parcel_bhou, parcel_unit, land_cost_price_unit, land_cost_price_bhou, land_acquisition_unit, 
-      land_production_profit_bhou, land_production_profit_unit, land_production_interest_unit, 
-      have_not_land_acquisition, land_production_interest_bhou, land_production_bhou, 
-      land_production_unit, land_acquisition_bhou, no_plough_arearatio, plough_arearatio, 
-      price_correction_bhou, price_correction_unit, plot_ratio_element_amend_bhou, plot_ratio_element_amend_unit, 
-      plot_ratio_adjust_bhou, plot_ratio_adjust_unit, gmt_modified, gmt_created, creator, 
-      land_level_content)
+      population_number, reward_rate_id, reward_rate_remark, reward_rate, circulation_expense, 
+      circulation_expense_remark, flat_expense, flat_expense_remark, machine_cycle, machine_cycle_remark, 
+      calculated_interest, calculated_interest_remark, profit_margin, profit_margin_remark, 
+      incremental_benefit, incremental_benefit_remark, plot_ratio_adjust, plot_ratio_adjust_remark, 
+      plot_ratio_element_amend, plot_ratio_element_amend_remark, land_remaining_year, 
+      land_remaining_year_remark, parcel_setting_outer, parcel_setting_inner, land_use_bhou, 
+      land_use_price, year_fixed, parcel_bhou, parcel_unit, land_cost_price_unit, land_cost_price_bhou, 
+      land_acquisition_unit, land_production_profit_bhou, land_production_profit_unit, 
+      land_production_interest_unit, have_not_land_acquisition, land_production_interest_bhou, 
+      land_production_bhou, land_production_unit, land_acquisition_bhou, no_plough_arearatio, 
+      plough_arearatio, price_correction_bhou, price_correction_unit, plot_ratio_element_amend_bhou, 
+      plot_ratio_element_amend_unit, plot_ratio_adjust_bhou, plot_ratio_adjust_unit, 
+      gmt_modified, gmt_created, creator, land_level_content)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.name,jdbcType=VARCHAR}, #{item.judgeObjectId,jdbcType=INTEGER}, #{item.planDetailsId,jdbcType=INTEGER}, 
         #{item.processInsId,jdbcType=VARCHAR}, #{item.farmlandArea,jdbcType=DECIMAL}, #{item.ploughArea,jdbcType=DECIMAL}, 
         #{item.populationNumber,jdbcType=INTEGER}, #{item.rewardRateId,jdbcType=INTEGER}, 
-        #{item.rewardRate,jdbcType=VARCHAR}, #{item.circulationExpense,jdbcType=DECIMAL}, 
-        #{item.circulationExpenseRemark,jdbcType=VARCHAR}, #{item.flatExpense,jdbcType=DECIMAL}, 
-        #{item.flatExpenseRemark,jdbcType=VARCHAR}, #{item.machineCycle,jdbcType=DECIMAL}, 
-        #{item.machineCycleRemark,jdbcType=VARCHAR}, #{item.calculatedInterest,jdbcType=VARCHAR}, 
-        #{item.calculatedInterestRemark,jdbcType=VARCHAR}, #{item.profitMargin,jdbcType=VARCHAR}, 
-        #{item.profitMarginRemark,jdbcType=VARCHAR}, #{item.incrementalBenefit,jdbcType=VARCHAR}, 
-        #{item.incrementalBenefitRemark,jdbcType=VARCHAR}, #{item.plotRatioAdjust,jdbcType=VARCHAR}, 
-        #{item.plotRatioAdjustRemark,jdbcType=VARCHAR}, #{item.plotRatioElementAmend,jdbcType=DECIMAL}, 
-        #{item.plotRatioElementAmendRemark,jdbcType=VARCHAR}, #{item.landRemainingYear,jdbcType=DECIMAL}, 
-        #{item.landRemainingYearRemark,jdbcType=VARCHAR}, #{item.parcelSettingOuter,jdbcType=VARCHAR}, 
-        #{item.parcelSettingInner,jdbcType=VARCHAR}, #{item.landUseBhou,jdbcType=DECIMAL}, 
-        #{item.landUsePrice,jdbcType=DECIMAL}, #{item.yearFixed,jdbcType=DECIMAL}, #{item.parcelBhou,jdbcType=DECIMAL}, 
-        #{item.parcelUnit,jdbcType=DECIMAL}, #{item.landCostPriceUnit,jdbcType=DECIMAL}, 
+        #{item.rewardRateRemark,jdbcType=VARCHAR}, #{item.rewardRate,jdbcType=VARCHAR}, 
+        #{item.circulationExpense,jdbcType=DECIMAL}, #{item.circulationExpenseRemark,jdbcType=VARCHAR}, 
+        #{item.flatExpense,jdbcType=DECIMAL}, #{item.flatExpenseRemark,jdbcType=VARCHAR}, 
+        #{item.machineCycle,jdbcType=DECIMAL}, #{item.machineCycleRemark,jdbcType=VARCHAR}, 
+        #{item.calculatedInterest,jdbcType=VARCHAR}, #{item.calculatedInterestRemark,jdbcType=VARCHAR}, 
+        #{item.profitMargin,jdbcType=VARCHAR}, #{item.profitMarginRemark,jdbcType=VARCHAR}, 
+        #{item.incrementalBenefit,jdbcType=VARCHAR}, #{item.incrementalBenefitRemark,jdbcType=VARCHAR}, 
+        #{item.plotRatioAdjust,jdbcType=VARCHAR}, #{item.plotRatioAdjustRemark,jdbcType=VARCHAR}, 
+        #{item.plotRatioElementAmend,jdbcType=DECIMAL}, #{item.plotRatioElementAmendRemark,jdbcType=VARCHAR}, 
+        #{item.landRemainingYear,jdbcType=DECIMAL}, #{item.landRemainingYearRemark,jdbcType=VARCHAR}, 
+        #{item.parcelSettingOuter,jdbcType=VARCHAR}, #{item.parcelSettingInner,jdbcType=VARCHAR}, 
+        #{item.landUseBhou,jdbcType=DECIMAL}, #{item.landUsePrice,jdbcType=DECIMAL}, #{item.yearFixed,jdbcType=DECIMAL}, 
+        #{item.parcelBhou,jdbcType=DECIMAL}, #{item.parcelUnit,jdbcType=DECIMAL}, #{item.landCostPriceUnit,jdbcType=DECIMAL}, 
         #{item.landCostPriceBhou,jdbcType=DECIMAL}, #{item.landAcquisitionUnit,jdbcType=DECIMAL}, 
         #{item.landProductionProfitBhou,jdbcType=DECIMAL}, #{item.landProductionProfitUnit,jdbcType=DECIMAL}, 
         #{item.landProductionInterestUnit,jdbcType=DECIMAL}, #{item.haveNotLandAcquisition,jdbcType=DECIMAL}, 
@@ -1326,6 +1343,9 @@
         </if>
         <if test="'reward_rate_id'.toString() == column.value">
           #{item.rewardRateId,jdbcType=INTEGER}
+        </if>
+        <if test="'reward_rate_remark'.toString() == column.value">
+          #{item.rewardRateRemark,jdbcType=VARCHAR}
         </if>
         <if test="'reward_rate'.toString() == column.value">
           #{item.rewardRate,jdbcType=VARCHAR}

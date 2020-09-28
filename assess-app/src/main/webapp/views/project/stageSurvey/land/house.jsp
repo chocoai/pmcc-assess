@@ -36,6 +36,7 @@
                                 </div>
                                 <%@include file="/views/project/stageSurvey/common/houseTradingLandSurvey.jsp" %>
                                 <%@include file="/views/project/stageSurvey/common/houseFaceStreet.jsp" %>
+                                <%@include file="/views/method/module/projectLandAchievementGroup.jsp" %>
                             </div>
                         </div>
                     </div>

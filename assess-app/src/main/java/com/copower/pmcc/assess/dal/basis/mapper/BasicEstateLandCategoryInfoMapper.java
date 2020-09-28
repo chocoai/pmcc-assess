@@ -14,17 +14,27 @@ public interface BasicEstateLandCategoryInfoMapper {
 
     int insert(BasicEstateLandCategoryInfo record);
 
-    int insertSelective(BasicEstateLandCategoryInfo record);
+    int insertSelective(@Param("record") BasicEstateLandCategoryInfo record, @Param("selective") BasicEstateLandCategoryInfo.Column ... selective);
+
+    List<BasicEstateLandCategoryInfo> selectByExampleWithBLOBs(BasicEstateLandCategoryInfoExample example);
 
     List<BasicEstateLandCategoryInfo> selectByExample(BasicEstateLandCategoryInfoExample example);
 
     BasicEstateLandCategoryInfo selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") BasicEstateLandCategoryInfo record, @Param("example") BasicEstateLandCategoryInfoExample example);
+    int updateByExampleSelective(@Param("record") BasicEstateLandCategoryInfo record, @Param("example") BasicEstateLandCategoryInfoExample example, @Param("selective") BasicEstateLandCategoryInfo.Column ... selective);
+
+    int updateByExampleWithBLOBs(@Param("record") BasicEstateLandCategoryInfo record, @Param("example") BasicEstateLandCategoryInfoExample example);
 
     int updateByExample(@Param("record") BasicEstateLandCategoryInfo record, @Param("example") BasicEstateLandCategoryInfoExample example);
 
-    int updateByPrimaryKeySelective(BasicEstateLandCategoryInfo record);
+    int updateByPrimaryKeySelective(@Param("record") BasicEstateLandCategoryInfo record, @Param("selective") BasicEstateLandCategoryInfo.Column ... selective);
+
+    int updateByPrimaryKeyWithBLOBs(BasicEstateLandCategoryInfo record);
 
     int updateByPrimaryKey(BasicEstateLandCategoryInfo record);
+
+    int batchInsert(@Param("list") List<BasicEstateLandCategoryInfo> list);
+
+    int batchInsertSelective(@Param("list") List<BasicEstateLandCategoryInfo> list, @Param("selective") BasicEstateLandCategoryInfo.Column ... selective);
 }

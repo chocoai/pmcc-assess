@@ -272,6 +272,7 @@ AssessDicKey.examineHouseHouse_layout = "unit.house_layout";//房型
 AssessDicKey.examineHouseTransactionType = "examine.house.transaction.type";//交易类型
 AssessDicKey.examineHouseTransactionTypeSell = "examine.house.transaction.type.sell";//交易类型-出售
 AssessDicKey.examineHouseTransactionTypeLease = "examine.house.transaction.type.lease";//交易类型-出租
+AssessDicKey.examineHouseTransactionTransactionLevel = "examine.house.transaction.level";//交易类型-市场级别
 AssessDicKey.examineHouseDescriptionType = "examine.house.description_type";//说明事项类型
 AssessDicKey.examineHousetaxBurden = "examine.house.tax.burden";//税费负担
 AssessDicKey.examineHouseTransactionSituation = "examine.house.transaction.situation";//交易情况

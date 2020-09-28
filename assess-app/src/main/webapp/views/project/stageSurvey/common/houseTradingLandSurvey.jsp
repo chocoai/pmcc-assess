@@ -106,6 +106,12 @@
                             name="paymentMethod" required>
                     </select>
                 </div>
+                <label class="col-sm-1">市场级别</label>
+                <div class="col-sm-3">
+                    <select class="form-control input-full "
+                            name="transactionLevel" >
+                    </select>
+                </div>
             </div>
             <div class="" style="display: none;">
                 <label class="col-sm-1">分期支付利率</label>
@@ -555,6 +561,7 @@
 
     //交易情况
     houseLandTrading.initBasicHouseTradingForm = function (data, number) {
+        console.log("test2") ;
         var houseTradingFormId = houseLandTrading.basicHouseTradingFrm + number;
         houseLandTrading.changeEvent(data, number);
         if (data != null) {
@@ -573,6 +580,9 @@
             }, false);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, data.tradingType, function (html, data) {
                 $("#" + houseTradingFormId).find("select.tradingType").empty().html(html).trigger('change');
+            }, false);
+            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionTransactionLevel, data.transactionLevel, function (html, data) {
+                $("#" + houseTradingFormId).find("select[name=transactionLevel]").empty().html(html).trigger('change');
             }, false);
             AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, data.financingConditions, function (html, data) {
                 $("#" + houseTradingFormId).find("select.financingConditions").empty().html(html).trigger('change');

@@ -90,7 +90,11 @@
                         <label class="form-control input-full"
                                name="paymentMethodName">${basicHouseTrading.paymentMethodName}</label>
                     </div>
-
+                    <label class="col-sm-1">市场级别</label>
+                    <div class="col-sm-3">
+                        <label class="form-control input-full"
+                               name="transactionLevelName">${basicHouseTrading.transactionLevelName}</label>
+                    </div>
                     <c:if test="${!empty basicHouseTrading.installmentInterestRate}">
 
                         <label class="col-sm-1 control-label">分期支付利率</label>
