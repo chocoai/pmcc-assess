@@ -435,9 +435,9 @@
                                                        class="form-control input-full x-percent"
                                                        id="plotRatioAdjust"
                                                        name="plotRatioAdjust" required
-                                                       data-value="${master.plotRatioAdjust}"
+                                                       data-value="${master.plotRatioAdjust != null?master.plotRatioAdjust:plotRatioAdjust}"
                                                        onblur="calculationNumeric(this);"
-                                                       value="${master.plotRatioAdjust}">
+                                                       value="${master.plotRatioAdjust != null?master.plotRatioAdjust:plotRatioAdjust}">
                                             </div>
                                             <label class="col-sm-1 control-label">
                                                 说明
@@ -464,7 +464,7 @@
                                                        data-rule-number="true"
                                                        name="landRemainingYear" required
                                                        onblur="calculationNumeric(this);"
-                                                       value="${master.landRemainingYear}">
+                                                       value="${master.landRemainingYear == null?landRemainingYear:master.landRemainingYear}">
                                             </div>
                                             <label class="col-sm-1 control-label">
                                                 说明
@@ -502,6 +502,16 @@
                                                         </button>
                                                     </div>
                                                 </div>
+                                            </div>
+
+                                            <label class="col-sm-1 control-label">
+                                                说明
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <input type="text"
+                                                       value="${master.rewardRateRemark}"
+                                                       class="form-control input-full"
+                                                       name="rewardRateRemark">
                                             </div>
                                         </div>
                                     </div>

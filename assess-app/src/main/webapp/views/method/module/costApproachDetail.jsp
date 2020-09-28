@@ -362,6 +362,13 @@
                                                     </c:choose>
                                                 </label>
                                             </div>
+
+                                            <label class="col-sm-1 control-label">
+                                                说明
+                                            </label>
+                                            <div class="col-sm-3">
+                                                <label class="form-control input-full">${master.rewardRateRemark}</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

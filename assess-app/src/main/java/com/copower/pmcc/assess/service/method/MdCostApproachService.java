@@ -401,7 +401,7 @@ public class MdCostApproachService {
                 if (!ArithmeticUtils.checkNotNull(landRemainingYear)) {
                     return "";
                 }
-                double temp = StrictMath.pow(ArithmeticUtils.add(new BigDecimal(1),ArithmeticUtils.createBigDecimal(rewardRate)).doubleValue(), landRemainingYear.doubleValue());
+                double temp = StrictMath.pow(ArithmeticUtils.add(new BigDecimal(1), ArithmeticUtils.createBigDecimal(rewardRate)).doubleValue(), landRemainingYear.doubleValue());
                 //年期修正H33
                 String yearFixed = ArithmeticUtils.sub(String.valueOf(1), ArithmeticUtils.div("1", String.valueOf(temp)), 4);
                 target.setYearFixed(ArithmeticUtils.createBigDecimal(yearFixed));
@@ -621,7 +621,7 @@ public class MdCostApproachService {
                         mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getStandardFirst().multiply(ploughRatio).setScale(2, BigDecimal.ROUND_HALF_UP));
                     }
                     break;
-                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD:{
+                case AssessDataDicKeyConstant.DATA_LAND_APPROXIMATION_METHOD_REMOVAL_AWARD: {
                     mdCostApproachTaxes.setPrice(mdCostApproachTaxes.getPrice().setScale(2, BigDecimal.ROUND_HALF_UP));
                     break;
                 }
@@ -641,16 +641,16 @@ public class MdCostApproachService {
                         List<MdCostApproachTaxes> list = getMdCostApproachTaxesListByKeys(mdCostApproachTaxes.getMasterId(), keys);
                         List<MdCostApproachTaxes> custom = getMdCostApproachTaxesListByCustom(mdCostApproachTaxes.getMasterId());
                         list.addAll(custom);
-                        List<BigDecimal> bigDecimalList = new ArrayList<>(list.size()) ;
+                        List<BigDecimal> bigDecimalList = new ArrayList<>(list.size());
                         if (CollectionUtils.isNotEmpty(list)) {
                             for (MdCostApproachTaxes item : list) {
                                 if (item.getPrice() != null) {
-                                    bigDecimalList.add(item.getPrice()) ;
+                                    bigDecimalList.add(item.getPrice());
                                 }
                             }
                         }
                         BigDecimal add = ArithmeticUtils.add(bigDecimalList);
-                        BigDecimal bigDecimal = ArithmeticUtils.multiply(mdCostApproachTaxes.getStandardFirst() ,add ,2);
+                        BigDecimal bigDecimal = ArithmeticUtils.multiply(mdCostApproachTaxes.getStandardFirst(), add, 2);
                         mdCostApproachTaxes.setPrice(bigDecimal);
                     }
                     break;
@@ -868,6 +868,16 @@ public class MdCostApproachService {
         modelAndView.addObject("taxesTypes", dataDicList);
         SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
         modelAndView.addObject("judgeObject", schemeJudgeObject);
+        if (schemeJudgeObject != null) {
+            if (schemeJudgeObject.getLandRemainingYear() != null) {
+                //从估价对象获取剩余年限
+                modelAndView.addObject("landRemainingYear", schemeJudgeObject.getLandRemainingYear());
+            }
+            if (schemeJudgeObject.getSetPlotRatio() != null){
+                //从估价对象获取容积率
+                modelAndView.addObject("plotRatioAdjust", ArithmeticUtils.divide(schemeJudgeObject.getSetPlotRatio(),new BigDecimal(100),4));
+            }
+        }
         BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
         BasicEstate basicEstate = null;
         try {
@@ -881,7 +891,7 @@ public class MdCostApproachService {
         if (basicApply.getLandCategoryId() != null) {
             BasicEstateLandCategoryInfo categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
             if (categoryInfo != null) {
-                modelAndView.addObject("basicEstateLandCategoryInfo",categoryInfo);
+                modelAndView.addObject("basicEstateLandCategoryInfo", categoryInfo);
             }
         }
     }

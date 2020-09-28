@@ -1,6 +1,5 @@
 package com.copower.pmcc.assess.service.project.generate;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.aspose.words.BookmarkCollection;
@@ -15,7 +14,6 @@ import com.copower.pmcc.assess.constant.AssessProjectClassifyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataLandLevelDetailVolumeDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.generate.BookmarkAndRegexDto;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
@@ -27,8 +25,6 @@ import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.base.BaseReportFieldService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
-import com.copower.pmcc.assess.service.basic.BasicEstateLandStateService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailAchievementService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailVolumeService;
@@ -39,7 +35,6 @@ import com.copower.pmcc.assess.service.project.ProjectLandAchievementGroupServic
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
 import com.copower.pmcc.assess.service.tool.ToolRewardRateService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -54,6 +49,7 @@ import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,18 +74,14 @@ public class GenerateMdBaseLandPriceService {
     private GenerateCommonMethod generateCommonMethod;
     private SchemeAreaGroupService schemeAreaGroupService;
     private DeclareRecordService declareRecordService;
-    private SurveyCommonService surveyCommonService;
     private SchemeJudgeObjectService schemeJudgeObjectService;
-    private BasicEstateService basicEstateService;
     private DataLandLevelDetailService dataLandLevelDetailService;
     private DataLandLevelService dataLandLevelService;
-    private BasicEstateLandStateService basicEstateLandStateService;
     private BaseDataDicService baseDataDicService;
     private ProjectInfoService projectInfoService;
     private DataHousePriceIndexDao dataHousePriceIndexDao;
     private DataHousePriceIndexDetailDao dataHousePriceIndexDetailDao;
     private ToolRewardRateService toolRewardRateService;
-    private DataLandLevelDetailVolumeDao dataLandLevelDetailVolumeDao;
     private DataLandLevelDetailVolumeService dataLandLevelDetailVolumeService;
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
     private BasicApplyService basicApplyService;
@@ -410,27 +402,8 @@ public class GenerateMdBaseLandPriceService {
     }
 
     public List<List<ProjectLandAchievementGroupWithBLOBs>> getFilterProjectLandAchievementGroup() {
-        BasicApply basicApply = basicApplyService.getByBasicApplyId(getSchemeJudgeObject().getBasicApplyId());
-        if (basicApply == null) {
-            return null;
-        }
-        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
-        if (basicEstate == null) {
-            return null;
-        }
-        BasicEstateLandCategoryInfo categoryInfo = null;
-        if (basicApply.getLandCategoryId() != null) {
-            categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
-        } else {
-            List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
-            categoryInfo = categoryInfoList.get(0);
-        }
-        if (categoryInfo == null) {
-            return null;
-        }
         //地价因素修正数据
-        List<List<ProjectLandAchievementGroupWithBLOBs>> achievementGroupData = projectLandAchievementGroupService.getInitProjectLandAchievementGroupData(projectId, categoryInfo.getId(), FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
-        return achievementGroupData;
+        return projectLandAchievementGroupService.getMethodReportFilterProjectLandAchievementGroup(getSchemeJudgeObject());
     }
 
 
@@ -541,7 +514,7 @@ public class GenerateMdBaseLandPriceService {
                 if (StringUtils.isNotBlank(group.getAchievementIds())) {
                     List<DataLandLevelDetailAchievement> dataLandLevelDetailAchievementList = dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementListByIds(FormatUtils.transformString2Integer(group.getAchievementIds()));
                     if (CollectionUtils.isNotEmpty(dataLandLevelDetailAchievementList)) {
-                        landLevelDetailAchievementList = LangUtils.transform(dataLandLevelDetailAchievementList ,obj -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(obj)) ;
+                        landLevelDetailAchievementList = LangUtils.transform(dataLandLevelDetailAchievementList, obj -> dataLandLevelDetailAchievementService.getDataLandLevelDetailAchievementVo(obj));
                     }
                 }
                 if (CollectionUtils.isEmpty(landLevelDetailAchievementList)) {
@@ -760,7 +733,15 @@ public class GenerateMdBaseLandPriceService {
      * 功能描述: 基准地价报酬率
      */
     public String getBaseLandPriceRewardRatio() {
-        return getMdBaseLandPrice().getRewardRate();
+        String rewardRate = getMdBaseLandPrice().getRewardRate();
+        if (StringUtils.isNotBlank(rewardRate)) {
+            if (NumberUtils.isNumber(rewardRate)) {
+                return ArithmeticUtils.getPercentileSystem(new BigDecimal(rewardRate), 2);
+            } else {
+                return rewardRate;
+            }
+        }
+        return "";
     }
 
     /**
@@ -1010,18 +991,14 @@ public class GenerateMdBaseLandPriceService {
         this.generateCommonMethod = SpringContextUtils.getBean(GenerateCommonMethod.class);
         this.schemeAreaGroupService = SpringContextUtils.getBean(SchemeAreaGroupService.class);
         this.declareRecordService = SpringContextUtils.getBean(DeclareRecordService.class);
-        this.surveyCommonService = SpringContextUtils.getBean(SurveyCommonService.class);
         this.schemeJudgeObjectService = SpringContextUtils.getBean(SchemeJudgeObjectService.class);
-        this.basicEstateService = SpringContextUtils.getBean(BasicEstateService.class);
         this.dataLandLevelDetailService = SpringContextUtils.getBean(DataLandLevelDetailService.class);
         this.dataLandLevelService = SpringContextUtils.getBean(DataLandLevelService.class);
-        this.basicEstateLandStateService = SpringContextUtils.getBean(BasicEstateLandStateService.class);
         this.baseDataDicService = SpringContextUtils.getBean(BaseDataDicService.class);
         this.projectInfoService = SpringContextUtils.getBean(ProjectInfoService.class);
         this.dataHousePriceIndexDao = SpringContextUtils.getBean(DataHousePriceIndexDao.class);
         this.dataHousePriceIndexDetailDao = SpringContextUtils.getBean(DataHousePriceIndexDetailDao.class);
         this.toolRewardRateService = SpringContextUtils.getBean(ToolRewardRateService.class);
-        this.dataLandLevelDetailVolumeDao = SpringContextUtils.getBean(DataLandLevelDetailVolumeDao.class);
         this.dataLandLevelDetailVolumeService = SpringContextUtils.getBean(DataLandLevelDetailVolumeService.class);
         this.basicEstateLandCategoryInfoService = SpringContextUtils.getBean(BasicEstateLandCategoryInfoService.class);
         this.basicApplyService = SpringContextUtils.getBean(BasicApplyService.class);

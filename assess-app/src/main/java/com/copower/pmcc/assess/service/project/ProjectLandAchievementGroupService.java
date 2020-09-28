@@ -3,13 +3,16 @@ package com.copower.pmcc.assess.service.project;
 import com.alibaba.fastjson.JSONObject;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectLandAchievementGroupDao;
-import com.copower.pmcc.assess.dal.basis.entity.DataLandLevelDetailAchievement;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectLandAchievementGroupWithBLOBs;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.KeyValueVo;
 import com.copower.pmcc.assess.dto.output.data.DataLandLevelDetailAchievementVo;
+import com.copower.pmcc.assess.service.basic.BasicApplyService;
+import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
+import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailAchievementService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.utils.DateUtils;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
@@ -33,9 +36,45 @@ public class ProjectLandAchievementGroupService {
     private ProjectLandAchievementGroupDao projectLandAchievementGroupDao;
     @Autowired
     private DataLandLevelDetailAchievementService dataLandLevelDetailAchievementService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicApplyService basicApplyService;
 
     public ProjectLandAchievementGroupDao getProjectLandAchievementGroupDao(){
         return projectLandAchievementGroupDao ;
+    }
+
+    /**
+     * 获取测算方法报告使用的数据
+     * @param schemeJudgeObject
+     * @return
+     */
+    public List<List<ProjectLandAchievementGroupWithBLOBs>> getMethodReportFilterProjectLandAchievementGroup(SchemeJudgeObject schemeJudgeObject){
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+        if (basicApply == null) {
+            return null;
+        }
+        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+        if (basicEstate == null) {
+            return null;
+        }
+        BasicEstateLandCategoryInfo categoryInfo = null;
+        if (basicApply.getLandCategoryId() != null) {
+            categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+        } else {
+            List<BasicEstateLandCategoryInfo> categoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
+            categoryInfo = categoryInfoList.get(0);
+        }
+        if (categoryInfo == null) {
+            return null;
+        }
+        //地价因素修正数据
+        List<List<ProjectLandAchievementGroupWithBLOBs>> achievementGroupData = getInitProjectLandAchievementGroupData(schemeJudgeObject.getProjectId(), categoryInfo.getId(), FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class));
+        return achievementGroupData;
+
     }
 
     public List<List<ProjectLandAchievementGroupWithBLOBs>> getInitProjectLandAchievementGroupData(Integer projectId, Integer dataTableId, String dataTableName) {
