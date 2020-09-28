@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class BasicEstateLandCategoryInfoExample {
+    /**
+     * tb_basic_estate_land_category_info
+     */
     protected String orderByClause;
 
+    /**
+     * tb_basic_estate_land_category_info
+     */
     protected boolean distinct;
 
+    /**
+     * tb_basic_estate_land_category_info
+     */
     protected List<Criteria> oredCriteria;
 
     public BasicEstateLandCategoryInfoExample() {
@@ -65,6 +74,9 @@ public class BasicEstateLandCategoryInfoExample {
         distinct = false;
     }
 
+    /**
+     * tb_basic_estate_land_category_info
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -606,76 +618,6 @@ public class BasicEstateLandCategoryInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andLandLevelContentResultIsNull() {
-            addCriterion("land_level_content_result is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultIsNotNull() {
-            addCriterion("land_level_content_result is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultEqualTo(String value) {
-            addCriterion("land_level_content_result =", value, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultNotEqualTo(String value) {
-            addCriterion("land_level_content_result <>", value, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultGreaterThan(String value) {
-            addCriterion("land_level_content_result >", value, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultGreaterThanOrEqualTo(String value) {
-            addCriterion("land_level_content_result >=", value, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultLessThan(String value) {
-            addCriterion("land_level_content_result <", value, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultLessThanOrEqualTo(String value) {
-            addCriterion("land_level_content_result <=", value, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultLike(String value) {
-            addCriterion("land_level_content_result like", value, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultNotLike(String value) {
-            addCriterion("land_level_content_result not like", value, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultIn(List<String> values) {
-            addCriterion("land_level_content_result in", values, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultNotIn(List<String> values) {
-            addCriterion("land_level_content_result not in", values, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultBetween(String value1, String value2) {
-            addCriterion("land_level_content_result between", value1, value2, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentResultNotBetween(String value1, String value2) {
-            addCriterion("land_level_content_result not between", value1, value2, "landLevelContentResult");
-            return (Criteria) this;
-        }
-
         public Criteria andLandLevelIsNull() {
             addCriterion("land_level is null");
             return (Criteria) this;
@@ -733,6 +675,76 @@ public class BasicEstateLandCategoryInfoExample {
 
         public Criteria andLandLevelNotBetween(Integer value1, Integer value2) {
             addCriterion("land_level not between", value1, value2, "landLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkIsNull() {
+            addCriterion("land_level_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkIsNotNull() {
+            addCriterion("land_level_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkEqualTo(String value) {
+            addCriterion("land_level_remark =", value, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkNotEqualTo(String value) {
+            addCriterion("land_level_remark <>", value, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkGreaterThan(String value) {
+            addCriterion("land_level_remark >", value, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("land_level_remark >=", value, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkLessThan(String value) {
+            addCriterion("land_level_remark <", value, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkLessThanOrEqualTo(String value) {
+            addCriterion("land_level_remark <=", value, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkLike(String value) {
+            addCriterion("land_level_remark like", value, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkNotLike(String value) {
+            addCriterion("land_level_remark not like", value, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkIn(List<String> values) {
+            addCriterion("land_level_remark in", values, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkNotIn(List<String> values) {
+            addCriterion("land_level_remark not in", values, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkBetween(String value1, String value2) {
+            addCriterion("land_level_remark between", value1, value2, "landLevelRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandLevelRemarkNotBetween(String value1, String value2) {
+            addCriterion("land_level_remark not between", value1, value2, "landLevelRemark");
             return (Criteria) this;
         }
 
@@ -1734,6 +1746,9 @@ public class BasicEstateLandCategoryInfoExample {
         }
     }
 
+    /**
+     * tb_basic_estate_land_category_info
+     */
     public static class Criterion {
         private String condition;
 

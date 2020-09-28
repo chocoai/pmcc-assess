@@ -14,17 +14,21 @@ public interface BasicHouseTradingMapper {
 
     int insert(BasicHouseTrading record);
 
-    int insertSelective(BasicHouseTrading record);
+    int insertSelective(@Param("record") BasicHouseTrading record, @Param("selective") BasicHouseTrading.Column ... selective);
 
     List<BasicHouseTrading> selectByExample(BasicHouseTradingExample example);
 
     BasicHouseTrading selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") BasicHouseTrading record, @Param("example") BasicHouseTradingExample example);
+    int updateByExampleSelective(@Param("record") BasicHouseTrading record, @Param("example") BasicHouseTradingExample example, @Param("selective") BasicHouseTrading.Column ... selective);
 
     int updateByExample(@Param("record") BasicHouseTrading record, @Param("example") BasicHouseTradingExample example);
 
-    int updateByPrimaryKeySelective(BasicHouseTrading record);
+    int updateByPrimaryKeySelective(@Param("record") BasicHouseTrading record, @Param("selective") BasicHouseTrading.Column ... selective);
 
     int updateByPrimaryKey(BasicHouseTrading record);
+
+    int batchInsert(@Param("list") List<BasicHouseTrading> list);
+
+    int batchInsertSelective(@Param("list") List<BasicHouseTrading> list, @Param("selective") BasicHouseTrading.Column ... selective);
 }

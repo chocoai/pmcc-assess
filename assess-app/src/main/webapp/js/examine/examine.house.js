@@ -284,6 +284,9 @@
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, data.basicHouseTrading.tradingType, function (html, data) {
                     houseCommon.houseTradingForm.find("select.tradingType").empty().html(html).trigger('change');
                 });
+                AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionTransactionLevel, data.basicHouseTrading.transactionLevel, function (html, data) {
+                    houseCommon.houseTradingForm.find("select[name=transactionLevel]").empty().html(html).trigger('change');
+                }, true);
                 AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, data.basicHouseTrading.financingConditions, function (html, data) {
                     houseCommon.houseTradingForm.find("select.financingConditions").empty().html(html).trigger('change');
                 });

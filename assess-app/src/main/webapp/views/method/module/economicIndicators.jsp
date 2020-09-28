@@ -580,14 +580,14 @@
             var economicIndicatorsItem = {};
             economicIndicatorsItem.dataKey = $(this).attr('data-key');
             economicIndicatorsItem.planDetailsId = economicIndicators.planDetailsId;
-            economicIndicatorsItem.name = $(this).find('[name=name]').val();
-            economicIndicatorsItem.plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val();
-            economicIndicatorsItem.saleableArea = $(this).find('[name=saleableArea]').val();
-            economicIndicatorsItem.assessArea = $(this).find('[name=assessArea]').val();
-//            economicIndicatorsItem.number = $(this).find('[name=number]').val();
-            economicIndicatorsItem.unitPrice = $(this).find('[name=unitPrice]').val();
-            economicIndicatorsItem.remark = $(this).find('[name=remark]').val();
-            economicIndicatorsItem.mcId = $(this).find('[name=mcId]').val();
+            economicIndicatorsItem.name = $(this).find('[name=name]').val().trim();
+            economicIndicatorsItem.plannedBuildingArea = $(this).find('[name=plannedBuildingArea]').val().trim();
+            economicIndicatorsItem.saleableArea = $(this).find('[name=saleableArea]').val().trim();
+            economicIndicatorsItem.assessArea = $(this).find('[name=assessArea]').val().trim();
+//            economicIndicatorsItem.number = $(this).find('[name=number]').val().trim();
+            economicIndicatorsItem.unitPrice = $(this).find('[name=unitPrice]').val().trim();
+            economicIndicatorsItem.remark = $(this).find('[name=remark]').val().trim();
+            economicIndicatorsItem.mcId = $(this).find('[name=mcId]').val().trim();
             data.economicIndicatorsItemList.push(economicIndicatorsItem);
         });
         $.ajax({
