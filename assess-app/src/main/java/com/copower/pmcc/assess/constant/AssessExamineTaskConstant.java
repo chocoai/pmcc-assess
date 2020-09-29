@@ -54,4 +54,9 @@ public class AssessExamineTaskConstant {
     public static final String EXAMINE_HOUSE_TRANSACTION_TYPE = "examine.house.transaction.type";//交易类型
     public static final String EXAMINE_HOUSE_TRANSACTION_TYPE_SELL = "examine.house.transaction.type.sell";//交易类型-出售
     public static final String EXAMINE_HOUSE_TRANSACTION_TYPE_LEASE = "examine.house.transaction.type.lease";//交易类型-出租
+
+    public static final String EXAMINE_HOUSE_TRANSACTION_LEVEL = "examine.house.transaction.level";//交易市场级别
+    public static final String EXAMINE_HOUSE_TRANSACTION_LEVEL_1 = "examine.house.transaction.level.1";//交易市场级别-一级市场
+    public static final String EXAMINE_HOUSE_TRANSACTION_LEVEL_2 = "examine.house.transaction.level.2";//交易市场级别-二级市场
+
 }
