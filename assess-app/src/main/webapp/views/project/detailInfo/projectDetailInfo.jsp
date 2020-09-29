@@ -66,42 +66,46 @@
                                                         </c:forEach>
                                                     </div>
                                                 </div>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-info btn-sm dropdown-toggle" type="button"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">
+                                                <c:if test="${companyName eq 'xiehe'}">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-info btn-sm dropdown-toggle"
+                                                                type="button"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
                                                     <span class="btn-label">
 												        <i class="fa fa-file-invoice"></i>
 											        </span>
-                                                        委托方盖章模板
-                                                    </button>
-                                                    <div class="dropdown-menu" x-placement="bottom-start"
-                                                         style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                        <c:forEach var="item" items="${documentClientTemplateList}">
-                                                            <a class="dropdown-item"
-                                                               href="${pageContext.request.contextPath}/documentSend/applyClientIndex/${item.id}&${projectInfo.id}"
-                                                               target="_blank">${item.templateName}</a>
-                                                        </c:forEach>
+                                                            委托方盖章模板
+                                                        </button>
+                                                        <div class="dropdown-menu" x-placement="bottom-start"
+                                                             style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                            <c:forEach var="item" items="${documentClientTemplateList}">
+                                                                <a class="dropdown-item"
+                                                                   href="${pageContext.request.contextPath}/documentSend/applyClientIndex/${item.id}&${projectInfo.id}"
+                                                                   target="_blank">${item.templateName}</a>
+                                                            </c:forEach>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="input-group-append">
-                                                    <button class="btn btn-info btn-sm dropdown-toggle" type="button"
-                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                            aria-expanded="false">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-info btn-sm dropdown-toggle"
+                                                                type="button"
+                                                                data-toggle="dropdown" aria-haspopup="true"
+                                                                aria-expanded="false">
                                                     <span class="btn-label">
 												        <i class="fa fa-file-invoice"></i>
 											        </span>
-                                                        报告签收单
-                                                    </button>
-                                                    <div class="dropdown-menu" x-placement="bottom-start"
-                                                         style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                        <c:forEach var="item" items="${signBill}">
-                                                            <a class="dropdown-item"
-                                                               href="${pageContext.request.contextPath}/documentSend/applySignBillIndex/${item.id}&${projectInfo.id}"
-                                                               target="_blank">${item.templateName}</a>
-                                                        </c:forEach>
+                                                            报告签收单
+                                                        </button>
+                                                        <div class="dropdown-menu" x-placement="bottom-start"
+                                                             style="position: absolute; transform: translate3d(410px, 43px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                            <c:forEach var="item" items="${signBill}">
+                                                                <a class="dropdown-item"
+                                                                   href="${pageContext.request.contextPath}/documentSend/applySignBillIndex/${item.id}&${projectInfo.id}"
+                                                                   target="_blank">${item.templateName}</a>
+                                                            </c:forEach>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </c:if>
                                                 <div class="input-group-append">
                                                     <button class="btn btn-info btn-sm" type="button"
                                                             onclick="projectDetails.projectSubsequent()">
@@ -115,12 +119,14 @@
                                                     </button>
                                                 </div>
                                                 <c:if test="${projectInfo.projectStatus eq 'finish' or projectInfo.projectStatus eq 'close'}">
-                                                    <div class="input-group-append">
-                                                        <button class="btn btn-info btn-sm" type="button"
-                                                                onclick="projectDetails.projectReviewScore()">
-                                                            复核与指导工分
-                                                        </button>
-                                                    </div>
+                                                    <c:if test="${companyName eq 'xiehe'}">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-info btn-sm" type="button"
+                                                                    onclick="projectDetails.projectReviewScore()">
+                                                                复核与指导工分
+                                                            </button>
+                                                        </div>
+                                                    </c:if>
                                                 </c:if>
                                                 <c:if test="${companyName eq 'xinglx'}">
                                                     <div class="input-group-append">
@@ -150,10 +156,12 @@
                                                data-table-id="tb_documentSendList" data-toggle="pill"
                                                href="#div_documentSendList" role="tab" aria-controls="v-pills-home"
                                                aria-selected="true">发文信息</a>
-                                            <a class="nav-link" onclick="projectDetails.loadDocumentOpinion(this)"
-                                               data-table-id="tb_documentOpinionList" data-toggle="pill"
-                                               href="#div_documentOpinionList" role="tab"
-                                               aria-controls="v-pills-profile" aria-selected="false">意见稿信息</a>
+                                            <c:if test="${companyName eq 'xiehe'}">
+                                                <a class="nav-link" onclick="projectDetails.loadDocumentOpinion(this)"
+                                                   data-table-id="tb_documentOpinionList" data-toggle="pill"
+                                                   href="#div_documentOpinionList" role="tab"
+                                                   aria-controls="v-pills-profile" aria-selected="false">意见稿信息</a>
+                                            </c:if>
                                             <a class="nav-link" onclick="projectDetails.loadSubsequent(this)"
                                                data-table-id="tb_subsequentList" data-toggle="pill"
                                                href="#div_subsequentList" role="tab" aria-controls="v-pills-messages"

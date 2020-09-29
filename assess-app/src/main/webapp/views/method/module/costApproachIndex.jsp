@@ -47,7 +47,7 @@
                                 <div class="col-md-12">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-1 control-label">
-                                            农用地总面积(亩)
+                                            农用地总面积(亩)<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" placeholder="农用地总面积"
@@ -59,7 +59,7 @@
                                                    id="farmlandArea">
                                         </div>
                                         <label class="col-sm-1 control-label">
-                                            耕地面积(亩)
+                                            耕地面积(亩)<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" value="${master.ploughArea}"
@@ -70,7 +70,7 @@
                                                    id="ploughArea">
                                         </div>
                                         <label class="col-sm-1 control-label">
-                                            人口数(人)
+                                            人口数(人)<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" value="${master.populationNumber}"
@@ -164,8 +164,6 @@
                                             <c:forEach items="${taxesVos}" var="approachTaxe"
                                                        varStatus="s">
                                                 <tr id="content${approachTaxe.id}">
-
-
                                                 </tr>
                                                 <script type="text/javascript">
                                                     $(function () {
@@ -261,7 +259,7 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                宗地外六通费用(元/㎡)
+                                                宗地外六通费用(元/㎡)<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="农用地总面积"
@@ -289,7 +287,7 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                场平费用(元/㎡)
+                                                场平费用(元/㎡)<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="场平费用"
@@ -313,11 +311,12 @@
 
                                     </div>
                                 </div>
+                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                计息周期
+                                                计息周期<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="计息周期"
@@ -345,7 +344,7 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                计息利率
+                                                计息利率<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="计息利率"
@@ -369,11 +368,12 @@
 
                                     </div>
                                 </div>
+                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                开发利润率
+                                                开发利润率<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="开发利润率"
@@ -400,7 +400,7 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                土地增值率
+                                                土地增值率<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="土地增值率"
@@ -428,7 +428,7 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                容积率调整
+                                                容积率调整<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="容积率调整"
@@ -451,11 +451,12 @@
                                         </div>
                                     </div>
                                 </div>
+                                <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%" color="#6f5499" size="10">
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                剩余年限
+                                                剩余年限<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <input type="text" placeholder="剩余年限"
@@ -482,7 +483,7 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-1 control-label">
-                                                还原利率
+                                                还原利率<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-3">
                                                 <div class="input-group">
@@ -1131,9 +1132,8 @@
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-xs btn-danger" onclick="getThisPrice(this)">计算价格</a>';
-                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
-                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '<button type="button" class="btn btn-md btn-primary" onclick="getThisPrice(this)">计算价格</button>';
+                html += '<button type="button" style="margin-left: 5px;" class="btn btn-md btn-danger" onclick="emptyRefill(this)">清空</button>';
                 html += '</td>';
                 break;
             }
@@ -1156,8 +1156,7 @@
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
-                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '<button type="button" class="btn btn-md btn-danger" onclick="emptyRefill(this)">清空</button>';
                 html += '</td>';
                 break;
             }
@@ -1187,9 +1186,8 @@
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-xs btn-danger" onclick="getThisPrice(this)">计算价格</a>';
-                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
-                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '<button type="button" class="btn btn-md btn-primary" onclick="getThisPrice(this)">计算价格</button>';
+                html += '<button type="button" style="margin-left: 5px;" class="btn btn-md btn-danger" onclick="emptyRefill(this)">清空</button>';
                 html += '</td>';
                 break;
             }
@@ -1223,9 +1221,8 @@
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-xs btn-danger" onclick="getThisPrice(this)">计算价格</a>';
-                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
-                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '<button type="button" class="btn btn-md btn-primary" onclick="getThisPrice(this)">计算价格</button>';
+                html += '<button type="button" style="margin-left: 5px;" class="btn btn-md btn-danger" onclick="emptyRefill(this)">清空</button>';
                 html += '</td>';
                 break;
             }
@@ -1247,8 +1244,7 @@
                 html += '</div>';
                 html += '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-xs btn-danger" onclick="emptyRefill(this)">清空</a>';
-                html += ' <a  class="btn btn-xs btn-warning" onclick="cleanHTMLData(this)">移除</a>'
+                html += '<button type="button" class="btn btn-md btn-danger" onclick="emptyRefill(this)">清空</button>';
                 html += '</td>';
         }
         return html;
