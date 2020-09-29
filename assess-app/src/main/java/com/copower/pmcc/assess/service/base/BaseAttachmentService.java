@@ -13,17 +13,19 @@ import com.copower.pmcc.erp.constant.CacheConstant;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.*;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -44,6 +46,9 @@ public class BaseAttachmentService {
     private ErpRpcAttachmentService erpRpcAttachmentService;
     @Autowired
     private ApplicationConstant applicationConstant;
+    @Autowired
+    private TaskExecutor taskExecutor;
+
     @Autowired
     private FtpUtilsExtense ftpUtilsExtense;
     private final Logger logger = LoggerFactory.getLogger(getClass()) ;
@@ -319,13 +324,42 @@ public class BaseAttachmentService {
         if (attachmentDto == null) {
             return null;
         }
-        String local = null;
+        String local = ftpUtilsExtense.downloadFileToLocal(attachmentDto);
         try {
-             local = ftpUtilsExtense.downloadFileToLocal(attachmentDto);
+            if (!new File(local).isFile()) {
+                return null;
+            }
         } catch (Exception e) {
             logger.error(e.getMessage(),e);
+            return null;
         }
         return local;
+    }
+
+    public String downloadFtpFileToLocalTimeOut(SysAttachmentDto attachmentDto)throws Exception{
+        if (attachmentDto == null) {
+            return null;
+        }
+        final int second = 5;//超过5秒就任务超时
+        //发起线程组
+        final CountDownLatch countDownLatch = new CountDownLatch(1);
+        List<String> stringList = new ArrayList<>(1) ;
+        taskExecutor.execute(() -> {
+            try {
+              String  local = ftpUtilsExtense.downloadFileToLocal(attachmentDto);
+              stringList.add(local) ;
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }finally {
+                countDownLatch.countDown();
+            }
+        });
+        //能够阻塞线程 直到调用N次end.countDown() 方法才释放线程
+        countDownLatch.await(second, TimeUnit.SECONDS);
+        if (CollectionUtils.isNotEmpty(stringList)) {
+            return stringList.get(0) ;
+        }
+        return null;
     }
 
     /**
