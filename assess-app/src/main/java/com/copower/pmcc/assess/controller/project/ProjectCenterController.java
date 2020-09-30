@@ -211,7 +211,7 @@ public class ProjectCenterController {
     }
 
     @RequestMapping(value = "/projectStageInfo/{projectId}/{workStageId}", name = "阶段信息页面")
-    public ModelAndView projectStageInfo(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "workStageId", required = true) Integer workStageId) {
+    public ModelAndView projectStageInfo(@PathVariable(name = "projectId", required = true) Integer projectId, @PathVariable(name = "workStageId", required = true) Integer workStageId) throws BusinessException {
         String viewUrl = "/project/detailInfo/projectStageInfoDefault";
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
@@ -231,6 +231,7 @@ public class ProjectCenterController {
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject(StringUtils.uncapitalize(ProjectWorkStage.class.getSimpleName()), projectWorkStage);
         modelAndView.addObject(StringUtils.uncapitalize(SysUserDto.class.getSimpleName()), processControllerComponent.getThisUserInfo());
+        modelAndView.addObject("companyName", baseParameterService.getBaseParameter(BaseParameterEnum.COMPANY_NAME));
         return modelAndView;
     }
 
