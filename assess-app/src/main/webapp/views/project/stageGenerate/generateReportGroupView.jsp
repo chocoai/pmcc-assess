@@ -581,6 +581,11 @@
                 notifyInfo('提示', '估价师必须选择');
                 return false;
             }
+            var target = form.find("select[name='realEstateAppraiser']") ;
+            var realEstateAppraisers = [];
+            target.select2('data').forEach(function (item) {
+                realEstateAppraisers.push(item.id) ;//这里取得非字段id而是select2的标识  刚好标识叫id
+            });
             data.areaGroupId = group.areaGroupId;
             data.projectPlanId = '${projectPlan.id}';
             data.projectId = '${projectPlan.projectId}';
@@ -588,6 +593,10 @@
             if (!AssessCommon.isNumber(data.assessCategory)) {
                 data.assessCategory = null;
             }
+            if (realEstateAppraisers.length != 0){
+                data.realEstateAppraiser = realEstateAppraisers.join(",") ;
+            }
+            console.log(data) ;
             reportGroupObj.generateReportHandle(form, group, data, reportType, function () {
                 reportGroupObj.init(data);
                 notifySuccess("成功", '报告生成成功');
