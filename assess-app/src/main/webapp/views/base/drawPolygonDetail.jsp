@@ -111,7 +111,12 @@
             var auto = new AMap.Autocomplete(autoOptions);
             //注册监听，当选中某条记录时会触发
             AMap.event.addListener(auto, "select", function (e) {
-                drawPolygon.autoCompleteSearch(e.poi.name);
+                var tempLocation = e.poi.location ;
+                if (tempLocation) {
+                    drawPolygon.map.setCenter([tempLocation.lng, tempLocation.lat]);
+                }else {
+                    drawPolygon.autoCompleteSearch(e.poi.name);
+                }
             });
 
             (function (estateName) {
