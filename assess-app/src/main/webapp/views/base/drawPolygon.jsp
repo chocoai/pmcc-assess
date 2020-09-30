@@ -262,14 +262,18 @@
     };
 
     drawPolygon.loadMap = function (callback , flagTitle) {
-        //初始化地图对象，加载地图
-        drawPolygon.map = new AMap.Map('toolMapHandleContainer', {
+        var mapOption = {
             resizeEnable: true,
             rotateEnable: true,
             zoom: 24,
-            city: "${cityName}",
             viewMode: "2D"
-        });
+        } ;
+        var cityName = "${cityName}" ;
+        if (cityName) {
+            mapOption.city = cityName ;
+        }
+        //初始化地图对象，加载地图
+        drawPolygon.map = new AMap.Map('toolMapHandleContainer',mapOption);
         // 地图 加载完成 load
         drawPolygon.map.on("complete", function () {
             //输入提示
@@ -281,7 +285,12 @@
                 var auto = new AMap.Autocomplete(autoOptions);
                 //注册监听，当选中某条记录时会触发
                 AMap.event.addListener(auto, "select", function (e) {
-                    drawPolygon.autoCompleteSearch(e.poi.name);
+                    var tempLocation = e.poi.location ;
+                    if (tempLocation) {
+                        drawPolygon.map.setCenter([tempLocation.lng, tempLocation.lat]);
+                    }else {
+                        drawPolygon.autoCompleteSearch(e.poi.name);
+                    }
                 });
             });
 
