@@ -533,16 +533,20 @@ public class AsposeUtils {
             throw new Exception("error: empty map");
         Document doc = new Document(filePath);
         for (Map.Entry<String, String> stringStringEntry : map.entrySet()) {
-            if (StringUtils.isNotBlank(stringStringEntry.getValue())) {
-                Pattern compile = Pattern.compile(escapeExprSpecialWord(stringStringEntry.getKey()));
-                doc.getRange().replace(compile, e -> {
-                    DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
-                    builder.moveTo(e.getMatchNode());
-                    Document document = new Document(stringStringEntry.getValue());
-                    builder.insertDocument(document, ImportFormatMode.USE_DESTINATION_STYLES);
-                    return ReplaceAction.REPLACE;
-                }, false);
+            if (StringUtils.isBlank(stringStringEntry.getValue())){
+                continue;
             }
+            if (!new File(stringStringEntry.getValue()).isFile()) {
+                continue;
+            }
+            Pattern compile = Pattern.compile(escapeExprSpecialWord(stringStringEntry.getKey()));
+            doc.getRange().replace(compile, e -> {
+                DocumentBuilder builder = new DocumentBuilder((Document) e.getMatchNode().getDocument());
+                builder.moveTo(e.getMatchNode());
+                Document document = new Document(stringStringEntry.getValue());
+                builder.insertDocument(document, ImportFormatMode.USE_DESTINATION_STYLES);
+                return ReplaceAction.REPLACE;
+            }, false);
         }
         doc.save(filePath);
     }
