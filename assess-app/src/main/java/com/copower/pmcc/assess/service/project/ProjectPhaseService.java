@@ -168,17 +168,17 @@ public class ProjectPhaseService {
         List<ProjectPhase> referencePhaseList = getCacheProjectPhaseByCategoryId(referenceId);
         if (CollectionUtils.isEmpty(referencePhaseList)) return selfPhases;
         referencePhaseList = LangUtils.filter(referencePhaseList, o -> o.getWorkStageId().equals(workStageId));
-        HashSet<String> keys = Sets.newHashSet();
-        selfPhases.forEach(o -> keys.add(o.getPhaseKey()));
         List<ProjectPhase> resultPhaseList = Lists.newArrayList();
-        for (ProjectPhase projectPhase : referencePhaseList) {
-            if (StringUtils.isNotBlank(projectPhase.getPhaseKey()) && keys.contains(projectPhase.getPhaseKey())) {
-                for (ProjectPhase selfPhase : selfPhases) {
-                    if (StringUtils.equals(projectPhase.getPhaseKey(), selfPhase.getPhaseKey())) {
-                        resultPhaseList.add(selfPhase);
-                    }
+        HashSet<String> keys = Sets.newHashSet();
+        if(CollectionUtils.isNotEmpty(selfPhases)){
+            selfPhases.forEach(o -> keys.add(o.getPhaseKey()));
+            resultPhaseList.addAll(selfPhases);
+        }
+        if(CollectionUtils.isNotEmpty(referencePhaseList)){
+            for (ProjectPhase projectPhase : referencePhaseList) {
+                if (StringUtils.isNotBlank(projectPhase.getPhaseKey()) && keys.contains(projectPhase.getPhaseKey())) {
+                    continue;
                 }
-            } else {
                 resultPhaseList.add(projectPhase);
             }
         }

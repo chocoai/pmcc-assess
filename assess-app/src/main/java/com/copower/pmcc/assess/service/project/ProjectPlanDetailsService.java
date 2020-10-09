@@ -305,14 +305,6 @@ public class ProjectPlanDetailsService {
                 logger.error("计划任务获取流程任务异常", e);
             }
         }
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        List<Integer> phaseFullIds = Lists.newArrayList();
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectInfo.getProjectCategoryId());
-        ProjectPhase caseStudyExtendPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectInfo.getProjectCategoryId());
-        if (sceneExplorePhase != null)
-            phaseFullIds.add(sceneExplorePhase.getId());
-        if (caseStudyExtendPhase != null)
-            phaseFullIds.add(caseStudyExtendPhase.getId());
         String viewUrl = String.format("/%s/ProjectTask/projectTaskDetailsById?planDetailsId=", applicationConstant.getAppKey());
         //判断任务是否结束，如果结束只能查看详情
         for (ProjectPlanDetailsVo projectPlanDetailsVo : projectPlanDetailsVos) {

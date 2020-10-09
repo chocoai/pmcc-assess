@@ -603,8 +603,14 @@ public class MdMarketCompareService {
         List<Integer> projectPhaseIds = Lists.newArrayList();
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
         ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectInfo.getProjectCategoryId());
-        if (projectPhase != null)
+        if (projectPhase != null) {
             projectPhaseIds.add(projectPhase.getId());
+        }
+        //土地案例
+        projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND_LAND, projectInfo.getProjectCategoryId());
+        if (projectPhase != null) {
+            projectPhaseIds.add(projectPhase.getId());
+        }
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<ProjectPlanDetails> planDetails = projectPlanDetailsDao.getProjectPlanDetailsList(projectId, projectPhaseIds, projectPhaseName);
         List<MdCompareCaseVo> voList = Lists.newArrayList();

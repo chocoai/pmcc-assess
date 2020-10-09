@@ -8,9 +8,10 @@ package com.copower.pmcc.assess.constant;
  * @time: 13:45
  */
 public class AssessPhaseKeyConstant {
-    public static final String SCENE_EXPLORE = "scene.explore";  //现场查勘事项
-    public static final String CASE_STUDY_LAND = "case.study.land";  //土地交易案例
-    public static final String CASE_STUDY_EXTEND = "case.study.extend";  //案例事项-新
+    public static final String SCENE_EXPLORE = "scene.explore";  //现场查勘
+    public static final String CASE_STUDY_EXTEND = "case.study.extend";  //交易案例
+    public static final String SCENE_EXPLORE_LAND = "scene.explore.land";  //现场查勘【土地】
+    public static final String CASE_STUDY_EXTEND_LAND = "case.study.extend.land";  //交易案例【土地】
     public static final String ASSET_INVENTORY = "asset.inventory";  //资产清查
     public static final String OTHER_RIGHT = "other.right";  //他项权利
     public static final String SURE_PRICE = "sure.price";  //确定单价

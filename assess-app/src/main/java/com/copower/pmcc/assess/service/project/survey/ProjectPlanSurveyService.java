@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.project.survey;
 
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -71,10 +72,18 @@ public class ProjectPlanSurveyService {
 
         ProjectPhase otherRightPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.OTHER_RIGHT, projectPlan.getCategoryId());
         ProjectPhase assetInventoryPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.ASSET_INVENTORY, projectPlan.getCategoryId());
-        ProjectPhase sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
+        ProjectPhase sceneExplorePhase = null;
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey())) {
+            sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.SCENE_EXPLORE_LAND, projectPlan.getCategoryId());
+        } else {
+            sceneExplorePhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.SCENE_EXPLORE, projectPlan.getCategoryId());
+        }
+
         List<ProjectPhase> projectPhases = Lists.newArrayList(sceneExplorePhase, assetInventoryPhase, otherRightPhase);
         if (CollectionUtils.isEmpty(projectPhases)) return;
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+
         ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(workStageId);
         //添加任务
         String projectManager = projectMemberService.getProjectManager(projectId);
