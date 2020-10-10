@@ -173,9 +173,13 @@ public class BaseReportService {
         baseReportTemplateWhere.setBisEnable(true);
         List<BaseReportTemplate> reportTemplateList = getBaseReportTemplate(baseReportTemplateWhere, projectInfo.getEntrustPurpose());
         if (CollectionUtils.isEmpty(reportTemplateList)) {
-            CrmCustomerRelationDto customerRelationDto = crmRpcCustomerService.getCrmCustomerRelationList(relationId);
-            if (customerRelationDto == null) return null;
-            return getReportTemplate(projectInfo, customerRelationDto.getPid(), reportType);
+            CrmCustomerRelationDto customerRelationDto = null;
+            if (relationId != null && relationId != 0) {
+                customerRelationDto = crmRpcCustomerService.getCrmCustomerRelationList(relationId);
+            }
+            if (customerRelationDto != null) {
+                return getReportTemplate(projectInfo, customerRelationDto.getPid(), reportType);
+            }
         }
         return getReportTemplateByLoanType(reportTemplateList, projectInfo.getLoanType());
     }

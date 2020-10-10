@@ -41,6 +41,7 @@ import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.StringUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Ordering;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -1040,8 +1041,17 @@ public class SchemeReportFileService extends BaseService {
     }
 
 
-    public Map<SchemeReportFileItem, List<String>> transform(List<SchemeReportFileItem> schemeReportFileList, SysAttachmentDto baseQuery) {
-        Map<SchemeReportFileItem, List<String>> map = new HashMap<>();
+    public TreeMap<SchemeReportFileItem, List<String>> transform(List<SchemeReportFileItem> schemeReportFileList, SysAttachmentDto baseQuery) {
+        Ordering<SchemeReportFileItem> ordering = Ordering.from(new Comparator<SchemeReportFileItem>() {
+            @Override
+            public int compare(SchemeReportFileItem o1, SchemeReportFileItem o2) {
+                if (o1.getSorting() != null && o2.getSorting() != null){
+                    return o1.getSorting().compareTo(o2.getSorting()) ;
+                }
+                return 0;
+            }
+        }) ;
+        TreeMap<SchemeReportFileItem, List<String>> map = new TreeMap<>(ordering);
         if (CollectionUtils.isEmpty(schemeReportFileList)) {
             return map;
         }

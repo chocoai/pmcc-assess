@@ -1502,7 +1502,7 @@ public class GenerateCommonMethod {
         SysAttachmentDto baseQuery = new SysAttachmentDto();
         baseQuery.setFieldsName("live_situation_select_supplement");
         baseQuery.setTableName(FormatUtils.entityNameConvertToTableName(SchemeJudgeObject.class));
-        Map<SchemeReportFileItem, List<String>> map = schemeReportFileService.transform(schemeReportFileList, baseQuery);
+        TreeMap<SchemeReportFileItem, List<String>> map = schemeReportFileService.transform(schemeReportFileList, baseQuery);
         if (map.isEmpty()) {
             try {
                 throw new Exception("没有正确的获取到图片");
