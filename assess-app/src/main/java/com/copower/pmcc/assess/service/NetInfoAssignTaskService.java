@@ -123,7 +123,7 @@ public class NetInfoAssignTaskService {
                     for (NetInfoRecordLand land : lands) {
                         if (land.getAssignTaskId() == null) {
                             land.setAssignTaskId(id);
-                            netInfoRecordLandDao.updateNetInfoRecordLand(land, true);
+                            netInfoRecordLandDao.updateNetInfoRecordLand(land, false);
                         }
                     }
                 }
@@ -134,14 +134,14 @@ public class NetInfoAssignTaskService {
             if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
                 netInfoRecordHouses.forEach(o -> {
                     o.setStatus(2);
-                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o, true);
+                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o, false);
                 });
             }
             List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getLandListByAssignTaskId(id);
             if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
                 netInfoRecordLands.forEach(o -> {
                     o.setStatus(2);
-                    netInfoRecordLandDao.updateNetInfoRecordLand(o, true);
+                    netInfoRecordLandDao.updateNetInfoRecordLand(o, false);
                 });
             }
 
@@ -217,14 +217,14 @@ public class NetInfoAssignTaskService {
             if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
                 netInfoRecordLands.forEach(o -> {
                     o.setApprover(commonService.thisUserAccount());
-                    netInfoRecordLandDao.updateNetInfoRecordLand(o, true);
+                    netInfoRecordLandDao.updateNetInfoRecordLand(o, false);
                 });
             }
             List<NetInfoRecordHouse> netInfoRecordHouses = netInfoRecordHouseDao.getHouseListByAssignTaskId(data.getId());
             if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
                 netInfoRecordHouses.forEach(o -> {
                     o.setApprover(commonService.thisUserAccount());
-                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o, true);
+                    netInfoRecordHouseDao.updateNetInfoRecordHouse(o, false);
                 });
             }
             processControllerComponent.processSubmitLoopTaskNodeArg(approvalModelDto, false);

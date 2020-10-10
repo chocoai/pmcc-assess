@@ -53,7 +53,7 @@ public class NetInfoUpgradeEvent extends BaseProcessEvent {
         if ("房产".equals(data.getType())) {
             NetInfoRecordHouse oldRecordHouse = netInfoRecordHouseDao.getNetInfoRecordHouseById(data.getDataId());
             oldRecordHouse.setBisNewest(false);
-            netInfoRecordHouseDao.updateNetInfoRecordHouse(oldRecordHouse,true);
+            netInfoRecordHouseDao.updateNetInfoRecordHouse(oldRecordHouse,false);
             NetInfoRecordHouse newRecordHouse = JSON.parseObject(data.getJsonData(), NetInfoRecordHouse.class);
             newRecordHouse.setStatus(1);
             newRecordHouse.setCreator(data.getCreator());
@@ -110,7 +110,7 @@ public class NetInfoUpgradeEvent extends BaseProcessEvent {
         if ("土地".equals(data.getType())) {
             NetInfoRecordLand oldRecordLand = netInfoRecordLandDao.getNetInfoRecordLandById(data.getDataId());
             oldRecordLand.setBisNewest(false);
-            netInfoRecordLandDao.updateNetInfoRecordLand(oldRecordLand,true);
+            netInfoRecordLandDao.updateNetInfoRecordLand(oldRecordLand,false);
             NetInfoRecordLand newRecordLand = JSON.parseObject(data.getJsonData(), NetInfoRecordLand.class);
             newRecordLand.setStatus(1);
             newRecordLand.setCreator(data.getCreator());

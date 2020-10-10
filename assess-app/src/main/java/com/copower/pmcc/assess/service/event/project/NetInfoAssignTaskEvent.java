@@ -66,7 +66,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
         if (CollectionUtils.isNotEmpty(netInfoRecordHouses)) {
             for (NetInfoRecordHouse o : netInfoRecordHouses) {
                 o.setStatus(1);
-                netInfoRecordHouseDao.updateNetInfoRecordHouse(o, true);
+                netInfoRecordHouseDao.updateNetInfoRecordHouse(o, false);
                 //验证后写入到标准表中
                 String fullName = publicBasicService.getFullName(o.getName(), o.getBuildingNumber(), o.getUnitNumber(), o.getHouseNumber());
                 if (basicHouseCaseSummaryService.getCountByFullName(fullName) <= 0) {
@@ -112,7 +112,7 @@ public class NetInfoAssignTaskEvent extends BaseProcessEvent {
         if (CollectionUtils.isNotEmpty(netInfoRecordLands)) {
             netInfoRecordLands.forEach(o -> {
                 o.setStatus(1);
-                netInfoRecordLandDao.updateNetInfoRecordLand(o, true);
+                netInfoRecordLandDao.updateNetInfoRecordLand(o, false);
             });
         }
     }
