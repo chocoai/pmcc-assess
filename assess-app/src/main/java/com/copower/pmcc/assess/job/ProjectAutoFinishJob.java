@@ -7,13 +7,19 @@ import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPlan;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
+import com.copower.pmcc.assess.service.chks.AssessmentCommonService;
+import com.copower.pmcc.assess.service.chks.AssessmentPerformanceService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.ProjectPlanService;
+import com.copower.pmcc.bpm.api.dto.ProjectResponsibilityDto;
+import com.copower.pmcc.bpm.api.provider.BpmRpcProjectTaskService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.copower.pmcc.erp.constant.CacheConstant;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
@@ -37,6 +43,12 @@ public class ProjectAutoFinishJob {
     private ProjectInfoService projectInfoService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
+    @Autowired
+    private ApplicationConstant applicationConstant;
+    @Autowired
+    private AssessmentPerformanceService performanceService;
 
     /**
      * 执行任务
@@ -57,6 +69,7 @@ public class ProjectAutoFinishJob {
         }
         logger.info("----ProjectAutoFinishJob, start---------");
         projectAutoFinish();
+        clearAssessmentTask();
         logger.info("----ProjectAutoFinishJob, end---------");
     }
 
@@ -74,6 +87,21 @@ public class ProjectAutoFinishJob {
             if (CollectionUtils.isNotEmpty(filter) && filter.size() == projectPlanList.size()) {
                 projectInfo.setProjectStatus(ProjectStatusEnum.FINISH.getKey());
                 projectInfoService.updateProjectInfo(projectInfo);
+            }
+        }
+    }
+
+    //清除无效的考核任务
+    private void clearAssessmentTask() {
+        ProjectResponsibilityDto responsibilityDto = new ProjectResponsibilityDto();
+        responsibilityDto.setAppKey(applicationConstant.getAppKey());
+        responsibilityDto.setBusinessKey(AssessmentCommonService.PROJECT_TASK_BUSINESS_KEY_PERFORMANCE);
+        List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(responsibilityDto);
+        if (CollectionUtils.isNotEmpty(projectTaskList)) {
+            for (ProjectResponsibilityDto projectResponsibilityDto : projectTaskList) {
+                if (StringUtils.isBlank(projectResponsibilityDto.getProcessInsId())) continue;
+                if (StringUtils.isBlank(projectResponsibilityDto.getUserAccount())) continue;
+                performanceService.clearAssessmentProjectTask(projectResponsibilityDto.getProcessInsId(), projectResponsibilityDto.getUserAccount());
             }
         }
     }

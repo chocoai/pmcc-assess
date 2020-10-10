@@ -90,8 +90,8 @@ public class BasicHouseCaseSummaryService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findReportAuditStatistics(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
+        List<StatisticsDto> list = customCaseMapper.findReportAuditStatistics(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
+        List<StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
         vo.setTotal(page.getTotal());
         vo.setRows(statisticsDtoList);
         return vo;
@@ -101,8 +101,8 @@ public class BasicHouseCaseSummaryService {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findReportApplyStatistics(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
-        List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
+        List<StatisticsDto> list = customCaseMapper.findReportApplyStatistics(paramsDto.getEndDate(), paramsDto.getStartDate(), paramsDto.getAreaStart(), paramsDto.getAreaEnd(), paramsDto.getTradingTimeStart(), paramsDto.getTradingTimeEnd(), paramsDto.getHouseCaseSummary());
+        List<StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
         vo.setTotal(page.getTotal());
         vo.setRows(statisticsDtoList);
         return vo;
