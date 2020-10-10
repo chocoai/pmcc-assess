@@ -908,12 +908,14 @@ public final class GenerateReportAssembleHelp {
         }
         if (text) {
             textMap.put(String.format("${%s}", key), value);
+            textMap.put(String.format("$(%s)", key), value);
         }
         if (bookmark) {
             bookmarkMap.put(key, value);
         }
         if (fileFlag) {
             fileMap.put(String.format("${%s}", key), value);
+            fileMap.put(String.format("$(%s)", key), value);
         }
         return true;
     }
