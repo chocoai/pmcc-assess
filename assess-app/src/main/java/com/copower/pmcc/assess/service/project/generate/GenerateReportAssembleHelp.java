@@ -912,7 +912,7 @@ public final class GenerateReportAssembleHelp {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(ReportFieldUniversalBankEnum.BankGenerallandownership.getName()));
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_Seat.getName(), name)) {
-            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(ReportFieldUniversalBankEnum.BankGeneralSeat.getName()));
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSeatText());
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_EndTime.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(ReportFieldUniversalBankEnum.BankGenerallandendTime.getName()));
