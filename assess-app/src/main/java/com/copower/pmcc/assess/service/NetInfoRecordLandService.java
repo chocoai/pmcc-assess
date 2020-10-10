@@ -1,17 +1,22 @@
 package com.copower.pmcc.assess.service;
 
 import com.copower.pmcc.assess.common.ArithmeticUtils;
+import com.copower.pmcc.assess.dal.basis.custom.mapper.CustomCaseMapper;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordDao;
 import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
+import com.copower.pmcc.assess.dto.input.StatisticsDto;
+import com.copower.pmcc.assess.dto.input.basic.BasicHouseCaseSummaryParamsDto;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.provider.ErpRpcAttachmentService;
+import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
@@ -57,6 +62,12 @@ public class NetInfoRecordLandService {
     private ApplicationConstant applicationConstant;
     @Autowired
     private BaseAttachmentService baseAttachmentService;
+    @Autowired
+    private PublicService publicService;
+    @Autowired
+    private CustomCaseMapper customCaseMapper;
+    @Autowired
+    private ErpRpcUserService erpRpcUserService;
 
     public NetInfoRecordLand saveAndUpdateNetInfoRecordLand(NetInfoRecordLand netInfoRecordLand) {
         if (netInfoRecordLand.getId() == null) {
@@ -91,6 +102,20 @@ public class NetInfoRecordLandService {
         return netInfoRecordLandDao.getNetInfoRecordLandById(id);
     }
 
+    public BootstrapTableVo getNetInfoRecordLandVoList(String creator, String approver, Date startDate, Date endDate) {
+        if (endDate != null) {
+            endDate = DateUtils.addDay(endDate, 1);
+        }
+        BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(creator, approver, startDate, endDate);
+        bootstrapTableVo.setTotal(page.getTotal());
+        List<NetInfoRecordLandVo> vos = CollectionUtils.isNotEmpty(netInfoRecordLands) ? LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o, null)) : Lists.newArrayList();
+        bootstrapTableVo.setRows(vos);
+        return bootstrapTableVo;
+    }
+
     public BootstrapTableVo getNetInfoRecordLandListVos(Integer status, String province, String city, String district, String street, Integer belongType, String belongCategory, Integer dealType, String negotiatedDateStart, String negotiatedDateEnd) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -108,7 +133,6 @@ public class NetInfoRecordLandService {
             BaseDataDic dic = baseDataDicService.getCacheDataDicById(belongType);
             queryBelongType = dic.getName();
         }
-
         List<NetInfoRecordLand> netInfoRecordLands = netInfoRecordLandDao.getNetInfoRecordLandList(status, province, city, district, street, queryBelongType, belongCategory, dealType, queryNegotiatedDateStart, queryNegotiatedDateEnd);
         SysAttachmentDto where = new SysAttachmentDto();
         where.setTableName(FormatUtils.entityNameConvertToTableName(NetInfoRecordLand.class));
@@ -120,6 +144,7 @@ public class NetInfoRecordLandService {
 
     public BootstrapTableVo getLandListByMasterId(Integer masterId) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         NetInfoRecordLand netInfoRecordLand = new NetInfoRecordLand();
@@ -131,6 +156,44 @@ public class NetInfoRecordLandService {
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(netInfoRecordLands == null ? new ArrayList() : LangUtils.transform(netInfoRecordLands, o -> getNetInfoRecordLandVo(o, attachmentDtos)));
         return bootstrapTableVo;
+    }
+
+    public BootstrapTableVo findLandReportAuditStatistics(String creator, String approver, Date startDate, Date endDate) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        NetInfoRecordLand land = new NetInfoRecordLand();
+        land.setCreator(creator);
+        land.setApprover(approver);
+        List<StatisticsDto> list = customCaseMapper.findLandReportAuditStatistics(endDate, startDate, land);
+        List<StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(statisticsDtoList);
+        return vo;
+    }
+
+    public BootstrapTableVo findLandReportApplyStatistics(String creator, String approver, Date startDate, Date endDate) {
+        BootstrapTableVo vo = new BootstrapTableVo();
+        RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
+        Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
+        NetInfoRecordLand land = new NetInfoRecordLand();
+        land.setCreator(creator);
+        land.setApprover(approver);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> list = customCaseMapper.findLandReportApplyStatistics(endDate,startDate,land);
+        List<com.copower.pmcc.assess.dto.input.StatisticsDto> statisticsDtoList = LangUtils.transform(list, o -> getStatisticsDto(o));
+        vo.setTotal(page.getTotal());
+        vo.setRows(statisticsDtoList);
+        return vo;
+    }
+
+    private StatisticsDto getStatisticsDto(com.copower.pmcc.assess.dto.input.StatisticsDto statisticsDto) {
+        if (StringUtils.isNotBlank(statisticsDto.getName())) {
+            SysUserDto sysUser = erpRpcUserService.getSysUser(statisticsDto.getName());
+            if (sysUser != null && org.apache.commons.lang3.StringUtils.isNotBlank(sysUser.getUserName())) {
+                statisticsDto.setName(sysUser.getUserName());
+            }
+        }
+        return statisticsDto;
     }
 
 
@@ -172,10 +235,10 @@ public class NetInfoRecordLandService {
         if (StringUtils.isNotEmpty(netInfoRecordLand.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(netInfoRecordLand.getDistrict()));
         }
-        if(netInfoRecordLand.getLandRealizationRatios()!=null){
+        if (netInfoRecordLand.getLandRealizationRatios() != null) {
             vo.setRealizationRatiosStr(ArithmeticUtils.getPercentileSystem(netInfoRecordLand.getLandRealizationRatios(), 4, BigDecimal.ROUND_HALF_UP));
         }
-        if(netInfoRecordLand.getGreeningRate()!=null){
+        if (netInfoRecordLand.getGreeningRate() != null) {
             vo.setGreeningRateStr(ArithmeticUtils.getPercentileSystem(netInfoRecordLand.getGreeningRate(), 4, BigDecimal.ROUND_HALF_UP));
         }
         if (netInfoRecordLand.getLandArea() != null) {
@@ -185,10 +248,8 @@ public class NetInfoRecordLandService {
                 vo.setLandAreaCentiare(netInfoRecordLand.getLandArea().multiply(new BigDecimal("666.67").setScale(2, BigDecimal.ROUND_HALF_UP)));
             } else {
                 vo.setLandAreaCentiare(netInfoRecordLand.getLandArea());
-                vo.setLandAreaMu(netInfoRecordLand.getLandArea().divide(new BigDecimal("666.67"),2, BigDecimal.ROUND_HALF_UP));
+                vo.setLandAreaMu(netInfoRecordLand.getLandArea().divide(new BigDecimal("666.67"), 2, BigDecimal.ROUND_HALF_UP));
             }
-
-
         }
         if (!CollectionUtils.isEmpty(attachmentDtos)) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -199,6 +260,13 @@ public class NetInfoRecordLandService {
             }
             vo.setFileViewName(stringBuilder.toString());
         }
+        if (StringUtils.isNotBlank(netInfoRecordLand.getCreator())) {
+            vo.setCreatorName(publicService.getUserNameByAccount(netInfoRecordLand.getCreator()));
+        }
+        if (StringUtils.isNotBlank(netInfoRecordLand.getApprover())) {
+            vo.setApproverName(publicService.getUserNameByAccount(netInfoRecordLand.getApprover()));
+        }
+
         NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordLand.getMasterId());
         if (record != null) {
             vo.setSourceSiteUrl(record.getSourceSiteUrl());

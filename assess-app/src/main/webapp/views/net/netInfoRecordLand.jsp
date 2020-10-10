@@ -163,7 +163,21 @@
         },
         loadDataInfoList: function () {
             var cols = [];
-            cols.push({field: 'parcelSite', title: '宗地位置'});
+            cols.push({
+                field: 'parcelSite', title: '宗地位置', formatter: function (value, row, index) {
+                    var s = '';
+                    if (value) {
+                        s += value;
+                    }
+                    if (row.creatorName) {
+                        s += "<span style='margin-left: 5px;' class='label label-info'>" + row.creatorName + "</span>"
+                    }
+                    if (row.approverName) {
+                        s += "<span style='margin-left: 5px;' class='label label-danger'>" + row.approverName + "</span>"
+                    }
+                    return s;
+                }
+            });
             cols.push({field: 'belongType', title: '土地类型'});
             cols.push({field: 'belongCategory', title: '土地类别'});
             cols.push({field: 'dealTypeName', title: '交易方式'});
@@ -232,10 +246,10 @@
                     }
                 },
                 error: function (result) {
-                    AlertError("失败","调用服务端方法失败，失败原因:" + result);
+                    AlertError("失败", "调用服务端方法失败，失败原因:" + result);
                 }
             })
-        },showFile: function (target, tableName, id) {
+        }, showFile: function (target, tableName, id) {
             FileUtils.getFileShows({
                 target: target,
                 formData: {
@@ -298,7 +312,8 @@
                                                 街道
                                             </label>
                                             <div class="col-sm-2">
-                                                <label type="text" name="street" class="form-control input-full"></label>
+                                                <label type="text" name="street"
+                                                       class="form-control input-full"></label>
                                             </div>
 
                                         </div>
@@ -346,13 +361,15 @@
                                                 土地类型
                                             </label>
                                             <div class="col-sm-2">
-                                                    <label type="text" name="belongType" class="form-control input-full"></label>
+                                                <label type="text" name="belongType"
+                                                       class="form-control input-full"></label>
                                             </div>
                                             <label class="col-sm-1 col-form-label">
                                                 土地类别
                                             </label>
                                             <div class="col-sm-2">
-                                                <label type="text" name="belongCategory" class="form-control input-full"></label>
+                                                <label type="text" name="belongCategory"
+                                                       class="form-control input-full"></label>
                                             </div>
                                             <label class="col-sm-1 col-form-label">
                                                 交易方式
@@ -382,7 +399,8 @@
                                             </label>
                                             <div class="col-sm-2">
                                                 <label type="text" data-rule-number="true" data-rule-maxlength="50"
-                                                       id="landArea" name="area" class="form-control input-full"></label></div>
+                                                       id="landArea" name="area"
+                                                       class="form-control input-full"></label></div>
                                             <label class="col-sm-1 col-form-label">
                                                 单位
                                             </label>
@@ -452,7 +470,8 @@
                                                 评估基准日期
                                             </label>
                                             <div class="col-sm-2">
-                                                <label name="assessStandardDate" data-date-format="yyyy-mm-dd" id="landAssessStandardDate"
+                                                <label name="assessStandardDate" data-date-format="yyyy-mm-dd"
+                                                       id="landAssessStandardDate"
                                                        class="form-control input-full date-picker dbdate"></label>
                                             </div>
                                             <label class="col-sm-1 col-form-label">
@@ -585,8 +604,8 @@
                                                 成交对象概况
                                             </label>
                                             <div class="col-sm-11">
-                                                 <label name="dealPartInfo" id="landDealPartInfo"
-                                                           class="form-control input-full"></label>
+                                                <label name="dealPartInfo" id="landDealPartInfo"
+                                                       class="form-control input-full"></label>
                                             </div>
                                         </div>
                                     </div>

@@ -7,36 +7,36 @@ import com.copower.pmcc.assess.dal.basis.dao.net.NetInfoRecordLandDao;
 import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecord;
 import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
+import com.copower.pmcc.assess.dto.input.basic.BasicHouseCaseSummaryParamsDto;
 import com.copower.pmcc.assess.dto.output.net.NetInfoRecordLandVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.NetInfoRecordLandService;
 import com.copower.pmcc.assess.service.NetInfoRecordService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 
 @RequestMapping(value = "/netInfoRecordLand")
 @Controller
 public class NetInfoRecordLandController {
-
     @Autowired
     private ProcessControllerComponent processControllerComponent;
-
     @Autowired
     private NetInfoRecordLandService netInfoRecordLandService;
     @Autowired
@@ -51,6 +51,8 @@ public class NetInfoRecordLandController {
     private BaseService baseService;
     @Autowired
     private NetInfoRecordService netInfoRecordService;
+    @Autowired
+    private PublicService publicService;
 
     @RequestMapping(value = "/index", name = "拍卖详细信息视图")
     public ModelAndView index() {
@@ -60,12 +62,60 @@ public class NetInfoRecordLandController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/reportIndex", name = "土地案例统计表 index", method = {RequestMethod.GET})
+    public ModelAndView reportIndex() throws Exception {
+        String view = "/case/landReportIndex";
+        ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
+        modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
+        return modelAndView;
+    }
 
     @ResponseBody
-    @RequestMapping(value = "/landList", name = "取得土地信息", method = RequestMethod.GET)//belongType,belongCategory,dealType,negotiatedDateStart,negotiatedDateEnd
-    public BootstrapTableVo landList(String province, String city, String district, String street, Integer belongType,String belongCategory,Integer dealType,String negotiatedDateStart,String negotiatedDateEnd) {
-        BootstrapTableVo vo = netInfoRecordLandService.getNetInfoRecordLandListVos(1, province, city, district, street, belongType,belongCategory,dealType,negotiatedDateStart,negotiatedDateEnd);
+    @RequestMapping(value = "/landList", name = "取得土地信息", method = RequestMethod.GET)
+    public BootstrapTableVo landList(String province, String city, String district, String street, Integer belongType, String belongCategory, Integer dealType, String negotiatedDateStart, String negotiatedDateEnd) {
+        BootstrapTableVo vo = netInfoRecordLandService.getNetInfoRecordLandListVos(1, province, city, district, street, belongType, belongCategory, dealType, negotiatedDateStart, negotiatedDateEnd);
         return vo;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/getNetInfoRecordLandVoList", name = "取得土地基础数据", method = RequestMethod.GET)
+    public BootstrapTableVo getNetInfoRecordLandVoList(String creator, String approver, String startDate, String endDate) {
+        Date start = null;
+        Date end = null;
+        if (StringUtils.isNotBlank(startDate)) {
+            start = DateUtils.convertDate(startDate, DateUtils.DATE_PATTERN);
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            end = DateUtils.convertDate(endDate, DateUtils.DATE_PATTERN);
+        }
+        BootstrapTableVo vo = netInfoRecordLandService.getNetInfoRecordLandVoList(creator, approver, start, end);
+        return vo;
+    }
+    @ResponseBody
+    @GetMapping(value = "/findLandReportApplyStatistics")
+    public BootstrapTableVo findLandReportApplyStatistics(String creator, String approver, String startDate, String endDate) {
+        Date start = null;
+        Date end = null;
+        if (StringUtils.isNotBlank(startDate)) {
+            start = DateUtils.convertDate(startDate, DateUtils.DATE_PATTERN);
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            end = DateUtils.convertDate(endDate, DateUtils.DATE_PATTERN);
+        }
+        return netInfoRecordLandService.findLandReportApplyStatistics(creator,approver,start,end);
+    }
+    @ResponseBody
+    @GetMapping(value = "/findLandReportAuditStatistics")
+    public BootstrapTableVo findLandReportAuditStatistics(String creator, String approver, String startDate, String endDate) {
+        Date start = null;
+        Date end = null;
+        if (StringUtils.isNotBlank(startDate)) {
+            start = DateUtils.convertDate(startDate, DateUtils.DATE_PATTERN);
+        }
+        if (StringUtils.isNotBlank(endDate)) {
+            end = DateUtils.convertDate(endDate, DateUtils.DATE_PATTERN);
+        }
+        return netInfoRecordLandService.findLandReportAuditStatistics(creator,approver,start,end);
     }
 
     @ResponseBody
@@ -89,8 +139,8 @@ public class NetInfoRecordLandController {
             if (changeStatus) {
                 NetInfoRecord record = netInfoRecordDao.getInfoById(netInfoRecordLand.getMasterId());
                 record.setBelongType(netInfoRecordLand.getType());
-                if(record.getStatus()==1||record.getStatus()==2)
-                record.setStatus(2);
+                if (record.getStatus() == 1 || record.getStatus() == 2)
+                    record.setStatus(2);
                 netInfoRecordService.updateInfo(record);
             }
             return HttpResult.newCorrectResult(netInfoRecordLandService.getNetInfoRecordLandVo(landData, attachmentDtos));

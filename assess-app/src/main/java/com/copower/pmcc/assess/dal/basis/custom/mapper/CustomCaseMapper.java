@@ -2,7 +2,9 @@ package com.copower.pmcc.assess.dal.basis.custom.mapper;
 
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomCaseEntity;
 import com.copower.pmcc.assess.dal.basis.entity.BasicHouseCaseSummary;
+import com.copower.pmcc.assess.dal.basis.entity.NetInfoRecordLand;
 import com.copower.pmcc.assess.dal.cases.entity.*;
+import com.copower.pmcc.assess.dto.input.StatisticsDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
@@ -64,12 +66,19 @@ public interface CustomCaseMapper {
      * @return
      * @throws SQLException
      */
-    public List<BasicHouseCaseSummary> findCaseBaseHouseList(  @Param("endDate") Date endDate, @Param("startDate") Date startDate,@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) ;
+    public List<BasicHouseCaseSummary> findCaseBaseHouseList(@Param("endDate") Date endDate, @Param("startDate") Date startDate, @Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary);
 
-    //根据条件查出 CaseBaseHouse 实体列表 group by 审批人
-    public List<com.copower.pmcc.assess.dto.input.StatisticsDto> findReportAuditStatistics(  @Param("endDate") Date endDate, @Param("startDate") Date startDate,@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) ;
+    //根据条件查出 tb_basic_house_case_summary 实体列表 group by 审批人
+    public List<StatisticsDto> findReportAuditStatistics(@Param("endDate") Date endDate, @Param("startDate") Date startDate, @Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary);
 
-    //根据条件查出 CaseBaseHouse 实体列表 group by 申请人
-    public List<com.copower.pmcc.assess.dto.input.StatisticsDto> findReportApplyStatistics(  @Param("endDate") Date endDate, @Param("startDate") Date startDate,@Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary) ;
+    //根据条件查出 tb_basic_house_case_summary 实体列表 group by 申请人
+    public List<StatisticsDto> findReportApplyStatistics(@Param("endDate") Date endDate, @Param("startDate") Date startDate, @Param("areaStart") BigDecimal tradingUnitPriceStart, @Param("areaEnd") BigDecimal tradingUnitPriceEnd, @Param("tradingTimeStart") Date tradingTimeStart, @Param("tradingTimeEnd") Date tradingTimeEnd, @Param("basicHouseCaseSummary") BasicHouseCaseSummary basicHouseCaseSummary);
+
+
+    //根据条件查出 tb_net_info_record_land 实体列表 group by 审批人
+    public List<StatisticsDto> findLandReportAuditStatistics(@Param("endDate") Date endDate, @Param("startDate") Date startDate, @Param("netInfoRecordLand") NetInfoRecordLand netInfoRecordLand);
+
+    //根据条件查出 tb_net_info_record_land 实体列表 group by 申请人
+    public List<StatisticsDto> findLandReportApplyStatistics(@Param("endDate") Date endDate, @Param("startDate") Date startDate, @Param("netInfoRecordLand") NetInfoRecordLand netInfoRecordLand);
 
 }

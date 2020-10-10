@@ -82,7 +82,7 @@ public class BasicHouseCaseSummaryController {
 
 
     @RequestMapping(value = "/reportIndex", name = "房产案例统计表 index", method = {RequestMethod.GET})
-    public ModelAndView detailView(Integer id) throws Exception {
+    public ModelAndView reportIndex() throws Exception {
         String view = "/case/estateReportIndex";
         ModelAndView modelAndView = processControllerComponent.baseModelAndView(view);
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());

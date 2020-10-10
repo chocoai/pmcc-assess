@@ -21,6 +21,8 @@ public class NetInfoRecordLandVo extends NetInfoRecordLand {
     private String greeningRateStr;
     private BigDecimal landAreaCentiare;
     private BigDecimal landAreaMu;
+    private String approverName;
+    private String creatorName;
 
     public String getRealizationRatiosStr() {
         return realizationRatiosStr;
@@ -102,4 +104,19 @@ public class NetInfoRecordLandVo extends NetInfoRecordLand {
         this.dealTypeName = dealTypeName;
     }
 
+    public String getApproverName() {
+        return approverName;
+    }
+
+    public void setApproverName(String approverName) {
+        this.approverName = approverName;
+    }
+
+    public String getCreatorName() {
+        return creatorName;
+    }
+
+    public void setCreatorName(String creatorName) {
+        this.creatorName = creatorName;
+    }
 }

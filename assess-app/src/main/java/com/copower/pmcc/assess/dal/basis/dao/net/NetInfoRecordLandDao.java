@@ -33,7 +33,6 @@ public class NetInfoRecordLandDao {
     }
 
     public boolean updateNetInfoRecordLand(NetInfoRecordLand netInfoRecordLand, boolean updateNull) {
-        //return netInfoRecordLandMapper.updateByPrimaryKeySelective(netInfoRecordLand) == 1;
         return updateNull ? netInfoRecordLandMapper.updateByPrimaryKey(netInfoRecordLand) == 1 : netInfoRecordLandMapper.updateByPrimaryKeySelective(netInfoRecordLand) == 1;
     }
 
@@ -51,6 +50,7 @@ public class NetInfoRecordLandDao {
     public List<NetInfoRecordLand> getNetInfoRecordLandList(NetInfoRecordLand netInfoRecordLand) {
         NetInfoRecordLandExample example = new NetInfoRecordLandExample();
         MybatisUtils.convertObj2Example(netInfoRecordLand, example);
+        example.setOrderByClause("id desc");
         return netInfoRecordLandMapper.selectByExample(example);
     }
 
@@ -71,15 +71,36 @@ public class NetInfoRecordLandDao {
             criteria.andBelongTypeEqualTo(belongType);
         if (StringUtils.isNotBlank(belongCategory))
             criteria.andBelongCategoryEqualTo(belongCategory);
-        if (dealType != null){
+        if (dealType != null) {
             criteria.andDealTypeEqualTo(dealType);
         }
-        if ( negotiatedDateStart != null){
+        if (negotiatedDateStart != null) {
             criteria.andNegotiatedDateGreaterThanOrEqualTo(negotiatedDateStart);
         }
-        if (negotiatedDateEnd != null){
+        if (negotiatedDateEnd != null) {
             criteria.andNegotiatedDateLessThanOrEqualTo(negotiatedDateEnd);
         }
+        example.setOrderByClause("id desc");
+        return netInfoRecordLandMapper.selectByExample(example);
+    }
+
+    public List<NetInfoRecordLand> getNetInfoRecordLandList(String creator, String approver, Date startDate, Date endDate) {
+        NetInfoRecordLandExample example = new NetInfoRecordLandExample();
+        NetInfoRecordLandExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusEqualTo(1).andBisNewestEqualTo(true);;//审批通过
+        if (StringUtils.isNotBlank(creator)) {
+            criteria.andCreatorEqualTo(creator);
+        }
+        if (StringUtils.isNotBlank(approver)) {
+            criteria.andApproverEqualTo(approver);
+        }
+        if (startDate != null) {
+            criteria.andGmtCreatedGreaterThanOrEqualTo(startDate);
+        }
+        if (endDate != null) {
+            criteria.andGmtCreatedLessThanOrEqualTo(endDate);
+        }
+        example.setOrderByClause("id desc");
         return netInfoRecordLandMapper.selectByExample(example);
     }
 
@@ -87,6 +108,7 @@ public class NetInfoRecordLandDao {
         NetInfoRecordLandExample example = new NetInfoRecordLandExample();
         NetInfoRecordLandExample.Criteria criteria = example.createCriteria();
         criteria.andMasterIdIn(masterIds);
+        example.setOrderByClause("id desc");
         return netInfoRecordLandMapper.selectByExample(example);
     }
 

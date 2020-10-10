@@ -111,8 +111,6 @@
         <if test="areaEnd != null">
             and area <![CDATA[ <= ]]> #{areaEnd}
         </if>
-
-
         <if test="startDate != null and endDate != null">
             and gmt_created between   #{startDate} and #{endDate}
         </if>
@@ -169,8 +167,6 @@
         <if test="areaEnd != null">
             and area <![CDATA[ <= ]]> #{areaEnd}
         </if>
-
-
         <if test="startDate != null and endDate != null">
             and gmt_created between   #{startDate} and #{endDate}
         </if>
@@ -183,6 +179,47 @@
 
          GROUP BY approver
     </select>
+
+    <select id="findLandReportApplyStatistics" parameterType="map" resultType="com.copower.pmcc.assess.dto.input.StatisticsDto">
+        SELECT count(*) as number ,creator as name from tb_net_info_record_land  where 1=1 and status=1 and bis_newest = true
+        <if test="netInfoRecordLand.approver != null">
+            and approver = #{netInfoRecordLand.approver}
+        </if>
+        <if test="netInfoRecordLand.creator != null">
+            and creator = #{netInfoRecordLand.creator}
+        </if>
+        <if test="startDate != null and endDate != null">
+            and gmt_created between   #{startDate} and #{endDate}
+        </if>
+        <if test="startDate != null and endDate == null">
+            and gmt_created <![CDATA[ >= ]]>   #{startDate}
+        </if>
+        <if test="startDate == null and endDate != null">
+            and gmt_created <![CDATA[ <= ]]>   #{endDate}
+        </if>
+        GROUP BY creator
+    </select>
+
+    <select id="findLandReportAuditStatistics" parameterType="map" resultType="com.copower.pmcc.assess.dto.input.StatisticsDto">
+        SELECT count(*) as number ,approver as name from  tb_net_info_record_land where 1=1 and status=1 and bis_newest = true
+        <if test="netInfoRecordLand.approver != null">
+            and approver = #{netInfoRecordLand.approver}
+        </if>
+        <if test="netInfoRecordLand.creator != null">
+            and creator = #{netInfoRecordLand.creator}
+        </if>
+        <if test="startDate != null and endDate != null">
+            and gmt_created between  #{startDate} and #{endDate}
+        </if>
+        <if test="startDate != null and endDate == null">
+            and gmt_created <![CDATA[ >= ]]> #{startDate}
+        </if>
+        <if test="startDate == null and endDate != null">
+            and gmt_created <![CDATA[ <= ]]> #{endDate}
+        </if>
+        GROUP BY approver
+    </select>
+
 
     <select id="findCaseBaseHouseList" parameterType="map"
             resultMap="com.copower.pmcc.assess.dal.basis.mapper.BasicHouseCaseSummaryMapper.BaseResultMap">
@@ -231,8 +268,6 @@
         <if test="areaEnd != null">
             and area <![CDATA[ <= ]]> #{areaEnd}
         </if>
-
-
         <if test="startDate != null and endDate != null">
             and gmt_created between   #{startDate} and #{endDate}
         </if>
