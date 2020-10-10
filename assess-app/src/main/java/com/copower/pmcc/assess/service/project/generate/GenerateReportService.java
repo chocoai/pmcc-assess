@@ -474,6 +474,10 @@ public class GenerateReportService {
                     if (GenerateReportAssembleHelp.assembleOtherMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType, reportGroup)) {
                         continue;
                     }
+
+                    if (GenerateReportAssembleHelp.assembleLandMap(name, textMap, bookmarkMap, fileMap, generateBaseDataService, generateReportInfo, reportType, reportGroup)) {
+                        continue;
+                    }
                 } catch (Exception e) {
                     logger.error(e.getMessage(), e);
                 }

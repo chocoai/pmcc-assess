@@ -7,6 +7,8 @@ import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
+import com.google.common.collect.Multiset;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -409,6 +411,37 @@ public class AsposeUtils {
                     doc.getRange().replace(stringStringEntry.getKey(), stringStringEntry.getValue(), false, false);
                 } catch (Exception e) {
                     stringMap.put(stringStringEntry.getKey(), stringStringEntry.getValue());
+                }
+            }
+        }
+        saveWord(filePath, doc);
+        return stringMap;
+    }
+
+    public static Map<String, String> replaceText(String filePath, Multimap<String, String> map) throws Exception {
+        if (StringUtils.isBlank(filePath)) {
+            throw new Exception("error: empty file path");
+        }
+        if (map == null || map.isEmpty()) {
+            throw new Exception("error: empty map");
+        }
+        Map<String, String> stringMap = Maps.newLinkedHashMap();
+        Document doc = new Document(filePath);
+        if (CollectionUtils.isNotEmpty(map.keySet())) {
+            for (String key:map.keySet()) {
+                if (StringUtils.isBlank(key)){
+                    continue;
+                }
+                Collection<String> collection = map.get(key);
+                if (CollectionUtils.isEmpty(collection)) {
+                    continue;
+                }
+                for (String value:collection) {
+                    try {
+                        doc.getRange().replace(key, value, false, false);
+                    } catch (Exception e) {
+                        stringMap.put(key, value);
+                    }
                 }
             }
         }

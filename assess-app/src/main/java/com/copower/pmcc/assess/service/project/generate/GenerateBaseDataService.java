@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldJiansheBankEnum;
+import com.copower.pmcc.assess.common.enums.report.ReportFieldLandEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldUniversalBankEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -182,7 +183,7 @@ public class GenerateBaseDataService {
     public String getWordNumber() {
         try {
             AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId, reportGroup.getId(), assessProjectType, this.reportType.getId(), false,null);
+            SysSymbolListDto symbolListDto = projectNumberRecordService.getReportNumber(projectInfo, areaId, reportGroup.getId(), assessProjectType, this.reportType.getId(), false, null);
             String number = symbolListDto.getSymbol();
             if (StringUtils.isNotBlank(number)) {
                 return number;
@@ -487,6 +488,26 @@ public class GenerateBaseDataService {
      */
     public String getExpertWorkOverview() {
         return errorStr;
+    }
+
+    /**
+     * 获取估价对象号
+     *
+     * @return
+     */
+    public String getJudgeObjectNumberMethod() {
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<Integer> integerList = new ArrayList<>(schemeJudgeObjectList.size());
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                integerList.add(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()));
+            }
+        }
+        if (CollectionUtils.isNotEmpty(integerList)) {
+            return String.format("%s%s", generateCommonMethod.convertNumber(integerList), GenerateCommonMethod.SchemeJudgeObjectName);
+        } else {
+            return errorStr;
+        }
     }
 
     /**
@@ -1133,6 +1154,52 @@ public class GenerateBaseDataService {
                     }
                 }
                 break;
+                default:
+                    break;
+            }
+        }
+        String value = "/";
+        if (!map.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(map, "", "", false);
+        }
+        return value;
+    }
+
+    public String getLandReportFieldValue(String enumName) {
+        ReportFieldLandEnum baseReportEnum = ReportFieldLandEnum.getEnumByName(enumName);
+        Map<Integer, String> map = Maps.newHashMap();
+        for (SchemeJudgeObject schemeJudgeObject : getSchemeJudgeObjectList()) {
+            if (schemeJudgeObject.getDeclareRecordId() == null) {
+                continue;
+            }
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null) {
+                continue;
+            }
+            DeclareRealtyLandCert declareRealtyLandCert = null;
+            DeclareRealtyRealEstateCert declareRealtyRealEstateCert = null;
+            if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyLandCert.class))) {
+                declareRealtyLandCert = declareRealtyLandCertService.getDeclareRealtyLandCertById(declareRecord.getDataTableId());
+            }
+            if (Objects.equal(declareRecord.getDataTableName(), FormatUtils.entityNameConvertToTableName(DeclareRealtyRealEstateCert.class))) {
+                declareRealtyRealEstateCert = declareRealtyRealEstateCertService.getDeclareRealtyRealEstateCertById(declareRecord.getDataTableId());
+            }
+            if (declareRealtyLandCert == null) {
+                declareRealtyLandCert = new DeclareRealtyLandCert();
+            }
+            if (declareRealtyRealEstateCert == null) {
+                declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
+            }
+            switch (baseReportEnum) {
+                case LAND_ENUM_RemainingYear: {
+                    String value = null;
+
+                    if (StringUtils.isNotEmpty(value)) {
+                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    }
+                }
+                break;
+
                 default:
                     break;
             }
