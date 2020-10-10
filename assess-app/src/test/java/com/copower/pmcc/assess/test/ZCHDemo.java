@@ -7,8 +7,7 @@ import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.PoiUtils;
-import com.copower.pmcc.assess.common.enums.report.ReportFieldDevelopmentEnum;
-import com.copower.pmcc.assess.common.enums.report.ReportFieldCostMethodEnum;
+import com.copower.pmcc.assess.common.enums.report.*;
 import com.copower.pmcc.assess.dal.basis.entity.MdCalculatingMethodEngineeringCost;
 import com.copower.pmcc.assess.dal.basis.entity.MdDevelopment;
 import com.copower.pmcc.assess.dto.output.MergeCellModel;
@@ -218,7 +217,7 @@ public class ZCHDemo {
                 }
             }
         }
-        group = splistList(integerList,factor) ;
+        group = splistList(integerList, factor);
         for (List<Integer> lists : group) {
             System.out.println(Arrays.asList(lists));
         }
@@ -263,6 +262,7 @@ public class ZCHDemo {
 
     /**
      * 按指定大小对数组分组
+     *
      * @param array
      * @param splitSize
      * @return
@@ -296,7 +296,6 @@ public class ZCHDemo {
         }
         return newList;
     }
-
 
 
     @Test
@@ -437,7 +436,7 @@ public class ZCHDemo {
     @org.junit.Test
     public void testA() {
         Calendar startCalendar = Calendar.getInstance();
-        startCalendar.set(Calendar.YEAR,2000);
+        startCalendar.set(Calendar.YEAR, 2000);
         startCalendar.set(Calendar.MONTH, 7 - 1);
         startCalendar.set(Calendar.DATE, 0);
         startCalendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -457,7 +456,7 @@ public class ZCHDemo {
         Date endDate = endCalendar.getTime();
         //上面得出的结果是这样的比如说是2000年7月 开始时间是2000-06-30 23:59:59 差一毫秒就到7月了，因为getHrLegworkListByEndDate的开始日期是大于开始日期的所以一定是在7月的开始处
         //结束时间是 2000-07-31 23:59:59 差一毫秒就到8月了  因为getHrLegworkListByEndDate的
-        System.out.println(DateUtils.format(startDate,DateUtils.DATETIME_PATTERN));
+        System.out.println(DateUtils.format(startDate, DateUtils.DATETIME_PATTERN));
     }
 
     @Test
@@ -494,8 +493,8 @@ public class ZCHDemo {
     }
 
     @org.junit.Test
-    public void testC() throws Exception{
-       String path = "D:\\data\\土地评估结果报告模板.doc"   ;
+    public void testC() throws Exception {
+        String path = "D:\\data\\土地评估结果报告模板.doc";
 
         Document document = new Document(path);
         String text = null;
@@ -512,25 +511,46 @@ public class ZCHDemo {
         if (StringUtils.isNotBlank(text)) {
             if (StringUtils.isNotEmpty(text)) {
                 //取出word中表格数据
-//                Matcher m = Pattern.compile("\\$\\{.*}").matcher(text);
-//                Matcher m = Pattern.compile("\\$\\(公共估价项目名称\\)").matcher(text);
                 Matcher m = Pattern.compile(AsposeUtils.reportReplace).matcher(text);
                 while (m.find()) {
                     stringList.add(m.group());
                 }
             }
         }
-        if (CollectionUtils.isNotEmpty(stringList)) {
-
+        Map<String, List<String>> map = new HashMap<>();
+        map.put(ReportFieldLandEnum.LAND_ENUM_RemainingYear.getName(), Arrays.asList("剩余年限","剩余年期"));
+        map.put(ReportFieldEnum.JudgeObjectNumber.getName(), Arrays.asList("估价对象号"));
+        map.put(ReportFieldLandEnum.LAND_ENUM_Seat.getName(), Arrays.asList("坐落"));
+        map.put(ReportFieldLandEnum.LAND_ENUM_EndTime.getName(), Arrays.asList("土地终止日"));
+        map.put(ReportFieldCommonEnum.CommonCertificationPurpose.getName(), Arrays.asList("证载用途" ,"规划或证载用途"));
+        map.put(ReportFieldCommonEnum.CommonSetUse.getName(), Arrays.asList("设定地类用途", "设定用途","设定地类用途"));
+        map.put(ReportFieldCommonEnum.CommonPracticalUse.getName(), Arrays.asList("实际用途"));
+        Multimap<String, String> textMap = ArrayListMultimap.create();
+        if (!map.isEmpty()) {
+            Iterator<Map.Entry<String, List<String>>> entryIterator = map.entrySet().iterator();
+            while (entryIterator.hasNext()) {
+                Map.Entry<String, List<String>> entry = entryIterator.next();
+                if (CollectionUtils.isEmpty(entry.getValue())) {
+                    continue;
+                }
+                for (String val : entry.getValue()) {
+                    String key = String.format("$(%s)", val);
+                    String value = String.format("$(%s)", entry.getKey());
+                    textMap.put(key, value);
+                }
+            }
+        }
+        if (!textMap.isEmpty()) {
+            AsposeUtils.replaceText(path, textMap);
         }
     }
 
     @Test
-    public void sdh32663(){
-        Map<String,String> map = Maps.newHashMap();
-        map.put("name","张三") ;
-        map.put("code","47347") ;
-        String string = JSONObject.toJSONString(map) ;
+    public void sdh32663() {
+        Map<String, String> map = Maps.newHashMap();
+        map.put("name", "张三");
+        map.put("code", "47347");
+        String string = JSONObject.toJSONString(map);
         System.out.println(string);
     }
 

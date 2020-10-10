@@ -393,6 +393,10 @@ public final class GenerateReportAssembleHelp {
      * @throws Exception
      */
     public static boolean assembleBaseMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception {
+        //估价对象号
+        if (Objects.equal(ReportFieldEnum.JudgeObjectNumber.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectNumberMethod());
+        }
         //财产范围说明
         if (Objects.equal(ReportFieldEnum.ScopePropertyExplain.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getScopePropertyExplain());
@@ -885,6 +889,36 @@ public final class GenerateReportAssembleHelp {
         //收益法租赁限制说明
         if (Objects.equal(ReportFieldMdIncomeEnum.TenancyrestrictionRemark.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getTenancyrestrictionRemark());
+        }
+        return false;
+    }
+
+    /**
+     * 土地报告
+     * @param name
+     * @param textMap
+     * @param bookmarkMap
+     * @param fileMap
+     * @param generateBaseDataService
+     * @param generateReportInfo
+     * @param reportType
+     * @param reportGroup
+     * @return
+     * @throws Exception
+     */
+    public static boolean assembleLandMap(String name, Map<String, String> textMap, Map<String, String> bookmarkMap, Map<String, String> fileMap, GenerateBaseDataService generateBaseDataService, GenerateReportInfo generateReportInfo, BaseDataDic reportType ,GenerateReportGroup reportGroup) throws Exception{
+        //土地所有权人
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_OWNERSHIP.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(ReportFieldUniversalBankEnum.BankGenerallandownership.getName()));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_Seat.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(ReportFieldUniversalBankEnum.BankGeneralSeat.getName()));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_EndTime.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(ReportFieldUniversalBankEnum.BankGenerallandendTime.getName()));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_RemainingYear.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }
         return false;
     }

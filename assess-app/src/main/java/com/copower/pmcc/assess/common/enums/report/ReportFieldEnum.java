@@ -11,6 +11,7 @@ public enum ReportFieldEnum implements Serializable {
     ReportHouseQrCode("房产二维码"),
     ReportASSETSQrCode("资产评估二维码"),
     ReportLandQrCode("土地评估二维码"),
+
     ScopePropertyExplain("财产范围说明"),
     TotalRealEstatePrice("房地产总价"),
     CapitalizationAmount("房地产总价大写金额"),
@@ -30,6 +31,7 @@ public enum ReportFieldEnum implements Serializable {
     rentalPossessionDesc("出租或占用情况"),
     HouseType("房产类型"),
 
+    JudgeObjectNumber("委估对象号"),
     JudgeBuildResultSurveySheet("估价结果一览表"),
     JudgeObjectFactorSheet("估价对象因素表"),
     JudgeBuildResultSurveySheetNotBeLocated("估价结果一览表不含坐落"),
