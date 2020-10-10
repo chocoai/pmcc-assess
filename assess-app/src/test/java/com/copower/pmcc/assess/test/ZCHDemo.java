@@ -6,6 +6,7 @@ import com.aspose.words.*;
 import com.aspose.words.Table;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.PoiUtils;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldDevelopmentEnum;
 import com.copower.pmcc.assess.common.enums.report.ReportFieldCostMethodEnum;
 import com.copower.pmcc.assess.dal.basis.entity.MdCalculatingMethodEngineeringCost;
@@ -14,6 +15,7 @@ import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.dto.output.method.MdCostConstructionVo;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
 import com.copower.pmcc.assess.service.method.MdMarketCostService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.google.common.collect.*;
 import jodd.util.URLDecoder;
@@ -30,6 +32,8 @@ import java.text.ParseException;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -490,19 +494,34 @@ public class ZCHDemo {
     }
 
     @org.junit.Test
-    public void testC() {
-        String s = null;
-        if (s == null) {
+    public void testC() throws Exception{
+       String path = "D:\\data\\土地评估结果报告模板.doc"   ;
+
+        Document document = new Document(path);
+        String text = null;
+        try {
+            text = PoiUtils.getWordContent(path);
+        } catch (Exception e) {
             try {
-                throw new Exception("");
-            } catch (Exception e) {
-                StackTraceElement[] stackTraceElements = e.getStackTrace();
-                if (stackTraceElements.length >= 1) {
-                    for (StackTraceElement element : stackTraceElements) {
-                        System.out.println(element);
-                    }
+                text = AsposeUtils.getWordTableText(document);
+            } catch (Exception e1) {
+
+            }
+        }
+        List<String> stringList = Lists.newArrayList();
+        if (StringUtils.isNotBlank(text)) {
+            if (StringUtils.isNotEmpty(text)) {
+                //取出word中表格数据
+//                Matcher m = Pattern.compile("\\$\\{.*}").matcher(text);
+//                Matcher m = Pattern.compile("\\$\\(公共估价项目名称\\)").matcher(text);
+                Matcher m = Pattern.compile(AsposeUtils.reportReplace).matcher(text);
+                while (m.find()) {
+                    stringList.add(m.group());
                 }
             }
+        }
+        if (CollectionUtils.isNotEmpty(stringList)) {
+
         }
     }
 
