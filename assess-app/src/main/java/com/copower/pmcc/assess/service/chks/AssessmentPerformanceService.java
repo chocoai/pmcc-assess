@@ -396,7 +396,7 @@ public class AssessmentPerformanceService {
         List<AssessmentPerformanceDto> performanceDtoList = performanceService.getPerformancesByParam(query);
         if (CollectionUtils.isEmpty(performanceDtoList)) {
             ProjectResponsibilityDto projectResponsibilityDto = new ProjectResponsibilityDto();
-            projectResponsibilityDto.setUserAccount(processControllerComponent.getThisUser());
+            projectResponsibilityDto.setUserAccount(userAccount);
             projectResponsibilityDto.setProcessInsId(processInsId);
             projectResponsibilityDto.setBusinessKey(AssessmentCommonService.PROJECT_TASK_BUSINESS_KEY_PERFORMANCE);
             List<ProjectResponsibilityDto> projectTaskList = bpmRpcProjectTaskService.getProjectTaskList(projectResponsibilityDto);
