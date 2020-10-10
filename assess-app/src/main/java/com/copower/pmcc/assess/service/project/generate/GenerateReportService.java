@@ -303,6 +303,7 @@ public class GenerateReportService {
         Arrays.asList(ReportFieldCommonEnum.values()).forEach(oo -> names.add(oo.getName()));
         //基础报告 字段
         Arrays.asList(ReportFieldEnum.values()).forEach(oo -> names.add(oo.getName()));
+        Arrays.asList(ReportFieldLandEnum.values()).forEach(oo -> names.add(oo.getName()));
         //收益法 字段
         Arrays.asList(ReportFieldMdIncomeEnum.values()).forEach(oo -> names.add(oo.getName()));
         //基准地 字段
@@ -557,6 +558,12 @@ public class GenerateReportService {
             Matcher m = Pattern.compile(AsposeUtils.reportReplaceString).matcher(text);
             while (m.find()) {
                 stringList.add(m.group());
+            }
+            if (CollectionUtils.isEmpty(stringList)){
+                m = Pattern.compile(AsposeUtils.reportReplace).matcher(text);
+                while (m.find()) {
+                    stringList.add(m.group());
+                }
             }
         }
         //获取普通段落

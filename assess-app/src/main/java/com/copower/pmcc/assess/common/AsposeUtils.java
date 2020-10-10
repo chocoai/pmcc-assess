@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
  */
 public class AsposeUtils {
     public static String reportReplaceString = "\\$\\{.*?\\}";
+    public static String reportReplace = "\\$\\(.*?\\)";
     //字体名称
     public static String FontFamily = "font-family";
     //字体大小
@@ -151,7 +152,7 @@ public class AsposeUtils {
         //获取所有段落
         ParagraphCollection paragraphs = document.getFirstSection().getBody().getParagraphs();
         for (int i = 0; i < paragraphs.toArray().length; i++) {
-            Matcher m = Pattern.compile(StringUtils.isNotBlank(pattern) ? pattern : "\\$\\{.*?\\}").matcher(paragraphs.get(i).getText());
+            Matcher m = Pattern.compile(StringUtils.isNotBlank(pattern) ? pattern : reportReplaceString).matcher(paragraphs.get(i).getText());
             while (m.find()) {
                 stringList.add(m.group());
             }
@@ -222,7 +223,7 @@ public class AsposeUtils {
         //获取所有段落
         ParagraphCollection paragraphs = document.getFirstSection().getBody().getParagraphs();
         for (int i = 0; i < paragraphs.toArray().length; i++) {
-            Matcher m = Pattern.compile("\\$\\{(.*?)\\}").matcher(paragraphs.get(i).getText());
+            Matcher m = Pattern.compile(reportReplaceString).matcher(paragraphs.get(i).getText());
             while (m.find()) {
                 map.put(m.group(), m.group(1));
             }
