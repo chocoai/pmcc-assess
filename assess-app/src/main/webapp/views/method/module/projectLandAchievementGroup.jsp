@@ -335,7 +335,7 @@
                         landLevelTypeName += "/" + obj.category;
                     }
                     landLevelBodyHtml = landLevelBodyHtml.replace(/{landLevelTypeName}/g, landLevelTypeName);
-                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, obj.remark);
+                    landLevelBodyHtml = landLevelBodyHtml.replace(/{reamark}/g, obj.remark.replace(/\r/g,'<br/>'));
                     var array = [];
                     try {
                         array = JSON.parse(obj.keyValue);

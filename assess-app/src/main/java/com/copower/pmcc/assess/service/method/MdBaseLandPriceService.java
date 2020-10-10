@@ -304,7 +304,7 @@ public class MdBaseLandPriceService {
         }
 
         if (categoryInfo != null) {
-            modelAndView.addObject("basicEstateLandCategoryInfo",categoryInfo);
+            modelAndView.addObject("basicEstateLandCategoryInfo", categoryInfo);
             DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
             if (levelDetail != null) {
                 //基准地价
@@ -325,8 +325,9 @@ public class MdBaseLandPriceService {
             }
         }
         //期日修正系数
-        BigDecimal dateAmend = mdBaseLandPrice.getDateAmend() == null ? getBaseLandPriceDateAmend(schemeJudgeObject.getId()) : mdBaseLandPrice.getDateAmend();
-        modelAndView.addObject("dateAmend", dateAmend);
-
+        if (mdBaseLandPrice != null) {
+            BigDecimal dateAmend = mdBaseLandPrice.getDateAmend() == null ? getBaseLandPriceDateAmend(schemeJudgeObject.getId()) : mdBaseLandPrice.getDateAmend();
+            modelAndView.addObject("dateAmend", dateAmend);
+        }
     }
 }

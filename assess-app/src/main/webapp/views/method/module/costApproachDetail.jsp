@@ -118,10 +118,7 @@
                                     </thead>
                                     <tbody id="tbodyContent">
                                     <c:forEach items="${taxesVos}" var="approachTaxe" varStatus="s">
-                                        <tr id="content${approachTaxe.id}">
-
-
-                                        </tr>
+                                        <tr id="content${approachTaxe.id}"></tr>
                                         <script type="text/javascript">
                                             $(function () {
                                                 var html = uploadTaxeHtml("${approachTaxe.id}", "${approachTaxe.typeKey}", "${approachTaxe.typeName}", "${approachTaxe.standardFirst}", "${approachTaxe.standardSecond}", "${approachTaxe.price}", "${approachTaxe.remark}");

@@ -152,6 +152,7 @@ public class MdCostApproachService {
 
     public BootstrapTableVo getMdCostApproachItemList(Integer masterId) {
         BootstrapTableVo vo = new BootstrapTableVo();
+        if (masterId == null) return vo;
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
         List<MdCostApproachItem> list = getMdCostApproachItemListByMasterId(masterId);
@@ -161,6 +162,7 @@ public class MdCostApproachService {
     }
 
     public List<MdCostApproachTaxes> getMdCostApproachTaxesListByMasterId(Integer masterId) {
+        if (masterId == null) return null;
         MdCostApproachTaxes mdCostApproachTaxes = new MdCostApproachTaxes();
         mdCostApproachTaxes.setMasterId(masterId);
         return costApproachTaxesDao.getCostApproachTaxesList(mdCostApproachTaxes);
@@ -873,9 +875,9 @@ public class MdCostApproachService {
                 //从估价对象获取剩余年限
                 modelAndView.addObject("landRemainingYear", schemeJudgeObject.getLandRemainingYear());
             }
-            if (schemeJudgeObject.getSetPlotRatio() != null){
+            if (schemeJudgeObject.getSetPlotRatio() != null) {
                 //从估价对象获取容积率
-                modelAndView.addObject("plotRatioAdjust", ArithmeticUtils.divide(schemeJudgeObject.getSetPlotRatio(),new BigDecimal(100),4));
+                modelAndView.addObject("plotRatioAdjust", ArithmeticUtils.divide(schemeJudgeObject.getSetPlotRatio(), new BigDecimal(100), 4));
             }
         }
         BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
