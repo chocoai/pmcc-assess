@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class InitiateUnitInformationExample {
+    /**
+     * tb_initiate_unit_information
+     */
     protected String orderByClause;
 
+    /**
+     * tb_initiate_unit_information
+     */
     protected boolean distinct;
 
+    /**
+     * tb_initiate_unit_information
+     */
     protected List<Criteria> oredCriteria;
 
     public InitiateUnitInformationExample() {
@@ -64,6 +73,9 @@ public class InitiateUnitInformationExample {
         distinct = false;
     }
 
+    /**
+     * tb_initiate_unit_information
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1113,6 +1125,9 @@ public class InitiateUnitInformationExample {
         }
     }
 
+    /**
+     * tb_initiate_unit_information
+     */
     public static class Criterion {
         private String condition;
 

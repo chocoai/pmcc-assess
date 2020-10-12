@@ -1,42 +1,42 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.InitiatePossessorMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="p_type" property="pType" jdbcType="INTEGER" />
-    <result column="p_entrustment_unit" property="pEntrustmentUnit" jdbcType="VARCHAR" />
-    <result column="p_legal_representative" property="pLegalRepresentative" jdbcType="VARCHAR" />
-    <result column="p_sociology_code" property="pSociologyCode" jdbcType="VARCHAR" />
-    <result column="p_address" property="pAddress" jdbcType="VARCHAR" />
-    <result column="p_scope_operation" property="pScopeOperation" jdbcType="VARCHAR" />
-    <result column="p_unit_properties" property="pUnitProperties" jdbcType="VARCHAR" />
-    <result column="p_name" property="pName" jdbcType="VARCHAR" />
-    <result column="spare_field" property="spareField" jdbcType="VARCHAR" />
-    <result column="p_idcard" property="pIdcard" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.InitiatePossessorMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="p_type" jdbcType="INTEGER" property="pType" />
+    <result column="p_entrustment_unit" jdbcType="VARCHAR" property="pEntrustmentUnit" />
+    <result column="p_legal_representative" jdbcType="VARCHAR" property="pLegalRepresentative" />
+    <result column="p_sociology_code" jdbcType="VARCHAR" property="pSociologyCode" />
+    <result column="p_address" jdbcType="VARCHAR" property="pAddress" />
+    <result column="p_scope_operation" jdbcType="VARCHAR" property="pScopeOperation" />
+    <result column="p_unit_properties" jdbcType="VARCHAR" property="pUnitProperties" />
+    <result column="p_name" jdbcType="VARCHAR" property="pName" />
+    <result column="spare_field" jdbcType="VARCHAR" property="spareField" />
+    <result column="p_idcard" jdbcType="VARCHAR" property="pIdcard" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -47,25 +47,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -76,43 +76,43 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, creator, gmt_created, gmt_modified, project_id, p_type, p_entrustment_unit, p_legal_representative, 
     p_sociology_code, p_address, p_scope_operation, p_unit_properties, p_name, spare_field, 
     p_idcard
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessorExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessorExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_initiate_possessor
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_initiate_possessor
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_initiate_possessor
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessorExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessorExample">
     delete from tb_initiate_possessor
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_initiate_possessor (creator, gmt_created, gmt_modified, 
@@ -126,160 +126,190 @@
       #{pScopeOperation,jdbcType=VARCHAR}, #{pUnitProperties,jdbcType=VARCHAR}, #{pName,jdbcType=VARCHAR}, 
       #{spareField,jdbcType=VARCHAR}, #{pIdcard,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_initiate_possessor
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-      <if test="projectId != null" >
-        project_id,
-      </if>
-      <if test="pType != null" >
-        p_type,
-      </if>
-      <if test="pEntrustmentUnit != null" >
-        p_entrustment_unit,
-      </if>
-      <if test="pLegalRepresentative != null" >
-        p_legal_representative,
-      </if>
-      <if test="pSociologyCode != null" >
-        p_sociology_code,
-      </if>
-      <if test="pAddress != null" >
-        p_address,
-      </if>
-      <if test="pScopeOperation != null" >
-        p_scope_operation,
-      </if>
-      <if test="pUnitProperties != null" >
-        p_unit_properties,
-      </if>
-      <if test="pName != null" >
-        p_name,
-      </if>
-      <if test="spareField != null" >
-        spare_field,
-      </if>
-      <if test="pIdcard != null" >
-        p_idcard,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="projectId != null" >
-        #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="pType != null" >
-        #{pType,jdbcType=INTEGER},
-      </if>
-      <if test="pEntrustmentUnit != null" >
-        #{pEntrustmentUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="pLegalRepresentative != null" >
-        #{pLegalRepresentative,jdbcType=VARCHAR},
-      </if>
-      <if test="pSociologyCode != null" >
-        #{pSociologyCode,jdbcType=VARCHAR},
-      </if>
-      <if test="pAddress != null" >
-        #{pAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="pScopeOperation != null" >
-        #{pScopeOperation,jdbcType=VARCHAR},
-      </if>
-      <if test="pUnitProperties != null" >
-        #{pUnitProperties,jdbcType=VARCHAR},
-      </if>
-      <if test="pName != null" >
-        #{pName,jdbcType=VARCHAR},
-      </if>
-      <if test="spareField != null" >
-        #{spareField,jdbcType=VARCHAR},
-      </if>
-      <if test="pIdcard != null" >
-        #{pIdcard,jdbcType=VARCHAR},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+          <if test="record.projectId != null">
+            project_id,
+          </if>
+          <if test="record.pType != null">
+            p_type,
+          </if>
+          <if test="record.pEntrustmentUnit != null">
+            p_entrustment_unit,
+          </if>
+          <if test="record.pLegalRepresentative != null">
+            p_legal_representative,
+          </if>
+          <if test="record.pSociologyCode != null">
+            p_sociology_code,
+          </if>
+          <if test="record.pAddress != null">
+            p_address,
+          </if>
+          <if test="record.pScopeOperation != null">
+            p_scope_operation,
+          </if>
+          <if test="record.pUnitProperties != null">
+            p_unit_properties,
+          </if>
+          <if test="record.pName != null">
+            p_name,
+          </if>
+          <if test="record.spareField != null">
+            spare_field,
+          </if>
+          <if test="record.pIdcard != null">
+            p_idcard,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.projectId != null">
+            #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.pType != null">
+            #{record.pType,jdbcType=INTEGER},
+          </if>
+          <if test="record.pEntrustmentUnit != null">
+            #{record.pEntrustmentUnit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pLegalRepresentative != null">
+            #{record.pLegalRepresentative,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pSociologyCode != null">
+            #{record.pSociologyCode,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pAddress != null">
+            #{record.pAddress,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pScopeOperation != null">
+            #{record.pScopeOperation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pUnitProperties != null">
+            #{record.pUnitProperties,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pName != null">
+            #{record.pName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spareField != null">
+            #{record.spareField,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pIdcard != null">
+            #{record.pIdcard,jdbcType=VARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessorExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessorExample" resultType="java.lang.Long">
     select count(*) from tb_initiate_possessor
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_initiate_possessor
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.projectId != null" >
-        project_id = #{record.projectId,jdbcType=INTEGER},
-      </if>
-      <if test="record.pType != null" >
-        p_type = #{record.pType,jdbcType=INTEGER},
-      </if>
-      <if test="record.pEntrustmentUnit != null" >
-        p_entrustment_unit = #{record.pEntrustmentUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pLegalRepresentative != null" >
-        p_legal_representative = #{record.pLegalRepresentative,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pSociologyCode != null" >
-        p_sociology_code = #{record.pSociologyCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pAddress != null" >
-        p_address = #{record.pAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pScopeOperation != null" >
-        p_scope_operation = #{record.pScopeOperation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pUnitProperties != null" >
-        p_unit_properties = #{record.pUnitProperties,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pName != null" >
-        p_name = #{record.pName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.spareField != null" >
-        spare_field = #{record.spareField,jdbcType=VARCHAR},
-      </if>
-      <if test="record.pIdcard != null" >
-        p_idcard = #{record.pIdcard,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.pType != null">
+            p_type = #{record.pType,jdbcType=INTEGER},
+          </if>
+          <if test="record.pEntrustmentUnit != null">
+            p_entrustment_unit = #{record.pEntrustmentUnit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pLegalRepresentative != null">
+            p_legal_representative = #{record.pLegalRepresentative,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pSociologyCode != null">
+            p_sociology_code = #{record.pSociologyCode,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pAddress != null">
+            p_address = #{record.pAddress,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pScopeOperation != null">
+            p_scope_operation = #{record.pScopeOperation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pUnitProperties != null">
+            p_unit_properties = #{record.pUnitProperties,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pName != null">
+            p_name = #{record.pName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spareField != null">
+            spare_field = #{record.spareField,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pIdcard != null">
+            p_idcard = #{record.pIdcard,jdbcType=VARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_initiate_possessor
     set id = #{record.id,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -296,59 +326,69 @@
       p_name = #{record.pName,jdbcType=VARCHAR},
       spare_field = #{record.spareField,jdbcType=VARCHAR},
       p_idcard = #{record.pIdcard,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor" >
+  <update id="updateByPrimaryKeySelective" parameterType="map">
     update tb_initiate_possessor
-    <set >
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="pType != null" >
-        p_type = #{pType,jdbcType=INTEGER},
-      </if>
-      <if test="pEntrustmentUnit != null" >
-        p_entrustment_unit = #{pEntrustmentUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="pLegalRepresentative != null" >
-        p_legal_representative = #{pLegalRepresentative,jdbcType=VARCHAR},
-      </if>
-      <if test="pSociologyCode != null" >
-        p_sociology_code = #{pSociologyCode,jdbcType=VARCHAR},
-      </if>
-      <if test="pAddress != null" >
-        p_address = #{pAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="pScopeOperation != null" >
-        p_scope_operation = #{pScopeOperation,jdbcType=VARCHAR},
-      </if>
-      <if test="pUnitProperties != null" >
-        p_unit_properties = #{pUnitProperties,jdbcType=VARCHAR},
-      </if>
-      <if test="pName != null" >
-        p_name = #{pName,jdbcType=VARCHAR},
-      </if>
-      <if test="spareField != null" >
-        spare_field = #{spareField,jdbcType=VARCHAR},
-      </if>
-      <if test="pIdcard != null" >
-        p_idcard = #{pIdcard,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.pType != null">
+            p_type = #{record.pType,jdbcType=INTEGER},
+          </if>
+          <if test="record.pEntrustmentUnit != null">
+            p_entrustment_unit = #{record.pEntrustmentUnit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pLegalRepresentative != null">
+            p_legal_representative = #{record.pLegalRepresentative,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pSociologyCode != null">
+            p_sociology_code = #{record.pSociologyCode,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pAddress != null">
+            p_address = #{record.pAddress,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pScopeOperation != null">
+            p_scope_operation = #{record.pScopeOperation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pUnitProperties != null">
+            p_unit_properties = #{record.pUnitProperties,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pName != null">
+            p_name = #{record.pName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.spareField != null">
+            spare_field = #{record.spareField,jdbcType=VARCHAR},
+          </if>
+          <if test="record.pIdcard != null">
+            p_idcard = #{record.pIdcard,jdbcType=VARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiatePossessor">
     update tb_initiate_possessor
     set creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -366,4 +406,75 @@
       p_idcard = #{pIdcard,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_initiate_possessor
+    (creator, gmt_created, gmt_modified, project_id, p_type, p_entrustment_unit, p_legal_representative, 
+      p_sociology_code, p_address, p_scope_operation, p_unit_properties, p_name, spare_field, 
+      p_idcard)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}, 
+        #{item.projectId,jdbcType=INTEGER}, #{item.pType,jdbcType=INTEGER}, #{item.pEntrustmentUnit,jdbcType=VARCHAR}, 
+        #{item.pLegalRepresentative,jdbcType=VARCHAR}, #{item.pSociologyCode,jdbcType=VARCHAR}, 
+        #{item.pAddress,jdbcType=VARCHAR}, #{item.pScopeOperation,jdbcType=VARCHAR}, #{item.pUnitProperties,jdbcType=VARCHAR}, 
+        #{item.pName,jdbcType=VARCHAR}, #{item.spareField,jdbcType=VARCHAR}, #{item.pIdcard,jdbcType=VARCHAR}
+        )
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_initiate_possessor (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'project_id'.toString() == column.value">
+          #{item.projectId,jdbcType=INTEGER}
+        </if>
+        <if test="'p_type'.toString() == column.value">
+          #{item.pType,jdbcType=INTEGER}
+        </if>
+        <if test="'p_entrustment_unit'.toString() == column.value">
+          #{item.pEntrustmentUnit,jdbcType=VARCHAR}
+        </if>
+        <if test="'p_legal_representative'.toString() == column.value">
+          #{item.pLegalRepresentative,jdbcType=VARCHAR}
+        </if>
+        <if test="'p_sociology_code'.toString() == column.value">
+          #{item.pSociologyCode,jdbcType=VARCHAR}
+        </if>
+        <if test="'p_address'.toString() == column.value">
+          #{item.pAddress,jdbcType=VARCHAR}
+        </if>
+        <if test="'p_scope_operation'.toString() == column.value">
+          #{item.pScopeOperation,jdbcType=VARCHAR}
+        </if>
+        <if test="'p_unit_properties'.toString() == column.value">
+          #{item.pUnitProperties,jdbcType=VARCHAR}
+        </if>
+        <if test="'p_name'.toString() == column.value">
+          #{item.pName,jdbcType=VARCHAR}
+        </if>
+        <if test="'spare_field'.toString() == column.value">
+          #{item.spareField,jdbcType=VARCHAR}
+        </if>
+        <if test="'p_idcard'.toString() == column.value">
+          #{item.pIdcard,jdbcType=VARCHAR}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>

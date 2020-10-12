@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class InitiatePossessorExample {
+    /**
+     * tb_initiate_possessor
+     */
     protected String orderByClause;
 
+    /**
+     * tb_initiate_possessor
+     */
     protected boolean distinct;
 
+    /**
+     * tb_initiate_possessor
+     */
     protected List<Criteria> oredCriteria;
 
     public InitiatePossessorExample() {
@@ -64,6 +73,9 @@ public class InitiatePossessorExample {
         distinct = false;
     }
 
+    /**
+     * tb_initiate_possessor
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1113,6 +1125,9 @@ public class InitiatePossessorExample {
         }
     }
 
+    /**
+     * tb_initiate_possessor
+     */
     public static class Criterion {
         private String condition;
 

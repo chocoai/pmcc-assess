@@ -54,6 +54,10 @@ public class SurveyAssetRightGroupService {
     @Autowired
     private SurveyAssetInventoryService surveyAssetInventoryService;
 
+    public SurveyAssetRightItemService getSurveyAssetRightItemService(){
+        return surveyAssetRightItemService ;
+    }
+
     /**
      * 根据主id更新从表
      * @param masterId
@@ -405,6 +409,10 @@ public class SurveyAssetRightGroupService {
             }
         }
         return resultList;
+    }
+
+    public List<SurveyAssetRightDeclare> getRightDeclareListByDeclareIds(List<Integer> declareIds){
+        return surveyAssetRightDeclareService.getRightDeclareListByDeclareIds(declareIds) ;
     }
     
 }

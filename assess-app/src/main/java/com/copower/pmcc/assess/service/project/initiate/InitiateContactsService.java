@@ -56,7 +56,7 @@ public class InitiateContactsService {
     }
 
     public void copyContacts(String str, InitiateContacts initiateContacts) {
-        if (org.apache.commons.lang3.StringUtils.isEmpty(str)){
+        if (org.apache.commons.lang3.StringUtils.isEmpty(str)) {
             return;
         }
         List<Integer> ids = new ArrayList<>(10);
@@ -66,7 +66,7 @@ public class InitiateContactsService {
             }
         }
         List<InitiateContacts> initiateContactsList = dao.getByIds(ids);
-        if (CollectionUtils.isEmpty(initiateContactsList)){
+        if (CollectionUtils.isEmpty(initiateContactsList)) {
             return;
         }
         for (InitiateContacts contacts : initiateContactsList) {
@@ -111,6 +111,10 @@ public class InitiateContactsService {
         return dao.initiateContactsList(initiateContacts);
     }
 
+    public List<InitiateContacts> getList(Integer cPid, Integer cType) {
+        return dao.getList(cPid, cType, null, null, null);
+    }
+
     public void clear(InitiateContacts initiateContacts) {
         dao.clear(initiateContacts);
     }
@@ -123,7 +127,7 @@ public class InitiateContactsService {
      * @return
      */
     public void writeContacts(Integer customerId, Integer cType, Integer pid) {
-        if (customerId == null){
+        if (customerId == null) {
             return;
         }
         List<CrmCustomerLinkmanDto> linkmanDtos = crmCustomerService.getCustomerLinkmanList(customerId);
@@ -239,7 +243,7 @@ public class InitiateContactsService {
         query.setcType(flag);
         query.setCreator(commonService.thisUserAccount());
         List<InitiateContacts> contactsList = initiateContactsList(query);
-        if (CollectionUtils.isEmpty(contactsList)){
+        if (CollectionUtils.isEmpty(contactsList)) {
             return;
         }
         for (InitiateContacts contact : contactsList) {
