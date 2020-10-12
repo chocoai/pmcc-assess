@@ -115,7 +115,6 @@ public class NetInfoUpgradeEvent extends BaseProcessEvent {
             newRecordLand.setStatus(1);
             newRecordLand.setCreator(data.getCreator());
             newRecordLand.setApprover(data.getApprover());
-            newRecordLand.setStatus(1);
             newRecordLand.setBeUpgradeId(oldRecordLand.getBeUpgradeId()==null?newRecordLand.getId():oldRecordLand.getBeUpgradeId());
             newRecordLand.setVersion(oldRecordLand.getVersion() + 1);
             netInfoRecordLandDao.addNetInfoRecordLand(newRecordLand);

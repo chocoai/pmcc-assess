@@ -13,6 +13,7 @@
             height: 100%;
             overflow: hidden;
         }
+
         .mui-bar {
             -webkit-box-shadow: none;
             box-shadow: none;
@@ -26,28 +27,29 @@
     <h1 class="mui-title">indexed list（索引列表）</h1>
 </header>
 <div class="mui-content">
-    <h5 class="mui-content-padded" style="margin: 15px 10px;">拖拽(滑动)显示多功能菜单</h5>
-    <ul id="OA_task_2" class="mui-table-view">
-        <li class="mui-table-view-cell">
-            <div class="mui-slider-right mui-disabled">
-                <a class="mui-btn mui-btn-grey mui-icon mui-icon-person"></a>
-                <a class="mui-btn mui-btn-yellow mui-icon mui-icon-phone"></a>
-                <a class="mui-btn mui-btn-red mui-icon mui-icon-email"></a>
-            </div>
-            <div class="mui-slider-handle">
-                <div class="mui-table-cell">
-                    左滑显示多功能菜单
+    <div class="mui-card">
+        <ul class="mui-table-view">
+            <li class="mui-table-view-cell mui-collapse mui-active">
+                <a class="mui-navigate-right" href="#">现场查勘1</a>
+                <div class="mui-collapse-content">
+                    xxxxx
                 </div>
-            </div>
-        </li>
-    </ul>
+            </li>
+            <li class="mui-table-view-cell mui-collapse">
+                <a class="mui-navigate-right" href="#">现场查勘2</a>
+                <div class="mui-collapse-content">
+                    ggggggg
+                </div>
+            </li>
+        </ul>
+    </div>
     <%@include file="/views/mobile/common/projectTabbar.jsp" %>
 </div>
 <script src="${pageContext.request.contextPath}/assets/mui/js/mui.js?v=${assessVersion}"></script>
 <script src="${pageContext.request.contextPath}/assets/mui/js/mui.indexedlist.js?v=${assessVersion}"></script>
 <script type="text/javascript" charset="utf-8">
     mui.init();
-    mui.ready(function() {
+    mui.ready(function () {
         var header = document.querySelector('header.mui-bar');
         var list = document.getElementById('list');
         //calc hieght
@@ -55,6 +57,59 @@
         //create
         window.indexedList = new mui.IndexedList(list);
     });
+</script>
+<script type="text/javascript">
+    $('#tree').treeview({
+        data: getTree(), // 获取数据节点
+        levels: 5,//节点层级数
+        color: "#000",//每一级通用的 节点字体颜色
+        backColor: "#fff",//每一级通用的 节点字背景色
+        onhoverColor: "orange",//选中浮动颜色
+        borderColor: "red",//设置组件的边框颜色; 设置showBorder为false，如果你不想要一个可见的边框
+        showBorder: false,
+        showTags: true,//是否在每个节点的右侧显示标签。 其值必须在每个节点的数据结构中提供
+
+        highlightSelected: true,//是否突出显示选定的节点
+        selectedColor: "#fff",//设置选定节点的前景色
+        selectedBackColor: "darkorange",//设置选定节点的背景色
+    });
+
+    function getTree() {
+        var tree = [
+            {
+                text: "Parent 1",
+                nodes: [
+                    {
+                        text: "Child 1",
+                        nodes: [
+                            {
+                                text: "Grandchild 1"
+                            },
+                            {
+                                text: "Grandchild 2"
+                            }
+                        ]
+                    },
+                    {
+                        text: "Child 2"
+                    }
+                ]
+            },
+            {
+                text: "Parent 2"
+            },
+            {
+                text: "Parent 3"
+            },
+            {
+                text: "Parent 4"
+            },
+            {
+                text: "Parent 5"
+            }
+        ];
+        return tree;
+    }
 </script>
 </body>
 </html>
