@@ -28,6 +28,7 @@ import com.copower.pmcc.assess.dto.output.project.ProjectMemberVo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPhaseVo;
 import com.copower.pmcc.assess.dto.output.project.declare.DeclareRealtyLandCertVo;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeReimbursementItemVo;
+import com.copower.pmcc.assess.dto.output.project.survey.SurveyAssetRightItemVo;
 import com.copower.pmcc.assess.service.BaseService;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
@@ -42,11 +43,9 @@ import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.*;
+import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.assess.service.project.scheme.*;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.SysSymbolListDto;
@@ -89,6 +88,7 @@ public class GenerateBaseDataService {
     protected static final String errorStr = "无";
     //spring bean
     private ProjectInfoService projectInfoService;
+    private InitiateContactsService initiateContactsService;
     private SchemeJudgeObjectService schemeJudgeObjectService;
     private SchemeJudgeFunctionService schemeJudgeFunctionService;
     private SchemeAreaGroupService schemeAreaGroupService;
@@ -407,9 +407,10 @@ public class GenerateBaseDataService {
     /**
      * 估价委托人信息
      *
+     * @param contact 是否增加联系人
      * @return
      */
-    public String getPrincipalInfo() throws Exception {
+    public String getPrincipalInfo(boolean contact) throws Exception {
         String localPath = getLocalPath();
         Document doc = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
@@ -435,6 +436,14 @@ public class GenerateBaseDataService {
             if (StringUtils.isNotBlank(people)) {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "法定代表人", people)));
             }
+            if (contact) {
+                if (StringUtils.isNotBlank(projectInfo.getConsignorVo().getCsUnitPropertiesName())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "公司类型", projectInfo.getConsignorVo().getCsUnitPropertiesName())));
+                }
+                if (StringUtils.isNotBlank(projectInfo.getConsignorVo().getCsScopeOperation())) {
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "经营范围", projectInfo.getConsignorVo().getCsScopeOperation())));
+                }
+            }
         }
         if (Objects.equal(projectInfo.getConsignorVo().getCsType(), InitiateContactsEnum.naturalPerson.getId())) {
             String name = projectInfo.getConsignorVo().getCsName();
@@ -452,6 +461,23 @@ public class GenerateBaseDataService {
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "地址", address)));
             }
 
+        }
+        if (contact) {
+            List<InitiateContacts> initiateContactsList = initiateContactsService.getList(projectInfo.getConsignorVo().getId(), InitiateContactsEnum.CONSIGNOR.getId());
+            Multimap<String, String> multimap = ArrayListMultimap.create();
+            if (CollectionUtils.isNotEmpty(initiateContactsList)) {
+                for (InitiateContacts obj : initiateContactsList) {
+                    if (StringUtils.isBlank(obj.getcPhone()) || StringUtils.isBlank(obj.getcName())) {
+                        continue;
+                    }
+                    multimap.put(obj.getcName(), obj.getcPhone());
+                }
+            }
+            if (!multimap.isEmpty()) {
+                Map.Entry<String, String> stringStringEntry = multimap.entries().stream().findFirst().get();
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "联系人", stringStringEntry.getKey())));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("%s:%s", "联系电话", stringStringEntry.getValue())));
+            }
         }
         documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
         doc.save(localPath);
@@ -1190,18 +1216,46 @@ public class GenerateBaseDataService {
             if (declareRealtyRealEstateCert == null) {
                 declareRealtyRealEstateCert = new DeclareRealtyRealEstateCert();
             }
+            String value = null;
             switch (baseReportEnum) {
                 case LAND_ENUM_RemainingYear: {
-                    String value = null;
-
-                    if (StringUtils.isNotEmpty(value)) {
-                        map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
+                    BigDecimal landRemainingYear = schemeJudgeObject.getLandRemainingYear();
+                    if (landRemainingYear == null) {
+                        landRemainingYear = schemeJudgeObject.getLandRemainingYear();
+                    }
+                    if (landRemainingYear != null) {
+                        value = ArithmeticUtils.getBigDecimalString(landRemainingYear);
+                    }
+                    break;
+                }
+                case LAND_ENUM_landNumber: {
+                    if (StringUtils.isNotBlank(declareRealtyLandCert.getLandNumber())) {
+                        value = declareRealtyLandCert.getLandNumber();
+                    }
+                    if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getLandNumber())) {
+                        value = declareRealtyRealEstateCert.getLandNumber();
+                    }
+                    break;
+                }
+                case LAND_ENUM_LandRightType: {
+                    if (declareRealtyRealEstateCert.getLandRightType() != null) {
+                        value = baseDataDicService.getNameById(declareRealtyRealEstateCert.getLandRightType());
+                    }
+                    if (declareRealtyLandCert.getLandRightType() != null) {
+                        value = baseDataDicService.getNameById(declareRealtyLandCert.getLandRightType());
+                    }
+                    break;
+                }
+                case LAND_ENUM_acquisitionType: {
+                    if (StringUtils.isNotBlank(declareRealtyRealEstateCert.getAcquisitionType())) {
+                        value = baseDataDicService.getNameById(declareRealtyRealEstateCert.getAcquisitionType());
                     }
                 }
-                break;
-
                 default:
                     break;
+            }
+            if (StringUtils.isNotEmpty(value)) {
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), value);
             }
         }
         String value = "/";
@@ -3209,6 +3263,13 @@ public class GenerateBaseDataService {
         return DateUtils.format(start, DateUtils.DATE_CHINESE_PATTERN);
     }
 
+    public String getConversionTime(Date date) {
+        if (date == null) {
+            return errorStr;
+        }
+        return DateUtils.format(date, DateUtils.DATE_CHINESE_PATTERN);
+    }
+
     /**
      * 评估依据假设原则
      *
@@ -3458,6 +3519,135 @@ public class GenerateBaseDataService {
             }
         }
         return StringUtils.stripEnd(stringBuilder.toString(), "、");
+    }
+
+    protected String getLandRightTypeDesc() throws Exception {
+        StringBuilder stringBuilder = new StringBuilder();
+        String value = errorStr;
+        Map<Integer, String> stringMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList().stream().filter(oo -> oo.getDeclareRecordId() != null).collect(Collectors.toList());
+        List<Integer> declareIds = LangUtils.transform(schemeJudgeObjectList, obj -> obj.getDeclareRecordId());
+        List<SurveyAssetRightDeclare> surveyAssetRightDeclareList = surveyAssetRightGroupService.getRightDeclareListByDeclareIds(declareIds);
+        SurveyAssetRightItemService surveyAssetRightItemService = surveyAssetRightGroupService.getSurveyAssetRightItemService();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                boolean check = false;
+                if (CollectionUtils.isNotEmpty(surveyAssetRightDeclareList)) {
+                    check = surveyAssetRightDeclareList.stream().anyMatch(obj -> obj.getDeclareId().equals(schemeJudgeObject.getDeclareRecordId()));
+                }
+                stringBuilder.append("根据委托方陈述并介绍，至估价期日，");
+                stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject, schemeJudgeObjectList));
+                if (check) {
+                    Integer groupId = surveyAssetRightDeclareList.stream().filter(obj -> obj.getDeclareId().equals(schemeJudgeObject.getDeclareRecordId()) && obj.getGroupId() != null).findFirst().get().getGroupId();
+                    List<SurveyAssetRightItem> rightItemList = surveyAssetRightGroupService.getSurveyAssetRightItemListByGroupId(groupId);
+                    List<SurveyAssetRightItemVo> rightItemVoList = LangUtils.transform(rightItemList, obj -> surveyAssetRightItemService.getSurveyAssetRightItemVo(obj));
+                    List<SurveyAssetRightItemVo> assetRightItemVoList = null;
+                    if (CollectionUtils.isNotEmpty(rightItemVoList)) {
+                        assetRightItemVoList = LangUtils.filter(rightItemVoList, obj -> obj.getCategoryName().contains("其他"));
+                    }
+                    if (CollectionUtils.isNotEmpty(assetRightItemVoList)) {
+                        List<SurveyAssetRightItemVo> surveyAssetRightItemVoList = LangUtils.filter(assetRightItemVoList, obj -> StringUtils.isNotBlank(obj.getRemark()));
+                        List<String> stringList = LangUtils.transform(surveyAssetRightItemVoList, obj -> obj.getRemark());
+                        stringBuilder.append("估价对象").append(StringUtils.join(stringList, ",")).append(",故本次评估我们按司法特定权利限制来设定。");
+                    } else {
+                        List<SurveyAssetRightItemVo> surveyAssetRightItemVoList = LangUtils.filter(rightItemVoList, obj -> StringUtils.isNotBlank(obj.getCategoryName()));
+                        List<String> stringList = LangUtils.transform(surveyAssetRightItemVoList, obj -> obj.getCategoryName());
+                        String v = String.format("已设%s", StringUtils.join(stringList, ","));
+                        stringBuilder.append("估价对象").append(v);
+                        stringBuilder.append(",故本次评估我们按").append(v).append("权利限制来设定。");
+                    }
+                } else {
+                    stringBuilder.append("估价对象无使用权异议，且未设置其他他项权利，故本次评估我们按无他项权利限制来设定。");
+                }
+                stringMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());
+                stringBuilder.delete(0, stringBuilder.toString().length());
+            }
+        }
+        if (!stringMap.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(stringMap, "", "", false);
+        }
+        return value;
+    }
+
+    protected String getCommonParcelInnerDevelopValue(){
+        String value = errorStr;
+        Map<Integer, String> stringMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                String v = schemeJudgeObject.getParcelInnerDevelop();
+                if (StringUtils.isBlank(v)) {
+                    continue;
+                }
+                List<Integer> integerList = FormatUtils.transformString2Integer(v);
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                List<String> stringList = new ArrayList<>(integerList.size()) ;
+                for (Integer id:integerList){
+                    stringList.add(baseDataDicService.getNameById(id) ) ;
+                }
+                stringMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList,","));
+            }
+        }
+        if (!stringMap.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(stringMap, "", "", false);
+        }
+        return value;
+    }
+
+    protected String getCommonParcelOuterDevelopValue(){
+        String value = errorStr;
+        Map<Integer, String> stringMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                String v = schemeJudgeObject.getParcelOuterDevelop();
+                if (StringUtils.isBlank(v)) {
+                    continue;
+                }
+                List<Integer> integerList = FormatUtils.transformString2Integer(v);
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                List<String> stringList = new ArrayList<>(integerList.size()) ;
+                for (Integer id:integerList){
+                    stringList.add(baseDataDicService.getNameById(id) ) ;
+                }
+                stringMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList,","));
+            }
+        }
+        if (!stringMap.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(stringMap, "", "", false);
+        }
+        return value;
+    }
+
+    protected String getCommonParcelSettingInnerDevelopValue(){
+        String value = errorStr;
+        Map<Integer, String> stringMap = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                String v = schemeJudgeObject.getParcelSettingInnerDevelop();
+                if (StringUtils.isBlank(v)) {
+                    continue;
+                }
+                List<Integer> integerList = FormatUtils.transformString2Integer(v);
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                List<String> stringList = new ArrayList<>(integerList.size()) ;
+                for (Integer id:integerList){
+                    stringList.add(baseDataDicService.getNameById(id) ) ;
+                }
+                stringMap.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList,","));
+            }
+        }
+        if (!stringMap.isEmpty()) {
+            value = generateCommonMethod.judgeEachDesc2(stringMap, "", "", false);
+        }
+        return value;
     }
 
     /**
@@ -6930,6 +7120,7 @@ public class GenerateBaseDataService {
         this.declareLandUsePermitService = SpringContextUtils.getBean(DeclareLandUsePermitService.class);
         this.declarePreSalePermitService = SpringContextUtils.getBean(DeclarePreSalePermitService.class);
         this.schemeSurePriceFactorService = SpringContextUtils.getBean(SchemeSurePriceFactorService.class);
+        this.initiateContactsService = SpringContextUtils.getBean(InitiateContactsService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         if (areaGroup == null) {

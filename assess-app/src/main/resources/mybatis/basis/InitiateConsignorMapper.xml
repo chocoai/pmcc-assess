@@ -1,42 +1,42 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.InitiateConsignorMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="cs_type" property="csType" jdbcType="INTEGER" />
-    <result column="cs_entrustment_unit" property="csEntrustmentUnit" jdbcType="VARCHAR" />
-    <result column="cs_legal_representative" property="csLegalRepresentative" jdbcType="VARCHAR" />
-    <result column="cs_sociology_code" property="csSociologyCode" jdbcType="VARCHAR" />
-    <result column="cs_address" property="csAddress" jdbcType="VARCHAR" />
-    <result column="cs_scope_operation" property="csScopeOperation" jdbcType="VARCHAR" />
-    <result column="cs_unit_properties" property="csUnitProperties" jdbcType="VARCHAR" />
-    <result column="cs_name" property="csName" jdbcType="VARCHAR" />
-    <result column="cs_spare_field" property="csSpareField" jdbcType="VARCHAR" />
-    <result column="cs_idcard" property="csIdcard" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.InitiateConsignorMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="cs_type" jdbcType="INTEGER" property="csType" />
+    <result column="cs_entrustment_unit" jdbcType="VARCHAR" property="csEntrustmentUnit" />
+    <result column="cs_legal_representative" jdbcType="VARCHAR" property="csLegalRepresentative" />
+    <result column="cs_sociology_code" jdbcType="VARCHAR" property="csSociologyCode" />
+    <result column="cs_address" jdbcType="VARCHAR" property="csAddress" />
+    <result column="cs_scope_operation" jdbcType="VARCHAR" property="csScopeOperation" />
+    <result column="cs_unit_properties" jdbcType="VARCHAR" property="csUnitProperties" />
+    <result column="cs_name" jdbcType="VARCHAR" property="csName" />
+    <result column="cs_spare_field" jdbcType="VARCHAR" property="csSpareField" />
+    <result column="cs_idcard" jdbcType="VARCHAR" property="csIdcard" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -47,25 +47,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -76,43 +76,43 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, creator, gmt_created, gmt_modified, project_id, cs_type, cs_entrustment_unit, 
     cs_legal_representative, cs_sociology_code, cs_address, cs_scope_operation, cs_unit_properties, 
     cs_name, cs_spare_field, cs_idcard
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignorExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignorExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_initiate_consignor
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_initiate_consignor
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_initiate_consignor
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignorExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignorExample">
     delete from tb_initiate_consignor
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_initiate_consignor (creator, gmt_created, gmt_modified, 
@@ -128,160 +128,190 @@
       #{csName,jdbcType=VARCHAR}, #{csSpareField,jdbcType=VARCHAR}, #{csIdcard,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_initiate_consignor
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="creator != null" >
-        creator,
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created,
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified,
-      </if>
-      <if test="projectId != null" >
-        project_id,
-      </if>
-      <if test="csType != null" >
-        cs_type,
-      </if>
-      <if test="csEntrustmentUnit != null" >
-        cs_entrustment_unit,
-      </if>
-      <if test="csLegalRepresentative != null" >
-        cs_legal_representative,
-      </if>
-      <if test="csSociologyCode != null" >
-        cs_sociology_code,
-      </if>
-      <if test="csAddress != null" >
-        cs_address,
-      </if>
-      <if test="csScopeOperation != null" >
-        cs_scope_operation,
-      </if>
-      <if test="csUnitProperties != null" >
-        cs_unit_properties,
-      </if>
-      <if test="csName != null" >
-        cs_name,
-      </if>
-      <if test="csSpareField != null" >
-        cs_spare_field,
-      </if>
-      <if test="csIdcard != null" >
-        cs_idcard,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="creator != null" >
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="projectId != null" >
-        #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="csType != null" >
-        #{csType,jdbcType=INTEGER},
-      </if>
-      <if test="csEntrustmentUnit != null" >
-        #{csEntrustmentUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="csLegalRepresentative != null" >
-        #{csLegalRepresentative,jdbcType=VARCHAR},
-      </if>
-      <if test="csSociologyCode != null" >
-        #{csSociologyCode,jdbcType=VARCHAR},
-      </if>
-      <if test="csAddress != null" >
-        #{csAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="csScopeOperation != null" >
-        #{csScopeOperation,jdbcType=VARCHAR},
-      </if>
-      <if test="csUnitProperties != null" >
-        #{csUnitProperties,jdbcType=VARCHAR},
-      </if>
-      <if test="csName != null" >
-        #{csName,jdbcType=VARCHAR},
-      </if>
-      <if test="csSpareField != null" >
-        #{csSpareField,jdbcType=VARCHAR},
-      </if>
-      <if test="csIdcard != null" >
-        #{csIdcard,jdbcType=VARCHAR},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+          <if test="record.projectId != null">
+            project_id,
+          </if>
+          <if test="record.csType != null">
+            cs_type,
+          </if>
+          <if test="record.csEntrustmentUnit != null">
+            cs_entrustment_unit,
+          </if>
+          <if test="record.csLegalRepresentative != null">
+            cs_legal_representative,
+          </if>
+          <if test="record.csSociologyCode != null">
+            cs_sociology_code,
+          </if>
+          <if test="record.csAddress != null">
+            cs_address,
+          </if>
+          <if test="record.csScopeOperation != null">
+            cs_scope_operation,
+          </if>
+          <if test="record.csUnitProperties != null">
+            cs_unit_properties,
+          </if>
+          <if test="record.csName != null">
+            cs_name,
+          </if>
+          <if test="record.csSpareField != null">
+            cs_spare_field,
+          </if>
+          <if test="record.csIdcard != null">
+            cs_idcard,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.projectId != null">
+            #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.csType != null">
+            #{record.csType,jdbcType=INTEGER},
+          </if>
+          <if test="record.csEntrustmentUnit != null">
+            #{record.csEntrustmentUnit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csLegalRepresentative != null">
+            #{record.csLegalRepresentative,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csSociologyCode != null">
+            #{record.csSociologyCode,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csAddress != null">
+            #{record.csAddress,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csScopeOperation != null">
+            #{record.csScopeOperation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csUnitProperties != null">
+            #{record.csUnitProperties,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csName != null">
+            #{record.csName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csSpareField != null">
+            #{record.csSpareField,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csIdcard != null">
+            #{record.csIdcard,jdbcType=VARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignorExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignorExample" resultType="java.lang.Long">
     select count(*) from tb_initiate_consignor
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_initiate_consignor
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.creator != null" >
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null" >
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null" >
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.projectId != null" >
-        project_id = #{record.projectId,jdbcType=INTEGER},
-      </if>
-      <if test="record.csType != null" >
-        cs_type = #{record.csType,jdbcType=INTEGER},
-      </if>
-      <if test="record.csEntrustmentUnit != null" >
-        cs_entrustment_unit = #{record.csEntrustmentUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="record.csLegalRepresentative != null" >
-        cs_legal_representative = #{record.csLegalRepresentative,jdbcType=VARCHAR},
-      </if>
-      <if test="record.csSociologyCode != null" >
-        cs_sociology_code = #{record.csSociologyCode,jdbcType=VARCHAR},
-      </if>
-      <if test="record.csAddress != null" >
-        cs_address = #{record.csAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="record.csScopeOperation != null" >
-        cs_scope_operation = #{record.csScopeOperation,jdbcType=VARCHAR},
-      </if>
-      <if test="record.csUnitProperties != null" >
-        cs_unit_properties = #{record.csUnitProperties,jdbcType=VARCHAR},
-      </if>
-      <if test="record.csName != null" >
-        cs_name = #{record.csName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.csSpareField != null" >
-        cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR},
-      </if>
-      <if test="record.csIdcard != null" >
-        cs_idcard = #{record.csIdcard,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.csType != null">
+            cs_type = #{record.csType,jdbcType=INTEGER},
+          </if>
+          <if test="record.csEntrustmentUnit != null">
+            cs_entrustment_unit = #{record.csEntrustmentUnit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csLegalRepresentative != null">
+            cs_legal_representative = #{record.csLegalRepresentative,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csSociologyCode != null">
+            cs_sociology_code = #{record.csSociologyCode,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csAddress != null">
+            cs_address = #{record.csAddress,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csScopeOperation != null">
+            cs_scope_operation = #{record.csScopeOperation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csUnitProperties != null">
+            cs_unit_properties = #{record.csUnitProperties,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csName != null">
+            cs_name = #{record.csName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csSpareField != null">
+            cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csIdcard != null">
+            cs_idcard = #{record.csIdcard,jdbcType=VARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_initiate_consignor
     set id = #{record.id,jdbcType=INTEGER},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -298,59 +328,69 @@
       cs_name = #{record.csName,jdbcType=VARCHAR},
       cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR},
       cs_idcard = #{record.csIdcard,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor" >
+  <update id="updateByPrimaryKeySelective" parameterType="map">
     update tb_initiate_consignor
-    <set >
-      <if test="creator != null" >
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null" >
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null" >
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="csType != null" >
-        cs_type = #{csType,jdbcType=INTEGER},
-      </if>
-      <if test="csEntrustmentUnit != null" >
-        cs_entrustment_unit = #{csEntrustmentUnit,jdbcType=VARCHAR},
-      </if>
-      <if test="csLegalRepresentative != null" >
-        cs_legal_representative = #{csLegalRepresentative,jdbcType=VARCHAR},
-      </if>
-      <if test="csSociologyCode != null" >
-        cs_sociology_code = #{csSociologyCode,jdbcType=VARCHAR},
-      </if>
-      <if test="csAddress != null" >
-        cs_address = #{csAddress,jdbcType=VARCHAR},
-      </if>
-      <if test="csScopeOperation != null" >
-        cs_scope_operation = #{csScopeOperation,jdbcType=VARCHAR},
-      </if>
-      <if test="csUnitProperties != null" >
-        cs_unit_properties = #{csUnitProperties,jdbcType=VARCHAR},
-      </if>
-      <if test="csName != null" >
-        cs_name = #{csName,jdbcType=VARCHAR},
-      </if>
-      <if test="csSpareField != null" >
-        cs_spare_field = #{csSpareField,jdbcType=VARCHAR},
-      </if>
-      <if test="csIdcard != null" >
-        cs_idcard = #{csIdcard,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.projectId != null">
+            project_id = #{record.projectId,jdbcType=INTEGER},
+          </if>
+          <if test="record.csType != null">
+            cs_type = #{record.csType,jdbcType=INTEGER},
+          </if>
+          <if test="record.csEntrustmentUnit != null">
+            cs_entrustment_unit = #{record.csEntrustmentUnit,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csLegalRepresentative != null">
+            cs_legal_representative = #{record.csLegalRepresentative,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csSociologyCode != null">
+            cs_sociology_code = #{record.csSociologyCode,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csAddress != null">
+            cs_address = #{record.csAddress,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csScopeOperation != null">
+            cs_scope_operation = #{record.csScopeOperation,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csUnitProperties != null">
+            cs_unit_properties = #{record.csUnitProperties,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csName != null">
+            cs_name = #{record.csName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csSpareField != null">
+            cs_spare_field = #{record.csSpareField,jdbcType=VARCHAR},
+          </if>
+          <if test="record.csIdcard != null">
+            cs_idcard = #{record.csIdcard,jdbcType=VARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.InitiateConsignor">
     update tb_initiate_consignor
     set creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -368,4 +408,75 @@
       cs_idcard = #{csIdcard,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_initiate_consignor
+    (creator, gmt_created, gmt_modified, project_id, cs_type, cs_entrustment_unit, cs_legal_representative, 
+      cs_sociology_code, cs_address, cs_scope_operation, cs_unit_properties, cs_name, 
+      cs_spare_field, cs_idcard)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}, 
+        #{item.projectId,jdbcType=INTEGER}, #{item.csType,jdbcType=INTEGER}, #{item.csEntrustmentUnit,jdbcType=VARCHAR}, 
+        #{item.csLegalRepresentative,jdbcType=VARCHAR}, #{item.csSociologyCode,jdbcType=VARCHAR}, 
+        #{item.csAddress,jdbcType=VARCHAR}, #{item.csScopeOperation,jdbcType=VARCHAR}, 
+        #{item.csUnitProperties,jdbcType=VARCHAR}, #{item.csName,jdbcType=VARCHAR}, #{item.csSpareField,jdbcType=VARCHAR}, 
+        #{item.csIdcard,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_initiate_consignor (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'project_id'.toString() == column.value">
+          #{item.projectId,jdbcType=INTEGER}
+        </if>
+        <if test="'cs_type'.toString() == column.value">
+          #{item.csType,jdbcType=INTEGER}
+        </if>
+        <if test="'cs_entrustment_unit'.toString() == column.value">
+          #{item.csEntrustmentUnit,jdbcType=VARCHAR}
+        </if>
+        <if test="'cs_legal_representative'.toString() == column.value">
+          #{item.csLegalRepresentative,jdbcType=VARCHAR}
+        </if>
+        <if test="'cs_sociology_code'.toString() == column.value">
+          #{item.csSociologyCode,jdbcType=VARCHAR}
+        </if>
+        <if test="'cs_address'.toString() == column.value">
+          #{item.csAddress,jdbcType=VARCHAR}
+        </if>
+        <if test="'cs_scope_operation'.toString() == column.value">
+          #{item.csScopeOperation,jdbcType=VARCHAR}
+        </if>
+        <if test="'cs_unit_properties'.toString() == column.value">
+          #{item.csUnitProperties,jdbcType=VARCHAR}
+        </if>
+        <if test="'cs_name'.toString() == column.value">
+          #{item.csName,jdbcType=VARCHAR}
+        </if>
+        <if test="'cs_spare_field'.toString() == column.value">
+          #{item.csSpareField,jdbcType=VARCHAR}
+        </if>
+        <if test="'cs_idcard'.toString() == column.value">
+          #{item.csIdcard,jdbcType=VARCHAR}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>

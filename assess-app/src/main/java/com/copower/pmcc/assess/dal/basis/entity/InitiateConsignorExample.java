@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class InitiateConsignorExample {
+    /**
+     * tb_initiate_consignor
+     */
     protected String orderByClause;
 
+    /**
+     * tb_initiate_consignor
+     */
     protected boolean distinct;
 
+    /**
+     * tb_initiate_consignor
+     */
     protected List<Criteria> oredCriteria;
 
     public InitiateConsignorExample() {
@@ -64,6 +73,9 @@ public class InitiateConsignorExample {
         distinct = false;
     }
 
+    /**
+     * tb_initiate_consignor
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -1113,6 +1125,9 @@ public class InitiateConsignorExample {
         }
     }
 
+    /**
+     * tb_initiate_consignor
+     */
     public static class Criterion {
         private String condition;
 

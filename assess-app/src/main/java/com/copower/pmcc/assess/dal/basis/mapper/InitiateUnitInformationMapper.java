@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface InitiateUnitInformationMapper {
-    int countByExample(InitiateUnitInformationExample example);
+    long countByExample(InitiateUnitInformationExample example);
 
     int deleteByExample(InitiateUnitInformationExample example);
 
@@ -14,17 +14,21 @@ public interface InitiateUnitInformationMapper {
 
     int insert(InitiateUnitInformation record);
 
-    int insertSelective(InitiateUnitInformation record);
+    int insertSelective(@Param("record") InitiateUnitInformation record, @Param("selective") InitiateUnitInformation.Column ... selective);
 
     List<InitiateUnitInformation> selectByExample(InitiateUnitInformationExample example);
 
     InitiateUnitInformation selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") InitiateUnitInformation record, @Param("example") InitiateUnitInformationExample example);
+    int updateByExampleSelective(@Param("record") InitiateUnitInformation record, @Param("example") InitiateUnitInformationExample example, @Param("selective") InitiateUnitInformation.Column ... selective);
 
     int updateByExample(@Param("record") InitiateUnitInformation record, @Param("example") InitiateUnitInformationExample example);
 
-    int updateByPrimaryKeySelective(InitiateUnitInformation record);
+    int updateByPrimaryKeySelective(@Param("record") InitiateUnitInformation record, @Param("selective") InitiateUnitInformation.Column ... selective);
 
     int updateByPrimaryKey(InitiateUnitInformation record);
+
+    int batchInsert(@Param("list") List<InitiateUnitInformation> list);
+
+    int batchInsertSelective(@Param("list") List<InitiateUnitInformation> list, @Param("selective") InitiateUnitInformation.Column ... selective);
 }

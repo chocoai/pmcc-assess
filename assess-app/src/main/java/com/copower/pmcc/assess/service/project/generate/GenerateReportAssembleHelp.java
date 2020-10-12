@@ -199,6 +199,12 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldCommonEnum.CommonHomeWorkStartTime.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getHomeWorkStartTime(generateReportInfo.getHomeWorkStartTime()));
         }
+        if (Objects.equal(ReportFieldCommonEnum.CommonInvestigationsStartDate.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getConversionTime(generateReportInfo.getInvestigationsStartDate()));
+        }
+        if (Objects.equal(ReportFieldCommonEnum.CommonInvestigationsEndDate.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getConversionTime(generateReportInfo.getInvestigationsEndDate()));
+        }
 
         //机构住所
         if (Objects.equal(ReportFieldCommonEnum.CommonXIEHE_organizationAddress.getName(), name)) {
@@ -366,7 +372,7 @@ public final class GenerateReportAssembleHelp {
         }
         // 估价委托人信息
         if (Objects.equal(ReportFieldCommonEnum.CommonPrincipalInfo.getName(), name)) {
-            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalInfo());
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalInfo(false));
         }
 
         //估价项目名称
@@ -377,6 +383,19 @@ public final class GenerateReportAssembleHelp {
         //报告使用单位
         if (Objects.equal(ReportFieldCommonEnum.CommonReportUnitString.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportUnitString());
+        }
+
+        if (Objects.equal(ReportFieldCommonEnum.CommonParcelInnerDevelop.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCommonParcelInnerDevelopValue());
+        }
+        if (Objects.equal(ReportFieldCommonEnum.CommonParcelOuterDevelop.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCommonParcelOuterDevelopValue());
+        }
+        if (Objects.equal(ReportFieldCommonEnum.CommonParcelSettingInnerDevelop.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCommonParcelSettingInnerDevelopValue());
+        }
+        if (Objects.equal(ReportFieldCommonEnum.CommonParcelSettingOuterDevelop.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, "无");
         }
         return false;
     }
@@ -917,8 +936,24 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_EndTime.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandCertificateFieldValue(ReportFieldUniversalBankEnum.BankGenerallandendTime.getName()));
         }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_landNumber.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_RemainingYear.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_LandRightType.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_acquisitionType.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        // 估价委托人信息
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PrincipalInfo.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalInfo(true));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_RightType_Desc.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandRightTypeDesc());
         }
         return false;
     }

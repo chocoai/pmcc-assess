@@ -36,6 +36,8 @@ public enum ReportFieldCommonEnum implements Serializable {
     CommonEvaluationMethod("公共评估方法"),
     CommonHomeWorkEndTime("公共作业结束时间"),
     CommonHomeWorkStartTime("公共作业开始时间"),
+    CommonInvestigationsStartDate("公共现场查勘开始日期"),
+    CommonInvestigationsEndDate("公共现场查勘结束日期"),
     CommonAssistanceStaff("公共协助工作人员"),
     CommonSetUse("公共设定用途"),
     CommonPRINCIPAL("公共估价委托人"),
@@ -57,6 +59,10 @@ public enum ReportFieldCommonEnum implements Serializable {
     CommonXIEHE_organizationRank("公共机构资质等级"),
     CommonXIEHE_certificateNo("公共机构证书号"),
     CommonXIEHE_certificateEffectiveDate("公共机构证书有效期"),
+    CommonParcelInnerDevelop("公共宗地内实际开发程度"),
+    CommonParcelSettingInnerDevelop("公共宗地内设定开发程度"),
+    CommonParcelSettingOuterDevelop("公共宗地外设定开发程度"),
+    CommonParcelOuterDevelop("公共宗地外实际开发程度"),
 
     ;
     private String name;

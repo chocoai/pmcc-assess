@@ -518,13 +518,15 @@ public class ZCHDemo {
             }
         }
         Map<String, List<String>> map = new HashMap<>();
-        map.put(ReportFieldLandEnum.LAND_ENUM_RemainingYear.getName(), Arrays.asList("剩余年限","剩余年期"));
-        map.put(ReportFieldEnum.JudgeObjectNumber.getName(), Arrays.asList("估价对象号"));
-        map.put(ReportFieldLandEnum.LAND_ENUM_Seat.getName(), Arrays.asList("坐落"));
-        map.put(ReportFieldLandEnum.LAND_ENUM_EndTime.getName(), Arrays.asList("土地终止日"));
-        map.put(ReportFieldCommonEnum.CommonCertificationPurpose.getName(), Arrays.asList("证载用途" ,"规划或证载用途"));
-        map.put(ReportFieldCommonEnum.CommonSetUse.getName(), Arrays.asList("设定地类用途", "设定用途","设定地类用途"));
-        map.put(ReportFieldCommonEnum.CommonPracticalUse.getName(), Arrays.asList("实际用途"));
+        map.put(ReportFieldLandEnum.LAND_ENUM_PrincipalInfo.getName(), Arrays.asList("公共估价委托人信息" ));
+        map.put(ReportFieldCommonEnum.CommonInvestigationsStartDate.getName(), Arrays.asList("资产清查或现场查勘开始日期" ));
+        map.put(ReportFieldCommonEnum.CommonInvestigationsEndDate.getName(), Arrays.asList("预评、结果、技术报告的最早日期" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_acquisitionType.getName(), Arrays.asList("取得方式" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_landNumber.getName(), Arrays.asList("地号" ));
+        map.put(ReportFieldCommonEnum.CommonParcelInnerDevelop.getName(), Arrays.asList("宗地内实际开发程度" ));
+        map.put(ReportFieldCommonEnum.CommonParcelOuterDevelop.getName(), Arrays.asList("宗地外实际开发程度" ));
+        map.put(ReportFieldCommonEnum.CommonParcelSettingInnerDevelop.getName(), Arrays.asList("宗地内设定开发程度" ));
+        map.put(ReportFieldCommonEnum.CommonParcelSettingOuterDevelop.getName(), Arrays.asList("宗地外设定开发程度" ));
         Multimap<String, String> textMap = ArrayListMultimap.create();
         if (!map.isEmpty()) {
             Iterator<Map.Entry<String, List<String>>> entryIterator = map.entrySet().iterator();
@@ -534,9 +536,11 @@ public class ZCHDemo {
                     continue;
                 }
                 for (String val : entry.getValue()) {
-                    String key = String.format("$(%s)", val);
-                    String value = String.format("$(%s)", entry.getKey());
-                    textMap.put(key, value);
+                    String key1 = String.format("$(%s)", val);
+                    String key2 = String.format("${%s}", val);
+                    String value = String.format("${%s}", entry.getKey());
+                    textMap.put(key1, value);
+                    textMap.put(key2, value);
                 }
             }
         }

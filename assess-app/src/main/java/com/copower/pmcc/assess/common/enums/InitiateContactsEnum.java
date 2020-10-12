@@ -16,7 +16,7 @@ public enum InitiateContactsEnum {
     // name替换id
     public static String getName(int id) {
         for (InitiateContactsEnum c : InitiateContactsEnum.values()) {
-            if (c.getId() == id) {
+            if (c.getId().intValue() == id) {
                 return c.name;
             }
         }
