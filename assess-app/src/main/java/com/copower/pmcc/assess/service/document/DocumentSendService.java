@@ -306,6 +306,7 @@ public class DocumentSendService {
         sysAttachmentDto.setTableName(tableName);
         sysAttachmentDto.setAppKey(applicationConstant.getAppKey());
         sysAttachmentDto.setProjectId(documentSend.getProjectId());
+        sysAttachmentDto.setFieldsName("document");
         erpRpcAttachmentService.deleteAttachmentByDto(sysAttachmentDto);//先删除老数据
         String ftpFilePath = applicationConstant.getAppKey() + "/" + FormatUtils.underlineToCamel(tableName, false) + "/" + DateUtils.format(new Date(), DateUtils.MONTH_PATTERN);
         sysAttachmentDto.setFilePath(ftpFilePath);
