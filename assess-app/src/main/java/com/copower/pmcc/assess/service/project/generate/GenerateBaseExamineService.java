@@ -87,7 +87,7 @@ public class GenerateBaseExamineService {
         return basicMatchingTrafficService.getBasicMatchingTrafficVos(getEstate().getId());
     }
 
-    public BasicEstateLandStateVo getBasicEstateLandState() throws Exception {
+    public BasicEstateLandStateVo getBasicEstateLandState() {
         BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(getEstate().getId());
         if (estateLandState == null) {
             estateLandState = new BasicEstateLandState();
