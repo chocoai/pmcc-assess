@@ -63,6 +63,9 @@ public enum ReportFieldCommonEnum implements Serializable {
     CommonParcelSettingInnerDevelop("公共宗地内设定开发程度"),
     CommonParcelSettingOuterDevelop("公共宗地外设定开发程度"),
     CommonParcelOuterDevelop("公共宗地外实际开发程度"),
+    CommonPropertyScope("公共评估范围"),
+    CommonScopeNotInclude("公共不包括范围"),
+    CommonScopeInclude("公共包括"),
 
     ;
     private String name;

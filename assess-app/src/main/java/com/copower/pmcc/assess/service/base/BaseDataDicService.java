@@ -352,6 +352,12 @@ public class BaseDataDicService {
         return ztreeDto;
     }
 
+    public String getNameByIds(String ids){
+        List<String> stringList = FormatUtils.transformString2List(ids);
+        stringList = LangUtils.transform(stringList,obj -> getNameById(obj)) ;
+        return StringUtils.join(stringList,",") ;
+    }
+
     /**
      * 根据id获取显示的名称
      *

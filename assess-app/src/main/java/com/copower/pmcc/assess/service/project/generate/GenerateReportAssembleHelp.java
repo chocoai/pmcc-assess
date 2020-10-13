@@ -397,6 +397,15 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldCommonEnum.CommonParcelSettingOuterDevelop.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, "无");
         }
+        if (Objects.equal(ReportFieldCommonEnum.CommonPropertyScope.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCommonPropertyScopeValue());
+        }
+        if (Objects.equal(ReportFieldCommonEnum.CommonScopeNotInclude.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCommonScopeNotInclude());
+        }
+        if (Objects.equal(ReportFieldCommonEnum.CommonScopeInclude.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getCommonScopeInclude());
+        }
         return false;
     }
 
@@ -952,8 +961,56 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PrincipalInfo.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalInfo(true));
         }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PrincipalIdNumber.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalIdNumber());
+        }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_RightType_Desc.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandRightTypeDesc());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_RightType_Content.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandRightTypeContent());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PlotRatio.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_BuildingDensity.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_SetPlotRatio.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_GreeningRate.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_CompatibilityRate.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_BEST_USE.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PlotRatio_Desc.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_USE_MATERIAL.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_NATURE.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_TOTAL_LAND_AREA.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandAssessTotalArea());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_UNIT_LAND_PRICE.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandUnitPriceAssess());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_ESTATE_LAND_PRICE.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandEstatePriceAssess());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_EVALUATION_EFFECTIVE_DATE.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLand_evaluation_effective_date());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_JudgeObjectSheet.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandEnumJudgeObjectSheet());
         }
         return false;
     }

@@ -527,6 +527,16 @@ public class ZCHDemo {
         map.put(ReportFieldCommonEnum.CommonParcelOuterDevelop.getName(), Arrays.asList("宗地外实际开发程度" ));
         map.put(ReportFieldCommonEnum.CommonParcelSettingInnerDevelop.getName(), Arrays.asList("宗地内设定开发程度" ));
         map.put(ReportFieldCommonEnum.CommonParcelSettingOuterDevelop.getName(), Arrays.asList("宗地外设定开发程度" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_PlotRatio.getName(), Arrays.asList("“开发限制条件”中容积率" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_BuildingDensity.getName(), Arrays.asList("建筑密度" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_GreeningRate.getName(), Arrays.asList("绿地率" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_CompatibilityRate.getName(), Arrays.asList("兼容比" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_SetPlotRatio.getName(), Arrays.asList("设定容积率" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_EVALUATION_EFFECTIVE_DATE.getName(), Arrays.asList("评估有效日" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_BEST_USE.getName(), Arrays.asList("最佳用途，法定用途、转换用途" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_NATURE.getName(), Arrays.asList("“国用”取“国家”；“集用”取“集体”" ));
+        map.put(ReportFieldCommonEnum.CommonParcelOuterDevelop.getName(), Arrays.asList("宗地外开发程度" ));
+        map.put(ReportFieldCommonEnum.CommonParcelInnerDevelop.getName(), Arrays.asList("宗地内开发程度" ));
         Multimap<String, String> textMap = ArrayListMultimap.create();
         if (!map.isEmpty()) {
             Iterator<Map.Entry<String, List<String>>> entryIterator = map.entrySet().iterator();
