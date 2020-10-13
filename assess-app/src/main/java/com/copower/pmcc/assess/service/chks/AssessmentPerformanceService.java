@@ -225,6 +225,7 @@ public class AssessmentPerformanceService {
         target.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
         target.setExaminePeople(commonService.thisUserAccount());
         target.setStandardScore(assessmentPerformanceDto.getStandardScore());
+        target.setMaxScore(assessmentPerformanceDto.getMaxScore());
         target.setExamineScore(assessmentPerformanceDto.getExamineScore());
         target.setBisQualified(assessmentPerformanceDto.getBisQualified() == null ? true : assessmentPerformanceDto.getBisQualified());
         target.setRemarks(assessmentPerformanceDto.getRemarks());
@@ -563,6 +564,7 @@ public class AssessmentPerformanceService {
         spotPerformance.setExamineStatus(ProcessStatusEnum.FINISH.getValue());
         spotPerformance.setExamineDate(DateUtils.now());
         spotPerformance.setStandardScore(assessmentPerformanceDto.getStandardScore());
+        spotPerformance.setMaxScore(assessmentPerformanceDto.getMaxScore());
         spotPerformance.setExamineScore(assessmentPerformanceDto.getExamineScore());
         spotPerformance.setRemarks(assessmentPerformanceDto.getRemarks());
         spotPerformance.setBisQualified(assessmentPerformanceDto.getBisQualified());

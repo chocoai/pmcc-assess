@@ -20,7 +20,6 @@
                     <a class="nav-link active show" id="assessment-home-tab" data-toggle="pill" href="#assessment-home"
                        role="tab" aria-controls="assessment-home" aria-selected="false">本次考核数据</a>
                 </li>
-
                 <c:if test="${not empty projectPlanDetails}">
                     <li class="nav-item submenu"
                         onclick="assessmentCommonHandle.loadAssessmentPerformanceProphaseList();">

@@ -42,23 +42,26 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
     private CommonService commonService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private AssessmentCommonService assessmentCommonService;
 
     /**
      * 创建考核任务
-     * @param processInsId 流程id
-     * @param activityId 节点id
-     * @param taskId 节点任务id
-     * @param byExamineUser 被考核人
-     * @param projectInfo 项目信息
+     *
+     * @param processInsId       流程id
+     * @param activityId         节点id
+     * @param taskId             节点任务id
+     * @param byExamineUser      被考核人
+     * @param projectInfo        项目信息
      * @param projectPlanDetails 项目工作事项
      */
     @Override
     public void createAssessmentPerformanceTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
+        BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
+        if (boxRuDto == null) return;
         for (AssessmentTypeEnum assessmentTypeEnum : AssessmentTypeEnum.values()) {
-            BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
-            if (boxRuDto == null) return;
             List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxRuDto.getBoxId(), activityId, assessmentTypeEnum.getValue());
-            if(CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
+            if (CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
             BoxReDto boxReDto = bpmRpcBoxService.getBoxReInfoByBoxId(boxRuDto.getBoxId());
             AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
             dto.setProcessInsId(processInsId);
@@ -66,7 +69,7 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             if (projectInfo != null) {
                 dto.setProjectId(projectInfo.getId());
                 dto.setProjectName(projectInfo.getProjectName());
-            }else {
+            } else {
                 dto.setProjectName(boxRuDto.getDescription());
             }
             dto.setTaskId(taskId);
@@ -97,6 +100,9 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             dto.setBisEffective(true);
             dto.setCreator(commonService.thisUserAccount());
             performanceService.saveAndUpdatePerformanceDto(dto, true);
+        }
+        if (projectPlanDetails != null) {
+            assessmentCommonService.clearProphaseData(projectPlanDetails.getId(), boxRuDto.getBoxId(), activityId, byExamineUser);
         }
     }
 }

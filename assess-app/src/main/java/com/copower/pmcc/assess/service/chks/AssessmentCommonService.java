@@ -220,9 +220,39 @@ public class AssessmentCommonService {
 
     /**
      * 记录考核相关操作日志
+     *
      * @param logDto
      */
-    public void recordAssessmentPerformanceLog(AssessmentPerformanceLogDto logDto){
+    public void recordAssessmentPerformanceLog(AssessmentPerformanceLogDto logDto) {
         performanceService.recordAssessmentPerformanceLog(logDto);
+    }
+
+    /**
+     * 清理前次数据
+     *
+     * @param planDetailsId
+     * @param boxId
+     * @param activityId
+     * @param byExaminePeople
+     */
+    public void clearProphaseData(Integer planDetailsId, Integer boxId, Integer activityId, String byExaminePeople) {
+        if (planDetailsId == null || planDetailsId <= 0) return;
+        if (boxId == null || boxId <= 0) return;
+        if (activityId == null || activityId <= 0) return;
+        if (StringUtils.isBlank(byExaminePeople)) return;
+        AssessmentPerformanceDto where = new AssessmentPerformanceDto();
+        where.setPlanDetailsId(planDetailsId);
+        where.setBoxId(boxId);
+        where.setActivityId(activityId);
+        where.setByExaminePeople(byExaminePeople);
+        where.setBisProphase(true);
+        where.setBisEffective(true);
+        List<AssessmentPerformanceDto> list = performanceService.getPerformancesByParam(where);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (AssessmentPerformanceDto assessmentPerformanceDto : list) {
+                assessmentPerformanceDto.setBisEffective(false);
+                performanceService.updatePerformanceDto(assessmentPerformanceDto, false);
+            }
+        }
     }
 }

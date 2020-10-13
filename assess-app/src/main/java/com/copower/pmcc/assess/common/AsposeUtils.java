@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * Created by kings on 2018-6-6.
  */
 public class AsposeUtils {
-    public static String reportReplaceString = "\\$\\{.*?\\}";
+    public static String reportReplaceString = "\\$\\{(.*?)\\}";
     public static String reportReplace = "\\$\\(.*?\\)";
     //字体名称
     public static String FontFamily = "font-family";

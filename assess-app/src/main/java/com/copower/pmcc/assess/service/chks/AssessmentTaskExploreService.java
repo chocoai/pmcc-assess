@@ -57,6 +57,8 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private AssessmentCommonService assessmentCommonService;
 
     private final String WORK_HOURS_ESTATE = "work.hours.estate";
     private final String WORK_HOURS_BUILDING = "work.hours.building";
@@ -188,6 +190,9 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                 }
                 performanceService.savePerformanceDetailDto(detailDto);
             }
+        }
+        if (projectPlanDetails != null) {
+            assessmentCommonService.clearProphaseData(projectPlanDetails.getId(), boxReDto.getId(), activityId, byExamineUser);
         }
     }
 

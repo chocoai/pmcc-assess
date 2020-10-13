@@ -52,6 +52,8 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
     private DeclareRealtyRealEstateCertService declareRealtyRealEstateCertService;
     @Autowired
     private ProjectPlanService projectPlanService;
+    @Autowired
+    private AssessmentCommonService assessmentCommonService;
 
     @Override
     public void createAssessmentPerformanceTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) throws Exception {
@@ -141,6 +143,10 @@ public class AssessmentTaskDeclareService implements AssessmentTaskInterface {
         dto.setBisEffective(true);
         dto.setCreator(commonService.thisUserAccount());
         performanceService.saveAndUpdatePerformanceDto(dto, true);
+
+        if (projectPlanDetails != null) {
+            assessmentCommonService.clearProphaseData(projectPlanDetails.getId(), boxReDto.getId(), activityId, byExamineUser);
+        }
     }
 
     /**
