@@ -96,10 +96,12 @@
                             <button type="button" id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-                            <button type="button" id="draft_btn" class="btn btn-warning" style="margin-left: 10px;" onclick="projectApplyDraft();">
+                            <button type="button" id="draft_btn" class="btn btn-warning" style="margin-left: 10px;"
+                                    onclick="projectApplyDraft();">
                                 保存草稿
                             </button>
-                            <button type="button" id="commit_btn" class="btn btn-success" style="margin-left: 10px;" onclick="projectApply(false);">
+                            <button type="button" id="commit_btn" class="btn btn-success" style="margin-left: 10px;"
+                                    onclick="projectApply(false);">
                                 直接提交
                             </button>
                         </div>
@@ -173,7 +175,8 @@
         }
         var data = {};
         data.formData = JSON.stringify(objProject.getFormData());
-        data.mustUseBox = mustUseBox;//注意这是是否发起流程标志,假如为false直接进入下一个阶段,如果为true那么会发起流程
+        data.mustUseBox = false;//注意这是是否发起流程标志,假如为false直接进入下一个阶段,如果为true那么会发起流程
+        data.bisAssign = false;
         var url = "${pageContext.request.contextPath}/projectInfo/projectApplySubmit";
         if ("${empty processInsId?"0":processInsId}" != "0") {
             url = "${pageContext.request.contextPath}/projectInfo/projectEditSubmit";

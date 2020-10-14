@@ -6,6 +6,7 @@ import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectPlanCount;
 import com.copower.pmcc.assess.dal.basis.custom.entity.CustomProjectPlanDetailCount;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.BaseService;
+import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseParameterService;
 import com.copower.pmcc.assess.service.event.BaseProcessEvent;
 import com.copower.pmcc.assess.service.project.*;
@@ -16,8 +17,10 @@ import com.copower.pmcc.bpm.api.dto.model.BoxReDto;
 import com.copower.pmcc.bpm.api.dto.model.ProcessExecution;
 import com.copower.pmcc.bpm.api.enums.AssessmentTypeEnum;
 import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
+import com.copower.pmcc.bpm.api.provider.BpmRpcBoxRoleUserService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.api.provider.BpmRpcProcessInsManagerService;
+import com.copower.pmcc.bpm.api.provider.BpmRpcToolsService;
 import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -47,7 +50,7 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
     @Autowired
     private ApplicationConstant applicationConstant;
     @Autowired
-    private ProjectWorkStageService projectWorkStageService;
+    private PublicService publicService;
     @Autowired
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
@@ -58,11 +61,13 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
     private ProjectPlanService projectPlanService;
     @Autowired
     private BaseParameterService baseParameterService;
+    @Autowired
+    private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
-        if(!processExecution.getProcessStatus().isFinish()) return;
+        if (!processExecution.getProcessStatus().isFinish()) return;
         try {
             ProcessStatusEnum processStatusEnum = ProcessStatusEnum.create(processExecution.getProcessStatus().getValue());
             if (processStatusEnum == null) return;
@@ -79,6 +84,9 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
         //将抽查的工时得分写入到考核系统中
         ProjectSpotCheck spotCheck = projectSpotCheckService.getSpotCheckByProcessInsId(processInsId);
         if (spotCheck == null) return;
+        List<String> jszgList = bpmRpcBoxRoleUserService.getDepartmentJszg(publicService.getCurrentCompany().getCompanyId());
+        if (CollectionUtils.isEmpty(jszgList)) return;
+        if (!jszgList.contains(spotCheck.getBySpotUser())) return;
 
         //先将本月上次抽查计算的分数设置为无效
         AssessmentPerformanceDto assessmentPerformanceDto = new AssessmentPerformanceDto();
@@ -126,7 +134,7 @@ public class ProjectSpotCheckEvent extends BaseProcessEvent {
 
         if (CollectionUtils.isNotEmpty(planDetailCounts)) {
             spotCheck.setPlanDetailsContent(JSON.toJSONString(planDetailCounts));
-            Integer  count = 0;
+            Integer count = 0;
             for (CustomProjectPlanDetailCount planDetailCount : planDetailCounts) {
                 count += planDetailCount.getPlanDetailsCount();
             }
