@@ -1159,25 +1159,7 @@ public class GenerateCommonMethod {
      * @return
      */
     public String trim(String str, Boolean removeTag, Boolean containFullStop) {
-        if (StringUtils.isBlank(str)) return str;
-        if (removeTag) {
-            str = StringUtils.strip(str.replaceAll("^<[^>]+>|<[^>]+>$", ""), "。");
-            str += "。";
-        }
-
-        str = str.replaceAll(",", "，").replaceAll(";", "；")
-                .replaceAll(",+", ",").replaceAll(";+", ";")
-                .replaceAll("，+", "，").replaceAll("、+", "、")
-                .replaceAll("。+", "。").replaceAll("；+", "；")
-                .replaceAll("，\\s+。", "。").replaceAll("；\\s。", "。")
-                .replaceAll("^[，|,|，|、|;|；|.|。]+", "");
-
-        str = str.replaceAll("，；", "；").replaceAll("；，", "，")
-                .replaceAll("，。", "。").replaceAll("。，", "，")
-                .replaceAll("；。", "。").replaceAll("。；", "；");
-
-        str = str.replaceAll("[，|,|，|、|;|；|.|。]+$", containFullStop ? "。" : "");
-        return str;
+        return AsposeUtils.trim(str, removeTag, containFullStop);
     }
 
 

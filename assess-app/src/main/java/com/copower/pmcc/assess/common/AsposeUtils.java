@@ -969,6 +969,36 @@ public class AsposeUtils {
         return keyValueDtoList;
     }
 
+    /**
+     * 替换为标准格式
+     *
+     * @param str
+     * @param removeTag       是否移除html标签
+     * @param containFullStop 末尾是否包含句号
+     * @return
+     */
+    public static String trim(String str, Boolean removeTag, Boolean containFullStop) {
+        if (StringUtils.isBlank(str)) return str;
+        if (removeTag) {
+            str = StringUtils.strip(str.replaceAll("^<[^>]+>|<[^>]+>$", ""), "。");
+            str += "。";
+        }
+
+        str = str.replaceAll(",", "，").replaceAll(";", "；")
+                .replaceAll(",+", ",").replaceAll(";+", ";")
+                .replaceAll("，+", "，").replaceAll("、+", "、")
+                .replaceAll("。+", "。").replaceAll("；+", "；")
+                .replaceAll("，\\s+。", "。").replaceAll("；\\s。", "。")
+                .replaceAll("^[，|,|，|、|;|；|.|。]+", "");
+
+        str = str.replaceAll("，；", "；").replaceAll("；，", "，")
+                .replaceAll("，。", "。").replaceAll("。，", "，")
+                .replaceAll("；。", "。").replaceAll("。；", "；");
+
+        str = str.replaceAll("[，|,|，|、|;|；|.|。]+$", containFullStop ? "。" : "");
+        return str;
+    }
+
     public static void insertHtml(DocumentBuilder builder, String html, boolean useBuilderFormatting) {
         try {
             builder.insertHtml(html, useBuilderFormatting);

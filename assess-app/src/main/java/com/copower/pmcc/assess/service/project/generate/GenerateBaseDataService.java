@@ -155,6 +155,8 @@ public class GenerateBaseDataService {
     private DeclarePreSalePermitService declarePreSalePermitService;
     private SchemeSurePriceFactorService schemeSurePriceFactorService;
     private DeclarePublicService declarePublicService;
+    private GenerateLandRegionalFactorsDescService generateLandRegionalFactorsDescService;
+    private GenerateLandIndividualFactorsDescService generateLandIndividualFactorsDescService;
 
     /**
      * 构造器必须传入的参数
@@ -500,7 +502,7 @@ public class GenerateBaseDataService {
                 stringBuilder.append(idCard);
             }
         }
-        return stringBuilder.toString();
+        return StringUtils.isNotBlank(stringBuilder.toString()) ?stringBuilder.toString():errorStr;
     }
 
     /**
@@ -1326,6 +1328,34 @@ public class GenerateBaseDataService {
                     value = basicEstateLandState.getPlotRatio();
                     break;
                 }
+                case LAND_ENUM_OpenTime: {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    if (basicApply.getId() == null) {
+                        continue;
+                    }
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    Date openTime = generateBaseExamineService.getEstate().getOpenTime();
+                    if (openTime != null) {
+                        value = DateUtils.format(openTime, DateUtils.DATE_CHINESE_PATTERN);
+                    }
+                    break;
+                }
+                case LAND_ENUM_SurveyExplore_TYPE: {
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    if (basicApply.getType().equals(BasicApplyTypeEnum.INDUSTRY.getId())) {
+                        value = "产业聚集度";
+                    }
+                    if (basicApply.getType().equals(BasicApplyTypeEnum.RESIDENCE.getId())) {
+                        value = "商服区级别及商服繁华度";
+                    }
+                    break;
+                }
                 case LAND_ENUM_BuildingDensity: {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
@@ -1419,6 +1449,106 @@ public class GenerateBaseDataService {
         }
         return value;
     }
+
+    /**
+     * 土地报告 区域因素描述表
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getRegionalFactorsDescSheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        String localPath = getLocalPath();
+        Map<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByGroupId(reportGroup);
+        if (!linkedHashMap.isEmpty()) {
+            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> listEntry : linkedHashMap.entrySet()) {
+                BasicEstate basicEstate = listEntry.getKey();
+                List<SchemeJudgeObject> judgeObjects = listEntry.getValue();
+                if (linkedHashMap.size() > 1) {
+                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("1、区域位置:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getRegionalLocation(basicEstate)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("2、产业聚集度:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getIndustrialAgglomeration(judgeObjects, basicEstate)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("3、交通条件")));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("主干道信息:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getTrafficConditions(basicEstate, ExamineMatchingTrafficTypeEnum.MainRoad)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("交通枢纽信息:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getTrafficConditions(basicEstate, ExamineMatchingTrafficTypeEnum.TrafficHub)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("地铁:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getTrafficConditions(basicEstate, ExamineMatchingTrafficTypeEnum.METRO)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("公交:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getTrafficConditions(basicEstate, ExamineMatchingTrafficTypeEnum.TRANSIT)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("4、基础")));
+                List<String> stringList = new ArrayList<>();
+                stringList.add(generateLandRegionalFactorsDescService.getExamineEstateSupplyValue(basicEstate, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_WATER));
+                stringList.add(generateLandRegionalFactorsDescService.getExamineEstateSupplyValue(basicEstate, ExamineEstateSupplyEnumType.ESTATE_DRAIN_WATER));
+                stringList.add(generateLandRegionalFactorsDescService.getExamineEstateSupplyValue(basicEstate, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_HEATING));
+                stringList.add(generateLandRegionalFactorsDescService.getExamineEstateSupplyValue(basicEstate, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_POWER));
+                stringList.add(generateLandRegionalFactorsDescService.getExamineEstateSupplyValue(basicEstate, ExamineEstateSupplyEnumType.ESTATE_SUPPLY_GAS));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("供应信息:%s", generateCommonMethod.trim(StringUtils.join(stringList, "、")))));
+                Map<String, String> livingFacilities = generateLandRegionalFactorsDescService.getLivingFacilities(basicEstate);
+                List<String> tempList = new ArrayList<>();
+                if (!livingFacilities.isEmpty()) {
+                    tempList.add(String.format("医疗 %s", livingFacilities.get(BasicMatchingMedical.class.getSimpleName())));
+                    tempList.add(String.format("教育 %s", livingFacilities.get(BasicMatchingEducation.class.getSimpleName())));
+                    tempList.add(String.format("金融 %s", livingFacilities.get(BasicMatchingFinance.class.getSimpleName())));
+                }
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("公用生活配套设施状况:%s", generateCommonMethod.trim(StringUtils.join(tempList, "、")))));
+
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("5、环境")));
+                String natural = generateLandRegionalFactorsDescService.getEnvironmentalConditions(basicEstate, EnvironmentalScienceEnum.NATURAL);
+                String humanity = generateLandRegionalFactorsDescService.getEnvironmentalConditions(basicEstate, EnvironmentalScienceEnum.HUMANITY);
+                String scenery = generateLandRegionalFactorsDescService.getEnvironmentalConditions(basicEstate, EnvironmentalScienceEnum.SCENERY);
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("自然要素:%s", StringUtils.defaultString(generateCommonMethod.trim(natural)), errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("人文环境要素:%s", StringUtils.defaultString(generateCommonMethod.trim(humanity)), errorStr)));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("景观:%s", StringUtils.defaultString(generateCommonMethod.trim(scenery)), errorStr)));
+
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、规划条件:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getPlanningConditions(judgeObjects)))));
+
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("区域土地利用状况:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getSummaryRregionalFactors(judgeObjects)))));
+                documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
+            }
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+
+    /**
+     * 土地报告 个别因素描述表
+     *
+     * @return
+     * @throws Exception
+     */
+    public String getIndividualFactorsDescSheet() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(doc);
+        String localPath = getLocalPath();
+        Map<BasicEstate, List<SchemeJudgeObject>> linkedHashMap = generateCommonMethod.getEstateGroupByGroupId(reportGroup);
+        if (!linkedHashMap.isEmpty()) {
+            for (Map.Entry<BasicEstate, List<SchemeJudgeObject>> listEntry : linkedHashMap.entrySet()) {
+                BasicEstate basicEstate = listEntry.getKey();
+                List<SchemeJudgeObject> judgeObjects = listEntry.getValue();
+                if (linkedHashMap.size() > 1) {
+                    documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + basicEstate.getName() + "</div>"), true);
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("1、位    置:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getLocation(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("2、面    积:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getAreaDesc(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("3、用    途:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getUseDesc(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("4、临路状况:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getFaceStreet(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("5、地质状况:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getGeologyDesc(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、容 积 率:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getPlotRatioDesc(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("7、宗地开发程度:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getSupplyInfoContainerDesc(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("8、使用年限:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getUseYearDesc(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("9、土地权利状况:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getLandRightsStatusDesc(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("10、其他:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getOtherDesc(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("个别因素总结:%s", generateCommonMethod.trim(generateLandIndividualFactorsDescService.getSummaryDesc(judgeObjects)))));
+                documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
+            }
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
 
     public String getLandEnumJudgeObjectSheet() throws Exception {
         String localPath = getLocalPath();
@@ -7472,6 +7602,8 @@ public class GenerateBaseDataService {
         this.schemeSurePriceFactorService = SpringContextUtils.getBean(SchemeSurePriceFactorService.class);
         this.initiateContactsService = SpringContextUtils.getBean(InitiateContactsService.class);
         this.declarePublicService = SpringContextUtils.getBean(DeclarePublicService.class);
+        this.generateLandRegionalFactorsDescService = SpringContextUtils.getBean(GenerateLandRegionalFactorsDescService.class);
+        this.generateLandIndividualFactorsDescService = SpringContextUtils.getBean(GenerateLandIndividualFactorsDescService.class);
         //必须在bean之后
         SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
         if (areaGroup == null) {
