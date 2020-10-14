@@ -19,6 +19,7 @@ import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCe
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.base.Objects;
@@ -237,7 +238,7 @@ public class GenerateLandIndividualFactorsDescService {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("根据委托方提供的${").append(ReportFieldLandEnum.LAND_ENUM_USE_MATERIAL.getName()).append("}");
             if (landCategoryInfo.getTerminationData() != null) {
-                stringBuilder.append("土地使用权终止日期为:").append(landCategoryInfo.getTerminationData());
+                stringBuilder.append("土地使用权终止日期为:").append(DateUtils.format(landCategoryInfo.getTerminationData() ,DateUtils.DATE_CHINESE_PATTERN));
             }
             stringBuilder.append("，自估价基准日起剩余使用年期为:").append(ArithmeticUtils.getBigDecimalString(schemeJudgeObject.getLandRemainingYear()));
             map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), stringBuilder.toString());

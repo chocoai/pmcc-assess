@@ -1356,6 +1356,19 @@ public class GenerateBaseDataService {
                     }
                     break;
                 }
+                case LAND_ENUM_FaceStreet_TYPE:{
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    if (basicApply.getType().equals(BasicApplyTypeEnum.INDUSTRY.getId())) {
+                        value = "临路状况";
+                    }
+                    if (basicApply.getType().equals(BasicApplyTypeEnum.RESIDENCE.getId())) {
+                        value = "临街状况";
+                    }
+                    break;
+                }
                 case LAND_ENUM_BuildingDensity: {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {

@@ -33,6 +33,7 @@ public enum ReportFieldLandEnum {
     LAND_ENUM_NATURE("土地权利性质"),
     LAND_ENUM_OpenTime("土地取得日期"),
     LAND_ENUM_SurveyExplore_TYPE("土地查勘类型"),
+    LAND_ENUM_FaceStreet_TYPE("土地临街状况类型"),
     LAND_ENUM_RegionalFactorsDesc("土地区域因素描述"),
     LAND_ENUM_IndividualFactorsDesc("土地个别因素描述"),
     ;
