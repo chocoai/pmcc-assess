@@ -286,7 +286,7 @@
                                                         <select class="form-control form-control-sm" name="westToName">
                                                             <option value="西至" selected="selected">西至</option>
                                                             <option value="西南">西南</option>
-                                                            <option value="西北"></option>
+                                                            <option value="西北">西北</option>
                                                         </select>
                                                         <input type="text" class="form-control form-control-sm" required
                                                                name="westTo"

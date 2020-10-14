@@ -131,7 +131,7 @@ public class UReportService {
 
         StringBuilder sql = new StringBuilder();
         sql.append("SELECT A.id,A.number_value,A.gmt_created,A.project_id,A.report_type,P.public_project_id,P.project_name,P.contract_name,P.contract_price,P.entrust_purpose,P.loan_type,P.department_id,P.service_come_from_explain," +
-                " P.gmt_created as projectCreated,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit" +
+                " P.gmt_created as projectCreated,B.user_account_manager,C.cs_entrustment_unit,C.cs_name,D.u_use_unit,D.u_use_unit_name" +
                 " FROM tb_project_number_record A " +
                 " LEFT JOIN tb_project_info P ON P.id=A.project_id" +
                 " LEFT JOIN tb_project_member B ON B.project_id=A.project_id" +
@@ -157,7 +157,7 @@ public class UReportService {
             sql.append(String.format(" AND (C.cs_entrustment_unit LIKE '%s%s%s' OR C.cs_name LIKE '%s%s%s')", "%", queryConsignorName, "%", "%", queryConsignorName, "%"));
         }
         if (StringUtil.isNotEmpty(queryReportUseUnitName)) {
-            sql.append(String.format(" AND D.u_use_unit_name LIKE '%s%s%s'","%", queryReportUseUnitName,"%"));
+            sql.append(String.format(" AND D.u_use_unit_name LIKE '%s%s%s'", "%", queryReportUseUnitName, "%"));
         }
         if (StringUtil.isNotEmpty(queryReportNumber)) {
             sql.append(String.format(" AND A.number_value LIKE '%s%s%s'", "%", queryReportNumber, "%"));
@@ -236,6 +236,8 @@ public class UReportService {
                         if (customer != null) {
                             useUnit = customer.getName();
                         }
+                    } else {
+                        useUnit = objectToString(map.get("u_use_unit_name"));
                     }
                     vo.setReportUseUnitName(useUnit);
                     //报告编号
