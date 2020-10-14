@@ -186,6 +186,13 @@
                                            placeholder="项目经理" name="queryManagerName"
                                            class="form-control input-full" data-title="name">
                                 </div>
+                                <label class="col-md-1 col-form-label">完成考核</label>
+                                <div class="col-md-2 p-0">
+                                    <select class="form-control input-full" name="bisAssessmentFinish">
+                                        <option value="true" selected="selected">已完成</option>
+                                        <option value="false">未完成</option>
+                                    </select>
+                                </div>
                                 <button style="margin-left: 10px" class="btn btn-info  btn-sm"
                                         type="button"
                                         onclick="spotCheck.loadProjectList();">
@@ -566,7 +573,7 @@
         var rows = $table.bootstrapTable('getSelections');
         $.each(rows, function (i, item) {
             projectIds.push(item.id);
-        })
+        });
         $.post('${pageContext.request.contextPath}/projectSpotCheck/selectProject', {
             projectIds: projectIds.join(','),
             spotId: $('#frmSpotCheck').find('[name=id]').val()

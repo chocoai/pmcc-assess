@@ -75,6 +75,10 @@ public class ProjectSpotCheckDao {
         return projectSpotCheckMapper.updateByExampleSelective(record, example);
     }
 
+    public Boolean deleteSpotCheckById(Integer id){
+        return projectSpotCheckMapper.deleteByPrimaryKey(id)==1;
+    }
+
     //----------------------------------------------------------------------------------
 
     public ProjectSpotCheckItem getProjectSpotCheckItemById(Integer id) {
@@ -110,6 +114,10 @@ public class ProjectSpotCheckDao {
      */
     public boolean modifyProjectSpotCheckItem(ProjectSpotCheckItem record) {
         return projectSpotCheckItemMapper.updateByPrimaryKeySelective(record) == 1;
+    }
+
+    public Boolean deleteSpotCheckItemById(Integer id){
+        return projectSpotCheckItemMapper.deleteByPrimaryKey(id)==1;
     }
 
     public long getSpotCheckItemCountByProjectId(Integer projectId) {
@@ -188,6 +196,10 @@ public class ProjectSpotCheckDao {
         ProjectSpotCheckItemScoreExample example = new ProjectSpotCheckItemScoreExample();
         example.createCriteria().andItemIdIn(itemIds);
         return projectSpotCheckItemScoreMapper.selectByExampleWithBLOBs(example);
+    }
+
+    public Boolean deleteSpotCheckItemScoreById(Integer id){
+        return projectSpotCheckItemScoreMapper.deleteByPrimaryKey(id)==1;
     }
 
     /**

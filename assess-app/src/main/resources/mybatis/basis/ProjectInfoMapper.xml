@@ -42,8 +42,9 @@
     <result column="preaudit_number_date" jdbcType="TIMESTAMP" property="preauditNumberDate" />
     <result column="property_scope_name" jdbcType="VARCHAR" property="propertyScopeName" />
     <result column="result_number_date" jdbcType="TIMESTAMP" property="resultNumberDate" />
-    <result column="bis_assign" jdbcType="BIT" property="bisAssign" />
     <result column="serial_number" jdbcType="INTEGER" property="serialNumber" />
+    <result column="bis_assign" jdbcType="BIT" property="bisAssign" />
+    <result column="bis_assessment_finish" jdbcType="BIT" property="bisAssessmentFinish" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
@@ -114,8 +115,8 @@
     property_scope, scope_include, scope_not_include, loan_type, contract_id, contract_name, 
     contract_price, service_come_from, service_come_from_explain, status, project_status, 
     public_project_id, assign_process_ins_id, assign_status, estate_name, preaudit_number_date, 
-    property_scope_name, result_number_date, bis_assign, serial_number, creator, gmt_created, 
-    gmt_modified
+    property_scope_name, result_number_date, serial_number, bis_assign, bis_assessment_finish, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample" resultMap="BaseResultMap">
     select
@@ -164,9 +165,9 @@
       service_come_from_explain, status, project_status, 
       public_project_id, assign_process_ins_id, assign_status, 
       estate_name, preaudit_number_date, property_scope_name, 
-      result_number_date, bis_assign, serial_number, 
-      creator, gmt_created, gmt_modified
-      )
+      result_number_date, serial_number, bis_assign, 
+      bis_assessment_finish, creator, gmt_created, 
+      gmt_modified)
     values (#{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, #{projectCategoryId,jdbcType=INTEGER}, 
       #{projectName,jdbcType=VARCHAR}, #{urgency,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{valuationDate,jdbcType=TIMESTAMP}, 
@@ -180,303 +181,289 @@
       #{serviceComeFromExplain,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{projectStatus,jdbcType=VARCHAR}, 
       #{publicProjectId,jdbcType=INTEGER}, #{assignProcessInsId,jdbcType=VARCHAR}, #{assignStatus,jdbcType=VARCHAR}, 
       #{estateName,jdbcType=VARCHAR}, #{preauditNumberDate,jdbcType=TIMESTAMP}, #{propertyScopeName,jdbcType=VARCHAR}, 
-      #{resultNumberDate,jdbcType=TIMESTAMP}, #{bisAssign,jdbcType=BIT}, #{serialNumber,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{resultNumberDate,jdbcType=TIMESTAMP}, #{serialNumber,jdbcType=INTEGER}, #{bisAssign,jdbcType=BIT}, 
+      #{bisAssessmentFinish,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="map">
-    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_info
-    <choose>
-      <when test="selective != null and selective.length > 0">
-        <foreach close=")" collection="selective" item="column" open="(" separator=",">
-          ${column.escapedColumnName}
-        </foreach>
-      </when>
-      <otherwise>
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-          <if test="record.projectClassId != null">
-            project_class_id,
-          </if>
-          <if test="record.projectTypeId != null">
-            project_type_id,
-          </if>
-          <if test="record.projectCategoryId != null">
-            project_category_id,
-          </if>
-          <if test="record.projectName != null">
-            project_name,
-          </if>
-          <if test="record.urgency != null">
-            urgency,
-          </if>
-          <if test="record.province != null">
-            province,
-          </if>
-          <if test="record.city != null">
-            city,
-          </if>
-          <if test="record.district != null">
-            district,
-          </if>
-          <if test="record.valuationDate != null">
-            valuation_date,
-          </if>
-          <if test="record.entrustPurposeName != null">
-            entrust_purpose_name,
-          </if>
-          <if test="record.entrustPurpose != null">
-            entrust_purpose,
-          </if>
-          <if test="record.entrustAimType != null">
-            entrust_aim_type,
-          </if>
-          <if test="record.remarkEntrustPurpose != null">
-            remark_entrust_purpose,
-          </if>
-          <if test="record.valueType != null">
-            value_type,
-          </if>
-          <if test="record.remarkValueType != null">
-            remark_value_type,
-          </if>
-          <if test="record.departmentId != null">
-            department_id,
-          </if>
-          <if test="record.remarks != null">
-            remarks,
-          </if>
-          <if test="record.completeDatePlan != null">
-            complete_date_plan,
-          </if>
-          <if test="record.completeDateActual != null">
-            complete_date_actual,
-          </if>
-          <if test="record.completeDateStart != null">
-            complete_date_start,
-          </if>
-          <if test="record.processInsId != null">
-            process_ins_id,
-          </if>
-          <if test="record.propertyScope != null">
-            property_scope,
-          </if>
-          <if test="record.scopeInclude != null">
-            scope_include,
-          </if>
-          <if test="record.scopeNotInclude != null">
-            scope_not_include,
-          </if>
-          <if test="record.loanType != null">
-            loan_type,
-          </if>
-          <if test="record.contractId != null">
-            contract_id,
-          </if>
-          <if test="record.contractName != null">
-            contract_name,
-          </if>
-          <if test="record.contractPrice != null">
-            contract_price,
-          </if>
-          <if test="record.serviceComeFrom != null">
-            service_come_from,
-          </if>
-          <if test="record.serviceComeFromExplain != null">
-            service_come_from_explain,
-          </if>
-          <if test="record.status != null">
-            status,
-          </if>
-          <if test="record.projectStatus != null">
-            project_status,
-          </if>
-          <if test="record.publicProjectId != null">
-            public_project_id,
-          </if>
-          <if test="record.assignProcessInsId != null">
-            assign_process_ins_id,
-          </if>
-          <if test="record.assignStatus != null">
-            assign_status,
-          </if>
-          <if test="record.estateName != null">
-            estate_name,
-          </if>
-          <if test="record.preauditNumberDate != null">
-            preaudit_number_date,
-          </if>
-          <if test="record.propertyScopeName != null">
-            property_scope_name,
-          </if>
-          <if test="record.resultNumberDate != null">
-            result_number_date,
-          </if>
-          <if test="record.bisAssign != null">
-            bis_assign,
-          </if>
-          <if test="record.serialNumber != null">
-            serial_number,
-          </if>
-          <if test="record.creator != null">
-            creator,
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created,
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified,
-          </if>
-        </trim>
-        <trim prefix="(" suffix=")" suffixOverrides="," />
-      </otherwise>
-    </choose>
-    values
-    <choose>
-      <when test="selective != null and selective.length > 0">
-        <foreach close=")" collection="selective" item="column" open="(" separator=",">
-          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
-        </foreach>
-      </when>
-      <otherwise>
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-          <if test="record.projectClassId != null">
-            #{record.projectClassId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectTypeId != null">
-            #{record.projectTypeId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectCategoryId != null">
-            #{record.projectCategoryId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectName != null">
-            #{record.projectName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.urgency != null">
-            #{record.urgency,jdbcType=INTEGER},
-          </if>
-          <if test="record.province != null">
-            #{record.province,jdbcType=VARCHAR},
-          </if>
-          <if test="record.city != null">
-            #{record.city,jdbcType=VARCHAR},
-          </if>
-          <if test="record.district != null">
-            #{record.district,jdbcType=VARCHAR},
-          </if>
-          <if test="record.valuationDate != null">
-            #{record.valuationDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.entrustPurposeName != null">
-            #{record.entrustPurposeName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.entrustPurpose != null">
-            #{record.entrustPurpose,jdbcType=INTEGER},
-          </if>
-          <if test="record.entrustAimType != null">
-            #{record.entrustAimType,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarkEntrustPurpose != null">
-            #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
-          </if>
-          <if test="record.valueType != null">
-            #{record.valueType,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarkValueType != null">
-            #{record.remarkValueType,jdbcType=VARCHAR},
-          </if>
-          <if test="record.departmentId != null">
-            #{record.departmentId,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarks != null">
-            #{record.remarks,jdbcType=VARCHAR},
-          </if>
-          <if test="record.completeDatePlan != null">
-            #{record.completeDatePlan,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.completeDateActual != null">
-            #{record.completeDateActual,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.completeDateStart != null">
-            #{record.completeDateStart,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.processInsId != null">
-            #{record.processInsId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.propertyScope != null">
-            #{record.propertyScope,jdbcType=VARCHAR},
-          </if>
-          <if test="record.scopeInclude != null">
-            #{record.scopeInclude,jdbcType=VARCHAR},
-          </if>
-          <if test="record.scopeNotInclude != null">
-            #{record.scopeNotInclude,jdbcType=VARCHAR},
-          </if>
-          <if test="record.loanType != null">
-            #{record.loanType,jdbcType=INTEGER},
-          </if>
-          <if test="record.contractId != null">
-            #{record.contractId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.contractName != null">
-            #{record.contractName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.contractPrice != null">
-            #{record.contractPrice,jdbcType=DECIMAL},
-          </if>
-          <if test="record.serviceComeFrom != null">
-            #{record.serviceComeFrom,jdbcType=VARCHAR},
-          </if>
-          <if test="record.serviceComeFromExplain != null">
-            #{record.serviceComeFromExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.status != null">
-            #{record.status,jdbcType=VARCHAR},
-          </if>
-          <if test="record.projectStatus != null">
-            #{record.projectStatus,jdbcType=VARCHAR},
-          </if>
-          <if test="record.publicProjectId != null">
-            #{record.publicProjectId,jdbcType=INTEGER},
-          </if>
-          <if test="record.assignProcessInsId != null">
-            #{record.assignProcessInsId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.assignStatus != null">
-            #{record.assignStatus,jdbcType=VARCHAR},
-          </if>
-          <if test="record.estateName != null">
-            #{record.estateName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.preauditNumberDate != null">
-            #{record.preauditNumberDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.propertyScopeName != null">
-            #{record.propertyScopeName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.resultNumberDate != null">
-            #{record.resultNumberDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.bisAssign != null">
-            #{record.bisAssign,jdbcType=BIT},
-          </if>
-          <if test="record.serialNumber != null">
-            #{record.serialNumber,jdbcType=INTEGER},
-          </if>
-          <if test="record.creator != null">
-            #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
-        </trim>
-      </otherwise>
-    </choose>
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="projectClassId != null">
+        project_class_id,
+      </if>
+      <if test="projectTypeId != null">
+        project_type_id,
+      </if>
+      <if test="projectCategoryId != null">
+        project_category_id,
+      </if>
+      <if test="projectName != null">
+        project_name,
+      </if>
+      <if test="urgency != null">
+        urgency,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="district != null">
+        district,
+      </if>
+      <if test="valuationDate != null">
+        valuation_date,
+      </if>
+      <if test="entrustPurposeName != null">
+        entrust_purpose_name,
+      </if>
+      <if test="entrustPurpose != null">
+        entrust_purpose,
+      </if>
+      <if test="entrustAimType != null">
+        entrust_aim_type,
+      </if>
+      <if test="remarkEntrustPurpose != null">
+        remark_entrust_purpose,
+      </if>
+      <if test="valueType != null">
+        value_type,
+      </if>
+      <if test="remarkValueType != null">
+        remark_value_type,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="completeDatePlan != null">
+        complete_date_plan,
+      </if>
+      <if test="completeDateActual != null">
+        complete_date_actual,
+      </if>
+      <if test="completeDateStart != null">
+        complete_date_start,
+      </if>
+      <if test="processInsId != null">
+        process_ins_id,
+      </if>
+      <if test="propertyScope != null">
+        property_scope,
+      </if>
+      <if test="scopeInclude != null">
+        scope_include,
+      </if>
+      <if test="scopeNotInclude != null">
+        scope_not_include,
+      </if>
+      <if test="loanType != null">
+        loan_type,
+      </if>
+      <if test="contractId != null">
+        contract_id,
+      </if>
+      <if test="contractName != null">
+        contract_name,
+      </if>
+      <if test="contractPrice != null">
+        contract_price,
+      </if>
+      <if test="serviceComeFrom != null">
+        service_come_from,
+      </if>
+      <if test="serviceComeFromExplain != null">
+        service_come_from_explain,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="projectStatus != null">
+        project_status,
+      </if>
+      <if test="publicProjectId != null">
+        public_project_id,
+      </if>
+      <if test="assignProcessInsId != null">
+        assign_process_ins_id,
+      </if>
+      <if test="assignStatus != null">
+        assign_status,
+      </if>
+      <if test="estateName != null">
+        estate_name,
+      </if>
+      <if test="preauditNumberDate != null">
+        preaudit_number_date,
+      </if>
+      <if test="propertyScopeName != null">
+        property_scope_name,
+      </if>
+      <if test="resultNumberDate != null">
+        result_number_date,
+      </if>
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+      <if test="bisAssign != null">
+        bis_assign,
+      </if>
+      <if test="bisAssessmentFinish != null">
+        bis_assessment_finish,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="projectClassId != null">
+        #{projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="projectTypeId != null">
+        #{projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCategoryId != null">
+        #{projectCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="urgency != null">
+        #{urgency,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="valuationDate != null">
+        #{valuationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entrustPurposeName != null">
+        #{entrustPurposeName,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustPurpose != null">
+        #{entrustPurpose,jdbcType=INTEGER},
+      </if>
+      <if test="entrustAimType != null">
+        #{entrustAimType,jdbcType=INTEGER},
+      </if>
+      <if test="remarkEntrustPurpose != null">
+        #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="valueType != null">
+        #{valueType,jdbcType=INTEGER},
+      </if>
+      <if test="remarkValueType != null">
+        #{remarkValueType,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="completeDatePlan != null">
+        #{completeDatePlan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDateActual != null">
+        #{completeDateActual,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDateStart != null">
+        #{completeDateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processInsId != null">
+        #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyScope != null">
+        #{propertyScope,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeInclude != null">
+        #{scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeNotInclude != null">
+        #{scopeNotInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="loanType != null">
+        #{loanType,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null">
+        #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null">
+        #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractPrice != null">
+        #{contractPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceComeFrom != null">
+        #{serviceComeFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceComeFromExplain != null">
+        #{serviceComeFromExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="projectStatus != null">
+        #{projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="publicProjectId != null">
+        #{publicProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="assignProcessInsId != null">
+        #{assignProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="assignStatus != null">
+        #{assignStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="estateName != null">
+        #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="preauditNumberDate != null">
+        #{preauditNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="propertyScopeName != null">
+        #{propertyScopeName,jdbcType=VARCHAR},
+      </if>
+      <if test="resultNumberDate != null">
+        #{resultNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="bisAssign != null">
+        #{bisAssign,jdbcType=BIT},
+      </if>
+      <if test="bisAssessmentFinish != null">
+        #{bisAssessmentFinish,jdbcType=BIT},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfoExample" resultType="java.lang.Long">
     select count(*) from tb_project_info
@@ -486,153 +473,146 @@
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update tb_project_info
-    SET
-    <choose>
-      <when test="selective != null and selective.length > 0">
-        <foreach collection="selective" item="column" separator=",">
-          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
-        </foreach>
-      </when>
-      <otherwise>
-        <trim suffixOverrides=",">
-          <if test="record.id != null">
-            id = #{record.id,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectClassId != null">
-            project_class_id = #{record.projectClassId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectTypeId != null">
-            project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectCategoryId != null">
-            project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectName != null">
-            project_name = #{record.projectName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.urgency != null">
-            urgency = #{record.urgency,jdbcType=INTEGER},
-          </if>
-          <if test="record.province != null">
-            province = #{record.province,jdbcType=VARCHAR},
-          </if>
-          <if test="record.city != null">
-            city = #{record.city,jdbcType=VARCHAR},
-          </if>
-          <if test="record.district != null">
-            district = #{record.district,jdbcType=VARCHAR},
-          </if>
-          <if test="record.valuationDate != null">
-            valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.entrustPurposeName != null">
-            entrust_purpose_name = #{record.entrustPurposeName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.entrustPurpose != null">
-            entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
-          </if>
-          <if test="record.entrustAimType != null">
-            entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarkEntrustPurpose != null">
-            remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
-          </if>
-          <if test="record.valueType != null">
-            value_type = #{record.valueType,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarkValueType != null">
-            remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
-          </if>
-          <if test="record.departmentId != null">
-            department_id = #{record.departmentId,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarks != null">
-            remarks = #{record.remarks,jdbcType=VARCHAR},
-          </if>
-          <if test="record.completeDatePlan != null">
-            complete_date_plan = #{record.completeDatePlan,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.completeDateActual != null">
-            complete_date_actual = #{record.completeDateActual,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.completeDateStart != null">
-            complete_date_start = #{record.completeDateStart,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.processInsId != null">
-            process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.propertyScope != null">
-            property_scope = #{record.propertyScope,jdbcType=VARCHAR},
-          </if>
-          <if test="record.scopeInclude != null">
-            scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
-          </if>
-          <if test="record.scopeNotInclude != null">
-            scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
-          </if>
-          <if test="record.loanType != null">
-            loan_type = #{record.loanType,jdbcType=INTEGER},
-          </if>
-          <if test="record.contractId != null">
-            contract_id = #{record.contractId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.contractName != null">
-            contract_name = #{record.contractName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.contractPrice != null">
-            contract_price = #{record.contractPrice,jdbcType=DECIMAL},
-          </if>
-          <if test="record.serviceComeFrom != null">
-            service_come_from = #{record.serviceComeFrom,jdbcType=VARCHAR},
-          </if>
-          <if test="record.serviceComeFromExplain != null">
-            service_come_from_explain = #{record.serviceComeFromExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.status != null">
-            status = #{record.status,jdbcType=VARCHAR},
-          </if>
-          <if test="record.projectStatus != null">
-            project_status = #{record.projectStatus,jdbcType=VARCHAR},
-          </if>
-          <if test="record.publicProjectId != null">
-            public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
-          </if>
-          <if test="record.assignProcessInsId != null">
-            assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.assignStatus != null">
-            assign_status = #{record.assignStatus,jdbcType=VARCHAR},
-          </if>
-          <if test="record.estateName != null">
-            estate_name = #{record.estateName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.preauditNumberDate != null">
-            preaudit_number_date = #{record.preauditNumberDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.propertyScopeName != null">
-            property_scope_name = #{record.propertyScopeName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.resultNumberDate != null">
-            result_number_date = #{record.resultNumberDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.bisAssign != null">
-            bis_assign = #{record.bisAssign,jdbcType=BIT},
-          </if>
-          <if test="record.serialNumber != null">
-            serial_number = #{record.serialNumber,jdbcType=INTEGER},
-          </if>
-          <if test="record.creator != null">
-            creator = #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
-        </trim>
-      </otherwise>
-    </choose>
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectClassId != null">
+        project_class_id = #{record.projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectTypeId != null">
+        project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectCategoryId != null">
+        project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectName != null">
+        project_name = #{record.projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.urgency != null">
+        urgency = #{record.urgency,jdbcType=INTEGER},
+      </if>
+      <if test="record.province != null">
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null">
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.district != null">
+        district = #{record.district,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valuationDate != null">
+        valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.entrustPurposeName != null">
+        entrust_purpose_name = #{record.entrustPurposeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.entrustPurpose != null">
+        entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
+      </if>
+      <if test="record.entrustAimType != null">
+        entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarkEntrustPurpose != null">
+        remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valueType != null">
+        value_type = #{record.valueType,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarkValueType != null">
+        remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.departmentId != null">
+        department_id = #{record.departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.remarks != null">
+        remarks = #{record.remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="record.completeDatePlan != null">
+        complete_date_plan = #{record.completeDatePlan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeDateActual != null">
+        complete_date_actual = #{record.completeDateActual,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.completeDateStart != null">
+        complete_date_start = #{record.completeDateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.processInsId != null">
+        process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.propertyScope != null">
+        property_scope = #{record.propertyScope,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scopeInclude != null">
+        scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.scopeNotInclude != null">
+        scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loanType != null">
+        loan_type = #{record.loanType,jdbcType=INTEGER},
+      </if>
+      <if test="record.contractId != null">
+        contract_id = #{record.contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractName != null">
+        contract_name = #{record.contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.contractPrice != null">
+        contract_price = #{record.contractPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.serviceComeFrom != null">
+        service_come_from = #{record.serviceComeFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serviceComeFromExplain != null">
+        service_come_from_explain = #{record.serviceComeFromExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.projectStatus != null">
+        project_status = #{record.projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.publicProjectId != null">
+        public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.assignProcessInsId != null">
+        assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.assignStatus != null">
+        assign_status = #{record.assignStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.estateName != null">
+        estate_name = #{record.estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.preauditNumberDate != null">
+        preaudit_number_date = #{record.preauditNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.propertyScopeName != null">
+        property_scope_name = #{record.propertyScopeName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resultNumberDate != null">
+        result_number_date = #{record.resultNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.serialNumber != null">
+        serial_number = #{record.serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.bisAssign != null">
+        bis_assign = #{record.bisAssign,jdbcType=BIT},
+      </if>
+      <if test="record.bisAssessmentFinish != null">
+        bis_assessment_finish = #{record.bisAssessmentFinish,jdbcType=BIT},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null">
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -679,8 +659,9 @@
       preaudit_number_date = #{record.preauditNumberDate,jdbcType=TIMESTAMP},
       property_scope_name = #{record.propertyScopeName,jdbcType=VARCHAR},
       result_number_date = #{record.resultNumberDate,jdbcType=TIMESTAMP},
-      bis_assign = #{record.bisAssign,jdbcType=BIT},
       serial_number = #{record.serialNumber,jdbcType=INTEGER},
+      bis_assign = #{record.bisAssign,jdbcType=BIT},
+      bis_assessment_finish = #{record.bisAssessmentFinish,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -688,153 +669,146 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="map">
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo">
     update tb_project_info
-    SET
-    <choose>
-      <when test="selective != null and selective.length > 0">
-        <foreach collection="selective" item="column" separator=",">
-          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
-        </foreach>
-      </when>
-      <otherwise>
-        <trim suffixOverrides=",">
-          <if test="record.projectClassId != null">
-            project_class_id = #{record.projectClassId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectTypeId != null">
-            project_type_id = #{record.projectTypeId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectCategoryId != null">
-            project_category_id = #{record.projectCategoryId,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectName != null">
-            project_name = #{record.projectName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.urgency != null">
-            urgency = #{record.urgency,jdbcType=INTEGER},
-          </if>
-          <if test="record.province != null">
-            province = #{record.province,jdbcType=VARCHAR},
-          </if>
-          <if test="record.city != null">
-            city = #{record.city,jdbcType=VARCHAR},
-          </if>
-          <if test="record.district != null">
-            district = #{record.district,jdbcType=VARCHAR},
-          </if>
-          <if test="record.valuationDate != null">
-            valuation_date = #{record.valuationDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.entrustPurposeName != null">
-            entrust_purpose_name = #{record.entrustPurposeName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.entrustPurpose != null">
-            entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
-          </if>
-          <if test="record.entrustAimType != null">
-            entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarkEntrustPurpose != null">
-            remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
-          </if>
-          <if test="record.valueType != null">
-            value_type = #{record.valueType,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarkValueType != null">
-            remark_value_type = #{record.remarkValueType,jdbcType=VARCHAR},
-          </if>
-          <if test="record.departmentId != null">
-            department_id = #{record.departmentId,jdbcType=INTEGER},
-          </if>
-          <if test="record.remarks != null">
-            remarks = #{record.remarks,jdbcType=VARCHAR},
-          </if>
-          <if test="record.completeDatePlan != null">
-            complete_date_plan = #{record.completeDatePlan,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.completeDateActual != null">
-            complete_date_actual = #{record.completeDateActual,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.completeDateStart != null">
-            complete_date_start = #{record.completeDateStart,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.processInsId != null">
-            process_ins_id = #{record.processInsId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.propertyScope != null">
-            property_scope = #{record.propertyScope,jdbcType=VARCHAR},
-          </if>
-          <if test="record.scopeInclude != null">
-            scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
-          </if>
-          <if test="record.scopeNotInclude != null">
-            scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
-          </if>
-          <if test="record.loanType != null">
-            loan_type = #{record.loanType,jdbcType=INTEGER},
-          </if>
-          <if test="record.contractId != null">
-            contract_id = #{record.contractId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.contractName != null">
-            contract_name = #{record.contractName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.contractPrice != null">
-            contract_price = #{record.contractPrice,jdbcType=DECIMAL},
-          </if>
-          <if test="record.serviceComeFrom != null">
-            service_come_from = #{record.serviceComeFrom,jdbcType=VARCHAR},
-          </if>
-          <if test="record.serviceComeFromExplain != null">
-            service_come_from_explain = #{record.serviceComeFromExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.status != null">
-            status = #{record.status,jdbcType=VARCHAR},
-          </if>
-          <if test="record.projectStatus != null">
-            project_status = #{record.projectStatus,jdbcType=VARCHAR},
-          </if>
-          <if test="record.publicProjectId != null">
-            public_project_id = #{record.publicProjectId,jdbcType=INTEGER},
-          </if>
-          <if test="record.assignProcessInsId != null">
-            assign_process_ins_id = #{record.assignProcessInsId,jdbcType=VARCHAR},
-          </if>
-          <if test="record.assignStatus != null">
-            assign_status = #{record.assignStatus,jdbcType=VARCHAR},
-          </if>
-          <if test="record.estateName != null">
-            estate_name = #{record.estateName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.preauditNumberDate != null">
-            preaudit_number_date = #{record.preauditNumberDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.propertyScopeName != null">
-            property_scope_name = #{record.propertyScopeName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.resultNumberDate != null">
-            result_number_date = #{record.resultNumberDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.bisAssign != null">
-            bis_assign = #{record.bisAssign,jdbcType=BIT},
-          </if>
-          <if test="record.serialNumber != null">
-            serial_number = #{record.serialNumber,jdbcType=INTEGER},
-          </if>
-          <if test="record.creator != null">
-            creator = #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
-        </trim>
-      </otherwise>
-    </choose>
-    where id = #{record.id,jdbcType=INTEGER}
+    <set>
+      <if test="projectClassId != null">
+        project_class_id = #{projectClassId,jdbcType=INTEGER},
+      </if>
+      <if test="projectTypeId != null">
+        project_type_id = #{projectTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="projectCategoryId != null">
+        project_category_id = #{projectCategoryId,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="urgency != null">
+        urgency = #{urgency,jdbcType=INTEGER},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="district != null">
+        district = #{district,jdbcType=VARCHAR},
+      </if>
+      <if test="valuationDate != null">
+        valuation_date = #{valuationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="entrustPurposeName != null">
+        entrust_purpose_name = #{entrustPurposeName,jdbcType=VARCHAR},
+      </if>
+      <if test="entrustPurpose != null">
+        entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
+      </if>
+      <if test="entrustAimType != null">
+        entrust_aim_type = #{entrustAimType,jdbcType=INTEGER},
+      </if>
+      <if test="remarkEntrustPurpose != null">
+        remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      </if>
+      <if test="valueType != null">
+        value_type = #{valueType,jdbcType=INTEGER},
+      </if>
+      <if test="remarkValueType != null">
+        remark_value_type = #{remarkValueType,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="completeDatePlan != null">
+        complete_date_plan = #{completeDatePlan,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDateActual != null">
+        complete_date_actual = #{completeDateActual,jdbcType=TIMESTAMP},
+      </if>
+      <if test="completeDateStart != null">
+        complete_date_start = #{completeDateStart,jdbcType=TIMESTAMP},
+      </if>
+      <if test="processInsId != null">
+        process_ins_id = #{processInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="propertyScope != null">
+        property_scope = #{propertyScope,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeInclude != null">
+        scope_include = #{scopeInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="scopeNotInclude != null">
+        scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
+      </if>
+      <if test="loanType != null">
+        loan_type = #{loanType,jdbcType=INTEGER},
+      </if>
+      <if test="contractId != null">
+        contract_id = #{contractId,jdbcType=VARCHAR},
+      </if>
+      <if test="contractName != null">
+        contract_name = #{contractName,jdbcType=VARCHAR},
+      </if>
+      <if test="contractPrice != null">
+        contract_price = #{contractPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="serviceComeFrom != null">
+        service_come_from = #{serviceComeFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceComeFromExplain != null">
+        service_come_from_explain = #{serviceComeFromExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="projectStatus != null">
+        project_status = #{projectStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="publicProjectId != null">
+        public_project_id = #{publicProjectId,jdbcType=INTEGER},
+      </if>
+      <if test="assignProcessInsId != null">
+        assign_process_ins_id = #{assignProcessInsId,jdbcType=VARCHAR},
+      </if>
+      <if test="assignStatus != null">
+        assign_status = #{assignStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="estateName != null">
+        estate_name = #{estateName,jdbcType=VARCHAR},
+      </if>
+      <if test="preauditNumberDate != null">
+        preaudit_number_date = #{preauditNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="propertyScopeName != null">
+        property_scope_name = #{propertyScopeName,jdbcType=VARCHAR},
+      </if>
+      <if test="resultNumberDate != null">
+        result_number_date = #{resultNumberDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serialNumber != null">
+        serial_number = #{serialNumber,jdbcType=INTEGER},
+      </if>
+      <if test="bisAssign != null">
+        bis_assign = #{bisAssign,jdbcType=BIT},
+      </if>
+      <if test="bisAssessmentFinish != null">
+        bis_assessment_finish = #{bisAssessmentFinish,jdbcType=BIT},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectInfo">
     update tb_project_info
@@ -877,192 +851,12 @@
       preaudit_number_date = #{preauditNumberDate,jdbcType=TIMESTAMP},
       property_scope_name = #{propertyScopeName,jdbcType=VARCHAR},
       result_number_date = #{resultNumberDate,jdbcType=TIMESTAMP},
-      bis_assign = #{bisAssign,jdbcType=BIT},
       serial_number = #{serialNumber,jdbcType=INTEGER},
+      bis_assign = #{bisAssign,jdbcType=BIT},
+      bis_assessment_finish = #{bisAssessmentFinish,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
-    insert into tb_project_info
-    (project_class_id, project_type_id, project_category_id, project_name, urgency, province, 
-      city, district, valuation_date, entrust_purpose_name, entrust_purpose, entrust_aim_type, 
-      remark_entrust_purpose, value_type, remark_value_type, department_id, remarks, 
-      complete_date_plan, complete_date_actual, complete_date_start, process_ins_id, 
-      property_scope, scope_include, scope_not_include, loan_type, contract_id, contract_name, 
-      contract_price, service_come_from, service_come_from_explain, status, project_status, 
-      public_project_id, assign_process_ins_id, assign_status, estate_name, preaudit_number_date, 
-      property_scope_name, result_number_date, bis_assign, serial_number, creator, gmt_created, 
-      gmt_modified)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.projectClassId,jdbcType=INTEGER}, #{item.projectTypeId,jdbcType=INTEGER}, 
-        #{item.projectCategoryId,jdbcType=INTEGER}, #{item.projectName,jdbcType=VARCHAR}, 
-        #{item.urgency,jdbcType=INTEGER}, #{item.province,jdbcType=VARCHAR}, #{item.city,jdbcType=VARCHAR}, 
-        #{item.district,jdbcType=VARCHAR}, #{item.valuationDate,jdbcType=TIMESTAMP}, #{item.entrustPurposeName,jdbcType=VARCHAR}, 
-        #{item.entrustPurpose,jdbcType=INTEGER}, #{item.entrustAimType,jdbcType=INTEGER}, 
-        #{item.remarkEntrustPurpose,jdbcType=VARCHAR}, #{item.valueType,jdbcType=INTEGER}, 
-        #{item.remarkValueType,jdbcType=VARCHAR}, #{item.departmentId,jdbcType=INTEGER}, 
-        #{item.remarks,jdbcType=VARCHAR}, #{item.completeDatePlan,jdbcType=TIMESTAMP}, 
-        #{item.completeDateActual,jdbcType=TIMESTAMP}, #{item.completeDateStart,jdbcType=TIMESTAMP}, 
-        #{item.processInsId,jdbcType=VARCHAR}, #{item.propertyScope,jdbcType=VARCHAR}, 
-        #{item.scopeInclude,jdbcType=VARCHAR}, #{item.scopeNotInclude,jdbcType=VARCHAR}, 
-        #{item.loanType,jdbcType=INTEGER}, #{item.contractId,jdbcType=VARCHAR}, #{item.contractName,jdbcType=VARCHAR}, 
-        #{item.contractPrice,jdbcType=DECIMAL}, #{item.serviceComeFrom,jdbcType=VARCHAR}, 
-        #{item.serviceComeFromExplain,jdbcType=VARCHAR}, #{item.status,jdbcType=VARCHAR}, 
-        #{item.projectStatus,jdbcType=VARCHAR}, #{item.publicProjectId,jdbcType=INTEGER}, 
-        #{item.assignProcessInsId,jdbcType=VARCHAR}, #{item.assignStatus,jdbcType=VARCHAR}, 
-        #{item.estateName,jdbcType=VARCHAR}, #{item.preauditNumberDate,jdbcType=TIMESTAMP}, 
-        #{item.propertyScopeName,jdbcType=VARCHAR}, #{item.resultNumberDate,jdbcType=TIMESTAMP}, 
-        #{item.bisAssign,jdbcType=BIT}, #{item.serialNumber,jdbcType=INTEGER}, #{item.creator,jdbcType=VARCHAR}, 
-        #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP})
-    </foreach>
-  </insert>
-  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
-    insert into tb_project_info (
-    <foreach collection="selective" item="column" separator=",">
-      ${column.escapedColumnName}
-    </foreach>
-    )
-    values
-    <foreach collection="list" item="item" separator=",">
-      (
-      <foreach collection="selective" item="column" separator=",">
-        <if test="'project_class_id'.toString() == column.value">
-          #{item.projectClassId,jdbcType=INTEGER}
-        </if>
-        <if test="'project_type_id'.toString() == column.value">
-          #{item.projectTypeId,jdbcType=INTEGER}
-        </if>
-        <if test="'project_category_id'.toString() == column.value">
-          #{item.projectCategoryId,jdbcType=INTEGER}
-        </if>
-        <if test="'project_name'.toString() == column.value">
-          #{item.projectName,jdbcType=VARCHAR}
-        </if>
-        <if test="'urgency'.toString() == column.value">
-          #{item.urgency,jdbcType=INTEGER}
-        </if>
-        <if test="'province'.toString() == column.value">
-          #{item.province,jdbcType=VARCHAR}
-        </if>
-        <if test="'city'.toString() == column.value">
-          #{item.city,jdbcType=VARCHAR}
-        </if>
-        <if test="'district'.toString() == column.value">
-          #{item.district,jdbcType=VARCHAR}
-        </if>
-        <if test="'valuation_date'.toString() == column.value">
-          #{item.valuationDate,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'entrust_purpose_name'.toString() == column.value">
-          #{item.entrustPurposeName,jdbcType=VARCHAR}
-        </if>
-        <if test="'entrust_purpose'.toString() == column.value">
-          #{item.entrustPurpose,jdbcType=INTEGER}
-        </if>
-        <if test="'entrust_aim_type'.toString() == column.value">
-          #{item.entrustAimType,jdbcType=INTEGER}
-        </if>
-        <if test="'remark_entrust_purpose'.toString() == column.value">
-          #{item.remarkEntrustPurpose,jdbcType=VARCHAR}
-        </if>
-        <if test="'value_type'.toString() == column.value">
-          #{item.valueType,jdbcType=INTEGER}
-        </if>
-        <if test="'remark_value_type'.toString() == column.value">
-          #{item.remarkValueType,jdbcType=VARCHAR}
-        </if>
-        <if test="'department_id'.toString() == column.value">
-          #{item.departmentId,jdbcType=INTEGER}
-        </if>
-        <if test="'remarks'.toString() == column.value">
-          #{item.remarks,jdbcType=VARCHAR}
-        </if>
-        <if test="'complete_date_plan'.toString() == column.value">
-          #{item.completeDatePlan,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'complete_date_actual'.toString() == column.value">
-          #{item.completeDateActual,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'complete_date_start'.toString() == column.value">
-          #{item.completeDateStart,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'process_ins_id'.toString() == column.value">
-          #{item.processInsId,jdbcType=VARCHAR}
-        </if>
-        <if test="'property_scope'.toString() == column.value">
-          #{item.propertyScope,jdbcType=VARCHAR}
-        </if>
-        <if test="'scope_include'.toString() == column.value">
-          #{item.scopeInclude,jdbcType=VARCHAR}
-        </if>
-        <if test="'scope_not_include'.toString() == column.value">
-          #{item.scopeNotInclude,jdbcType=VARCHAR}
-        </if>
-        <if test="'loan_type'.toString() == column.value">
-          #{item.loanType,jdbcType=INTEGER}
-        </if>
-        <if test="'contract_id'.toString() == column.value">
-          #{item.contractId,jdbcType=VARCHAR}
-        </if>
-        <if test="'contract_name'.toString() == column.value">
-          #{item.contractName,jdbcType=VARCHAR}
-        </if>
-        <if test="'contract_price'.toString() == column.value">
-          #{item.contractPrice,jdbcType=DECIMAL}
-        </if>
-        <if test="'service_come_from'.toString() == column.value">
-          #{item.serviceComeFrom,jdbcType=VARCHAR}
-        </if>
-        <if test="'service_come_from_explain'.toString() == column.value">
-          #{item.serviceComeFromExplain,jdbcType=VARCHAR}
-        </if>
-        <if test="'status'.toString() == column.value">
-          #{item.status,jdbcType=VARCHAR}
-        </if>
-        <if test="'project_status'.toString() == column.value">
-          #{item.projectStatus,jdbcType=VARCHAR}
-        </if>
-        <if test="'public_project_id'.toString() == column.value">
-          #{item.publicProjectId,jdbcType=INTEGER}
-        </if>
-        <if test="'assign_process_ins_id'.toString() == column.value">
-          #{item.assignProcessInsId,jdbcType=VARCHAR}
-        </if>
-        <if test="'assign_status'.toString() == column.value">
-          #{item.assignStatus,jdbcType=VARCHAR}
-        </if>
-        <if test="'estate_name'.toString() == column.value">
-          #{item.estateName,jdbcType=VARCHAR}
-        </if>
-        <if test="'preaudit_number_date'.toString() == column.value">
-          #{item.preauditNumberDate,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'property_scope_name'.toString() == column.value">
-          #{item.propertyScopeName,jdbcType=VARCHAR}
-        </if>
-        <if test="'result_number_date'.toString() == column.value">
-          #{item.resultNumberDate,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'bis_assign'.toString() == column.value">
-          #{item.bisAssign,jdbcType=BIT}
-        </if>
-        <if test="'serial_number'.toString() == column.value">
-          #{item.serialNumber,jdbcType=INTEGER}
-        </if>
-        <if test="'creator'.toString() == column.value">
-          #{item.creator,jdbcType=VARCHAR}
-        </if>
-        <if test="'gmt_created'.toString() == column.value">
-          #{item.gmtCreated,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'gmt_modified'.toString() == column.value">
-          #{item.gmtModified,jdbcType=TIMESTAMP}
-        </if>
-      </foreach>
-      )
-    </foreach>
-  </insert>
 </mapper>

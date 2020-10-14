@@ -32,6 +32,7 @@ public class QueryProjectInfo {
     private Integer queryProjectCategoryId;
     private List<String> userAccountList;
     private List<Integer> departmentIdList;
+    private Boolean bisAssessmentFinish;
 
     public String getUserAccount() {
         return userAccount;
@@ -183,5 +184,13 @@ public class QueryProjectInfo {
 
     public void setDepartmentIdList(List<Integer> departmentIdList) {
         this.departmentIdList = departmentIdList;
+    }
+
+    public Boolean getBisAssessmentFinish() {
+        return bisAssessmentFinish;
+    }
+
+    public void setBisAssessmentFinish(Boolean bisAssessmentFinish) {
+        this.bisAssessmentFinish = bisAssessmentFinish;
     }
 }

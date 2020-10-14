@@ -44,12 +44,14 @@ public class ProjectReviewScoreEvent extends BaseProcessEvent {
     private BpmRpcBoxRoleUserService bpmRpcBoxRoleUserService;
     @Autowired
     private ErpRpcDepartmentService erpRpcDepartmentService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
 
     @Override
     public void processFinishExecute(ProcessExecution processExecution) throws Exception {
         super.processFinishExecute(processExecution);
-        if(!processExecution.getProcessStatus().isFinish()) return;
+        if (!processExecution.getProcessStatus().isFinish()) return;
         try {
             ProcessStatusEnum processStatusEnum = ProcessStatusEnum.create(processExecution.getProcessStatus().getValue());
             if (processStatusEnum == null) return;
@@ -98,6 +100,12 @@ public class ProjectReviewScoreEvent extends BaseProcessEvent {
                     performanceDto.setExamineScore(projectReviewScoreItemVo.getScore());
                     performanceDto.setBusinessKey("复核与指导/" + projectReviewScoreItemVo.getProjectPhaseName());
                     performanceService.saveAndUpdatePerformanceDto(performanceDto, false);
+                }
+
+                ProjectInfo projectInfo = projectInfoService.getProjectInfoById(reviewScore.getProjectId());
+                if (projectInfo != null) {
+                    projectInfo.setBisAssessmentFinish(true);
+                    projectInfoService.updateProjectInfo(projectInfo);
                 }
             }
         } catch (Exception e) {

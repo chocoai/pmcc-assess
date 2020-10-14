@@ -225,6 +225,18 @@ public class ProjectSpotCheckController {
     }
 
     @ResponseBody
+    @PostMapping(value = "/deleteSpotCheckById", name = "删除数据")
+    public HttpResult deleteSpotCheckById(Integer spotId) {
+        try {
+            projectSpotCheckService.deleteSpotCheckById(spotId);
+            return HttpResult.newCorrectResult();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return HttpResult.newErrorResult(e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @PostMapping(value = "/applyCommit", name = "申请提交")
     public HttpResult applyCommit(String formData) {
         try {

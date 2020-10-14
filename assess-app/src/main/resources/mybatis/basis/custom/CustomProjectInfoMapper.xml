@@ -62,6 +62,9 @@
         <if test="entrustPurpose!=null">
             AND A.entrust_purpose = #{entrustPurpose}
         </if>
+        <if test="bisAssessmentFinish!=null">
+            AND A.bis_assessment_finish = #{bisAssessmentFinish}
+        </if>
         <if test="queryTimeStart!=null">
             AND A.gmt_created &gt;= #{queryTimeStart}
         </if>

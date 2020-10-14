@@ -6,19 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 public class ProjectInfoExample {
-    /**
-     * tb_project_info
-     */
     protected String orderByClause;
 
-    /**
-     * tb_project_info
-     */
     protected boolean distinct;
 
-    /**
-     * tb_project_info
-     */
     protected List<Criteria> oredCriteria;
 
     public ProjectInfoExample() {
@@ -74,9 +65,6 @@ public class ProjectInfoExample {
         distinct = false;
     }
 
-    /**
-     * tb_project_info
-     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -2738,6 +2726,66 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
+        public Criteria andSerialNumberIsNull() {
+            addCriterion("serial_number is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberIsNotNull() {
+            addCriterion("serial_number is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberEqualTo(Integer value) {
+            addCriterion("serial_number =", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberNotEqualTo(Integer value) {
+            addCriterion("serial_number <>", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberGreaterThan(Integer value) {
+            addCriterion("serial_number >", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberGreaterThanOrEqualTo(Integer value) {
+            addCriterion("serial_number >=", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberLessThan(Integer value) {
+            addCriterion("serial_number <", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberLessThanOrEqualTo(Integer value) {
+            addCriterion("serial_number <=", value, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberIn(List<Integer> values) {
+            addCriterion("serial_number in", values, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberNotIn(List<Integer> values) {
+            addCriterion("serial_number not in", values, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberBetween(Integer value1, Integer value2) {
+            addCriterion("serial_number between", value1, value2, "serialNumber");
+            return (Criteria) this;
+        }
+
+        public Criteria andSerialNumberNotBetween(Integer value1, Integer value2) {
+            addCriterion("serial_number not between", value1, value2, "serialNumber");
+            return (Criteria) this;
+        }
+
         public Criteria andBisAssignIsNull() {
             addCriterion("bis_assign is null");
             return (Criteria) this;
@@ -2798,63 +2846,63 @@ public class ProjectInfoExample {
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberIsNull() {
-            addCriterion("serial_number is null");
+        public Criteria andBisAssessmentFinishIsNull() {
+            addCriterion("bis_assessment_finish is null");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberIsNotNull() {
-            addCriterion("serial_number is not null");
+        public Criteria andBisAssessmentFinishIsNotNull() {
+            addCriterion("bis_assessment_finish is not null");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberEqualTo(Integer value) {
-            addCriterion("serial_number =", value, "serialNumber");
+        public Criteria andBisAssessmentFinishEqualTo(Boolean value) {
+            addCriterion("bis_assessment_finish =", value, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberNotEqualTo(Integer value) {
-            addCriterion("serial_number <>", value, "serialNumber");
+        public Criteria andBisAssessmentFinishNotEqualTo(Boolean value) {
+            addCriterion("bis_assessment_finish <>", value, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberGreaterThan(Integer value) {
-            addCriterion("serial_number >", value, "serialNumber");
+        public Criteria andBisAssessmentFinishGreaterThan(Boolean value) {
+            addCriterion("bis_assessment_finish >", value, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberGreaterThanOrEqualTo(Integer value) {
-            addCriterion("serial_number >=", value, "serialNumber");
+        public Criteria andBisAssessmentFinishGreaterThanOrEqualTo(Boolean value) {
+            addCriterion("bis_assessment_finish >=", value, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberLessThan(Integer value) {
-            addCriterion("serial_number <", value, "serialNumber");
+        public Criteria andBisAssessmentFinishLessThan(Boolean value) {
+            addCriterion("bis_assessment_finish <", value, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberLessThanOrEqualTo(Integer value) {
-            addCriterion("serial_number <=", value, "serialNumber");
+        public Criteria andBisAssessmentFinishLessThanOrEqualTo(Boolean value) {
+            addCriterion("bis_assessment_finish <=", value, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberIn(List<Integer> values) {
-            addCriterion("serial_number in", values, "serialNumber");
+        public Criteria andBisAssessmentFinishIn(List<Boolean> values) {
+            addCriterion("bis_assessment_finish in", values, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberNotIn(List<Integer> values) {
-            addCriterion("serial_number not in", values, "serialNumber");
+        public Criteria andBisAssessmentFinishNotIn(List<Boolean> values) {
+            addCriterion("bis_assessment_finish not in", values, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberBetween(Integer value1, Integer value2) {
-            addCriterion("serial_number between", value1, value2, "serialNumber");
+        public Criteria andBisAssessmentFinishBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_assessment_finish between", value1, value2, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
-        public Criteria andSerialNumberNotBetween(Integer value1, Integer value2) {
-            addCriterion("serial_number not between", value1, value2, "serialNumber");
+        public Criteria andBisAssessmentFinishNotBetween(Boolean value1, Boolean value2) {
+            addCriterion("bis_assessment_finish not between", value1, value2, "bisAssessmentFinish");
             return (Criteria) this;
         }
 
@@ -3056,9 +3104,6 @@ public class ProjectInfoExample {
         }
     }
 
-    /**
-     * tb_project_info
-     */
     public static class Criterion {
         private String condition;
 

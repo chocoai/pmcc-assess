@@ -19,6 +19,7 @@ import com.copower.pmcc.bpm.api.enums.ProcessStatusEnum;
 import com.copower.pmcc.bpm.api.exception.BpmException;
 import com.copower.pmcc.bpm.api.provider.BpmRpcBoxService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.api.enums.HttpReturnEnum;
@@ -65,6 +66,8 @@ public class ProjectSpotCheckService {
     private ProjectPlanDetailsService projectPlanDetailsService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
+    @Autowired
+    private ChksRpcAssessmentPerformanceService performanceService;
 
 
     public ProjectSpotCheckVo getSpotCheckVoById(Integer id) {
@@ -211,6 +214,28 @@ public class ProjectSpotCheckService {
 
     public ProjectSpotCheckItem getProjectSpotCheckItemById(Integer id) {
         return projectSpotCheckDao.getProjectSpotCheckItemById(id);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteSpotCheckById(Integer spotId) {
+        if (spotId == null || spotId <= 0) return;
+        ProjectSpotCheckItem itenWhere = new ProjectSpotCheckItem();
+        itenWhere.setSpotId(spotId);
+        List<ProjectSpotCheckItem> itemList = projectSpotCheckDao.getProjectSpotCheckItemList(itenWhere);
+        if (CollectionUtils.isNotEmpty(itemList)) {
+            List<ProjectSpotCheckItemScore> scores = projectSpotCheckDao.getSpotCheckItemScoreListByItemIds(LangUtils.transform(itemList, o -> o.getId()));
+            if (CollectionUtils.isNotEmpty(scores)) {
+                scores.forEach(o -> projectSpotCheckDao.deleteSpotCheckItemScoreById(o.getId()));
+            }
+            itemList.forEach(o -> projectSpotCheckDao.deleteSpotCheckItemById(o.getId()));
+        }
+        projectSpotCheckDao.deleteSpotCheckById(spotId);
+
+        //删除关联到该批次的考核抽查数据
+        List<AssessmentPerformanceDto> performanceDtos = performanceService.getPerformancesBySpotBatchIds(Lists.newArrayList(spotId));
+        if(CollectionUtils.isNotEmpty(performanceDtos)){
+            performanceService.deletePerformanceByIds(LangUtils.transform(performanceDtos,o->o.getId()));
+        }
     }
 
     /**

@@ -162,12 +162,16 @@
         cols.push({
             field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
                 var str = '';
-                if(row.status=='draft'){
+                if (row.status == 'draft') {
                     str += '<button type="button" onclick="fillInfo(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="继续填写">';
                     str += '<i class="fa fa-pen"></i>';
                     str += '</button>';
+
+                    str += '<button type="button" onclick="deleteInfo(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-warning  btn-xs tooltips"  data-placement="bottom" data-original-title="删除">';
+                    str += '<i class="fa fa-minus"></i>';
+                    str += '</button>';
                 }
-                str += '<button type="button" onclick="viewDetail(' + row.id + ',\''+row.processInsId+'\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                str += '<button type="button" onclick="viewDetail(' + row.id + ',\'' + row.processInsId + '\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
                 return str;
@@ -237,12 +241,28 @@
 
     //继续填写
     function fillInfo(id) {
-        window.open('${pageContext.request.contextPath}/projectSpotCheck/apply?spotId=' + id)
+        window.open('${pageContext.request.contextPath}/projectSpotCheck/apply?spotId=' + id);
+    }
+
+    //删除
+    function deleteInfo(id) {
+        AlertConfirm("确认要删除么", "删除后数据将无法恢复", function () {
+            Loading.progressShow();
+            $.post('${pageContext.request.contextPath}/projectSpotCheck/deleteSpotCheckById', {spotId: id}, function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    notifySuccess("成功", "删除数据成功");
+                    loadProjectSpotCheckList();
+                } else {
+                    AlertError("删除数据失败，失败原因:" + result.errmsg);
+                }
+            })
+        })
     }
 
     //查看详情
     function viewDetail(id) {
-        window.open('${pageContext.request.contextPath}/projectSpotCheck/detail?spotId=' + id)
+        window.open('${pageContext.request.contextPath}/projectSpotCheck/detail?spotId=' + id);
     }
 
 
