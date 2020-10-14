@@ -962,7 +962,7 @@ public final class GenerateReportAssembleHelp {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalInfo(true));
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PrincipalIdNumber.getName(), name)) {
-            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalIdNumber());
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getPrincipalIdNumber());
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_RightType_Desc.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandRightTypeDesc());
@@ -994,6 +994,12 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_USE_MATERIAL.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_OpenTime.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_SurveyExplore_TYPE.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_NATURE.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }
@@ -1011,6 +1017,12 @@ public final class GenerateReportAssembleHelp {
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_JudgeObjectSheet.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandEnumJudgeObjectSheet());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_RegionalFactorsDesc.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegionalFactorsDescSheet());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_IndividualFactorsDesc.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getIndividualFactorsDescSheet());
         }
         return false;
     }

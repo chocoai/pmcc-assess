@@ -31,6 +31,7 @@ public class BasicExamineHandle implements Serializable {
     private BasicHouseService basicHouseService;
     private BasicHouseTradingService basicHouseTradingService;
     private BasicHouseFaceStreetService basicHouseFaceStreetService;
+    private BasicHouseWaterService basicHouseWaterService;
 
     private BasicEstateService basicEstateService;
     private BasicEstateNetworkService basicEstateNetworkService;
@@ -43,6 +44,7 @@ public class BasicExamineHandle implements Serializable {
     private BasicMatchingEnvironmentService basicMatchingEnvironmentService;
     private BasicEstateLandStateService basicEstateLandStateService;
     private BasicEstateParkingService basicEstateParkingService;
+    private BasicMatchingMaterialService basicMatchingMaterialService;
     private BasicUnitService basicUnitService;
     private BasicApplyBatch basicApplyBatch;
     private List<BasicApplyBatchDetail> basicApplyBatchDetailList;
@@ -63,6 +65,10 @@ public class BasicExamineHandle implements Serializable {
 
     public List<BasicMatchingEducation> getBasicMatchingEducatioListn() {
         return basicMatchingEducationService.getBasicMatchingEducationList(getEstate().getId());
+    }
+
+    public List<BasicMatchingMaterial> getBasicMatchingMaterialList() {
+        return basicMatchingMaterialService.getListByEstateId(getEstate().getId());
     }
 
     public List<BasicMatchingEnvironmentVo> getBasicMatchingEnvironmentList() {
@@ -207,6 +213,15 @@ public class BasicExamineHandle implements Serializable {
         return list;
     }
 
+    public List<BasicHouseWater> getBasicHouseWaterAllList(){
+        List<BasicHouseWater> list = new ArrayList<>() ;
+        List<BasicHouse> basicHouseList = getBasicHouseAll();
+        for (BasicHouse basicHouse:basicHouseList){
+            list.addAll(basicHouseWaterService.getBasicHouseWaterList(basicHouse.getId())) ;
+        }
+        return list;
+    }
+
     public class BasicEstateVoAndLandStateVo implements Serializable {
         private BasicEstateVo basicEstateVo;
         private BasicEstateLandStateVo basicEstateLandStateVo;
@@ -286,6 +301,8 @@ public class BasicExamineHandle implements Serializable {
         this.basicUnitService = SpringContextUtils.getBean(BasicUnitService.class);
         this.basicEstateParkingService = SpringContextUtils.getBean(BasicEstateParkingService.class);
         this.basicMatchingEducationService = SpringContextUtils.getBean(BasicMatchingEducationService.class);
+        this.basicMatchingMaterialService = SpringContextUtils.getBean(BasicMatchingMaterialService.class);
+        this.basicHouseWaterService = SpringContextUtils.getBean(BasicHouseWaterService.class);
     }
 
     private List<BasicApplyBatchDetail> getBasicApplyBatchDetailList() {
