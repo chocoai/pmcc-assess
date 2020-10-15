@@ -5,9 +5,7 @@
 <head>
     <title>${caseFuniHouses.lpmc}</title>
     <%@include file="/views/share/main_css.jsp" %>
-
 </head>
-
 <body class="nav-md footer_fixed">
 <div class="container body">
     <div class="main_container">
