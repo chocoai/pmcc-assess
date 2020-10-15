@@ -31,6 +31,7 @@ public enum ReportFieldEnum implements Serializable {
     rentalPossessionDesc("出租或占用情况"),
     HouseType("房产类型"),
 
+    JudgeObjectWeights("委估对象号权重"),
     JudgeObjectNumber("委估对象号"),
     JudgeBuildResultSurveySheet("估价结果一览表"),
     JudgeObjectFactorSheet("估价对象因素表"),
@@ -49,6 +50,7 @@ public enum ReportFieldEnum implements Serializable {
     DeterminationMarketValueValuationObject("估价对象市场价值的确定"),
 
     SelectionValuationMethod("估价对象选择估价方法"),
+    SelectionValuationMethodFoundation("选择估价方法的依据"),
     NotSelectionValuationMethod("估价对象不选择估价方法"),
     EvaluationMethodResult("分类评估方法结果"),
 
@@ -80,6 +82,8 @@ public enum ReportFieldEnum implements Serializable {
     ENUM_TAX_RISK("税收风险"),//模板
 
 
+    AssetInventoryFile("清查证明文件"),
+    DeclareRecordFile("申报证书复印件"),
     JudgeObjectPrincipalCopySheet("估价委托书复印件"),
     EstimatedObjectLocationDiagram("估价对象位置示意图"),
     Valuation_Target_Live_Photos("估价对象实况照片"),

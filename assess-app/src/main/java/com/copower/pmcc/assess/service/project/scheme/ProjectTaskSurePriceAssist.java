@@ -77,7 +77,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         try {
             surePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId());
             modelAndView.addObject("surePriceItemList", surePriceItemList);
-        } catch (BusinessException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(),e);
         }
         modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getVoListByPid(projectPlanDetails.getJudgeObjectId()));
@@ -118,7 +118,7 @@ public class ProjectTaskSurePriceAssist implements ProjectTaskInterface {
         try {
             surePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(projectPlanDetails.getJudgeObjectId());
             modelAndView.addObject("surePriceItemList", surePriceItemList);
-        } catch (BusinessException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(),e);
         }
         modelAndView.addObject("subJudgeObjectList", schemeJudgeObjectService.getVoListByPid(projectPlanDetails.getJudgeObjectId()));

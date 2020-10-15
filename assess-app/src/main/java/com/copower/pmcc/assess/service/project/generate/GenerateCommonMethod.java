@@ -14,9 +14,12 @@ import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
+import com.copower.pmcc.assess.service.method.MdCostApproachService;
+import com.copower.pmcc.assess.service.method.MdDevelopmentService;
+import com.copower.pmcc.assess.service.method.MdMarketCostService;
 import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
-import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
@@ -35,12 +38,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -88,12 +87,37 @@ public class GenerateCommonMethod {
     private GenerateReportGroupService generateReportGroupService;
     @Autowired
     private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
+    @Autowired
+    private MdMarketCostService mdMarketCostService;
+    @Autowired
+    private MdDevelopmentService mdDevelopmentService;
+    @Autowired
+    private MdBaseLandPriceService mdBaseLandPriceService;
+    @Autowired
+    private MdCostApproachService mdCostApproachService;
+
 
     public static final String SchemeJudgeObjectName = "委估对象";
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    public SurveyAssetInfoGroupService getSurveyAssetInfoGroupService(){
-        return surveyAssetInfoGroupService ;
+    public MdCostApproachService getMdCostApproachService() {
+        return mdCostApproachService;
+    }
+
+    public MdBaseLandPriceService getMdBaseLandPriceService() {
+        return mdBaseLandPriceService;
+    }
+
+    public MdMarketCostService getMdMarketCostService() {
+        return mdMarketCostService;
+    }
+
+    public MdDevelopmentService getMdDevelopmentService() {
+        return mdDevelopmentService;
+    }
+
+    public SurveyAssetInfoGroupService getSurveyAssetInfoGroupService() {
+        return surveyAssetInfoGroupService;
     }
 
     public SurveyAssetInfoItemService getSurveyAssetInfoItemService() {
