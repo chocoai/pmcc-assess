@@ -242,7 +242,7 @@ public class SchemeSurePriceService {
         return surePriceItemList;
     }
 
-    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId) throws BusinessException {
+    public List<SchemeSurePriceItem> getSchemeSurePriceItemList(Integer judgeObjectId)  {
         if (judgeObjectId == null) {
             return null;
         }

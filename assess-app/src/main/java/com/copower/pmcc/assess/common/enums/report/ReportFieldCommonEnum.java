@@ -34,6 +34,7 @@ public enum ReportFieldCommonEnum implements Serializable {
     CommonValuationProjectName("公共估价项目名称"),
     CommonPracticalUse("公共实际用途"),
     CommonEvaluationMethod("公共评估方法"),
+    CommonEvaluationMethodValue("公共评估方法值"),
     CommonHomeWorkEndTime("公共作业结束时间"),
     CommonHomeWorkStartTime("公共作业开始时间"),
     CommonInvestigationsStartDate("公共现场查勘开始日期"),

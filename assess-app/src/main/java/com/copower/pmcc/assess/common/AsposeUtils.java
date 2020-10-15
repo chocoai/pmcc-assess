@@ -26,6 +26,7 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * Created by kings on 2018-6-6.
@@ -718,9 +719,10 @@ public class AsposeUtils {
                 builder.insertCell();
                 //多个值进行合并
                 Collection<String> values = map.values();
-                String value = CollectionUtils.isNotEmpty(values) ? StringUtils.join(values, ",") : "";
+                String value = CollectionUtils.isNotEmpty(values) ? StringUtils.join(values.stream().distinct().collect(Collectors.toList()), ",") : "";
                 builder.write(value);
             }
+            builder.endRow();
         }
         builder.endTable();
     }

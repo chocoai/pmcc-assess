@@ -333,6 +333,10 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldCommonEnum.CommonEvaluationMethod.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethod());
         }
+        //公共评估方法值
+        if (Objects.equal(ReportFieldCommonEnum.CommonEvaluationMethodValue.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethodValue());
+        }
 
         //价值时点
         if (Objects.equal(ReportFieldCommonEnum.CommonValueTimePoint.getName(), name)) {
@@ -425,6 +429,9 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldEnum.JudgeObjectNumber.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectNumberMethod());
         }
+        if (Objects.equal(ReportFieldEnum.JudgeObjectWeights.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getJudgeObjectWeights());
+        }
         //财产范围说明
         if (Objects.equal(ReportFieldEnum.ScopePropertyExplain.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getScopePropertyExplain());
@@ -444,6 +451,13 @@ public final class GenerateReportAssembleHelp {
         //分类评估方法结果
         if (Objects.equal(ReportFieldEnum.EvaluationMethodResult.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethodResult());
+        }
+        //清查资料
+        if (Objects.equal(ReportFieldEnum.AssetInventoryFile.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getAssetInventoryFile());
+        }
+        if (Objects.equal(ReportFieldEnum.DeclareRecordFile.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getDeclareRecordFile());
         }
         //估价委托书复印件
         if (Objects.equal(ReportFieldEnum.JudgeObjectPrincipalCopySheet.getName(), name)) {
@@ -513,6 +527,9 @@ public final class GenerateReportAssembleHelp {
         //估价对象不适用的估价方法
         if (Objects.equal(ReportFieldEnum.NotSelectionValuationMethod.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getNotSelectionValuationMethod());
+        }
+        if (Objects.equal(ReportFieldEnum.SelectionValuationMethodFoundation.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getSelectionValuationMethodFoundation());
         }
         //变现分析税费
         if (Objects.equal(ReportFieldEnum.LIQUIDATION_ANALYSIS.getName(), name)) {
@@ -1039,6 +1056,9 @@ public final class GenerateReportAssembleHelp {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_OpenTime.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_CERTIFICATE_CONTRACT.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_SurveyExplore_TYPE.getName(), name)) {

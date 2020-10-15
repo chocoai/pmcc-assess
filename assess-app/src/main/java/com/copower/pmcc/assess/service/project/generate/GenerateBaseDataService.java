@@ -501,7 +501,7 @@ public class GenerateBaseDataService {
                 stringBuilder.append(idCard);
             }
         }
-        return StringUtils.isNotBlank(stringBuilder.toString()) ?stringBuilder.toString():errorStr;
+        return StringUtils.isNotBlank(stringBuilder.toString()) ? stringBuilder.toString() : errorStr;
     }
 
     /**
@@ -554,6 +554,32 @@ public class GenerateBaseDataService {
         } else {
             return errorStr;
         }
+    }
+
+    public String getJudgeObjectWeights() {
+        Map<Integer, String> map = Maps.newHashMap();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                List<SchemeSurePriceItem> schemeSurePriceItemList = schemeSurePriceService.getSchemeSurePriceItemList(schemeJudgeObject.getId());
+                if (CollectionUtils.isEmpty(schemeSurePriceItemList)) {
+                    continue;
+                }
+                List<String> stringList = new ArrayList<>();
+                for (SchemeSurePriceItem schemeSurePriceItem : schemeSurePriceItemList) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append(schemeSurePriceItem.getMethodName());
+                    stringBuilder.append("价格").append(AsposeUtils.getValue(schemeSurePriceItem.getTrialPrice()));
+                    if (schemeSurePriceItem.getWeight() != null) {
+                        stringBuilder.append("权重").append(ArithmeticUtils.getPercentileSystem(schemeSurePriceItem.getWeight(), 2));
+                    }
+                    stringList.add(stringBuilder.toString());
+                }
+                map.put(generateCommonMethod.parseIntJudgeNumber(schemeJudgeObject.getNumber()), StringUtils.join(stringList, "；"));
+            }
+        }
+        String s = generateCommonMethod.judgeEachDesc2(map, "", "。", false);
+        return s;
     }
 
     /**
@@ -1253,6 +1279,12 @@ public class GenerateBaseDataService {
                     }
                     break;
                 }
+                case LAND_ENUM_CERTIFICATE_CONTRACT: {
+                    List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
+                    if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
+                        value = "根据资料名称，生成“土地出证合同”" + attachmentDtoList.get(0).getFileName();
+                    }
+                }
                 case LAND_ENUM_USE_MATERIAL: {
                     if (declareRealtyRealEstateCert.getId() != null) {
                         if (declarePublicService.checkLandCertGetQuestion(declareRealtyRealEstateCert.getLandCertGetQuestion())) {
@@ -1355,7 +1387,7 @@ public class GenerateBaseDataService {
                     }
                     break;
                 }
-                case LAND_ENUM_FaceStreet_TYPE:{
+                case LAND_ENUM_FaceStreet_TYPE: {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
                         continue;
@@ -3201,6 +3233,115 @@ public class GenerateBaseDataService {
         return StringUtils.strip(stringBuilder.toString(), "，");
     }
 
+    public String getEvaluationMethodValue() throws Exception {
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        BaseDataDic baseDataDicINCOME = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME);
+        BaseDataDic baseDataDicCOST = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST);
+        BaseDataDic baseDataDicDEVELOPMENT = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_DEVELOPMENT);
+        BaseDataDic baseDataDicCOMPARE = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_MARKET_COMPARE);
+        BaseDataDic baseDataDicBASE_LAND_PRICE = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_BASE_LAND_PRICE);
+        BaseDataDic baseDataDicCOST_APPROACH = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_COST_APPROACH);
+        Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
+        List<String> stringList = new ArrayList<>();
+        while (iterator.hasNext()) {
+            SchemeJudgeObject judgeObject = iterator.next();
+            SchemeJudgeFunctionApplyDto functionApplyDto = schemeJudgeFunctionService.getJudgeFunction(judgeObject.getId());
+            if (functionApplyDto == null) {
+                continue;
+            }
+            if (CollectionUtils.isEmpty(functionApplyDto.getJudgeFunctions())) {
+                continue;
+            }
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(judgeObject));
+            List<SchemeJudgeFunction> judgeFunctions = functionApplyDto.getJudgeFunctions();
+            Iterator<SchemeJudgeFunction> functionIterator = judgeFunctions.iterator();
+            while (functionIterator.hasNext()) {
+                SchemeInfo schemeInfo = null;
+                SchemeJudgeFunction function = functionIterator.next();
+                if (function.getBisApplicable() == null || !function.getBisApplicable()) {
+                    continue;
+                }
+                //收益法
+                if (baseDataDicINCOME.getId().equals(function.getMethodType())) {
+                    schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), function.getMethodType());
+                    if (schemeInfo == null) {
+                        continue;
+                    }
+                    MdIncome mdIncome = mdIncomeService.getIncomeById(schemeInfo.getMethodDataId());
+                    if (mdIncome == null) {
+                        continue;
+                    }
+                    stringBuilder.append(function.getName()).append(AsposeUtils.getValue(mdIncome.getPrice())).append("元/㎡");
+                }
+                //成本法
+                if (baseDataDicCOST.getId().equals(function.getMethodType())) {
+                    schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), function.getMethodType());
+                    if (schemeInfo == null) {
+                        continue;
+                    }
+                    MdCost mdCost = generateCommonMethod.getMdMarketCostService().getByMdCostId(schemeInfo.getMethodDataId());
+                    if (mdCost == null) {
+                        continue;
+                    }
+                    stringBuilder.append(function.getName()).append(AsposeUtils.getValue(mdCost.getPrice())).append("元/㎡");
+                }
+                //假设开发法
+                if (baseDataDicDEVELOPMENT.getId().equals(function.getMethodType())) {
+                    schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), function.getMethodType());
+                    if (schemeInfo == null) {
+                        continue;
+                    }
+                    MdDevelopment development = generateCommonMethod.getMdDevelopmentService().getMdDevelopmentById(schemeInfo.getMethodDataId());
+                    if (development == null) {
+                        continue;
+                    }
+                    stringBuilder.append(function.getName()).append(AsposeUtils.getValue(development.getPrice())).append("元/㎡");
+                }
+                /**
+                 * 市场比较法
+                 */
+                if (baseDataDicCOMPARE.getId().equals(function.getMethodType())) {
+                    schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), function.getMethodType());
+                    if (schemeInfo == null) {
+                        continue;
+                    }
+                    MdMarketCompare mdMarketCompare = mdMarketCompareService.getMdMarketCompare(schemeInfo.getMethodDataId());
+                    if (mdMarketCompare == null) {
+                        continue;
+                    }
+                    stringBuilder.append(function.getName()).append(AsposeUtils.getValue(mdMarketCompare.getPrice())).append("元/㎡");
+                }
+                //基准地价修正法
+                if (baseDataDicBASE_LAND_PRICE.getId().equals(function.getMethodType())) {
+                    schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), function.getMethodType());
+                    if (schemeInfo == null) {
+                        continue;
+                    }
+                    MdBaseLandPrice singleObject = generateCommonMethod.getMdBaseLandPriceService().getSingleObject(schemeInfo.getMethodDataId());
+                    if (singleObject == null) {
+                        continue;
+                    }
+                    stringBuilder.append(function.getName()).append(AsposeUtils.getValue(singleObject.getFloorPremium())).append("元/㎡");
+                }
+                if (baseDataDicCOST_APPROACH.getId().equals(function.getMethodType())) {
+                    schemeInfo = schemeInfoService.getSchemeInfo(judgeObject.getId(), function.getMethodType());
+                    if (schemeInfo == null) {
+                        continue;
+                    }
+                    MdCostApproach singleObject = generateCommonMethod.getMdCostApproachService().getSingleObject(schemeInfo.getMethodDataId());
+                    if (singleObject == null) {
+                        continue;
+                    }
+                    stringBuilder.append(function.getName()).append(AsposeUtils.getValue(singleObject.getParcelUnit())).append("元/㎡");
+                }
+
+            }
+            stringList.add(stringBuilder.toString());
+        }
+        return StringUtils.join(stringList, "。");
+    }
+
     /**
      * 估价对象选择估价方法
      */
@@ -3346,6 +3487,45 @@ public class GenerateBaseDataService {
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(costContent))), false);
             if (StringUtils.isNotBlank(deveolpmentContent))
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(deveolpmentContent))), false);
+        }
+        doc.save(localPath);
+        return localPath;
+    }
+
+    public String getSelectionValuationMethodFoundation() throws Exception {
+        Document doc = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(doc);
+        generateCommonMethod.setDefaultDocumentBuilderSetting(builder);
+        String localPath = getLocalPath();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        Iterator<SchemeJudgeObject> iterator = schemeJudgeObjectList.iterator();
+        while (iterator.hasNext()) {
+            SchemeJudgeObject judgeObject = iterator.next();
+            SchemeJudgeFunctionApplyDto functionApplyDto = schemeJudgeFunctionService.getJudgeFunction(judgeObject.getId());
+            if (functionApplyDto == null) {
+                continue;
+            }
+            if (CollectionUtils.isEmpty(functionApplyDto.getJudgeFunctions())) {
+                continue;
+            }
+            StringBuffer stringBuffer = new StringBuffer();
+            stringBuffer.append(generateCommonMethod.getSchemeJudgeObjectShowName(judgeObject));
+            List<SchemeJudgeFunction> judgeFunctions = functionApplyDto.getJudgeFunctions();
+            Iterator<SchemeJudgeFunction> functionIterator = judgeFunctions.iterator();
+            while (functionIterator.hasNext()) {
+                SchemeJudgeFunction function = functionIterator.next();
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(function.getName());
+                if (function.getBisApplicable() != null) {
+                    if (function.getBisApplicable()) {
+                        stringBuilder.append("选择原因:").append(function.getApplicableReason());
+                    } else {
+                        stringBuilder.append("不选择原因:").append(function.getApplicableReason());
+                    }
+                }
+                stringBuffer.append(stringBuilder.toString());
+            }
+            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getIndentHtml(generateCommonMethod.trim(stringBuffer.toString()))), false);
         }
         doc.save(localPath);
         return localPath;
@@ -3718,7 +3898,7 @@ public class GenerateBaseDataService {
         DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
         String result = "";
         if (reportFieldEnum != null) {
-            result = dataReportAnalysisService.getReportNewLiquidity(this.projectInfo, areaId ,reportFieldEnum);
+            result = dataReportAnalysisService.getReportNewLiquidity(this.projectInfo, areaId, reportFieldEnum);
             if (StringUtils.isNotBlank(result)) {
                 builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
             }
@@ -3857,35 +4037,121 @@ public class GenerateBaseDataService {
         return s;
     }
 
-    protected String getLandInventoryDesc(){
+    protected String getAssetInventoryFile() throws Exception {
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        SurveyAssetInfoItemService surveyAssetInfoItemService = generateCommonMethod.getSurveyAssetInfoItemService();
+        SurveyAssetInventoryContentService surveyAssetInventoryContentService = generateCommonMethod.getSurveyAssetInventoryContentService();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<Integer> integerList = LangUtils.transform(schemeJudgeObjectList, obj -> obj.getDeclareRecordId());
+        List<SurveyAssetInfoItem> surveyAssetInfoItemList = surveyAssetInfoItemService.getSurveyAssetInfoItemLikeList(integerList);
+        List<Map<String, String>> imgList = new ArrayList<>();
+        for (SurveyAssetInfoItem surveyAssetInfoItem : surveyAssetInfoItemList) {
+            List<SchemeJudgeObject> schemeJudgeObjects = LangUtils.filter(schemeJudgeObjectList, obj -> obj.getDeclareRecordId().equals(surveyAssetInfoItem.getDeclareId()));
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjects.get(0);
+//            builder.insertHtml(generateCommonMethod.getWarpCssHtml(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject)));
+            List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getInventoryContentListByItemId(surveyAssetInfoItem.getId());
+            if (CollectionUtils.isNotEmpty(surveyAssetInventoryContents)) {
+                for (SurveyAssetInventoryContent surveyAssetInventoryContent : surveyAssetInventoryContents) {
+                    if (com.google.common.base.Objects.equal("不一致", surveyAssetInventoryContent.getAreConsistent())) {
+                        List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(surveyAssetInventoryContent.getId(), null, FormatUtils.entityNameConvertToTableName(SurveyAssetInventoryContent.class));
+                        if (CollectionUtils.isEmpty(attachmentDtoList)) {
+                            continue;
+                        }
+                        String format = surveyAssetInventoryContent.getCredential();
+                        Map<String, String> map = new HashMap<>();
+                        for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
+                            try {
+                                String ftpFileToLocal = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                                if (FileUtils.checkImgSuffix(ftpFileToLocal)) {
+                                    map.put(ftpFileToLocal, format);
+                                }
+                            } catch (Exception e) {
+                                logger.error(e.getMessage(), e);
+                            }
+                        }
+                        if (map.isEmpty()) {
+                            continue;
+                        }
+                        imgList.add(map);
+                    }
+                }
+            }
+        }
+        AsposeUtils.imageInsertToWord(imgList, 2, builder);
+        document.save(localPath);
+        return localPath;
+    }
+
+
+    protected String getDeclareRecordFile() throws Exception {
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<Integer> integerList = LangUtils.transform(schemeJudgeObjectList, obj -> obj.getDeclareRecordId());
+        List<Map<String, String>> imgList = new ArrayList<>();
+        List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordListByIds(integerList);
+        if (CollectionUtils.isNotEmpty(declareRecordList)) {
+            for (DeclareRecord declareRecord:declareRecordList){
+                List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
+                if (CollectionUtils.isEmpty(attachmentDtoList)) {
+                    continue;
+                }
+                String recordName = declareRecord.getName();
+                Map<String, String> map = new HashMap<>();
+                for (SysAttachmentDto sysAttachmentDto : attachmentDtoList) {
+                    try {
+                        String ftpFileToLocal = baseAttachmentService.downloadFtpFileToLocal(sysAttachmentDto.getId());
+                        if (FileUtils.checkImgSuffix(ftpFileToLocal)) {
+                            map.put(ftpFileToLocal, recordName);
+                        }
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+                if (map.isEmpty()) {
+                    continue;
+                }
+                imgList.add(map);
+            }
+        }
+        AsposeUtils.imageInsertToWord(imgList, 2, builder);
+        document.save(localPath);
+        return localPath;
+    }
+
+
+    protected String getLandInventoryDesc() {
         SurveyAssetInfoItemService surveyAssetInfoItemService = generateCommonMethod.getSurveyAssetInfoItemService();
         SurveyAssetInventoryContentService surveyAssetInventoryContentService = generateCommonMethod.getSurveyAssetInventoryContentService();
         SurveyAssetInfoGroupService surveyAssetInfoGroupService = generateCommonMethod.getSurveyAssetInfoGroupService();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
         List<Integer> integerList = LangUtils.transform(schemeJudgeObjectList, obj -> obj.getDeclareRecordId());
         List<SurveyAssetInfoItem> surveyAssetInfoItemList = surveyAssetInfoItemService.getSurveyAssetInfoItemLikeList(integerList);
-        List<String> stringList = new ArrayList<>(surveyAssetInfoItemList.size()) ;
-        for (SurveyAssetInfoItem surveyAssetInfoItem:surveyAssetInfoItemList){
+        List<String> stringList = new ArrayList<>(surveyAssetInfoItemList.size());
+        for (SurveyAssetInfoItem surveyAssetInfoItem : surveyAssetInfoItemList) {
             List<SchemeJudgeObject> schemeJudgeObjects = LangUtils.filter(schemeJudgeObjectList, obj -> obj.getDeclareRecordId().equals(surveyAssetInfoItem.getDeclareId()));
-            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjects.get(0) ;
-            StringBuilder stringBuilder = new StringBuilder() ;
-            stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject)) ;
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjects.get(0);
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
             List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getInventoryContentListByItemId(surveyAssetInfoItem.getId());
             if (CollectionUtils.isNotEmpty(surveyAssetInventoryContents)) {
-                List<String> strings = new ArrayList<>() ;
+                List<String> strings = new ArrayList<>();
                 for (SurveyAssetInventoryContent surveyAssetInventoryContent : surveyAssetInventoryContents) {
-                    if (com.google.common.base.Objects.equal("不一致", surveyAssetInventoryContent.getAreConsistent())){
-                        String x1 = String.format("%s%s" ,"清查内容:" ,baseDataDicService.getNameById(surveyAssetInventoryContent.getInventoryContent())) ;
-                        String x2 = String.format("%s%s" ,"清查原因:" ,baseDataDicService.getNameById(surveyAssetInventoryContent.getDifferenceReason())) ;
-                        strings.add(String.format("%s %s",x1,x2)) ;
+                    if (com.google.common.base.Objects.equal("不一致", surveyAssetInventoryContent.getAreConsistent())) {
+                        String x1 = String.format("%s%s", "清查内容:", baseDataDicService.getNameById(surveyAssetInventoryContent.getInventoryContent()));
+                        String x2 = String.format("%s%s", "清查原因:", baseDataDicService.getNameById(surveyAssetInventoryContent.getDifferenceReason()));
+                        strings.add(String.format("%s %s", x1, x2));
                     }
                 }
-                stringBuilder.append(StringUtils.join(strings, "。" )) ;
+                stringBuilder.append(StringUtils.join(strings, "。"));
             }
-            stringList.add(stringBuilder.toString()) ;
+            stringList.add(stringBuilder.toString());
         }
-        String value = StringUtils.join(stringList ," ") ;
-        return StringUtils.isNotBlank(value) ?value:errorStr;
+        String value = StringUtils.join(stringList, " ");
+        return StringUtils.isNotBlank(value) ? value : errorStr;
     }
 
     /**
