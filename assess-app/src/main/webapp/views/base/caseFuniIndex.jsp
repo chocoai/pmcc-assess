@@ -4,10 +4,7 @@
 <head>
     <%@include file="/views/share/main_css.jsp" %>
 </head>
-
-
 <body>
-
 <div class="wrapper">
     <%@include file="/views/share/main_navigation.jsp" %>
     <%@include file="/views/share/main_head.jsp" %>
