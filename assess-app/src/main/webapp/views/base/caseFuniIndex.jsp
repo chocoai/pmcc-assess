@@ -30,11 +30,9 @@
                                         <div class="input-group">
                                             <input type="text" id="txt_house_search" class="form-control"
                                                    placeholder="案例查询">
-                                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" onclick="loadHouseListAjax(1)">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
+                                            <span class="input-group-btn"><button class="btn btn-default" type="button"
+                                                                                  onclick="loadHouseListAjax(1)"><i
+                                                    class="fa fa-search"></i></button></span>
                                         </div>
                                     </div>
                                 </div>
@@ -45,7 +43,7 @@
                                                 onclick="updateFuni()">
                                             更新楼盘
                                         </button>
-                                        <button  style="margin-left: 5px"
+                                        <button style="margin-left: 5px"
                                                 class="btn btn-success btn-sm" type="button"
                                                 data-toggle="modal" onclick="addHouse()"
                                                 href="#model_house">
@@ -232,8 +230,7 @@
                     };
 
                     element.bootstrapPaginator(options);
-                }
-                else {
+                } else {
                     $("#div_house_list").html("<h3>没有找到合适的案例信息.</h3>");
                     $(element).hide();
                 }
@@ -261,8 +258,7 @@
                     Loading.progressHide();
                     if (result.ret) {
                         notifySuccess("成功", "删除数据成功");
-                    }
-                    else {
+                    } else {
                         AlertError("刷新数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -292,8 +288,7 @@
                     $('#model_house').modal('hide');
                     AlertSuccess("成功", "数据已成功保存到数据库");
                     loadHouseListAjax(1);
-                }
-                else {
+                } else {
                     AlertError("保存数据失败，失败原因:" + result.errmsg);
                 }
             },
