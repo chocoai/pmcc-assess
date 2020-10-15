@@ -6,6 +6,8 @@ import com.aspose.words.Table;
 import com.copower.pmcc.ad.api.dto.AdCompanyQualificationDto;
 import com.copower.pmcc.ad.api.dto.AdPersonalQualificationDto;
 import com.copower.pmcc.assess.common.*;
+import com.copower.pmcc.assess.common.AsposeUtils;
+import com.copower.pmcc.assess.common.FileUtils;
 import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.common.enums.basic.*;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
@@ -53,10 +55,7 @@ import com.copower.pmcc.erp.api.dto.SysUserDto;
 import com.copower.pmcc.erp.api.provider.ErpRpcToolsService;
 import com.copower.pmcc.erp.api.provider.ErpRpcUserService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.copower.pmcc.erp.common.utils.FormatUtils;
-import com.copower.pmcc.erp.common.utils.LangUtils;
-import com.copower.pmcc.erp.common.utils.SpringContextUtils;
+import com.copower.pmcc.erp.common.utils.*;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
 import com.github.pagehelper.StringUtil;
 import com.google.common.base.Objects;
@@ -3711,6 +3710,23 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+
+    public String getReportNewLiquidity(ReportFieldEnum reportFieldEnum) throws Exception {
+        String localPath = getLocalPath();
+        Document document = new Document();
+        AsposeUtils.saveWord(localPath, document);
+        DocumentBuilder builder = getDefaultDocumentBuilderSetting(document);
+        String result = "";
+        if (reportFieldEnum != null) {
+            result = dataReportAnalysisService.getReportNewLiquidity(this.projectInfo, areaId ,reportFieldEnum);
+            if (StringUtils.isNotBlank(result)) {
+                builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
+            }
+        }
+        AsposeUtils.saveWord(localPath, document);
+        return localPath;
+    }
+
     /**
      * 变现能力分析小微快贷
      *
@@ -3841,6 +3857,37 @@ public class GenerateBaseDataService {
         return s;
     }
 
+    protected String getLandInventoryDesc(){
+        SurveyAssetInfoItemService surveyAssetInfoItemService = generateCommonMethod.getSurveyAssetInfoItemService();
+        SurveyAssetInventoryContentService surveyAssetInventoryContentService = generateCommonMethod.getSurveyAssetInventoryContentService();
+        SurveyAssetInfoGroupService surveyAssetInfoGroupService = generateCommonMethod.getSurveyAssetInfoGroupService();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<Integer> integerList = LangUtils.transform(schemeJudgeObjectList, obj -> obj.getDeclareRecordId());
+        List<SurveyAssetInfoItem> surveyAssetInfoItemList = surveyAssetInfoItemService.getSurveyAssetInfoItemLikeList(integerList);
+        List<String> stringList = new ArrayList<>(surveyAssetInfoItemList.size()) ;
+        for (SurveyAssetInfoItem surveyAssetInfoItem:surveyAssetInfoItemList){
+            List<SchemeJudgeObject> schemeJudgeObjects = LangUtils.filter(schemeJudgeObjectList, obj -> obj.getDeclareRecordId().equals(surveyAssetInfoItem.getDeclareId()));
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjects.get(0) ;
+            StringBuilder stringBuilder = new StringBuilder() ;
+            stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject)) ;
+            List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getInventoryContentListByItemId(surveyAssetInfoItem.getId());
+            if (CollectionUtils.isNotEmpty(surveyAssetInventoryContents)) {
+                List<String> strings = new ArrayList<>() ;
+                for (SurveyAssetInventoryContent surveyAssetInventoryContent : surveyAssetInventoryContents) {
+                    if (com.google.common.base.Objects.equal("不一致", surveyAssetInventoryContent.getAreConsistent())){
+                        String x1 = String.format("%s%s" ,"清查内容:" ,baseDataDicService.getNameById(surveyAssetInventoryContent.getInventoryContent())) ;
+                        String x2 = String.format("%s%s" ,"清查原因:" ,baseDataDicService.getNameById(surveyAssetInventoryContent.getDifferenceReason())) ;
+                        strings.add(String.format("%s %s",x1,x2)) ;
+                    }
+                }
+                stringBuilder.append(StringUtils.join(strings, "。" )) ;
+            }
+            stringList.add(stringBuilder.toString()) ;
+        }
+        String value = StringUtils.join(stringList ," ") ;
+        return StringUtils.isNotBlank(value) ?value:errorStr;
+    }
+
     /**
      * 他项权力
      *
@@ -3871,6 +3918,7 @@ public class GenerateBaseDataService {
         }
         return map;
     }
+
 
     /**
      * 他权类别

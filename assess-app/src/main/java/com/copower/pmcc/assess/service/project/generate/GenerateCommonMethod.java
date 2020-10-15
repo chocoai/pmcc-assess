@@ -18,10 +18,7 @@ import com.copower.pmcc.assess.service.project.SchemeReportFileService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoItemService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInfoService;
-import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryContentService;
-import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.assess.service.project.survey.*;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.*;
@@ -78,8 +75,6 @@ public class GenerateCommonMethod {
     @Autowired
     private SchemeReportFileService schemeReportFileService;
     @Autowired
-    private SurveyAssetInfoService surveyAssetInfoService;
-    @Autowired
     private SurveyAssetInfoItemService surveyAssetInfoItemService;
     @Autowired
     private BasicApplyBatchService basicApplyBatchService;
@@ -91,9 +86,23 @@ public class GenerateCommonMethod {
     private BasicEstateService basicEstateService;
     @Autowired
     private GenerateReportGroupService generateReportGroupService;
+    @Autowired
+    private SurveyAssetInfoGroupService surveyAssetInfoGroupService;
 
     public static final String SchemeJudgeObjectName = "委估对象";
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    public SurveyAssetInfoGroupService getSurveyAssetInfoGroupService(){
+        return surveyAssetInfoGroupService ;
+    }
+
+    public SurveyAssetInfoItemService getSurveyAssetInfoItemService() {
+        return surveyAssetInfoItemService;
+    }
+
+    public SurveyAssetInventoryContentService getSurveyAssetInventoryContentService() {
+        return surveyAssetInventoryContentService;
+    }
 
 
     //房地产总价

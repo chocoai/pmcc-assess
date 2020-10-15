@@ -36,6 +36,9 @@ public enum ReportFieldLandEnum {
     LAND_ENUM_FaceStreet_TYPE("土地临街状况类型"),
     LAND_ENUM_RegionalFactorsDesc("土地区域因素描述"),
     LAND_ENUM_IndividualFactorsDesc("土地个别因素描述"),
+    LAND_ENUM_Asset_InventoryDesc("土地资产清查描述"),
+
+
     ;
     private String name;
     private ReportFieldLandEnum(String name) {

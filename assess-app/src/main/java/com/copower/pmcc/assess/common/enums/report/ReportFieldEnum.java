@@ -65,6 +65,20 @@ public enum ReportFieldEnum implements Serializable {
     ANALYSIS_CATEGORY_RISK("风险提示"),
     ReportArea("出具报告区域"),
 
+    ENUM_CITY_RESOURCE_STATUS("城市资源状况"),//模板 （按区、县、或扩大区域护模板，定期修改）
+    ENUM_REAL_ESTATE_SYSTEM("房地产制度"),//模板 （按省级行政区护模板，定期修改）
+    ENUM_land_MARKET_CONDITION("地产状况"),//模板 （按区、县、或扩大区域护模板，定期修改）
+    ENUM_HOUSE_MARKET_CONDITION("房地产状况"),//模板 （按区、县、或扩大区域护模板，定期修改）
+    ENUM_INDUSTRIAL_POLICY("产业政策"),//模板 （按区、县、或扩大区域护模板，定期修改）
+    ENUM_TAX_POLICY("税收政策"),//模板 （按省级行政区护模板，定期修改）
+    ENUM_FINANCIAL_POLICY("金融政策"),//模板 （按省级行政区护模板，定期修改）
+    ENUM_URBAN_PLANNING_DEVELOPMENT_GOALS("城市规划与发展目标"),//模板 （按区、县、或扩大区域护模板，定期修改）
+    ENUM_URBAN_SOCIAL_ECONOMIC_DEVELOPMENT("城市社会经济发展状况"),//模板 （按区、县、或扩大区域护模板，定期修改）
+    ENUM_SUMMARY_GENERAL_FACTORS("一般因素总结"),//模板
+    ENUM_MARKET_RISK("市场风险"),//模板 ${市场风险，区（县）或扩大的区（县）市设模板}
+    ENUM_REALIZATION_RISK("变现风险"),//模板
+    ENUM_TAX_RISK("税收风险"),//模板
+
 
     JudgeObjectPrincipalCopySheet("估价委托书复印件"),
     EstimatedObjectLocationDiagram("估价对象位置示意图"),
