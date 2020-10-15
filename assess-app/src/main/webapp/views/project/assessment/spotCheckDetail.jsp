@@ -69,49 +69,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="card p-3">
-                                    <div class="d-flex align-items-center">
-									<span class="stamp stamp-md bg-success mr-3">
-										<i class="fas fa-cannabis"></i>
-									</span>
-                                        <div>
-                                            <h5 class="mb-1"><b><a>${projectSpotCheck.planDetailsCount}</a></b></h5>
-                                            <small class="text-muted">本月事项完成数</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="card p-3">
-                                    <div class="d-flex align-items-center">
-									<span class="stamp stamp-md bg-success mr-3">
-									<i class="fa fa-fire"></i>
-									</span>
-                                        <div>
-                                            <h5 class="mb-1"><b><a>【${projectSpotCheck.workHourScore}】【${projectSpotCheck.workHourStandardScore}】【${projectSpotCheck.workHourRatio}】</a></b></h5>
-                                            <small class="text-muted">工时得分情况</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-lg-3">
-                                <div class="card p-3">
-                                    <div class="d-flex align-items-center">
-									<span class="stamp stamp-md bg-success mr-3">
-									<i class="fa fa-fire"></i>
-									</span>
-                                        <div>
-                                            <h5 class="mb-1"><b><a>【${projectSpotCheck.qualityScore}】【${projectSpotCheck.qualityStandardScore}】【${projectSpotCheck.qualityRatio}】</a></b></h5>
-                                            <small class="text-muted">质量得分情况</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <%@include file="/views/share/form_approval.jsp" %>
                 </div>
             </div>
@@ -180,14 +137,14 @@
         cols.push({field: 'businessKey', title: '名称', width: '20%'});
         cols.push({field: 'byExaminePeopleName', title: '被抽查人', width: '10%'});
         cols.push({
-            field: 'examineScore', title: '得分/标准分', width: '10%', formatter: function (value, row, index) {
-                return value + "/" + row.standardScore;
+            field: 'examineScore', title: '得分/标准分/最高分', width: '10%', formatter: function (value, row, index) {
+                return value + "/" + row.standardScore + "/" + row.maxScore;
             }
         });
         cols.push({
             field: 'ratio', title: '得分率', width: '10%', formatter: function (value, row, index) {
-                if (row.examineScore && row.standardScore) {
-                    return ((row.examineScore / row.standardScore) * 100).toFixed(2) + "%";
+                if (row.examineScore && row.maxScore) {
+                    return ((row.examineScore / row.maxScore) * 100).toFixed(2) + "%";
                 }
             }
         });

@@ -646,6 +646,7 @@
             <input data-name="id" type="hidden" name="id{id}" value="{id}">
             <input data-name="performanceId" type="hidden" name="performanceId{id}" value="{performanceId}">
             <input data-name="standardScore" type="hidden" name="standardScore{id}" value="{standardScore}">
+            <input data-name="maxScore" type="hidden" name="maxScore{id}" value="{maxScore}">
             <input data-name="contentId" type="hidden" name="contentId{id}" value="{contentId}">
         </td>
         <td>{assessmentDes} 【范围:{minScore}~{maxScore} 标准值:{standardScore}】</td>
@@ -1116,16 +1117,21 @@
         var actualScoreArray = [];
         var examineScore = 0;
         var standardScore = 0;
+        var maxScore = 0;
         form.find('tbody tr').each(function (i, item) {
             var actualScore = {};
             actualScore.id = $(item).find('[data-name=id]').val();
             actualScore.actualScore = $(item).find('[data-name=actualScore]').val();
+            actualScore.maxScore = $(item).find('[data-name=maxScore]').val();
             actualScore.standardScore = $(item).find('[data-name=standardScore]').val();
             actualScore.contentId = $(item).find('[data-name=contentId]').val();
             actualScore.remark = $(item).find('[data-name=remark]').val();
             actualScoreArray.push(actualScore);
             if (actualScore.standardScore) {
                 standardScore += parseFloat(actualScore.standardScore);
+            }
+            if (actualScore.maxScore) {
+                maxScore += parseFloat(actualScore.maxScore);
             }
             if (actualScore.actualScore) {
                 examineScore += parseFloat(actualScore.actualScore);
@@ -1139,6 +1145,7 @@
             assessmentType: form.find("input[name=assessmentType]").val(),
             remarks: remarks,
             examineScore: examineScore,
+            maxScore: maxScore,
             standardScore: standardScore,
             spotBatchId: form.find("[name=spotBatchId]").val(),
             bisQualified: form.find("[name=bisQualified]").val()

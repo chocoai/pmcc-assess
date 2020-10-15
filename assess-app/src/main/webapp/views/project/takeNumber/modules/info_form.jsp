@@ -285,7 +285,7 @@
 
     //文号规则change
     projectTakeNumber.erpRuleChange = function (_this) {
-        $(_this).closest('form').find("input[name='erpNumberRule']").val($(_this).find('option[selected]').text());
+        $(_this).closest('form').find("input[name='erpNumberRule']").val($(_this).find('option:selected').text());
     }
 
     $(function () {

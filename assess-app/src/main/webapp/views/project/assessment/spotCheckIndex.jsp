@@ -94,7 +94,7 @@
                         <label class="col-sm-2 col-form-label">标题<span
                                 class="symbol required"></span></label>
                         <div class="col-sm-10">
-                            <input type="text" data-rule-maxlength="100" onfocus="titleFocus(this);" placeholder="标题"
+                            <input type="text" data-rule-maxlength="100" onfocus="titleFocus(this);" placeholder="标题" required
                                    name="title"
                                    class="form-control input-full">
                         </div>

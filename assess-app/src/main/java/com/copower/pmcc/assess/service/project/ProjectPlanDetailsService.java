@@ -360,7 +360,7 @@ public class ProjectPlanDetailsService {
             boolean isMember = projectMemberService.isProjectMember(projectId, commonService.thisUserAccount());
             boolean isOperable = projectInfoService.isProjectOperable(projectId);
 
-            if (isMember && isOperable) {
+            if (isMember && isOperable && StringUtils.isNotBlank(projectPlanDetailsVo.getExcuteUrl())) {
                 if (StringUtils.isNotBlank(projectPlanDetailsVo.getExecuteUserAccount()) && projectPlanDetailsVo.getBisStart()) {
                     ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetailsVo.getProjectPhaseId());
                     if (projectPhase != null) {
@@ -376,6 +376,7 @@ public class ProjectPlanDetailsService {
 
     /**
      * 获取数据
+     *
      * @param planId
      * @param projectPhaseId
      * @return
@@ -602,7 +603,7 @@ public class ProjectPlanDetailsService {
             ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
             ProjectWorkStage projectWorkStage = projectWorkStageService.cacheProjectWorkStage(projectPlanDetails.getProjectWorkStageId());
             projectPlanService.saveProjectPlanDetailsResponsibility(projectPlanDetails, projectInfo.getProjectName(), projectWorkStage.getWorkStageName(), ResponsibileModelEnum.TASK);
-        }else {
+        } else {
             throw new BusinessException("该状态下无法重启");
         }
         return getProjectPlanDetailsVo(projectPlanDetails);
