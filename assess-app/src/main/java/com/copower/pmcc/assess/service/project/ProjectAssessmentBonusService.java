@@ -184,6 +184,7 @@ public class ProjectAssessmentBonusService {
      */
     public BootstrapTableVo getAssessmentBonusItems(Integer bonusId, String projectManager) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
+        if (bonusId == null) return bootstrapTableVo;
         List<ProjectAssessmentBonusItem> bonusItemList = projectAssessmentBonusDao.getAssessmentBonusItemList(bonusId, projectManager);
         List<ProjectAssessmentBonusItemVo> itemVos = LangUtils.transform(bonusItemList, o -> getAssessmentBonusItemVo(o));
         bootstrapTableVo.setRows(itemVos);
@@ -306,9 +307,9 @@ public class ProjectAssessmentBonusService {
         if (assessmentBonus == null) {
             throw new BusinessException("参数异常");
         }
-        String firstDayOfMonth = DateUtils.getFirstDayOfMonth(assessmentBonus.getYear(), assessmentBonus.getMonth());//获得该月第一天
+        String firstDayOfMonth = DateUtils.getFirstDayOfMonth(assessmentBonus.getYear(), assessmentBonus.getLegworkStartMonth());//获得该月第一天
         Date firstDate = DateUtils.convertDate(firstDayOfMonth);//本月第一天 time
-        String lastDayOfMonth = DateUtils.getLastDayOfMonth(assessmentBonus.getYear(), assessmentBonus.getMonth());//获得该月最后一天
+        String lastDayOfMonth = DateUtils.getLastDayOfMonth(assessmentBonus.getYear(), assessmentBonus.getLegworkEndMonth());//获得该月最后一天
         Date endDate = DateUtils.convertDate(lastDayOfMonth);//本月第最后一天 time
         List<HrLegworkDto> legworkDtoList = hrRpcToolService.getHrLegworkListByEndDate(firstDate, endDate);
         return legworkDtoList;
@@ -322,7 +323,6 @@ public class ProjectAssessmentBonusService {
      */
     @Transactional(rollbackFor = {Exception.class})
     public void launchAssessmentBonusTask(ProjectAssessmentBonus assessmentBonus) throws BusinessException {
-        //之所以用了一个方法来包含这个方法 是因为这个方法会被其它包含事务的方法调用  我不想引起两个事务叠加的情况
         runAssessmentBonusTask(assessmentBonus);
     }
 
@@ -335,12 +335,13 @@ public class ProjectAssessmentBonusService {
         if (StringUtils.isBlank(assessmentBonus.getTitle())) {
             assessmentBonus.setTitle(String.format("%s年-%s月外勤加分考核", assessmentBonus.getYear(), assessmentBonus.getMonth()));
         }
-        final int projectId = -1;//写task任务的时候写入这个数据,以前写入0貌似不起作用了 ,写入到projectPlanResponsibility形成临时任务
+        final int projectId = -1;//
         assessmentBonus.setStatus(ProcessStatusEnum.RUN.getValue());
         saveAssessmentBonus(assessmentBonus);
         Set<String> managerList = Sets.newHashSet();
         String parameter = baseParameterService.getBaseParameter(BaseParameterEnum.ASSESSMENT_TASK_GENERATE_PROJECT_ID);
         List<Integer> projectIds = FormatUtils.transformString2Integer(parameter);
+
         for (HrLegworkDto dto : legworkDtoList) {
             if (StringUtils.isBlank(dto.getProjectId())) continue;//没关联项目直接跳过
             List<Integer> list = FormatUtils.transformString2Integer(dto.getProjectId());
@@ -358,7 +359,7 @@ public class ProjectAssessmentBonusService {
                 if (getAssessmentBonusItemCount(sysProjectDto.getProjectId()) > 0) {
                     continue;//每个项目只计算一次
                 }
-                if(!projectInfoService.chksValidProject(sysProjectDto.getProjectId())){
+                if (!projectInfoService.chksValidProject(sysProjectDto.getProjectId())) {
                     continue;//没有在配置中的项目
                 }
                 ProjectInfo projectInfo = projectInfoService.getProjectInfoById(sysProjectDto.getProjectId());
@@ -412,6 +413,7 @@ public class ProjectAssessmentBonusService {
                         }
                     }
                 }
+                if (totalBonusScore.compareTo(BigDecimal.ZERO) <= 0) continue;
                 ProjectAssessmentBonusItem assessmentBonusItem = new ProjectAssessmentBonusItem();
                 assessmentBonusItem.setMasterId(assessmentBonus.getId());
                 assessmentBonusItem.setProjectId(projectInfo.getId());
@@ -431,6 +433,8 @@ public class ProjectAssessmentBonusService {
         //3.技术负责人提交流程后到部门负责人审核，当审核完成后将相关数据写入到考核系统中的考核记录表中
         if (CollectionUtils.isNotEmpty(managerList)) {
             for (String manager : managerList) {//为项目经理添加任务
+                List<ProjectAssessmentBonusItem> bonusItemList = projectAssessmentBonusDao.getAssessmentBonusItemList(assessmentBonus.getId(), manager);
+                if (CollectionUtils.isEmpty(bonusItemList)) continue;
                 String url = String.format("/%s/projectAssessmentBonus/index?bonusId=%s", applicationConstant.getAppKey(), assessmentBonus.getId());
                 ProjectResponsibilityDto projectPlanResponsibility = new ProjectResponsibilityDto();
                 projectPlanResponsibility.setBusinessKey(ProjectStatusEnum.NORMAL.getKey());

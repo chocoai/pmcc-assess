@@ -48,7 +48,7 @@
                             <button id="cancel_btn" class="btn btn-default" onclick="window.close()">
                                 取消
                             </button>
-                            <button id="commit_btn" class="btn btn-primary" onclick="applySumit();">
+                            <button id="commit_btn" style="margin-left: 10px;" class="btn btn-primary" onclick="applySumit();">
                                 提交
                             </button>
                         </div>

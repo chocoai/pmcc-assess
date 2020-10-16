@@ -25,6 +25,7 @@ import com.copower.pmcc.erp.common.exception.BusinessException;
 import com.copower.pmcc.erp.common.support.mvc.response.HttpResult;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.SimpleTrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,10 @@ public class ProjectAssessmentBonusController {
     @Autowired
     private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
+    //1.首先根据确定的时间段，找出该时间段中参与考核的项目[有查勘或案例的项目]
+    //2.再根据项目找出该项目是否发起过外勤，
+    //3.每次需确认本次外勤是否使用完毕，如果使用完毕则不能再被使用
+    //4.
 
     @RequestMapping(value = "/taskIndex", name = "通过外勤记录发起任务 ", method = {RequestMethod.GET})
     public ModelAndView taskIndex() {
@@ -105,9 +110,14 @@ public class ProjectAssessmentBonusController {
     }
 
     @RequestMapping(value = "/detail", name = "详情页面")
-    public ModelAndView detail(String processInsId,  Integer boxId) {
+    public ModelAndView detail(String processInsId, Integer boxId, Integer bonusId) {
         ModelAndView modelAndView = processControllerComponent.baseFormModelAndView("/project/assessment/bonusApproval", processInsId, boxId, "-1", "");
-        ProjectAssessmentBonus projectAssessmentBonus = projectAssessmentBonusService.getAssessmentBonusByProcessInsId(processInsId);
+        ProjectAssessmentBonus projectAssessmentBonus = null;
+        if (bonusId != null) {
+            projectAssessmentBonusService.getAssessmentBonusById(bonusId);
+        } else if (StringUtils.isNotBlank(processInsId)) {
+            projectAssessmentBonusService.getAssessmentBonusByProcessInsId(processInsId);
+        }
         modelAndView.addObject("projectAssessmentBonus", projectAssessmentBonus);
         return modelAndView;
     }
@@ -207,12 +217,12 @@ public class ProjectAssessmentBonusController {
     @ResponseBody
     public HttpResult launchAssessmentBonusTask(String formData) {
         try {
-            ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData,ProjectAssessmentBonus.class) ;
+            ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData, ProjectAssessmentBonus.class);
             projectAssessmentBonusService.launchAssessmentBonusTask(assessmentBonus);
-            return HttpResult.newCorrectResult(200,assessmentBonus);
+            return HttpResult.newCorrectResult(200, assessmentBonus);
         } catch (Exception e) {
             logger.error("外勤加分考核失败", e);
-            return HttpResult.newErrorResult(500,e);
+            return HttpResult.newErrorResult(500, e);
         }
     }
 
@@ -220,12 +230,12 @@ public class ProjectAssessmentBonusController {
     @ResponseBody
     public HttpResult afreshAssessmentBonusTask(Integer id) {
         try {
-            ProjectAssessmentBonus assessmentBonus =  projectAssessmentBonusService.getAssessmentBonusById(id);
+            ProjectAssessmentBonus assessmentBonus = projectAssessmentBonusService.getAssessmentBonusById(id);
             projectAssessmentBonusService.afreshAssessmentBonusTask(assessmentBonus);
-            return HttpResult.newCorrectResult(200,assessmentBonus);
+            return HttpResult.newCorrectResult(200, assessmentBonus);
         } catch (Exception e) {
             logger.error("外勤加分考核失败", e);
-            return HttpResult.newErrorResult(500,e);
+            return HttpResult.newErrorResult(500, e);
         }
     }
 
@@ -233,22 +243,22 @@ public class ProjectAssessmentBonusController {
     @ResponseBody
     public HttpResult getHrLegworkDtoList(String formData) {
         try {
-            ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData,ProjectAssessmentBonus.class) ;
+            ProjectAssessmentBonus assessmentBonus = JSONObject.parseObject(formData, ProjectAssessmentBonus.class);
             return HttpResult.newCorrectResult(200, projectAssessmentBonusService.getHrLegworkDtoList(assessmentBonus));
         } catch (Exception e) {
             logger.error("外勤加分考核失败", e);
-            return HttpResult.newErrorResult(500,e);
+            return HttpResult.newErrorResult(500, e);
         }
     }
 
     @GetMapping(value = "/getProjectAssessmentBonusByCount", name = "相同标题  相同年  相同月  视为一个组合主键  不能与其相同")
     @ResponseBody
-    public HttpResult getProjectAssessmentBonusByCount(String title ,Integer year,Integer month) {
+    public HttpResult getProjectAssessmentBonusByCount(String title, Integer year, Integer month) {
         try {
             return HttpResult.newCorrectResult(200, projectAssessmentBonusService.getProjectAssessmentBonusByCount(title, year, month));
         } catch (Exception e) {
             logger.error("外勤加分考核失败", e);
-            return HttpResult.newErrorResult(500,e);
+            return HttpResult.newErrorResult(500, e);
         }
     }
 
@@ -259,8 +269,8 @@ public class ProjectAssessmentBonusController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/getProjectAssessmentBonusDataList", name = "获取外勤考核记录",method = {RequestMethod.GET})
-    public BootstrapTableVo getProjectAssessmentBonusDataList(String processInsId, String title, String status, String creator, Integer year, Integer month){
+    @RequestMapping(value = "/getProjectAssessmentBonusDataList", name = "获取外勤考核记录", method = {RequestMethod.GET})
+    public BootstrapTableVo getProjectAssessmentBonusDataList(String processInsId, String title, String status, String creator, Integer year, Integer month) {
         return projectAssessmentBonusService.getProjectAssessmentBonusDataList(processInsId, title, status, creator, year, month);
     }
 }

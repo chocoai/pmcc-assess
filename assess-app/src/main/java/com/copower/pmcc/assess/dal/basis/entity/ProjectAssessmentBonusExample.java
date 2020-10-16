@@ -425,6 +425,126 @@ public class ProjectAssessmentBonusExample {
             return (Criteria) this;
         }
 
+        public Criteria andLegworkStartMonthIsNull() {
+            addCriterion("legwork_start_month is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthIsNotNull() {
+            addCriterion("legwork_start_month is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthEqualTo(Integer value) {
+            addCriterion("legwork_start_month =", value, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthNotEqualTo(Integer value) {
+            addCriterion("legwork_start_month <>", value, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthGreaterThan(Integer value) {
+            addCriterion("legwork_start_month >", value, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthGreaterThanOrEqualTo(Integer value) {
+            addCriterion("legwork_start_month >=", value, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthLessThan(Integer value) {
+            addCriterion("legwork_start_month <", value, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthLessThanOrEqualTo(Integer value) {
+            addCriterion("legwork_start_month <=", value, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthIn(List<Integer> values) {
+            addCriterion("legwork_start_month in", values, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthNotIn(List<Integer> values) {
+            addCriterion("legwork_start_month not in", values, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthBetween(Integer value1, Integer value2) {
+            addCriterion("legwork_start_month between", value1, value2, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkStartMonthNotBetween(Integer value1, Integer value2) {
+            addCriterion("legwork_start_month not between", value1, value2, "legworkStartMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthIsNull() {
+            addCriterion("legwork_end_month is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthIsNotNull() {
+            addCriterion("legwork_end_month is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthEqualTo(Integer value) {
+            addCriterion("legwork_end_month =", value, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthNotEqualTo(Integer value) {
+            addCriterion("legwork_end_month <>", value, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthGreaterThan(Integer value) {
+            addCriterion("legwork_end_month >", value, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthGreaterThanOrEqualTo(Integer value) {
+            addCriterion("legwork_end_month >=", value, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthLessThan(Integer value) {
+            addCriterion("legwork_end_month <", value, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthLessThanOrEqualTo(Integer value) {
+            addCriterion("legwork_end_month <=", value, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthIn(List<Integer> values) {
+            addCriterion("legwork_end_month in", values, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthNotIn(List<Integer> values) {
+            addCriterion("legwork_end_month not in", values, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthBetween(Integer value1, Integer value2) {
+            addCriterion("legwork_end_month between", value1, value2, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
+        public Criteria andLegworkEndMonthNotBetween(Integer value1, Integer value2) {
+            addCriterion("legwork_end_month not between", value1, value2, "legworkEndMonth");
+            return (Criteria) this;
+        }
+
         public Criteria andStatusIsNull() {
             addCriterion("status is null");
             return (Criteria) this;

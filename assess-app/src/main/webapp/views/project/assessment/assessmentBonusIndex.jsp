@@ -78,11 +78,26 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="form-group form-inline">
-                        <label class="col-sm-2 col-form-label">月份<span class="symbol required"></span></label>
+                        <label class="col-sm-2 col-form-label">考核月份<span class="symbol required"></span></label>
                         <div class="col-sm-10">
                             <select class="form-control input-full search-select select2" name="month">
+                                <option value="">未选择</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group form-inline">
+                        <label class="col-sm-2 col-form-label">外勤月份<span class="symbol required"></span></label>
+                        <div class="col-sm-4">
+                            <select class="form-control input-full search-select select2" required
+                                    name="legworkStartMonth">
+                                <option value="">未选择</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="text-align: center;">~</div>
+                        <div class="col-sm-4">
+                            <select class="form-control input-full search-select select2" required
+                                    name="legworkEndMonth">
                                 <option value="">未选择</option>
                             </select>
                         </div>
@@ -121,7 +136,12 @@
         var cols = [];
         cols.push({field: 'title', title: '标题', width: '40%'});
         cols.push({field: 'year', title: '年份', width: '15%'});
-        cols.push({field: 'month', title: '月份', width: '15%'});
+        cols.push({field: 'month', title: '考核月份', width: '15%'});
+        cols.push({
+            field: 'month', title: '外勤月份', width: '15%', formatter: function (value, row, index) {
+                return row.legworkStartMonth + "~" + row.legworkEndMonth;
+            }
+        });
         cols.push({
             field: 'status', title: '状态', width: '10%', formatter: function (value, row, index) {
                 var str = "";
@@ -145,11 +165,9 @@
         cols.push({
             field: 'opt', title: '操作', width: '10%', formatter: function (value, row, index) {
                 var str = '';
-                if (row.processInsId && row.processInsId != '0') {
-                    str += '<button type="button" onclick="viewDetail(' + row.processInsId + ',\'' + row.processInsId + '\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
-                    str += '<i class="fa fa-search"></i>';
-                    str += '</button>';
-                }
+                str += '<button type="button" onclick="viewDetail(' + row.id + ',\'' + row.processInsId + '\')"  style="margin-left: 5px;"  class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看详情">';
+                str += '<i class="fa fa-search"></i>';
+                str += '</button>';
                 str += '<button type="button" onclick="cleanProjectAssessmentBonus(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="重新发起">';
                 str += '<i class="fa fa-reply fa-white"></i>';
                 str += '</button>';
@@ -185,20 +203,27 @@
         for (var i = 1; i <= 12; i++) {
             arrMonth.push(i);
         }
-        frm.find("select[name='year']").empty().html(getOptionHtml(arrYear,"年")).trigger('change');
-        frm.find("select[name='month']").empty().html(getOptionHtml(arrMonth ,"月")).trigger('change');
-        frm.find("select[name='month']").val(date.getMonth()).trigger('change') ;
-        frm.find("select[name='year']").val(date.getFullYear()).trigger('change') ;
+        frm.find("select[name='year']").empty().html(getOptionHtml(arrYear, "年")).trigger('change');
+        frm.find("select[name='year']").val(date.getFullYear()).trigger('change');
+
+        frm.find("select[name='month']").empty().html(getOptionHtml(arrMonth, "月")).trigger('change');
+        frm.find("select[name='month']").val(date.getMonth()).trigger('change');
+
+        frm.find("select[name='legworkStartMonth']").empty().html(getOptionHtml(arrMonth, "月")).trigger('change');
+        frm.find("select[name='legworkStartMonth']").val(date.getMonth() - 3).trigger('change');
+
+        frm.find("select[name='legworkEndMonth']").empty().html(getOptionHtml(arrMonth, "月")).trigger('change');
+        frm.find("select[name='legworkEndMonth']").val(date.getMonth()).trigger('change');
         box.modal();
     }
 
-    function getOptionHtml(arr,title) {
-        var html = "" ;
-        html += "<option value=''>请选择</option>" ;
-        $.each(arr ,function (k,item) {
-            html += "<option value='" +item+ "'"+">" + item+title+"</option>" ;
-        }) ;
-        return html ;
+    function getOptionHtml(arr, title) {
+        var html = "";
+        html += "<option value=''>请选择</option>";
+        $.each(arr, function (k, item) {
+            html += "<option value='" + item + "'" + ">" + item + title + "</option>";
+        });
+        return html;
     }
 
     function getProjectAssessmentBonusByCount(data, callback) {
@@ -290,12 +315,19 @@
         var form = $(_this).closest('form');
         var year = form.find('[name=year]').val();
         var month = form.find('[name=month]').val();
-        form.find('[name=title]').val(year + "年-" + month + "月-" + "项目外勤考核");
+        form.find('[name=title]').val(year + "年" + month + "月" + "项目外勤考核");
     }
 
     //查看详情
-    function viewDetail(id) {
-        window.open('${pageContext.request.contextPath}/projectAssessmentBonus/detail?boxId=0&processInsId=' + id)
+    function viewDetail(id, processInsId) {
+        var url = '${pageContext.request.contextPath}/projectAssessmentBonus/detail?boxId=0';
+        if (id) {
+            url += '&bonusId=' + id;
+        }
+        if (processInsId) {
+            url += '&processInsId=' + processInsId;
+        }
+        window.open(url);
     }
 </script>
 

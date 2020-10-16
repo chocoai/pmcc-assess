@@ -7,6 +7,8 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="year" jdbcType="INTEGER" property="year" />
     <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="legwork_start_month" jdbcType="INTEGER" property="legworkStartMonth" />
+    <result column="legwork_end_month" jdbcType="INTEGER" property="legworkEndMonth" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
@@ -71,7 +73,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, process_ins_id, title, year, month, status, creator, gmt_created, gmt_modified
+    id, process_ins_id, title, year, month, legwork_start_month, legwork_end_month, status, 
+    creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonusExample" resultMap="BaseResultMap">
     select
@@ -108,11 +111,13 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_project_assessment_bonus (process_ins_id, title, year, 
-      month, status, creator, 
-      gmt_created, gmt_modified)
+      month, legwork_start_month, legwork_end_month, 
+      status, creator, gmt_created, 
+      gmt_modified)
     values (#{processInsId,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{year,jdbcType=INTEGER}, 
-      #{month,jdbcType=INTEGER}, #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{month,jdbcType=INTEGER}, #{legworkStartMonth,jdbcType=INTEGER}, #{legworkEndMonth,jdbcType=INTEGER}, 
+      #{status,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
+      #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectAssessmentBonus">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -131,6 +136,12 @@
       </if>
       <if test="month != null">
         month,
+      </if>
+      <if test="legworkStartMonth != null">
+        legwork_start_month,
+      </if>
+      <if test="legworkEndMonth != null">
+        legwork_end_month,
       </if>
       <if test="status != null">
         status,
@@ -157,6 +168,12 @@
       </if>
       <if test="month != null">
         #{month,jdbcType=INTEGER},
+      </if>
+      <if test="legworkStartMonth != null">
+        #{legworkStartMonth,jdbcType=INTEGER},
+      </if>
+      <if test="legworkEndMonth != null">
+        #{legworkEndMonth,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         #{status,jdbcType=VARCHAR},
@@ -196,6 +213,12 @@
       <if test="record.month != null">
         month = #{record.month,jdbcType=INTEGER},
       </if>
+      <if test="record.legworkStartMonth != null">
+        legwork_start_month = #{record.legworkStartMonth,jdbcType=INTEGER},
+      </if>
+      <if test="record.legworkEndMonth != null">
+        legwork_end_month = #{record.legworkEndMonth,jdbcType=INTEGER},
+      </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=VARCHAR},
       </if>
@@ -220,6 +243,8 @@
       title = #{record.title,jdbcType=VARCHAR},
       year = #{record.year,jdbcType=INTEGER},
       month = #{record.month,jdbcType=INTEGER},
+      legwork_start_month = #{record.legworkStartMonth,jdbcType=INTEGER},
+      legwork_end_month = #{record.legworkEndMonth,jdbcType=INTEGER},
       status = #{record.status,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -243,6 +268,12 @@
       <if test="month != null">
         month = #{month,jdbcType=INTEGER},
       </if>
+      <if test="legworkStartMonth != null">
+        legwork_start_month = #{legworkStartMonth,jdbcType=INTEGER},
+      </if>
+      <if test="legworkEndMonth != null">
+        legwork_end_month = #{legworkEndMonth,jdbcType=INTEGER},
+      </if>
       <if test="status != null">
         status = #{status,jdbcType=VARCHAR},
       </if>
@@ -264,6 +295,8 @@
       title = #{title,jdbcType=VARCHAR},
       year = #{year,jdbcType=INTEGER},
       month = #{month,jdbcType=INTEGER},
+      legwork_start_month = #{legworkStartMonth,jdbcType=INTEGER},
+      legwork_end_month = #{legworkEndMonth,jdbcType=INTEGER},
       status = #{status,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},

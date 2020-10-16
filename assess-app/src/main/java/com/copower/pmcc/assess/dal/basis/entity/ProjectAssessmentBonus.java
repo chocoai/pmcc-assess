@@ -13,6 +13,10 @@ public class ProjectAssessmentBonus {
 
     private Integer month;
 
+    private Integer legworkStartMonth;
+
+    private Integer legworkEndMonth;
+
     private String status;
 
     private String creator;
@@ -59,6 +63,22 @@ public class ProjectAssessmentBonus {
 
     public void setMonth(Integer month) {
         this.month = month;
+    }
+
+    public Integer getLegworkStartMonth() {
+        return legworkStartMonth;
+    }
+
+    public void setLegworkStartMonth(Integer legworkStartMonth) {
+        this.legworkStartMonth = legworkStartMonth;
+    }
+
+    public Integer getLegworkEndMonth() {
+        return legworkEndMonth;
+    }
+
+    public void setLegworkEndMonth(Integer legworkEndMonth) {
+        this.legworkEndMonth = legworkEndMonth;
     }
 
     public String getStatus() {
