@@ -2,9 +2,6 @@ package com.copower.pmcc.assess.service.method;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.ArithmeticUtils;
-import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
-import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
 import com.copower.pmcc.assess.dal.basis.dao.method.MdBaseLandPriceDao;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
@@ -15,14 +12,11 @@ import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataHousePriceIndexService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
 import com.copower.pmcc.assess.service.data.DataLandLevelDetailVolumeService;
+import com.copower.pmcc.assess.service.data.DataLandLevelService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
-import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
-import com.copower.pmcc.erp.common.utils.DateUtils;
-import com.google.common.collect.Lists;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,12 +45,6 @@ public class MdBaseLandPriceService {
     @Autowired
     private BasicEstateService basicEstateService;
     @Autowired
-    private BaseDataDicService baseDataDicService;
-    @Autowired
-    private DataHousePriceIndexDao dataHousePriceIndexDao;
-    @Autowired
-    private DataHousePriceIndexDetailDao dataHousePriceIndexDetailDao;
-    @Autowired
     private BasicApplyService basicApplyService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
@@ -70,6 +58,8 @@ public class MdBaseLandPriceService {
     private DataHousePriceIndexService dataHousePriceIndexService;
     @Autowired
     private SchemeAreaGroupService schemeAreaGroupService;
+    @Autowired
+    private DataLandLevelService dataLandLevelService;
 
     public MdBaseLandPriceDao getMdBaseLandPriceDao() {
         return mdBaseLandPriceDao;
@@ -144,6 +134,12 @@ public class MdBaseLandPriceService {
         DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
         if (priceIndex == null) return null;
         return dataHousePriceIndexService.getCorrectionFactor(priceIndex, areaGroup.getValueTimePoint());
+    }
+
+    public BigDecimal getBaseLandPriceDateAmend(String province, String city, String district, Date valueTimePoint) {
+        DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(province, city, district, valueTimePoint);
+        if (priceIndex == null) return null;
+        return dataHousePriceIndexService.getCorrectionFactor(priceIndex, valueTimePoint);
     }
 
     public MdBaseLandPrice initObject(Integer judgeObjectId) {
@@ -294,6 +290,8 @@ public class MdBaseLandPriceService {
             return;
         }
         BasicEstateLandCategoryInfo categoryInfo = null;
+        DataLandLevelDetail levelDetail = null;
+        DataLandLevel dataLandLevel = null;
         if (basicApply.getLandCategoryId() != null) {
             categoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
         } else {
@@ -305,7 +303,7 @@ public class MdBaseLandPriceService {
 
         if (categoryInfo != null) {
             modelAndView.addObject("basicEstateLandCategoryInfo", categoryInfo);
-            DataLandLevelDetail levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
+            levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
             if (levelDetail != null) {
                 //基准地价
                 DataLandLevelDetail hasStandardPremiumData = dataLandLevelDetailService.hasStandardPremiumParent(levelDetail.getId());
@@ -326,7 +324,20 @@ public class MdBaseLandPriceService {
         }
         //期日修正系数
         if (mdBaseLandPrice != null) {
-            BigDecimal dateAmend = mdBaseLandPrice.getDateAmend() == null ? getBaseLandPriceDateAmend(schemeJudgeObject.getId()) : mdBaseLandPrice.getDateAmend();
+            getBaseLandPriceDateAmend(schemeJudgeObject.getId());
+            if (levelDetail != null) {
+                dataLandLevel = dataLandLevelService.getDataLandLevelById(levelDetail.getLandLevelId());
+            }
+            BigDecimal dateAmend = null;
+            if (dataLandLevel != null) {
+                dateAmend = getBaseLandPriceDateAmend(dataLandLevel.getProvince(), dataLandLevel.getCity(), dataLandLevel.getDistrict(), dataLandLevel.getValuationDate());
+            } else {
+                SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
+                dateAmend = getBaseLandPriceDateAmend(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
+            }
+            if (dateAmend == null) {
+                dateAmend = mdBaseLandPrice.getDateAmend();
+            }
             modelAndView.addObject("dateAmend", dateAmend);
         }
     }

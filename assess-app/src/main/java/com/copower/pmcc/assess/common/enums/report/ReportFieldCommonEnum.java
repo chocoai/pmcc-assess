@@ -60,6 +60,7 @@ public enum ReportFieldCommonEnum implements Serializable {
     CommonXIEHE_organizationRank("公共机构资质等级"),
     CommonXIEHE_certificateNo("公共机构证书号"),
     CommonXIEHE_certificateEffectiveDate("公共机构证书有效期"),
+    CommonXIEHE_registrationDate("公共机构证书登记日期"),
     CommonParcelInnerDevelop("公共宗地内实际开发程度"),
     CommonParcelSettingInnerDevelop("公共宗地内设定开发程度"),
     CommonParcelSettingOuterDevelop("公共宗地外设定开发程度"),

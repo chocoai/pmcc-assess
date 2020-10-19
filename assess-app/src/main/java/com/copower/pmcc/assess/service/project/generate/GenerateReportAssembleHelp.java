@@ -250,6 +250,11 @@ public final class GenerateReportAssembleHelp {
             String value = qualificationForPractising == null ? "" : qualificationForPractising.getCertificateEffectiveDate();
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
         }
+        if (Objects.equal(ReportFieldCommonEnum.CommonXIEHE_registrationDate.getName(), name)) {
+            AdCompanyQualificationDto qualificationForPractising = generateBaseDataService.getCompanyQualificationForPractising();
+            String value = qualificationForPractising == null ? "" : qualificationForPractising.getRegistrationDate();
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, value);
+        }
         //房地产估价机构信息
         if (Objects.equal(ReportFieldCommonEnum.CommonXIEHE_organizationHouseInfo.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getXIEHE_organizationInfo());

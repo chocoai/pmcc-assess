@@ -54,7 +54,7 @@
                                 <input type="text"
                                        class="form-control input-full" onblur="calculationNumeric(this);"
                                        name="dateAmend"
-                                       value="${master.dateAmend == null?dateAmend:master.dateAmend}"
+                                       value="${dateAmend != null?dateAmend:master.dateAmend}"
                                        id="dateAmend">
                             </div>
                         </div>
