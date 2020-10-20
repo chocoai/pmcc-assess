@@ -18,6 +18,7 @@ import com.copower.pmcc.chks.api.dto.AssessmentPerformanceDto;
 import com.copower.pmcc.chks.api.provider.ChksRpcAssessmentPerformanceService;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.constant.ApplicationConstant;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,7 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
     public void createAssessmentPerformanceTask(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails) {
         BoxRuDto boxRuDto = bpmRpcBoxService.getBoxRuByProcessInstId(processInsId);
         if (boxRuDto == null) return;
+        List<AssessmentPerformanceDto> performanceDtos= Lists.newArrayList();
         for (AssessmentTypeEnum assessmentTypeEnum : AssessmentTypeEnum.values()) {
             List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxRuDto.getBoxId(), activityId, assessmentTypeEnum.getValue());
             if (CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
@@ -99,7 +101,11 @@ public class AssessmentTaskService implements AssessmentTaskInterface {
             dto.setAssessmentKey(assessmentTypeEnum.getValue());
             dto.setBisEffective(true);
             dto.setCreator(commonService.thisUserAccount());
-            performanceService.saveAndUpdatePerformanceDto(dto, true);
+
+            performanceDtos.add(dto);
+        }
+        if(CollectionUtils.isNotEmpty(performanceDtos)){
+            performanceService.addPerformanceDtoBatch(processInsId,activityId,performanceDtos);
         }
         if (projectPlanDetails != null) {
             assessmentCommonService.clearProphaseData(projectPlanDetails.getId(), boxRuDto.getBoxId(), activityId, byExamineUser);

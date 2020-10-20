@@ -85,7 +85,9 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             return true;
         });
         if (CollectionUtils.isEmpty(basicApplyBatchDetailList)) return;
+        List<AssessmentPerformanceDto> performanceDtos = Lists.newArrayList();
         //只取本次申请的
+        //添加质量考核
         Iterator<BasicApplyBatchDetail> basicApplyBatchDetailIterator = basicApplyBatchDetailList.iterator();
         while (basicApplyBatchDetailIterator.hasNext()) {
             BasicApplyBatchDetail basicApplyBatchDetail = basicApplyBatchDetailIterator.next();
@@ -98,8 +100,54 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             linkedList.add(String.join("=", "tbType", basicApplyBatchDetail.getType()));
             linkedList.add(String.join("=", "isHistory", Boolean.FALSE.toString()));
             String businessKey = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicApplyBatchDetail.getId());
-            saveAssessmentPerformanceDto(processInsId, activityId, taskId, byExamineUser, projectInfo, projectPlanDetails, boxReDto, basicApplyBatchDetail.getTableName(), basicApplyBatchDetail.getTableId(), basicApplyBatchDetail.getType(), StringUtils.join(linkedList, "&"), businessKey, null);
+
+            String assessmentKey = "";
+            if (StringUtils.isNotBlank(basicApplyBatchDetail.getType())) {
+                String[] strings = basicApplyBatchDetail.getType().split("\\.");
+                assessmentKey = strings.length > 0 ? strings[0] : basicApplyBatchDetail.getType();
+            }
+            List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentKey);
+            if (CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
+            AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
+            dto.setProcessInsId(processInsId);
+            dto.setAppKey(applicationConstant.getAppKey());
+            if (projectInfo != null) {
+                dto.setProjectId(projectInfo.getId());
+                dto.setProjectName(projectInfo.getProjectName());
+            }
+            dto.setTaskId(taskId);
+            dto.setBoxId(boxReDto.getId());
+            BoxReActivityDto boxReActivityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
+            dto.setActivityId(activityId);
+            if (boxReActivityDto != null) {
+                dto.setReActivityName(boxReActivityDto.getName());
+                dto.setSorting(boxReActivityDto.getSortMultilevel());
+                dto.setActivityName(boxReActivityDto.getCnName());
+                dto.setBusinessKey(boxReActivityDto.getCnName() + "/" + businessKey);
+            }
+            dto.setByExaminePeople(byExamineUser);
+            dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
+            dto.setTableId(basicApplyBatchDetail.getTableId());
+            dto.setTableName(basicApplyBatchDetail.getTableName());
+            if (projectPlanDetails != null) {
+                dto.setPlanId(projectPlanDetails.getPlanId());
+                dto.setPlanDetailsId(projectPlanDetails.getId());
+                ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
+                if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
+                    dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
+                } else {
+                    dto.setPlanName(projectPlanDetails.getProjectPhaseName());
+                }
+                dto.setProjectPhaseId(projectPlanDetails.getProjectPhaseId());
+            }
+            dto.setBisEffective(true);
+            dto.setCreator(commonService.thisUserAccount());
+            dto.setSourceViewUrl(StringUtils.join(linkedList, "&"));
+            dto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
+            dto.setAssessmentKey(assessmentKey);
+            performanceDtos.add(dto);
         }
+
         //添加工时考核任务
         Map<String, String> workHoursMap = Maps.newHashMap();
         List<String> transform = LangUtils.transform(basicApplyBatchDetailList, o -> o.getTableName());
@@ -112,8 +160,6 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         if (transform.contains(BasicFormClassifyEnum.HOUSE.getTableName()))
             workHoursMap.put(WORK_HOURS_HOUSE, "房屋信息");
         for (Map.Entry<String, String> entry : workHoursMap.entrySet()) {
-            List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, entry.getKey());
-            if (CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
             AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
             dto.setProcessInsId(processInsId);
             dto.setAppKey(applicationConstant.getAppKey());
@@ -147,102 +193,64 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
             dto.setAssessmentKey(entry.getKey());
             dto.setBisEffective(true);
             dto.setCreator(commonService.thisUserAccount());
-            Integer performanceId = performanceService.saveAndUpdatePerformanceDto(dto, true);
+            performanceDtos.add(dto);
+        }
 
-            //明细项的考核内容同时生成出来，并后台计算一次工时得分
-            for (AssessmentItemDto assessmentItemDto : assessmentItemDtos) {
-                AssessmentPerformanceDetailDto detailDto = new AssessmentPerformanceDetailDto();
-                detailDto.setContent(assessmentItemDto.getAssessmentDes());
-                detailDto.setContentId(assessmentItemDto.getId());
-                detailDto.setPerformanceId(performanceId);
-                detailDto.setMinScore(assessmentItemDto.getMinScore());
-                detailDto.setMaxScore(assessmentItemDto.getMaxScore());
-                detailDto.setStandardScore(assessmentItemDto.getStandardScore());
-                switch (entry.getKey()) {
-                    case WORK_HOURS_ESTATE://楼盘默认取标准分
-                        detailDto.setActualScore(assessmentItemDto.getStandardScore());
-                        break;
-                    case WORK_HOURS_BUILDING://楼栋根据本次填写的数量计算分数
-                        List<BasicApplyBatchDetail> filterBuilding = LangUtils.filter(basicApplyBatchDetailList, o ->
-                                o.getType().startsWith(BasicFormClassifyEnum.BUILDING.getKey()) && !o.getType().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey()));
-                        if (CollectionUtils.isNotEmpty(filterBuilding)) {
-                            BigDecimal actualScoreBuilding = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterBuilding.size() - 1))));
-                            actualScoreBuilding = actualScoreBuilding.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreBuilding;
-                            detailDto.setActualScore(actualScoreBuilding);
+        if (CollectionUtils.isNotEmpty(performanceDtos)) {
+            List<AssessmentPerformanceDto> dtoList = performanceService.addPerformanceDtoBatch(processInsId, activityId, performanceDtos);
+            List<AssessmentPerformanceDto> list = LangUtils.filter(dtoList, p -> {
+                return AssessmentTypeEnum.WORK_HOURS.getValue().equals(p.getAssessmentType());
+            });
+            if(CollectionUtils.isNotEmpty(list)){
+                for (AssessmentPerformanceDto assessmentPerformanceDto : list) {
+                    //明细项的考核内容同时生成出来，并后台计算一次工时得分
+                    List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentPerformanceDto.getAssessmentKey());
+                    if (CollectionUtils.isEmpty(assessmentItemDtos)) continue;//没有配置考核模板则不生成考核任务
+                    for (AssessmentItemDto assessmentItemDto : assessmentItemDtos) {
+                        AssessmentPerformanceDetailDto detailDto = new AssessmentPerformanceDetailDto();
+                        detailDto.setContent(assessmentItemDto.getAssessmentDes());
+                        detailDto.setContentId(assessmentItemDto.getId());
+                        detailDto.setPerformanceId(assessmentPerformanceDto.getId());
+                        detailDto.setMinScore(assessmentItemDto.getMinScore());
+                        detailDto.setMaxScore(assessmentItemDto.getMaxScore());
+                        detailDto.setStandardScore(assessmentItemDto.getStandardScore());
+                        switch (assessmentPerformanceDto.getAssessmentKey()) {
+                            case WORK_HOURS_ESTATE://楼盘默认取标准分
+                                detailDto.setActualScore(assessmentItemDto.getStandardScore());
+                                break;
+                            case WORK_HOURS_BUILDING://楼栋根据本次填写的数量计算分数
+                                List<BasicApplyBatchDetail> filterBuilding = LangUtils.filter(basicApplyBatchDetailList, o ->
+                                        o.getType().startsWith(BasicFormClassifyEnum.BUILDING.getKey()) && !o.getType().equalsIgnoreCase(BasicFormClassifyEnum.BUILDING_DIFFERENCE.getKey()));
+                                if (CollectionUtils.isNotEmpty(filterBuilding)) {
+                                    BigDecimal actualScoreBuilding = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterBuilding.size() - 1))));
+                                    actualScoreBuilding = actualScoreBuilding.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreBuilding;
+                                    detailDto.setActualScore(actualScoreBuilding);
+                                }
+                                break;
+                            case WORK_HOURS_UNIT://单元根据本次填写的数量计算分数
+                                List<BasicApplyBatchDetail> filterUnit = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.UNIT.getTableName()));
+                                if (CollectionUtils.isNotEmpty(filterUnit)) {
+                                    BigDecimal actualScoreUnit = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterUnit.size() - 1))));
+                                    actualScoreUnit = actualScoreUnit.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreUnit;
+                                    detailDto.setActualScore(actualScoreUnit);
+                                }
+                                break;
+                            case WORK_HOURS_HOUSE://房屋根据本次填写的数量计算分数
+                                List<BasicApplyBatchDetail> filterHouse = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.HOUSE.getTableName()));
+                                if (CollectionUtils.isNotEmpty(filterHouse)) {
+                                    BigDecimal actualScoreHouse = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterHouse.size() - 1))));
+                                    actualScoreHouse = actualScoreHouse.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreHouse;
+                                    detailDto.setActualScore(actualScoreHouse);
+                                }
+                                break;
                         }
-                        break;
-                    case WORK_HOURS_UNIT://单元根据本次填写的数量计算分数
-                        List<BasicApplyBatchDetail> filterUnit = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.UNIT.getTableName()));
-                        if (CollectionUtils.isNotEmpty(filterUnit)) {
-                            BigDecimal actualScoreUnit = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterUnit.size() - 1))));
-                            actualScoreUnit = actualScoreUnit.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreUnit;
-                            detailDto.setActualScore(actualScoreUnit);
-                        }
-                        break;
-                    case WORK_HOURS_HOUSE://房屋根据本次填写的数量计算分数
-                        List<BasicApplyBatchDetail> filterHouse = LangUtils.filter(basicApplyBatchDetailList, o -> o.getTableName().equalsIgnoreCase(BasicFormClassifyEnum.HOUSE.getTableName()));
-                        if (CollectionUtils.isNotEmpty(filterHouse)) {
-                            BigDecimal actualScoreHouse = assessmentItemDto.getStandardScore().multiply(new BigDecimal("1").add(new BigDecimal("0.1").multiply(new BigDecimal(filterHouse.size() - 1))));
-                            actualScoreHouse = actualScoreHouse.compareTo(assessmentItemDto.getMaxScore()) > 0 ? assessmentItemDto.getMaxScore() : actualScoreHouse;
-                            detailDto.setActualScore(actualScoreHouse);
-                        }
-                        break;
+                        performanceService.savePerformanceDetailDto(detailDto);
+                    }
                 }
-                performanceService.savePerformanceDetailDto(detailDto);
             }
         }
         if (projectPlanDetails != null) {
             assessmentCommonService.clearProphaseData(projectPlanDetails.getId(), boxReDto.getId(), activityId, byExamineUser);
         }
-    }
-
-    private void saveAssessmentPerformanceDto(String processInsId, Integer activityId, String taskId, String byExamineUser, ProjectInfo projectInfo, ProjectPlanDetails projectPlanDetails, BoxReDto boxReDto, String tableName, Integer tableId, String assessmentKey, String examineUrl, String businessKey, Integer spotActivityId) {
-        if (StringUtils.isNotBlank(assessmentKey)) {
-            String[] strings = assessmentKey.split("\\.");
-            assessmentKey = strings.length > 0 ? strings[0] : assessmentKey;
-        }
-        List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentKey);
-        if (CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
-        AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
-        dto.setProcessInsId(processInsId);
-        dto.setAppKey(applicationConstant.getAppKey());
-        if (projectInfo != null) {
-            dto.setProjectId(projectInfo.getId());
-            dto.setProjectName(projectInfo.getProjectName());
-        }
-        dto.setTaskId(taskId);
-        dto.setBoxId(boxReDto.getId());
-        BoxReActivityDto activityDto = bpmRpcBoxService.getBoxreActivityInfoById(activityId);
-        dto.setActivityId(activityId);
-        if (activityDto != null) {
-            dto.setReActivityName(activityDto.getName());
-            dto.setSorting(activityDto.getSortMultilevel());
-            dto.setActivityName(activityDto.getCnName());
-            dto.setBusinessKey(activityDto.getCnName() + "/" + businessKey);
-        }
-        dto.setByExaminePeople(byExamineUser);
-        dto.setExamineStatus(ProjectStatusEnum.RUNING.getKey());
-        dto.setTableId(tableId);
-        dto.setTableName(tableName);
-        if (projectPlanDetails != null) {
-            dto.setPlanId(projectPlanDetails.getPlanId());
-            dto.setPlanDetailsId(projectPlanDetails.getId());
-            ProjectPlan projectPlan = projectPlanService.getProjectplanById(projectPlanDetails.getPlanId());
-            if (projectPlan != null && StringUtils.isNotBlank(projectPlan.getPlanName())) {
-                dto.setPlanName(String.join("-", projectPlan.getPlanName(), projectPlanDetails.getProjectPhaseName()));
-            } else {
-                dto.setPlanName(projectPlanDetails.getProjectPhaseName());
-            }
-            dto.setProjectPhaseId(projectPlanDetails.getProjectPhaseId());
-        }
-        dto.setBisEffective(true);
-        dto.setCreator(commonService.thisUserAccount());
-        dto.setSourceViewUrl(examineUrl);
-        dto.setAssessmentType(AssessmentTypeEnum.QUALITY.getValue());
-        dto.setAssessmentKey(assessmentKey);
-        if (spotActivityId != null) {
-            dto.setSpotActivityId(spotActivityId);
-        }
-        performanceService.saveAndUpdatePerformanceDto(dto, true);
     }
 }
