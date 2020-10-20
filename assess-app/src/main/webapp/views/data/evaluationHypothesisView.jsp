@@ -318,10 +318,6 @@
                 if (result.ret) {
                     $("#frm").clearAll();
                     $("#frm").clearAll().initForm(result.data);
-                    var type = result.data.type;
-                    var types = type.substring(1, type.length - 1).split(',');
-                    var category = result.data.category;
-                    var categorys = category.substring(1, category.length - 1).split(',');
                     projectTypeObj.editTypeHtml(result.data.type,result.data.category);
                     $("#frm").find("[name='entrustmentPurpose']").val(row.entrustmentPurpose.split(',')).trigger('change');
                     var content = result.data.template;

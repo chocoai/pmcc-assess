@@ -91,7 +91,7 @@
                                             </div>
                                             <div class="col-sm-5">
                                                 <button type="button" class="btn btn-success btn-sm"
-                                                        onclick="appendHTML('',this);">
+                                                        onclick="projectTypeObj.addTypeHtml();">
                                                     <span class="btn-label"><i class="fa fa-plus"></i></span>添加类型
                                                 </button>
                                                 <button type="button" class="btn btn-warning btn-sm"
@@ -305,14 +305,7 @@
                 if (result.ret) {
                     $("#frm").clearAll();
                     $("#frm").clearAll().initForm(result.data);
-                    var type = result.data.type;
-                    var types = type.substring(1, type.length - 1).split(',');
-                    var category = result.data.category;
-                    var categorys = category.substring(1, category.length - 1).split(',');
-                    reload(types[0], categorys[0]);
-                    for (var i = 0; i < types.length - 1; i++) {
-                        appendHTML(types[i + 1], categorys[i + 1]);
-                    }
+                    projectTypeObj.editTypeHtml(result.data.type,result.data.category);
                     $("#frm").find("[name='entrustmentPurpose']").val(row.entrustmentPurpose.split(',')).trigger('change');
                     //extractTemplateField();
                     var content = result.data.template;
