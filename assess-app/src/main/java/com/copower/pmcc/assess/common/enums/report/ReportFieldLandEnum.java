@@ -28,6 +28,7 @@ public enum ReportFieldLandEnum {
     LAND_ENUM_UNIT_LAND_PRICE("土地单位地价"),
     LAND_ENUM_ESTATE_LAND_PRICE("土地楼面地价"),
     LAND_ENUM_USE_MATERIAL("土地使用资料"),
+    LAND_BaseLandPrice("土地基准地价级别"),
     LAND_ENUM_EVALUATION_EFFECTIVE_DATE("土地评估有效日"),
     LAND_ENUM_JudgeObjectSheet("土地估价对象基本情况表"),
     LAND_ENUM_BEST_USE("土地最佳利用方式"),

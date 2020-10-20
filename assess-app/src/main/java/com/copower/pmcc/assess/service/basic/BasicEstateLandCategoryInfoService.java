@@ -2,11 +2,11 @@ package com.copower.pmcc.assess.service.basic;
 
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicApplyDao;
 import com.copower.pmcc.assess.dal.basis.dao.basic.BasicEstateLandCategoryInfoDao;
-import com.copower.pmcc.assess.dal.basis.entity.BasicApply;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandCategoryInfo;
-import com.copower.pmcc.assess.dal.basis.entity.BasicEstateLandState;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.data.DataLandLevelDetailService;
+import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
@@ -48,8 +48,36 @@ public class BasicEstateLandCategoryInfoService {
     @Autowired
     private CommonService commonService;
     @Autowired
-    private BasicApplyDao basicApplyDao;
+    private DataLandLevelDetailService dataLandLevelDetailService;
+    @Autowired
+    private BasicEstateService basicEstateService;
+    @Autowired
+    private BasicApplyService basicApplyService;
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
+    public DataLandLevelDetail getDataLandLevelDetailByJudgeObjectId(SchemeJudgeObject schemeJudgeObject){
+        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+        if (basicApply == null) {
+            return null;
+        }
+        BasicEstate basicEstate = basicEstateService.getBasicEstateByApplyId(basicApply.getId());
+        if (basicEstate == null) {
+            return null;
+        }
+        BasicEstateLandCategoryInfo categoryInfo = null;
+        DataLandLevelDetail levelDetail = null;
+        if (basicApply.getLandCategoryId() != null) {
+            categoryInfo = getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
+        } else {
+            List<BasicEstateLandCategoryInfo> categoryInfoList = getListByEstateId(basicEstate.getId());
+            categoryInfo = categoryInfoList.get(0);
+            BasicEstateLandState landStateByEstateId = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
+        }
+        if (categoryInfo != null){
+            levelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(categoryInfo.getLandLevel());
+        }
+        return levelDetail;
+    }
 
     public void copy(Integer oldId, Integer newId)throws Exception {
         if (oldId == null) {

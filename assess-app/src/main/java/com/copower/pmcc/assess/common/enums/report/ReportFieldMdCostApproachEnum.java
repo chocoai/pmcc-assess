@@ -43,7 +43,7 @@ public enum ReportFieldMdCostApproachEnum implements Serializable {
     parcelIncrementalBenefitPrice("逼近法土地增值收益额"),//土地出让价格V×土地增值收益率
     parcelNoRiskRewardRatioRemark("逼近法无风险报酬率取值说明"),
     parcelInformationCompensation("逼近法补偿信息"),
-    parcelCalculate("逼近法测算表"),
+    parcelCalculateSheet("逼近法测算表"),
     ;
     private String name;
     ReportFieldMdCostApproachEnum(String name) {
