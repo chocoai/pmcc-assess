@@ -350,6 +350,10 @@ public class DataReportAnalysisService {
                 stringBuilder.append("本报告在测算估价对象价格时，未对土地增值税进行预扣除处理，因此报告使用者以本报告价格为依据设置抵押权时，可能面临债权人在抵押标的物中权益减少的风险。");
                 break;
             }
+            case ENUM_OPTIMAL_USE_LAND:{
+                stringBuilder.append("估价对象作为工业用地，能得到有效利用，并与其它生产要素相结合，能满足未来使用年期内生产、经营的正常进行，产生正常的、持续的土地收益。") ;
+                break;
+            }
             default: {
                 stringBuilder.append("未配置").append(RandomStringUtils.random(55)).append("十三点");
                 break;

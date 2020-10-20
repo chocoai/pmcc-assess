@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.generate;
+package com.copower.pmcc.assess.service.project.generate.land;
 
 import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.basic.*;
@@ -11,6 +11,9 @@ import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.basic.BasicEstateService;
 import com.copower.pmcc.assess.service.data.DataBlockService;
+import com.copower.pmcc.assess.service.project.generate.BasicExamineHandle;
+import com.copower.pmcc.assess.service.project.generate.GenerateBaseExamineService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.google.common.base.Objects;
 import com.google.common.collect.Maps;

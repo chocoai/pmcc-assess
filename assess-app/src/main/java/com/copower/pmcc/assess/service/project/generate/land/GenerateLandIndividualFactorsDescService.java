@@ -1,4 +1,4 @@
-package com.copower.pmcc.assess.service.project.generate;
+package com.copower.pmcc.assess.service.project.generate.land;
 
 import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.common.AsposeUtils;
@@ -17,6 +17,9 @@ import com.copower.pmcc.assess.service.data.DataBlockService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyLandCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRealtyRealEstateCertService;
 import com.copower.pmcc.assess.service.project.declare.DeclareRecordService;
+import com.copower.pmcc.assess.service.project.generate.GenerateBaseExamineService;
+import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
+import com.copower.pmcc.assess.service.project.generate.GenerateLoactionService;
 import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.SysAttachmentDto;
 import com.copower.pmcc.erp.common.utils.DateUtils;

@@ -45,6 +45,8 @@ import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.compile.CompileReportService;
 import com.copower.pmcc.assess.service.project.declare.*;
+import com.copower.pmcc.assess.service.project.generate.land.GenerateLandIndividualFactorsDescService;
+import com.copower.pmcc.assess.service.project.generate.land.GenerateLandRegionalFactorsDescService;
 import com.copower.pmcc.assess.service.project.initiate.InitiateContactsService;
 import com.copower.pmcc.assess.service.project.scheme.*;
 import com.copower.pmcc.assess.service.project.survey.*;
@@ -4162,6 +4164,45 @@ public class GenerateBaseDataService {
         return StringUtils.isNotBlank(value) ? value : errorStr;
     }
 
+
+    /**
+     * 只对证载地址的清查进行判断
+     * @return
+     */
+    protected String getLandInventoryAddRessText() {
+        SurveyAssetInfoItemService surveyAssetInfoItemService = generateCommonMethod.getSurveyAssetInfoItemService();
+        SurveyAssetInventoryContentService surveyAssetInventoryContentService = generateCommonMethod.getSurveyAssetInventoryContentService();
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        List<Integer> integerList = LangUtils.transform(schemeJudgeObjectList, obj -> obj.getDeclareRecordId());
+        List<SurveyAssetInfoItem> surveyAssetInfoItemList = surveyAssetInfoItemService.getSurveyAssetInfoItemLikeList(integerList);
+        StringBuilder stringBuilder = new StringBuilder();
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.INVENTORY_CONTENT_DEFAULT_HOUSE_LAND_ADDRESS);
+        for (SurveyAssetInfoItem surveyAssetInfoItem : surveyAssetInfoItemList) {
+            List<SchemeJudgeObject> schemeJudgeObjects = LangUtils.filter(schemeJudgeObjectList, obj -> obj.getDeclareRecordId().equals(surveyAssetInfoItem.getDeclareId()));
+            SchemeJudgeObject schemeJudgeObject = schemeJudgeObjects.get(0);
+            List<SurveyAssetInventoryContent> surveyAssetInventoryContents = surveyAssetInventoryContentService.getInventoryContentListByItemId(surveyAssetInfoItem.getId());
+            if (CollectionUtils.isNotEmpty(surveyAssetInventoryContents)) {
+                for (SurveyAssetInventoryContent surveyAssetInventoryContent : surveyAssetInventoryContents) {
+                    if (baseDataDic == null) {
+                        continue;
+                    }
+                    if (!baseDataDic.getId().equals(surveyAssetInventoryContent.getInventoryContent())) {
+                        continue;
+                    }
+                    if (com.google.common.base.Objects.equal("不一致", surveyAssetInventoryContent.getAreConsistent())) {
+                        stringBuilder.append(generateCommonMethod.getSchemeJudgeObjectShowName(schemeJudgeObject));
+                        stringBuilder.append("证载土地").append(surveyAssetInventoryContent.getRegistration()).append(",").append("实际地址").append(surveyAssetInventoryContent.getActual());
+                        stringBuilder.append(",").append("经").append(surveyAssetInventoryContent.getVoucher()).append("提供的").append(surveyAssetInventoryContent.getCredential());
+                        stringBuilder.append("证明").append(surveyAssetInventoryContent.getDifferenceReason()).append(",").append("最终确认证载地址与现场查看地址").append(";");
+                    }
+                }
+            }
+        }
+        stringBuilder.append("本次评估以证载地址与现场查看地址界定估价对象系同一标的物为前提。") ;
+        String value = stringBuilder.toString();
+        return StringUtils.isNotBlank(value) ? value : errorStr;
+    }
+
     /**
      * 他项权力
      *
@@ -4782,7 +4823,7 @@ public class GenerateBaseDataService {
         AsposeUtils.setDefaultTable(documentBuilder);
         schemeJudgeObjectList = schemeJudgeObjectService.transformFullJudgeList(schemeJudgeObjectList);
         buildResultSetTable(projectInfo, schemeJudgeObjectList, documentBuilder);
-        //handleJudgeBuildResultSurveySheetBase(seat, schemeJudgeObjectList, projectInfo, documentBuilder);
+//        handleJudgeBuildResultSurveySheetBase(seat, schemeJudgeObjectList, projectInfo, documentBuilder);
         AsposeUtils.saveWord(path, doc);
         return path;
     }
@@ -5038,6 +5079,55 @@ public class GenerateBaseDataService {
         String cssHtml = generateCommonMethod.getWarpCssHtml(String.join("", "<div style='text-align:center;;font-size:16.0pt;'>", stringBuilder.toString(), "</div>"));
         documentBuilder.insertHtml(cssHtml, false);
         buildResultSetTable(projectInfo, schemeJudgeObjectList, documentBuilder);
+        AsposeUtils.saveWord(localPath, document);
+        return localPath;
+    }
+
+    public String getLandJudgeObjectSheet() throws Exception {
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder documentBuilder = new DocumentBuilder(document);
+        AsposeUtils.setDefaultTable(documentBuilder);
+        documentBuilder.startTable();
+        BiConsumer<LinkedList<String>, DocumentBuilder> consumer = (((strings, builder) -> {
+            try {
+                AsposeUtils.writeWordTitle(builder, strings);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+            strings.clear();
+        }));
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        LinkedList<String> linkedList = new LinkedList<>();
+        linkedList.addAll(Arrays.asList("序号", "权证号", "坐落", "证载用途", "实际用途", "评估面积(㎡)", "单价(元)", "评估总价（万元）"));
+        consumer.accept(linkedList, documentBuilder);
+        if (CollectionUtils.isNotEmpty(schemeJudgeObjectList)) {
+            int index = 0;
+            for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+                if (schemeJudgeObject.getDeclareRecordId() == null) {
+                    continue;
+                }
+                DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+                if (declareRecord == null) {
+                    continue;
+                }
+                linkedList.add(String.valueOf(++index));
+                linkedList.add(AsposeUtils.getValue(declareRecord.getName()));
+                linkedList.add(AsposeUtils.getValue(declareRecord.getSeat()));
+                linkedList.add(AsposeUtils.getValue(declareRecord.getCertUse()));
+                linkedList.add(AsposeUtils.getValue(declareRecord.getPracticalUse()));
+                linkedList.add(AsposeUtils.getValue(schemeJudgeObject.getEvaluationArea()));
+                linkedList.add(AsposeUtils.getValue(schemeJudgeObject.getPrice()));
+                if (schemeJudgeObject.getEvaluationArea() != null && schemeJudgeObject.getPrice() != null) {
+                    BigDecimal multiply = ArithmeticUtils.multiply(schemeJudgeObject.getEvaluationArea(), schemeJudgeObject.getPrice());
+                    linkedList.add(ArithmeticUtils.getBigDecimalString(multiply));
+                } else {
+                    linkedList.add(errorStr);
+                }
+                consumer.accept(linkedList, documentBuilder);
+            }
+        }
+        documentBuilder.endTable();
         AsposeUtils.saveWord(localPath, document);
         return localPath;
     }
@@ -6801,7 +6891,7 @@ public class GenerateBaseDataService {
                             break;
                         }
                         case AssessDataDicKeyConstant.MD_COST_APPROACH: {
-                            GenerateMdCostApproachService approachService = new GenerateMdCostApproachService(projectId, areaId ,entry.getKey().getMethodDataId() ,entry.getValue().getId());
+                            GenerateMdCostApproachService approachService = new GenerateMdCostApproachService(projectId, areaId, entry.getKey().getMethodDataId(), entry.getValue().getId());
                             String approachFile = approachService.generateCostApproachFile();
                             baseDetailedCalculationProcessValuationObject(approachFile, builder, keyValueDtoList, numbers, baseDataDic, map);
                             break;

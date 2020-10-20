@@ -515,20 +515,25 @@ public class ZCHDemo {
         map.put(ReportFieldCommonEnum.CommonParcelOuterDevelop.getName(), Arrays.asList("宗地外开发程度" ));
         map.put(ReportFieldCommonEnum.CommonParcelInnerDevelop.getName(), Arrays.asList("宗地内开发程度" ));
         map.put(ReportFieldCommonEnum.CommonDelegatePurpose.getName(), Arrays.asList("委托目的" ));
-        map.put(ReportFieldCommonEnum.CommonValueTimePoint.getName(), Arrays.asList("评估基准日" ));
+        map.put(ReportFieldCommonEnum.CommonValueTimePoint.getName(), Arrays.asList("评估基准日","估价基准日" ));
         map.put(ReportFieldCommonEnum.CommonValueTimePointRemark.getName(), Arrays.asList("基准日时点说明" ));
         map.put(ReportFieldLandEnum.LAND_ENUM_NATURE.getName(), Arrays.asList("使用权类型“国用”取值“国有”，“集用”取值“集体”" ));
         map.put(ReportFieldEnum.JudgeObjectNumber.getName(), Arrays.asList("估价对象号" ));
-        map.put(ReportFieldCommonEnum.CommonCertificationPurpose.getName(), Arrays.asList("证载用途" ,"证载地类用途","规划或证载用途"));
+        map.put(ReportFieldCommonEnum.CommonCertificationPurpose.getName(), Arrays.asList("证载用途" ,"证载地类用途","规划或证载用途" ,"证载用途或规划用途"));
         map.put(ReportFieldCommonEnum.CommonSetUse.getName(), Arrays.asList("设定用途" ,"设定地类用途" ));
         map.put(ReportFieldLandEnum.LAND_ENUM_EndTime.getName(), Arrays.asList("终止日期" ));
         map.put(ReportFieldLandEnum.LAND_ENUM_RemainingYear.getName(), Arrays.asList("剩余年限","剩余年期" ));
         map.put(ReportFieldCommonEnum.CommonParcelOuterDevelop.getName(), Arrays.asList("宗地外实际开发程度" ));
         map.put(ReportFieldCommonEnum.CommonParcelInnerDevelop.getName(), Arrays.asList("宗地内实际开发程度" ));
         map.put(ReportFieldCommonEnum.CommonEvaluationMethod.getName(), Arrays.asList("评估方法" ));
+        map.put(ReportFieldCommonEnum.CommonStatementPurposeEntrustment.getName(), Arrays.asList("委托目的描述" ));
+        map.put(ReportFieldCommonEnum.CommonPRINCIPAL.getName(), Arrays.asList("委托人" ));
+        map.put(ReportFieldCommonEnum.CommonReportNumber.getName(), Arrays.asList("文号" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_Seat.getName(), Arrays.asList("座落","坐落" ));
         map.put(ReportFieldLandEnum.LAND_ENUM_OWNERSHIP.getName(), Arrays.asList("土地使用权人" ,"权利人、土地使用权人"));
         map.put(ReportFieldLandEnum.LAND_ENUM_OpenTime.getName(), Arrays.asList("取得日期" ));
         map.put(ReportFieldLandEnum.LAND_ENUM_LandRightType.getName(), Arrays.asList("使用权类型" ));
+        map.put(ReportFieldEnum.JudgeObjectNumber.getName(), Arrays.asList("估价对象" ));
         Multimap<String, String> textMap = ArrayListMultimap.create();
         if (!map.isEmpty()) {
             Iterator<Map.Entry<String, List<String>>> entryIterator = map.entrySet().iterator();

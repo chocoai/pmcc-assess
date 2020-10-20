@@ -707,6 +707,9 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldEnum.ENUM_TAX_RISK.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportNewLiquidity(ReportFieldEnum.getEnumByName(name)));
         }
+        if (Objects.equal(ReportFieldEnum.ENUM_OPTIMAL_USE_LAND.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportNewLiquidity(ReportFieldEnum.getEnumByName(name)));
+        }
         //--
         return false;
     }
@@ -1093,6 +1096,9 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_JudgeObjectSheet.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandEnumJudgeObjectSheet());
         }
+        if (Objects.equal(ReportFieldLandEnum.LAND_JudgeBuildResultSurveySheet.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandJudgeObjectSheet());
+        }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_RegionalFactorsDesc.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getRegionalFactorsDescSheet());
         }
@@ -1101,6 +1107,9 @@ public final class GenerateReportAssembleHelp {
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_Asset_InventoryDesc.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandInventoryDesc());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_Asset_InventoryAddRess.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandInventoryAddRessText());
         }
         return false;
     }

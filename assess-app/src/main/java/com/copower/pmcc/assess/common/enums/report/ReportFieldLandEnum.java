@@ -31,6 +31,7 @@ public enum ReportFieldLandEnum {
     LAND_BaseLandPrice("土地基准地价级别"),
     LAND_ENUM_EVALUATION_EFFECTIVE_DATE("土地评估有效日"),
     LAND_ENUM_JudgeObjectSheet("土地估价对象基本情况表"),
+    LAND_JudgeBuildResultSurveySheet("土地估价结果表"),
     LAND_ENUM_BEST_USE("土地最佳利用方式"),
     LAND_ENUM_NATURE("土地权利性质"),
     LAND_ENUM_OpenTime("土地取得日期"),
@@ -39,6 +40,7 @@ public enum ReportFieldLandEnum {
     LAND_ENUM_RegionalFactorsDesc("土地区域因素描述"),
     LAND_ENUM_IndividualFactorsDesc("土地个别因素描述"),
     LAND_ENUM_Asset_InventoryDesc("土地资产清查描述"),
+    LAND_ENUM_Asset_InventoryAddRess("土地资产清查证载地址"),
 
 
     ;
