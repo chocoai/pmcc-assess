@@ -1279,6 +1279,14 @@ public class GenerateBaseDataService {
                     }
                     break;
                 }
+                case LAND_BaseLandPrice: {
+                    BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService = generateCommonMethod.getBasicEstateLandCategoryInfoService();
+                    DataLandLevelDetail levelDetail = basicEstateLandCategoryInfoService.getDataLandLevelDetailByJudgeObjectId(schemeJudgeObject);
+                    if (levelDetail != null) {
+                        value = levelDetail.getName();
+                    }
+                    break;
+                }
                 case LAND_ENUM_CERTIFICATE_CONTRACT: {
                     List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
                     if (CollectionUtils.isNotEmpty(attachmentDtoList)) {
@@ -4094,7 +4102,7 @@ public class GenerateBaseDataService {
         List<Map<String, String>> imgList = new ArrayList<>();
         List<DeclareRecord> declareRecordList = declareRecordService.getDeclareRecordListByIds(integerList);
         if (CollectionUtils.isNotEmpty(declareRecordList)) {
-            for (DeclareRecord declareRecord:declareRecordList){
+            for (DeclareRecord declareRecord : declareRecordList) {
                 List<SysAttachmentDto> attachmentDtoList = baseAttachmentService.getByField_tableId(declareRecord.getDataTableId(), null, declareRecord.getDataTableName());
                 if (CollectionUtils.isEmpty(attachmentDtoList)) {
                     continue;
@@ -6731,6 +6739,8 @@ public class GenerateBaseDataService {
                 AssessDataDicKeyConstant.MD_INCOME,
                 AssessDataDicKeyConstant.MD_MARKET_COMPARE,
                 AssessDataDicKeyConstant.MD_COST,
+                AssessDataDicKeyConstant.MD_BASE_LAND_PRICE,
+                AssessDataDicKeyConstant.MD_COST_APPROACH,
                 AssessDataDicKeyConstant.MD_DEVELOPMENT);
         List<BaseDataDic> dataDicList = Lists.newArrayList();
         for (String key : keys.split(",")) {
@@ -6784,6 +6794,18 @@ public class GenerateBaseDataService {
                             GenerateMdDevelopmentService generateMdDevelopmentService = new GenerateMdDevelopmentService(projectId, entry.getKey(), areaId);
                             baseDetailedCalculationProcessValuationObject(generateMdDevelopmentService.generateCompareFile(), builder, keyValueDtoList, numbers, baseDataDic, map);
                             break;
+                        case AssessDataDicKeyConstant.MD_BASE_LAND_PRICE: {
+                            GenerateMdBaseLandPriceService landPriceService = new GenerateMdBaseLandPriceService(projectId, areaId, entry.getKey().getMethodDataId(), entry.getValue().getId());
+                            String priceFile = landPriceService.generateBaseLandPriceFile();
+                            baseDetailedCalculationProcessValuationObject(priceFile, builder, keyValueDtoList, numbers, baseDataDic, map);
+                            break;
+                        }
+                        case AssessDataDicKeyConstant.MD_COST_APPROACH: {
+                            GenerateMdCostApproachService approachService = new GenerateMdCostApproachService(projectId, areaId ,entry.getKey().getMethodDataId() ,entry.getValue().getId());
+                            String approachFile = approachService.generateCostApproachFile();
+                            baseDetailedCalculationProcessValuationObject(approachFile, builder, keyValueDtoList, numbers, baseDataDic, map);
+                            break;
+                        }
                         default:
                             break;
                     }

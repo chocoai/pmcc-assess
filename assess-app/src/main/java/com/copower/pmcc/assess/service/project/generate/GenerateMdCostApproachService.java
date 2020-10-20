@@ -51,6 +51,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 /**
@@ -257,6 +258,9 @@ public class GenerateMdCostApproachService implements Serializable {
                 //逼近法地价因素修正表
                 if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelLandPriceElementAmend.getName())) {
                     generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getParcelLandPriceElementAmend());
+                }
+                if (Objects.equal(name, ReportFieldMdCostApproachEnum.parcelCalculateSheet.getName())) {
+                    generateCommonMethod.putValue(false, false, true, textMap, bookmarkMap, fileMap, name, getParcelCalculateSheet());
                 }
             } catch (Exception e) {
                 baseService.writeExceptionInfo(e);
@@ -897,6 +901,78 @@ public class GenerateMdCostApproachService implements Serializable {
         return errorStr;
     }
 
+    public String getParcelCalculateSheet()throws Exception{
+        Document doc = new Document();
+        DocumentBuilder documentBuilder = new DocumentBuilder(doc);
+        String localPath = generateCommonMethod.getLocalPath();
+        //设置表格属性
+        AsposeUtils.setDefaultFontSettings(documentBuilder);
+        generateCommonMethod.settingBuildingTable(documentBuilder);
+        AsposeUtils.setDefaultTable(documentBuilder);
+        BiConsumer<LinkedList<String>,DocumentBuilder> consumer = (((strings, builder) -> {
+            try {
+                AsposeUtils.writeWordTitle(builder,strings);
+            } catch (Exception e) {
+                logger.error(e.getMessage(),e);
+            }
+            strings.clear();
+        })) ;
+        documentBuilder.startTable();
+        MdCostApproach mdCostApproach = getMdCostApproach();
+        LinkedList<String> linkedList = new LinkedList<>() ;
+        linkedList.addAll(Arrays.asList("项目" ,"参数" ,"参数与备注"));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("宗地外六通费用(元/㎡)");
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getCirculationExpense()));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getCirculationExpenseRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("场平费用(元/㎡)");
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getFlatExpense()));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getFlatExpenseRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("计息周期");
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getMachineCycle()));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getMachineCycleRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("计息利率");
+        linkedList.add(ArithmeticUtils.getPercentileSystem(ArithmeticUtils.createBigDecimal(mdCostApproach.getCalculatedInterest()) ,4));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getCalculatedInterestRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("开发利润率");
+        linkedList.add(ArithmeticUtils.getPercentileSystem(ArithmeticUtils.createBigDecimal(mdCostApproach.getProfitMargin()) ,4));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getProfitMarginRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("土地增值率");
+        linkedList.add(ArithmeticUtils.getPercentileSystem(ArithmeticUtils.createBigDecimal(mdCostApproach.getIncrementalBenefit()) ,4));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getIncrementalBenefitRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("容积率调整");
+        linkedList.add(ArithmeticUtils.getPercentileSystem(ArithmeticUtils.createBigDecimal(mdCostApproach.getPlotRatioAdjust()) ,4));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getPlotRatioAdjustRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("剩余年限");
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getLandRemainingYear()));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getLandRemainingYearRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        linkedList.add("还原利率");
+        linkedList.add(ArithmeticUtils.getPercentileSystem(ArithmeticUtils.createBigDecimal(mdCostApproach.getRewardRate()) ,4));
+        linkedList.add(AsposeUtils.getValue(mdCostApproach.getRewardRateRemark()));
+        consumer.accept(linkedList,documentBuilder);
+
+        documentBuilder.endTable();
+        AsposeUtils.saveWord(localPath,doc);
+        return localPath;
+    }
+
 
     private SchemeJudgeObject getSchemeJudgeObject() {
         if (schemeJudgeObject == null) {
@@ -971,14 +1047,4 @@ public class GenerateMdCostApproachService implements Serializable {
         return generateCommonMethod.getLocalPath();
     }
 
-    private DataLandLevelDetail getDataLandLevelDetail(SchemeJudgeObject schemeJudgeObject) {
-        DataLandLevelDetail dataLandLevelDetail = new DataLandLevelDetail();
-        BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-        if (basicApply.getLandCategoryId() != null) {
-            BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoById(basicApply.getLandCategoryId());
-            dataLandLevelDetail = dataLandLevelDetailService.getDataLandLevelDetailById(landCategoryInfo.getLandLevel());
-
-        }
-        return dataLandLevelDetail;
-    }
 }

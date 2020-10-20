@@ -10,10 +10,7 @@ import com.copower.pmcc.assess.dto.output.MergeCellModel;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchDetailService;
-import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
-import com.copower.pmcc.assess.service.basic.BasicApplyService;
-import com.copower.pmcc.assess.service.basic.BasicEstateService;
+import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
@@ -95,11 +92,15 @@ public class GenerateCommonMethod {
     private MdBaseLandPriceService mdBaseLandPriceService;
     @Autowired
     private MdCostApproachService mdCostApproachService;
+    @Autowired
+    private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
 
     public static final String SchemeJudgeObjectName = "委估对象";
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
+    public BasicEstateLandCategoryInfoService getBasicEstateLandCategoryInfoService(){
+        return basicEstateLandCategoryInfoService;
+    }
     public MdCostApproachService getMdCostApproachService() {
         return mdCostApproachService;
     }
