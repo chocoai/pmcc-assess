@@ -120,7 +120,7 @@
                                                     最佳利用方式
                                                 </label>
                                                 <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                                    <label class="form-control input-full">${item.bestUse}</label>
+                                                    <label class="form-control input-full">${item.bestUseName}</label>
                                                 </div>
                                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                     最佳利用描述
