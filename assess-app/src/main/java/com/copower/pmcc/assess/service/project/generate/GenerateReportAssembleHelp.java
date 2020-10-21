@@ -707,9 +707,6 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldEnum.ENUM_TAX_RISK.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportNewLiquidity(ReportFieldEnum.getEnumByName(name)));
         }
-        if (Objects.equal(ReportFieldEnum.ENUM_OPTIMAL_USE_LAND.getName(), name)) {
-            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportNewLiquidity(ReportFieldEnum.getEnumByName(name)));
-        }
         //--
         return false;
     }
@@ -1110,6 +1107,13 @@ public final class GenerateReportAssembleHelp {
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_Asset_InventoryAddRess.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandInventoryAddRessText());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_NumberDenominations.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandNumberDenominations());
+        }
+        if (Objects.equal(ReportFieldLandEnum.ENUM_OPTIMAL_USE_LAND.getName(), name)) {
+            String defaultN = "估价对象作为工业用地，能得到有效利用，并与其它生产要素相结合，能满足未来使用年期内生产、经营的正常进行，产生正常的、持续的土地收益。" ;
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, defaultN);
         }
         return false;
     }

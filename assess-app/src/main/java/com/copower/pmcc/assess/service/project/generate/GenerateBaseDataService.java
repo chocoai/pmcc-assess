@@ -1345,6 +1345,13 @@ public class GenerateBaseDataService {
                     if (declareRealtyLandCert.getLandRightType() != null) {
                         value = baseDataDicService.getNameById(declareRealtyLandCert.getLandRightType());
                     }
+                    if (StringUtils.isNotBlank(value)) {
+                        if ("国用".equals(value)) {
+                            value = "国有" ;
+                        }else if ("集用".equals(value)) {
+                            value = "集体" ;
+                        }
+                    }
                     break;
                 }
                 case LAND_ENUM_acquisitionType: {
@@ -4201,6 +4208,27 @@ public class GenerateBaseDataService {
         stringBuilder.append("本次评估以证载地址与现场查看地址界定估价对象系同一标的物为前提。") ;
         String value = stringBuilder.toString();
         return StringUtils.isNotBlank(value) ? value : errorStr;
+    }
+
+    protected String getLandNumberDenominations(){
+        //取评估方案中对应的权证数或无证时的地块数
+        int index = 0;
+        List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
+        for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList) {
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
+            if (basicApply == null || basicApply.getId() == 0) {
+                continue;
+            }
+            if (schemeJudgeObject.getDeclareRecordId() == null) {
+                continue;
+            }
+            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
+            if (declareRecord == null) {
+                continue;
+            }
+            index++;
+        }
+        return String.format("%s宗数",String.valueOf(index)) ;
     }
 
     /**

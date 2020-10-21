@@ -80,7 +80,7 @@ public enum ReportFieldEnum implements Serializable {
     ENUM_MARKET_RISK("市场风险"),//模板 ${市场风险，区（县）或扩大的区（县）市设模板}
     ENUM_REALIZATION_RISK("变现风险"),//模板
     ENUM_TAX_RISK("税收风险"),//模板
-    ENUM_OPTIMAL_USE_LAND("土地最佳利用"),//模板
+
 
 
     AssetInventoryFile("清查证明文件"),
