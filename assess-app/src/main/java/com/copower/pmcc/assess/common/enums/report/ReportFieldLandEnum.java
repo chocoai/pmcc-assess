@@ -41,6 +41,8 @@ public enum ReportFieldLandEnum {
     LAND_ENUM_IndividualFactorsDesc("土地个别因素描述"),
     LAND_ENUM_Asset_InventoryDesc("土地资产清查描述"),
     LAND_ENUM_Asset_InventoryAddRess("土地资产清查证载地址"),
+    LAND_ENUM_NumberDenominations("土地宗数"),
+    ENUM_OPTIMAL_USE_LAND("土地最佳利用"),//模板
 
 
     ;
