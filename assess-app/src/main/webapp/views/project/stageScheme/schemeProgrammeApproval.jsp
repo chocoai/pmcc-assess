@@ -104,13 +104,13 @@
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                 财产包括
                                             </label>
-                                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                                 <label class="form-control input-full">${item.scopeInclude}</label>
                                             </div>
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                 财产不包括
                                             </label>
-                                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                                 <label class="form-control input-full">${item.scopeNotInclude}</label>
                                             </div>
                                         </div>
@@ -125,13 +125,13 @@
                                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                     最佳利用描述
                                                 </label>
-                                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                                     <label class="form-control input-full">${item.bestUseDesc}</label>
                                                 </div>
                                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                     宗地现状
                                                 </label>
-                                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                                     <label class="form-control input-full">${item.currentSituation}</label>
                                                 </div>
                                             </div>

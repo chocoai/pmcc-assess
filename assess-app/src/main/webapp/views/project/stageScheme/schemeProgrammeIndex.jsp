@@ -1579,6 +1579,7 @@
         data.entrustmentPurpose = $(areaPanel).find('[name="entrustmentPurpose"]').val();
         data.entrustAimType = $(areaPanel).find('[name="entrustAimType"]').val();
         data.remarkEntrustPurpose = $(areaPanel).find('[name="remarkEntrustPurpose"]').val();
+        data.entrustPurposeLimit = $(areaPanel).find('[name="entrustPurposeLimit"]').val();
 
         data.valueDefinition = $(areaPanel).find('[name="valueDefinition"]').val();
         data.valueDefinitionDesc = $(areaPanel).find('[name="valueDefinitionDesc"]').val();
@@ -1587,6 +1588,9 @@
         data.scopeInclude = $(areaPanel).find('[name="scopeInclude"]').val();
         data.scopeNotInclude = $(areaPanel).find('[name="scopeNotInclude"]').val();
 
+        data.bestUse = $(areaPanel).find('[name="bestUse"]').val();
+        data.bestUseDesc = $(areaPanel).find('[name="bestUseDesc"]').val();
+        data.currentSituation = $(areaPanel).find('[name="currentSituation"]').val();
         return data;
     };
 

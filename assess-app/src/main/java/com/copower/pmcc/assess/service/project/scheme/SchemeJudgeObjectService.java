@@ -712,12 +712,16 @@ public class SchemeJudgeObjectService {
         schemeAreaGroup.setTimePointExplain(schemeProgrammeDto.getTimePointExplain());
         schemeAreaGroup.setEntrustPurpose(schemeProgrammeDto.getEntrustmentPurpose());
         schemeAreaGroup.setRemarkEntrustPurpose(schemeProgrammeDto.getRemarkEntrustPurpose());
+        schemeAreaGroup.setEntrustPurposeLimit(schemeProgrammeDto.getEntrustPurposeLimit());
         schemeAreaGroup.setValueDefinition(schemeProgrammeDto.getValueDefinition());
         schemeAreaGroup.setValueDefinitionDesc(schemeProgrammeDto.getValueDefinitionDesc());
         schemeAreaGroup.setPropertyScope(schemeProgrammeDto.getPropertyScope());
         schemeAreaGroup.setScopeInclude(schemeProgrammeDto.getScopeInclude());
         schemeAreaGroup.setScopeNotInclude(schemeProgrammeDto.getScopeNotInclude());
         schemeAreaGroup.setEntrustAimType(schemeProgrammeDto.getEntrustAimType());
+        schemeAreaGroup.setBestUse(schemeProgrammeDto.getBestUse());
+        schemeAreaGroup.setBestUseDesc(schemeProgrammeDto.getBestUseDesc());
+        schemeAreaGroup.setCurrentSituation(schemeProgrammeDto.getCurrentSituation());
         schemeAreaGroupService.saveAreaGroup(schemeAreaGroup);
     }
 

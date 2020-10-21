@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
 import com.copower.pmcc.assess.service.method.MdIncomeService;
 import com.copower.pmcc.assess.service.project.*;
 import com.copower.pmcc.assess.service.project.change.ProjectWorkStageService;
@@ -89,6 +90,8 @@ public class SchemeAreaGroupService {
     private BasicEstateLandStateService basicEstateLandStateService;
     @Autowired
     private BasicHouseTradingService basicHouseTradingService;
+    @Autowired
+    private DataBestUseDescriptionService dataBestUseDescriptionService;
 
     public int add(SchemeAreaGroup schemeAreaGroup) {
         return schemeAreaGroupDao.add(schemeAreaGroup);
@@ -682,6 +685,11 @@ public class SchemeAreaGroupService {
                 list.forEach(o -> builder.append(baseDataDicService.getNameById(o)).append(","));
                 schemeAreaGroupVo.setValueConnotationName(StringUtils.strip(builder.toString(), ","));
             }
+        }
+        if (schemeAreaGroup.getBestUse() != null) {
+            DataBestUseDescription bestUseDescription = dataBestUseDescriptionService.getCacheBestUseDescriptionById(schemeAreaGroup.getBestUse());
+            if (bestUseDescription != null)
+                schemeAreaGroupVo.setBestUseName(bestUseDescription.getName());
         }
         return schemeAreaGroupVo;
     }

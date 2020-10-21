@@ -17,12 +17,16 @@ public class SchemeProgrammeDto {
     private String timePointExplain;
     private Integer entrustmentPurpose;
     private String remarkEntrustPurpose;
+    private String entrustPurposeLimit;
     private Integer valueDefinition;
     private String valueDefinitionDesc;
     private Integer propertyScope;
     private String scopeInclude;
     private String scopeNotInclude;
     private Integer entrustAimType;
+    private Integer bestUse;
+    private String bestUseDesc;
+    private String currentSituation;
     List<SchemeJudgeObject> schemeJudgeObjects;
 
     public Integer getAreaGroupId() {
@@ -111,6 +115,38 @@ public class SchemeProgrammeDto {
 
     public void setSchemeJudgeObjects(List<SchemeJudgeObject> schemeJudgeObjects) {
         this.schemeJudgeObjects = schemeJudgeObjects;
+    }
+
+    public String getEntrustPurposeLimit() {
+        return entrustPurposeLimit;
+    }
+
+    public void setEntrustPurposeLimit(String entrustPurposeLimit) {
+        this.entrustPurposeLimit = entrustPurposeLimit;
+    }
+
+    public Integer getBestUse() {
+        return bestUse;
+    }
+
+    public void setBestUse(Integer bestUse) {
+        this.bestUse = bestUse;
+    }
+
+    public String getBestUseDesc() {
+        return bestUseDesc;
+    }
+
+    public void setBestUseDesc(String bestUseDesc) {
+        this.bestUseDesc = bestUseDesc;
+    }
+
+    public String getCurrentSituation() {
+        return currentSituation;
+    }
+
+    public void setCurrentSituation(String currentSituation) {
+        this.currentSituation = currentSituation;
     }
 
     public Integer getEntrustAimType() {
