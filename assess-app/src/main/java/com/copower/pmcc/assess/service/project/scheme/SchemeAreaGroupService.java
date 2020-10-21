@@ -12,7 +12,6 @@ import com.copower.pmcc.assess.dal.basis.dao.project.scheme.SchemeJudgeObjectDao
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.output.project.scheme.SchemeAreaGroupVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
-import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
 import com.copower.pmcc.assess.service.data.DataBestUseDescriptionService;
@@ -30,6 +29,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -344,7 +344,7 @@ public class SchemeAreaGroupService {
                 BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
                 schemeJudgeObject.setParcelOuterDevelop(estateLandState.getDevelopmentDegreeContent());
                 schemeJudgeObject.setCurrentSituation(estateLandState.getCurrentSituation());
-                if (estateLandState.getPlotRatio() != null) {
+                if (estateLandState.getPlotRatio() != null&& NumberUtils.isNumber(estateLandState.getPlotRatio())) {
                     schemeJudgeObject.setPlanPlotRatio(estateLandState.getPlotRatio());
                     schemeJudgeObject.setSetPlotRatio(new BigDecimal(estateLandState.getPlotRatio()));
                 }
