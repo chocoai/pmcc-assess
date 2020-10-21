@@ -94,7 +94,6 @@ public class SurveyAssetInventoryService extends BaseService {
         }
         if (surveyAssetCommonDataDto.getAssetInfoItemId() != null) {
             SurveyAssetInfoItem assetInfoItem = surveyAssetInfoItemService.getSurveyAssetInfoItemById(surveyAssetCommonDataDto.getAssetInfoItemId());
-            assetInfoItem.setBisFinishUniformity(true);
             assetInfoItem.setBisFinishDamage(true);
             assetInfoItem.setStatus(ProjectStatusEnum.FINISH.getKey());
             surveyAssetInfoItemService.updateSurveyAssetInfoItem(assetInfoItem, false);

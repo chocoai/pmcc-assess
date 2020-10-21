@@ -885,6 +885,76 @@ public class SchemeAreaGroupExample {
             return (Criteria) this;
         }
 
+        public Criteria andEntrustPurposeLimitIsNull() {
+            addCriterion("entrust_purpose_limit is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitIsNotNull() {
+            addCriterion("entrust_purpose_limit is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitEqualTo(String value) {
+            addCriterion("entrust_purpose_limit =", value, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitNotEqualTo(String value) {
+            addCriterion("entrust_purpose_limit <>", value, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitGreaterThan(String value) {
+            addCriterion("entrust_purpose_limit >", value, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitGreaterThanOrEqualTo(String value) {
+            addCriterion("entrust_purpose_limit >=", value, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitLessThan(String value) {
+            addCriterion("entrust_purpose_limit <", value, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitLessThanOrEqualTo(String value) {
+            addCriterion("entrust_purpose_limit <=", value, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitLike(String value) {
+            addCriterion("entrust_purpose_limit like", value, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitNotLike(String value) {
+            addCriterion("entrust_purpose_limit not like", value, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitIn(List<String> values) {
+            addCriterion("entrust_purpose_limit in", values, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitNotIn(List<String> values) {
+            addCriterion("entrust_purpose_limit not in", values, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitBetween(String value1, String value2) {
+            addCriterion("entrust_purpose_limit between", value1, value2, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
+        public Criteria andEntrustPurposeLimitNotBetween(String value1, String value2) {
+            addCriterion("entrust_purpose_limit not between", value1, value2, "entrustPurposeLimit");
+            return (Criteria) this;
+        }
+
         public Criteria andValueDefinitionIsNull() {
             addCriterion("value_definition is null");
             return (Criteria) this;
@@ -1352,6 +1422,206 @@ public class SchemeAreaGroupExample {
 
         public Criteria andScopeNotIncludeNotBetween(String value1, String value2) {
             addCriterion("scope_not_include not between", value1, value2, "scopeNotInclude");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseIsNull() {
+            addCriterion("best_use is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseIsNotNull() {
+            addCriterion("best_use is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseEqualTo(Integer value) {
+            addCriterion("best_use =", value, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseNotEqualTo(Integer value) {
+            addCriterion("best_use <>", value, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseGreaterThan(Integer value) {
+            addCriterion("best_use >", value, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseGreaterThanOrEqualTo(Integer value) {
+            addCriterion("best_use >=", value, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseLessThan(Integer value) {
+            addCriterion("best_use <", value, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseLessThanOrEqualTo(Integer value) {
+            addCriterion("best_use <=", value, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseIn(List<Integer> values) {
+            addCriterion("best_use in", values, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseNotIn(List<Integer> values) {
+            addCriterion("best_use not in", values, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseBetween(Integer value1, Integer value2) {
+            addCriterion("best_use between", value1, value2, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseNotBetween(Integer value1, Integer value2) {
+            addCriterion("best_use not between", value1, value2, "bestUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescIsNull() {
+            addCriterion("best_use_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescIsNotNull() {
+            addCriterion("best_use_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescEqualTo(String value) {
+            addCriterion("best_use_desc =", value, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescNotEqualTo(String value) {
+            addCriterion("best_use_desc <>", value, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescGreaterThan(String value) {
+            addCriterion("best_use_desc >", value, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescGreaterThanOrEqualTo(String value) {
+            addCriterion("best_use_desc >=", value, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescLessThan(String value) {
+            addCriterion("best_use_desc <", value, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescLessThanOrEqualTo(String value) {
+            addCriterion("best_use_desc <=", value, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescLike(String value) {
+            addCriterion("best_use_desc like", value, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescNotLike(String value) {
+            addCriterion("best_use_desc not like", value, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescIn(List<String> values) {
+            addCriterion("best_use_desc in", values, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescNotIn(List<String> values) {
+            addCriterion("best_use_desc not in", values, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescBetween(String value1, String value2) {
+            addCriterion("best_use_desc between", value1, value2, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andBestUseDescNotBetween(String value1, String value2) {
+            addCriterion("best_use_desc not between", value1, value2, "bestUseDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationIsNull() {
+            addCriterion("current_situation is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationIsNotNull() {
+            addCriterion("current_situation is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationEqualTo(String value) {
+            addCriterion("current_situation =", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotEqualTo(String value) {
+            addCriterion("current_situation <>", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationGreaterThan(String value) {
+            addCriterion("current_situation >", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationGreaterThanOrEqualTo(String value) {
+            addCriterion("current_situation >=", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLessThan(String value) {
+            addCriterion("current_situation <", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLessThanOrEqualTo(String value) {
+            addCriterion("current_situation <=", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationLike(String value) {
+            addCriterion("current_situation like", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotLike(String value) {
+            addCriterion("current_situation not like", value, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationIn(List<String> values) {
+            addCriterion("current_situation in", values, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotIn(List<String> values) {
+            addCriterion("current_situation not in", values, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationBetween(String value1, String value2) {
+            addCriterion("current_situation between", value1, value2, "currentSituation");
+            return (Criteria) this;
+        }
+
+        public Criteria andCurrentSituationNotBetween(String value1, String value2) {
+            addCriterion("current_situation not between", value1, value2, "currentSituation");
             return (Criteria) this;
         }
 

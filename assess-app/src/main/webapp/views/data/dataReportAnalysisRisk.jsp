@@ -54,6 +54,7 @@
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
 </div>
+<%@include file="/views/data/common/projectType.jsp" %>
 </body>
 <!-- 添加 -->
 <div id="divBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog"
@@ -72,19 +73,15 @@
                         <div class="col-md-12">
                             <div class="card-body">
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 名称<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-3">
                                                 <input required type="text" class="form-control input-full" name="name">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-2">
                                                 <div class="form-check" style="justify-content:left">
                                                     <label class="form-check-label">
                                                         <input class="form-check-input" type="checkbox" id="bisModifiable"
@@ -94,7 +91,11 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-5">
+                                                <button type="button" class="btn btn-success btn-sm"
+                                                        onclick="projectTypeObj.addTypeHtml();">
+                                                    <span class="btn-label"><i class="fa fa-plus"></i></span>添加类型
+                                                </button>
                                                 <button type="button" class="btn btn-warning btn-sm"
                                                         onclick="showItemable()" data-toggle="modal"><span
                                                         class="btn-label"><i class="fa fa-bars"></i></span>管理子模板
@@ -103,13 +104,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="system"></div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 委托目的<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                                 <select name="entrustmentPurpose" multiple="multiple"
                                                         class="form-control input-full search-select select2"
                                                         required="required">
@@ -122,22 +124,18 @@
                                     </div>
                                 </div>
                                 <div class="row form-group">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 key值
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" class="form-control input-full" name="fieldName" placeholder="key值">
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
                                             <label class="col-sm-2 col-form-label">
                                                 排序
                                             </label>
-                                            <div class="col-sm-10">
+                                            <div class="col-sm-4">
                                                 <input type="text" class="form-control input-full" name="sorting" placeholder="排序"
                                                        required="required" data-rule-number='true'>
                                             </div>
@@ -147,10 +145,10 @@
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
+                                            <label class="col-sm-2 control-label">
                                                 模板<span class="symbol required"></span>
                                             </label>
-                                            <div class="col-sm-11">
+                                            <div class="col-sm-10">
                                                 <div style="width:99%;height:200px;" id="template"></div>
                                             </div>
                                         </div>
@@ -196,6 +194,7 @@
     function loadReportAnalysisList() {
         var cols = [];
         cols.push({field: 'name', title: '名称', width: '15%'});
+        cols.push({field: 'typeName', title: '项目类型', width: '15%'});
         cols.push({field: 'entrustmentPurposeName', title: '委托目的', width: '15%'});
         cols.push({field: 'template', title: '模板', width: '40%'});
         cols.push({
@@ -262,6 +261,16 @@
             data.bisModifiable = false;
         }
         data.entrustmentPurpose = ',' + data.entrustmentPurpose + ',';//方便like查询
+        var type = ',';
+        $("#frm").find('[name^=type]').each(function () {
+            type += $(this).val() + ',';
+        })
+        var category = ',';
+        $("#frm").find('[name^=category]').each(function () {
+            category += $(this).val() + ',';
+        })
+        data.type = type;//方便like查询
+        data.category = category;//方便like查询
         data.template = ue.getContent();
         if ($("#frm").valid()) {
             $.ajax({
@@ -296,6 +305,7 @@
                 if (result.ret) {
                     $("#frm").clearAll().initForm(result.data);
                     $("#frm").find("[name='entrustmentPurpose']").val(result.data.entrustmentPurpose.split(',')).trigger('change');
+                    projectTypeObj.editTypeHtml(result.data.type,result.data.category);
                     var content = result.data.template;
                     setTimeout(function () {
                         ue.setContent(content, false);

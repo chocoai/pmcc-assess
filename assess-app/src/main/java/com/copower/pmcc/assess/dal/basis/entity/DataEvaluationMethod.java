@@ -17,6 +17,8 @@ public class DataEvaluationMethod {
 
     private String category;
 
+    private String applicationDesc;
+
     private Boolean bisEnable;
 
     private String creator;
@@ -79,6 +81,14 @@ public class DataEvaluationMethod {
 
     public void setCategory(String category) {
         this.category = category == null ? null : category.trim();
+    }
+
+    public String getApplicationDesc() {
+        return applicationDesc;
+    }
+
+    public void setApplicationDesc(String applicationDesc) {
+        this.applicationDesc = applicationDesc == null ? null : applicationDesc.trim();
     }
 
     public Boolean getBisEnable() {

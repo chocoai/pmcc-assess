@@ -9,6 +9,7 @@ public class DataReportAnalysisVo extends DataReportAnalysis {
     private String districtName;
     private String cityName;
     private String marketBackgroundTypeName;
+    private String typeName;
 
     public String getReportAnalysisTypeName() {
         return reportAnalysisTypeName;
@@ -56,5 +57,13 @@ public class DataReportAnalysisVo extends DataReportAnalysis {
 
     public void setMarketBackgroundTypeName(String marketBackgroundTypeName) {
         this.marketBackgroundTypeName = marketBackgroundTypeName;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

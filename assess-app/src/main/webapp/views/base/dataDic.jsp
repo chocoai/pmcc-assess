@@ -615,7 +615,7 @@
     }
 
     function addKeyValue(id) {
-        keyValueManage.editDataDic(id);
+        keyValueManage.editExtendPropHtml(id);
     }
 </script>
 

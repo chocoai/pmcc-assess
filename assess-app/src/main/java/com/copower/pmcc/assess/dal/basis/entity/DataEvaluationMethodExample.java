@@ -575,6 +575,76 @@ public class DataEvaluationMethodExample {
             return (Criteria) this;
         }
 
+        public Criteria andApplicationDescIsNull() {
+            addCriterion("application_desc is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescIsNotNull() {
+            addCriterion("application_desc is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescEqualTo(String value) {
+            addCriterion("application_desc =", value, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescNotEqualTo(String value) {
+            addCriterion("application_desc <>", value, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescGreaterThan(String value) {
+            addCriterion("application_desc >", value, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescGreaterThanOrEqualTo(String value) {
+            addCriterion("application_desc >=", value, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescLessThan(String value) {
+            addCriterion("application_desc <", value, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescLessThanOrEqualTo(String value) {
+            addCriterion("application_desc <=", value, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescLike(String value) {
+            addCriterion("application_desc like", value, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescNotLike(String value) {
+            addCriterion("application_desc not like", value, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescIn(List<String> values) {
+            addCriterion("application_desc in", values, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescNotIn(List<String> values) {
+            addCriterion("application_desc not in", values, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescBetween(String value1, String value2) {
+            addCriterion("application_desc between", value1, value2, "applicationDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplicationDescNotBetween(String value1, String value2) {
+            addCriterion("application_desc not between", value1, value2, "applicationDesc");
+            return (Criteria) this;
+        }
+
         public Criteria andBisEnableIsNull() {
             addCriterion("bis_enable is null");
             return (Criteria) this;

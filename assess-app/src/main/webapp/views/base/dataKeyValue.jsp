@@ -6,36 +6,21 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">key-value管理</h4>
+                <h4 class="modal-title">扩展属性</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="keyValueFrm" class="form-horizontal">
-                    <input type="hidden" id="id" name="id">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <label class="col-sm-2 control-label">
-                                            添加key-value
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="btn btn-xs btn-success"
-                                                 onclick="appendHTML(this)">
-                                                <i class="fa fa-plus"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="keyValue">
-
-                                </div>
-
-                            </div>
+                    <input type="hidden" name="id">
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-success btn-md"
+                                    onclick="keyValueManage.addExtendPropHtml();">添加扩展属性
+                            </button>
                         </div>
                     </div>
+                    <div class="keyValue"></div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -50,64 +35,83 @@
         </div>
     </div>
 </div>
-
-
-<%--
-<div id="keyValueBox" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">key-value管理</h3>
+<script type="text/html" id="dicExtendPropHtml">
+    <div class="row form-group">
+        <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1 control-label">
+                    键<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-2">
+                    <input type="text" required class="form-control input-full" name="key" value="{key}">
+                </div>
+                <label class="col-sm-1 control-label">
+                    值<span class="symbol required"></span>
+                </label>
+                <div class="col-sm-4">
+                    <input type="text" required class="form-control input-full" name="value" value="{value}">
+                </div>
+                <label class="col-sm-1 control-label">说明</label>
+                <div class="col-sm-2">
+                    <input type="text" required class="form-control input-full" name="explain" value="{explain}">
+                </div>
+                <div class="col-sm-1">
+                    <input class='btn btn-warning btn-sm' type='button' value='X'
+                           onclick='$(this).closest(".form-group").remove();'>
+                </div>
             </div>
-            <form id="keyValueFrm" class="form-horizontal">
-                <input type="hidden" id="id" name="id">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <div class="x-valid">
-                                        <label class="col-sm-2 control-label">
-                                            添加key-value
-                                        </label>
-                                        <div class="col-sm-3">
-                                            <div class="btn btn-xs btn-success"
-                                                 onclick="appendHTML(this)">
-                                                <i class="fa fa-plus"></i></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="keyValue">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">
-                        取消
-                    </button>
-                    <button type="button" class="btn btn-primary" onclick="keyValueManage.saveData()">
-                        保存
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
---%>
-
+</script>
 <script type="application/javascript">
-    var keyValueManage ={};
+    var keyValueManage = {};
+
+    //新增扩展属性html
+    keyValueManage.addExtendPropHtml = function (key, value, explain) {
+        var keyValueEle = $("#keyValueFrm").find('.keyValue');
+        var html = $('#dicExtendPropHtml').html();
+        html = html.replace(/{key}/g, AssessCommon.toString(key));
+        html = html.replace(/{value}/g, AssessCommon.toString(value));
+        html = html.replace(/{explain}/g, AssessCommon.toString(explain));
+        keyValueEle.append(html);
+    }
+
+    //编辑扩展属性html
+    keyValueManage.editExtendPropHtml = function (id) {
+        $("#keyValueFrm").find('.keyValue').empty();
+        $.ajax({
+            url: "${pageContext.request.contextPath}/baseDataDic/getDataDicInfo",
+            type: "get",
+            dataType: "json",
+            data: {id: id},
+            success: function (result) {
+                Loading.progressHide();
+                if (result.ret) {
+                    $("#keyValueFrm").find('[name=id]').val(id);
+                    if (result.data && result.data.keyValue) {
+                        var jsonarray = eval(result.data.keyValue);
+                        $.each(jsonarray, function (i, item) {
+                            keyValueManage.addExtendPropHtml(item.key,item.value,item.explain);
+                        })
+                    }
+                    $('#keyValueBox').modal();
+                } else {
+                    AlertError("获取数据失败，失败原因:" + result.errmsg);
+                }
+            },
+            error: function (result) {
+                Loading.progressHide();
+                AlertError("调用服务端方法失败，失败原因:" + result);
+            }
+        })
+    }
+
     //保存数据
-    keyValueManage.saveData = function(id) {
+    keyValueManage.saveData = function (id) {
         if ($("#keyValueFrm").valid()) {
             var data = {};
-            data.id=$("#id").val();
-            data.keyValue=[];
+            data.id = $("#keyValueFrm").find('[name=id]').val();
+            data.keyValue = [];
             $("#keyValueFrm").find('.form-group').each(function () {
                 var item = {};
                 var key = $(this).find('[name^=key]').val();
@@ -120,7 +124,6 @@
                     data.keyValue.push(item);
                 }
             });
-            console.log(data);
             Loading.progressShow();
             $.ajax({
                 url: "${pageContext.request.contextPath}/baseDataDic/saveKeyValue",
@@ -132,8 +135,7 @@
                     if (result.ret) {
                         AlertSuccess("成功", "数据已成功保存到数据库");
                         $('#keyValueBox').modal('hide');
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -144,138 +146,6 @@
             })
         }
     };
-
-    //编辑字典数据
-    keyValueManage.editDataDic = function(id) {
-        $("#keyValueFrm").clearAll();
-        Loading.progressShow();
-        $.ajax({
-            url: "${pageContext.request.contextPath}/baseDataDic/getDataDicInfo",
-            type: "get",
-            dataType: "json",
-            data: {id: id},
-            success: function (result) {
-                Loading.progressHide();
-                if (result.ret) {
-                    $("#id").val(id);
-                    if(result.data) {
-                        writeHTMLData(result.data.keyValue );
-                    }
-                    $('#keyValueBox').modal();
-                }
-                else {
-                    AlertError("获取数据失败，失败原因:" + result.errmsg);
-                }
-            },
-            error: function (result) {
-                Loading.progressHide();
-                AlertError("调用服务端方法失败，失败原因:" + result);
-            }
-        })
-    };
-
-    var num = 0;
-
-    function appendHTML(this_) {
-        var html = '<div class="row form-group">';
-
-        html += '<div class="col-md-3">';
-        html += '<div class="form-inline x-valid">';
-        html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
-        html += "<div class='col-sm-10'>";
-        html += "<input type='text' required class='form-control input-full' name='key'+ '" + num + "'>";
-        html += "</div>";
-        html += "</div>";
-        html += "</div>";
-
-        html += '<div class="col-md-3">';
-        html += '<div class="form-inline x-valid">';
-        html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
-        html += "<div class='col-sm-10'>";
-        html += "<input type='text' required class='form-control input-full' name='value'+ '" + num + "'>";
-        html += "</div>";
-        html += "</div>";
-        html += "</div>";
-
-        html += '<div class="col-md-3">';
-        html += '<div class="form-inline x-valid">';
-        html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
-        html += "<div class='col-sm-10'>";
-        html += "<input type='text' required class='form-control input-full' name='explain'+ '" + num + "'>";
-        html += "</div>";
-        html += "</div>";
-        html += "</div>";
-
-
-        html += " <div class='col-sm-2'>";
-        html += '<div class="form-inline x-valid">';
-        html += "<label class='col-sm-1 control-label'>" + "取消" + "</label>";
-        html += "<div class='col-sm-10'>";
-        html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
-        html += "</div>";
-        html += "</div>";
-        html += "</div>";
-
-
-        html += "</div>";
-
-        num++;
-        $(".keyValue").append(html);
-    }
-
-    function cleanHTMLData(item) {
-        var value = "";
-        $(item).parent().parent().parent().parent().remove();
-    }
-
-    function writeHTMLData(json) {
-        $(".keyValue").empty();
-        if(json) {
-            var jsonarray = eval(json);
-            $.each(jsonarray, function (i, n) {
-                var html = '<div class="row form-group">';
-
-                html += '<div class="col-md-3">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>" + "key" + "</label>";
-                html += "<div class='col-sm-10'>";
-                html += "<input type='text' required class='form-control input-full' name='key'+'" + i + "' value='" + n['key'] + "'>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-
-                html += '<div class="col-md-3">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>" + "value" + "</label>";
-                html += "<div class='col-sm-10'>";
-                html += "<input type='text' required class='form-control input-full' name='value'+'" + i + "' value='" + n['value'] + "'>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-
-                html += '<div class="col-md-3">';
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>" + "说明" + "</label>";
-                html += "<div class='col-sm-10'>";
-                html += "<input type='text' required class='form-control input-full' name='explain'+ '" + i + "' value='" + n['explain'] + "'>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-
-                html += " <div class='col-sm-2'>";
-                html += '<div class="form-inline x-valid">';
-                html += "<label class='col-sm-1 control-label'>" + "取消" + "</label>";
-                html += "<div class='col-sm-10'>";
-                html += "<input class='btn btn-warning btn-sm' type='button' value='X' onclick='cleanHTMLData(this)'>" + "</span>";
-                html += "</div>";
-                html += "</div>";
-                html += "</div>";
-
-                html += "</div>";
-                $(".keyValue").append(html);
-            })
-        }
-    }
 </script>
 
 

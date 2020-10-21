@@ -194,6 +194,14 @@
                                                                placeholder="委托目的描述" class="form-control input-full"
                                                                value="${empty item.remarkEntrustPurpose?projectInfo.remarkEntrustPurpose:item.remarkEntrustPurpose}">
                                                     </div>
+                                                    <label class="col-sm-1 control-label">
+                                                        委托目的限制
+                                                    </label>
+                                                    <div class="x-valid col-sm-2">
+                                                        <input type="text" name="entrustPurposeLimit"
+                                                               placeholder="委托目的限制" class="form-control input-full"
+                                                               value="${item.entrustPurposeLimit}">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -248,13 +256,6 @@
                                                             </c:forEach>
                                                         </select>
                                                     </div>
-                                                    <label class="col-sm-1 control-label">
-                                                        财产范围<span class="symbol required"></span>
-                                                    </label>
-                                                    <div class="x-valid col-sm-2">
-                                                        <select class="form-control input-full" name="propertyScope"
-                                                                required></select>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -276,22 +277,23 @@
                                             <div class="col-md-12">
                                                 <div class="form-inline">
                                                     <label class="col-sm-1 control-label">
+                                                        财产范围<span class="symbol required"></span>
+                                                    </label>
+                                                    <div class="x-valid col-sm-2">
+                                                        <select class="form-control input-full" name="propertyScope"
+                                                                required></select>
+                                                    </div>
+                                                    <label class="col-sm-1 control-label">
                                                         财产包括<span class="symbol required"></span>
                                                     </label>
-                                                    <div class="col-sm-11 x-valid">
+                                                    <div class="col-sm-2 x-valid">
                                         <textarea class="form-control input-full" name="scopeInclude" placeholder="财产包括"
                                                   required>${item.scopeInclude}</textarea>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline">
                                                     <label class="col-sm-1 control-label">
                                                         财产不包括<span class="symbol required"></span>
                                                     </label>
-                                                    <div class="col-sm-11 x-valid">
+                                                    <div class="col-sm-2 x-valid">
                                         <textarea class="form-control input-full" name="scopeNotInclude"
                                                   placeholder="财产不包括"
                                                   required>${item.scopeNotInclude}</textarea>
@@ -299,6 +301,45 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <c:if test="${projectCategory eq 'land'}">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <div class="form-inline">
+                                                        <label class="col-sm-1 control-label">
+                                                            最佳利用方式<span class="symbol required"></span>
+                                                        </label>
+                                                        <div class="x-valid col-sm-2">
+                                                            <select class="form-control input-full" name="bestUse">
+                                                                <c:forEach items="${bestUseList}" var="bestUse">
+                                                                    <c:if test="${bestUse.id eq item.bestUse}">
+                                                                        <option value="${bestUse.id}"
+                                                                                selected="selected">${bestUse.name}</option>
+                                                                    </c:if>
+                                                                    <c:if test="${bestUse.id ne item.bestUse}">
+                                                                        <option value="${bestUse.id}">${bestUse.name}</option>
+                                                                    </c:if>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">
+                                                            最佳利用说明
+                                                        </label>
+                                                        <div class="col-sm-2 x-valid">
+                                                        <textarea class="form-control input-full" name="bestUseDesc"
+                                                                  placeholder="最佳利用说明">${item.bestUseDesc}</textarea>
+                                                        </div>
+                                                        <label class="col-sm-1 control-label">
+                                                            宗地内现状
+                                                        </label>
+                                                        <div class="col-sm-2 x-valid">
+                                                         <textarea class="form-control input-full"
+                                                                   name="currentSituation"
+                                                                   placeholder="宗地内现状">${item.currentSituation}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:if>
                                         <hr style="filter: alpha(opacity=100,finishopacity=0,style=2)" width="100%"
                                             color="#6f5499" size="10"/>
                                         <div class="judge-object-query">
@@ -768,18 +809,20 @@
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="form-inline">
-                                    <label class="col-sm-1 control-label">
-                                        最佳利用方式
-                                    </label>
-                                    <div class="col-sm-2 x-valid">
-                                        <select class="form-control input-full" required data-name="bestUse"
-                                                name="bestUse{id}"
-                                                onchange="programme.saveProgrammeJudge(this);">
-                                            <c:forEach items="${bestUseList}" var="bestUse">
-                                                <option value="${bestUse.id}">${bestUse.name}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
+                                    <c:if test="${projectCategory ne 'land'}">
+                                        <label class="col-sm-1 control-label">
+                                            最佳利用方式
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <select class="form-control input-full" required data-name="bestUse"
+                                                    name="bestUse{id}"
+                                                    onchange="programme.saveProgrammeJudge(this);">
+                                                <c:forEach items="${bestUseList}" var="bestUse">
+                                                    <option value="${bestUse.id}">${bestUse.name}</option>
+                                                </c:forEach>
+                                            </select>
+                                        </div>
+                                    </c:if>
                                     <label class="col-sm-1 control-label">
                                         证载面积
                                     </label>
@@ -797,10 +840,12 @@
                                                name="evaluationArea{id}" data-name="evaluationArea"
                                                placeholder="评估面积" value="{evaluationArea}">
                                     </div>
-                                    <label class="col-sm-1 control-label" data-name="evaluationNumberContainer{id}" style="display: none;">
+                                    <label class="col-sm-1 control-label" data-name="evaluationNumberContainer{id}"
+                                           style="display: none;">
                                         评估数量({evaluationNumberUnit})
                                     </label>
-                                    <div class="col-sm-2 x-valid" data-name="evaluationNumberContainer{id}" style="display: none;">
+                                    <div class="col-sm-2 x-valid" data-name="evaluationNumberContainer{id}"
+                                         style="display: none;">
                                         <input class="form-control input-full" type="text" required
                                                data-rule-number="true"
                                                onblur="programme.saveProgrammeJudge(this);"
@@ -855,7 +900,8 @@
                                         </label>
                                         <div class="col-sm-2 x-valid">
                                             <input class="form-control input-full" type="text" required
-                                                   name="planPlotRatio{id}" data-name="planPlotRatio" onblur="programme.saveProgrammeJudge(this);"
+                                                   name="planPlotRatio{id}" data-name="planPlotRatio"
+                                                   onblur="programme.saveProgrammeJudge(this);"
                                                    placeholder="规划容积率" value="{planPlotRatio}">
                                         </div>
                                         <label class="col-sm-1 control-label">
@@ -869,7 +915,8 @@
                                         </label>
                                         <div class="col-sm-2 x-valid">
                                             <input class="form-control input-full" type="text" required
-                                                   name="setPlotRatio{id}" data-name="setPlotRatio" onblur="programme.saveProgrammeJudge(this);"
+                                                   name="setPlotRatio{id}" data-name="setPlotRatio"
+                                                   onblur="programme.saveProgrammeJudge(this);"
                                                    placeholder="设定容积率" value="{setPlotRatio}">
                                         </div>
                                         <label class="col-sm-1 control-label">
@@ -897,18 +944,6 @@
                                         <div class="col-sm-2 x-valid">
                                             <label class="form-control input-full"
                                                    data-name="parcelSettingInnerDevelopName">{parcelSettingInnerDevelopName}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <div class="form-inline">
-                                        <label class="col-sm-1 control-label">
-                                            宗地内现状
-                                        </label>
-                                        <div class="col-sm-11 x-valid">
-                                            <label class="form-control input-full" data-name="currentSituation">{currentSituation}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -979,12 +1014,22 @@
     //委托目的 的类别  带出备注
     programme.changeEntrustAimType = function (_this) {
         var group = $(_this).closest(".form-group");
+        group.find("input[name='remarkEntrustPurpose']").val('');
+        group.find("input[name='entrustPurposeLimit']").val('');
         var entrustAimType = group.find("select[name='entrustAimType']").val();
         if (!entrustAimType) {
             return false;
         }
         AssessCommon.getDataDicInfo(entrustAimType, function (data) {
             group.find("input[name='remarkEntrustPurpose']").val(data.remark);
+            if(data.keyValue){
+                var keyValue = JSON.parse(data.keyValue);
+                $.each(keyValue,function (i,item) {
+                    if(item.key=='entrust_purpose_limit'){
+                        group.find("input[name='entrustPurposeLimit']").val(AssessCommon.toString(item.value));
+                    }
+                })
+            }
         });
     };
 
@@ -1061,7 +1106,7 @@
                             programme.landUseTypeChange(lastTr.find('[data-name="setUse"]'), item.setUse);
                         }
 
-                        if(item.evaluationNumber){
+                        if (item.evaluationNumber) {
                             lastTr.find('[data-name=evaluationNumberContainer' + item.id + ']').show();
                         }
                         if (item.bisMerge) {

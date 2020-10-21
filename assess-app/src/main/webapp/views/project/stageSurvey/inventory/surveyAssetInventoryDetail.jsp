@@ -228,19 +228,21 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 col-form-label">
-                                                    区位是否损坏
+                                                    <c:if test="${projectInfo.projectCategoryId ne landCategoryId}">
+                                                        区位是否损坏
+                                                    </c:if>
+                                                    <c:if test="${projectInfo.projectCategoryId eq landCategoryId}">
+                                                        土地是否管制
+                                                    </c:if>
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <label class="form-control input-full">${surveyAssetInventory.rimIsNormal}
                                                     </label>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="zoneBit">
-
-                                    </div>
+                                    <div class="zoneBit"></div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -255,10 +257,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="entity">
-
-                                    </div>
-                                    <c:if test="${projectInfo.projectCategoryId == houseLand}">
+                                    <div class="entity"></div>
+                                    <c:if test="${projectInfo.projectCategoryId == landCategoryId}">
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
@@ -273,9 +273,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="otherProject">
-
-                                        </div>
+                                        <div class="otherProject"></div>
                                     </c:if>
                                 </form>
                             </div>
@@ -283,55 +281,53 @@
                     </div>
 
                     <!-- 转让限制 start -->
-                    <c:if test="${projectInfo.projectCategoryId != houseLand}">
-                        <div class="col-md-12">
-                            <div class="card full-height">
-                                <div class="card-header collapse-link">
-                                    <div class="card-head-row">
-                                        <div class="card-title">
-                                            转让限制
-                                        </div>
-                                        <div class="card-tools">
-                                            <button class="btn  btn-link btn-primary btn-xs"><span
-                                                    class="fa fa-angle-down"></span>
-                                            </button>
-                                        </div>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        转让限制
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="card-body">
-                                    <form class="form-horizontal">
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1  col-form-label">
-                                                        是否有转让限制
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1  col-form-label">
+                                                    是否有转让限制
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full" id="bisLimit">
                                                     </label>
-                                                    <div class="col-sm-3">
-                                                        <label class="form-control input-full" id="bisLimit">
-                                                        </label>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group showLimit">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1  col-form-label">
-                                                        转让限制
+                                    </div>
+                                    <div class="row form-group showLimit">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1  col-form-label">
+                                                    转让限制
+                                                </label>
+                                                <div class="col-sm-11">
+                                                    <label class="form-control input-full">${surveyAssetInventory.transferLimit}
                                                     </label>
-                                                    <div class="col-sm-11">
-                                                        <label class="form-control input-full">${surveyAssetInventory.transferLimit}
-                                                        </label>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </c:if>
+                    </div>
                 </div>
             </div>
         </div>
@@ -339,8 +335,6 @@
     </div>
 </div>
 </body>
-
-
 <script type="application/javascript">
 
     var survey = {};

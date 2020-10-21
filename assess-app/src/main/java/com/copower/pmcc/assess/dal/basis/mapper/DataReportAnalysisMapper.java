@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DataReportAnalysisMapper {
-    int countByExample(DataReportAnalysisExample example);
+    long countByExample(DataReportAnalysisExample example);
 
     int deleteByExample(DataReportAnalysisExample example);
 

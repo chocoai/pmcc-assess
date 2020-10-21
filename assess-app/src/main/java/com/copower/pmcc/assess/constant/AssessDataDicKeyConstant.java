@@ -220,4 +220,11 @@ public class AssessDataDicKeyConstant {
     public static final String AD_PLACE_FILE_MARK_LAND = "ad.place.file.mark.land"; //档案分类【土地】
     public static final String AD_PLACE_FILE_MARK_COMPREHENSIVE_LAND = "ad.place.file.mark.comprehensive.land"; //档案分类【房产】-综合类
     public static final String AD_PLACE_FILE_MARK_PROFESSION_LAND = "ad.place.file.mark.profession.land"; //档案分类【房产】-专业类
+
+    /**
+     * 扩展属性键值
+     * -------------------------------------------------------------------------------------------------
+     */
+    public static final String EXTEND_PROP_VALUEDATEEXPLAIN = "valueDateExplain"; //价值时点说明
+    public static final String EXTEND_PROP_ENTRUST_PURPOSE_LIMIT = "entrust_purpose_limit"; //委托目的限制
 }

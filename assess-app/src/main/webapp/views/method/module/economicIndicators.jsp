@@ -30,12 +30,15 @@
                                                    required="required">
                                         </div>
                                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
-                                            项目档次（楼盘)
+                                            <c:choose>
+                                                <c:when test="${projectInfo.projectCategoryName eq '土地'}">
+                                                    地块编号
+                                                </c:when>
+                                                <c:otherwise>项目档次（楼盘)</c:otherwise>
+                                            </c:choose>
                                         </label>
                                         <div class="col-xs-3  col-sm-3  col-md-3  col-lg-3">
-                                            <input type="text"
-                                                   placeholder="项目档次（楼盘)" name="grade"
-                                                   class="form-control input-full">
+                                            <input type="text" name="grade" class="form-control input-full">
                                         </div>
                                         <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                                             土地用途

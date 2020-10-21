@@ -13,6 +13,10 @@ public class DataReportAnalysis {
 
     private String name;
 
+    private String type;
+
+    private String category;
+
     private Integer marketBackgroundType;
 
     private Integer reportAnalysisType;
@@ -79,6 +83,22 @@ public class DataReportAnalysis {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category == null ? null : category.trim();
     }
 
     public Integer getMarketBackgroundType() {

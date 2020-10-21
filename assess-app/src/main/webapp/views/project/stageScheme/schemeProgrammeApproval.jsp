@@ -56,6 +56,12 @@
                                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                                 <label class="form-control input-full">${item.remarkEntrustPurpose}</label>
                                             </div>
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                委托目的限制
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.entrustPurposeLimit}</label>
+                                            </div>
                                         </div>
                                         <div class="row form-group form-inline">
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
@@ -79,12 +85,6 @@
                                             <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
                                                 <label class="form-control input-full">${item.valueDefinitionName}</label>
                                             </div>
-                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
-                                                财产范围
-                                            </label>
-                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
-                                                <label class="form-control input-full">${item.propertyScopeName}</label>
-                                            </div>
                                         </div>
                                         <div class="row form-group form-inline">
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
@@ -96,20 +96,46 @@
                                         </div>
                                         <div class="row form-group form-inline">
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                财产范围
+                                            </label>
+                                            <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                <label class="form-control input-full">${item.propertyScopeName}</label>
+                                            </div>
+                                            <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                 财产包括
                                             </label>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                                 <label class="form-control input-full">${item.scopeInclude}</label>
                                             </div>
-                                        </div>
-                                        <div class="row form-group form-inline">
                                             <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
                                                 财产不包括
                                             </label>
-                                            <div class="col-xs-11  col-sm-11  col-md-11  col-lg-11">
+                                            <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
                                                 <label class="form-control input-full">${item.scopeNotInclude}</label>
                                             </div>
                                         </div>
+                                        <c:if test="${projectCategory eq 'land'}">
+                                            <div class="row form-group form-inline">
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                    最佳利用方式
+                                                </label>
+                                                <div class="col-xs-2  col-sm-2  col-md-2  col-lg-2">
+                                                    <label class="form-control input-full">${item.bestUse}</label>
+                                                </div>
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                    最佳利用描述
+                                                </label>
+                                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                    <label class="form-control input-full">${item.bestUseDesc}</label>
+                                                </div>
+                                                <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 control-label">
+                                                    宗地现状
+                                                </label>
+                                                <div class="col-xs-4  col-sm-4  col-md-4  col-lg-4">
+                                                    <label class="form-control input-full">${item.currentSituation}</label>
+                                                </div>
+                                            </div>
+                                        </c:if>
                                         <div class="judge-object-content"></div>
                                     </form>
                                 </div>
@@ -456,12 +482,14 @@
                         <div class="row form-group">
                             <div class="col-md-12">
                                 <div class="form-inline">
-                                    <label class="col-sm-1 control-label">
-                                        最佳利用方式
-                                    </label>
-                                    <div class="col-sm-2 x-valid">
-                                        <label class="form-control input-full">{bestUseName}</label>
-                                    </div>
+                                    <c:if test="${projectCategory ne 'land'}">
+                                        <label class="col-sm-1 control-label">
+                                            最佳利用方式
+                                        </label>
+                                        <div class="col-sm-2 x-valid">
+                                            <label class="form-control input-full">{bestUseName}</label>
+                                        </div>
+                                    </c:if>
                                     <label class="col-sm-1 control-label">
                                         证载面积
                                     </label>
@@ -474,10 +502,12 @@
                                     <div class="col-sm-2 x-valid">
                                         <label class="form-control input-full">{evaluationArea}</label>
                                     </div>
-                                    <label class="col-sm-1 control-label" data-name="evaluationNumberContainer{id}" style="display: none;">
+                                    <label class="col-sm-1 control-label" data-name="evaluationNumberContainer{id}"
+                                           style="display: none;">
                                         评估数量({evaluationNumberUnit})
                                     </label>
-                                    <div class="col-sm-2 x-valid" data-name="evaluationNumberContainer{id}" style="display: none;">
+                                    <div class="col-sm-2 x-valid" data-name="evaluationNumberContainer{id}"
+                                         style="display: none;">
                                         <label class="form-control input-full">{evaluationNumber}</label>
                                     </div>
                                 </div>
@@ -554,18 +584,6 @@
                                         <div class="col-sm-2 x-valid">
                                             <label class="form-control input-full"
                                                    data-name="parcelSettingInnerDevelopName">{parcelSettingInnerDevelopName}</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-md-12">
-                                    <div class="form-inline">
-                                        <label class="col-sm-1 control-label">
-                                            宗地内现状
-                                        </label>
-                                        <div class="col-sm-11 x-valid">
-                                            <label class="form-control input-full" data-name="currentSituation">{currentSituation}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -656,7 +674,7 @@
                         tbody.append(html);
                         //设值
                         var lastTr = tbody.find(".x_panel:last");
-                        if(item.evaluationNumber){
+                        if (item.evaluationNumber) {
                             lastTr.find('[data-name=evaluationNumberContainer' + item.id + ']').show();
                         }
                         if (item.bisMerge) {

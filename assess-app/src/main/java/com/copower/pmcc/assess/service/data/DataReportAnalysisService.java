@@ -15,6 +15,7 @@ import com.copower.pmcc.assess.dto.output.data.DataReportAnalysisVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateHouseEntityService;
@@ -84,6 +85,8 @@ public class DataReportAnalysisService {
     private BasicApplyBatchService basicApplyBatchService;
     @Autowired
     private SurveyAssetInfoService surveyAssetInfoService;
+    @Autowired
+    private BaseProjectClassifyService baseProjectClassifyService;
 
     /**
      * 保存数据
@@ -158,6 +161,7 @@ public class DataReportAnalysisService {
         BeanUtils.copyProperties(reportAnalysis, vo);
         vo.setReportAnalysisTypeName(baseDataDicService.getNameById(reportAnalysis.getReportAnalysisType()));
         List<BaseDataDic> purposeDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.DATA_ENTRUSTMENT_PURPOSE);
+
         if (StringUtils.isNotBlank(reportAnalysis.getEntrustmentPurpose())) {
             vo.setEntrustmentPurposeName(baseDataDicService.getDataDicName(purposeDicList, reportAnalysis.getEntrustmentPurpose()));
         }
@@ -173,7 +177,7 @@ public class DataReportAnalysisService {
         if (org.apache.commons.lang.StringUtils.isNotBlank(reportAnalysis.getDistrict())) {
             vo.setDistrictName(erpAreaService.getSysAreaName(reportAnalysis.getDistrict()));//县
         }
-
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(reportAnalysis.getType(), reportAnalysis.getCategory()));
         return vo;
     }
 

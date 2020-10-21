@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface SchemeAreaGroupMapper {
-    int countByExample(SchemeAreaGroupExample example);
+    long countByExample(SchemeAreaGroupExample example);
 
     int deleteByExample(SchemeAreaGroupExample example);
 

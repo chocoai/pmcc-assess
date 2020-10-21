@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface DataEvaluationMethodMapper {
-    int countByExample(DataEvaluationMethodExample example);
+    long countByExample(DataEvaluationMethodExample example);
 
     int deleteByExample(DataEvaluationMethodExample example);
 

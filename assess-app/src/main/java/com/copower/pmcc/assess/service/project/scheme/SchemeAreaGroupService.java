@@ -341,6 +341,15 @@ public class SchemeAreaGroupService {
                 BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
                 schemeJudgeObject.setParcelOuterDevelop(estateLandState.getDevelopmentDegreeContent());
                 schemeJudgeObject.setCurrentSituation(estateLandState.getCurrentSituation());
+                if (estateLandState.getPlotRatio() != null) {
+                    schemeJudgeObject.setPlanPlotRatio(estateLandState.getPlotRatio());
+                    schemeJudgeObject.setSetPlotRatio(new BigDecimal(estateLandState.getPlotRatio()));
+                }
+                //反向宗地现状到区域
+                if (StringUtils.isBlank(areaGroup.getCurrentSituation())) {
+                    areaGroup.setCurrentSituation(estateLandState.getCurrentSituation());
+                    update(areaGroup);
+                }
             }
 
             BasicHouse basicHouse = basicHouseService.getHouseByBasicApply(basicApply);
@@ -709,7 +718,7 @@ public class SchemeAreaGroupService {
         if (CollectionUtils.isNotEmpty(judgeObjects)) {
             for (SchemeJudgeObject judgeObject : judgeObjects) {
                 BigDecimal evaluationArea = schemeJudgeObjectService.getEvaluationAreaOrNumber(judgeObject);
-                if (evaluationArea!= null && judgeObject.getPrice() != null) {
+                if (evaluationArea != null && judgeObject.getPrice() != null) {
                     result = result.add(evaluationArea.multiply(judgeObject.getPrice()));
                 }
             }

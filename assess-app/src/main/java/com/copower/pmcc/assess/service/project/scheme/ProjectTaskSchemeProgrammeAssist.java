@@ -223,7 +223,7 @@ public class ProjectTaskSchemeProgrammeAssist implements ProjectTaskInterface {
         modelAndView.addObject("evaluationThinkingMap", evaluationThinkingService.getEvaluationThinkingMap());
         modelAndView.addObject("planId", planId);
         BaseDataDic entrustPurposeData = baseDataDicService.getDataDicById(projectInfoVo.getEntrustPurpose());
-        String valueDateExplain = baseDataDicService.getValueByKey("valueDateExplain", entrustPurposeData);
+        String valueDateExplain = baseDataDicService.getValueByKey(AssessDataDicKeyConstant.EXTEND_PROP_VALUEDATEEXPLAIN, entrustPurposeData);
         modelAndView.addObject("valueDateExplain", valueDateExplain);
         if (StringUtils.isNotBlank(processInsId)) {
             modelAndView.addObject("processInsId", processInsId);

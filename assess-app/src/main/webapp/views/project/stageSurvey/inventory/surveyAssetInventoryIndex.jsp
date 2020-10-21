@@ -261,7 +261,12 @@
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
                                                 <label class="col-sm-1 col-form-label">
-                                                    区位是否损坏
+                                                    <c:if test="${projectInfo.projectCategoryId ne landCategoryId}">
+                                                        区位是否损坏
+                                                    </c:if>
+                                                    <c:if test="${projectInfo.projectCategoryId eq landCategoryId}">
+                                                        土地是否管制
+                                                    </c:if>
                                                 </label>
                                                 <div class="col-sm-3">
                                                     <select class="form-control input-full" id="rimIsNormal"
@@ -272,9 +277,13 @@
                                                         <option value="不正常">不正常</option>
                                                     </select>
                                                 </div>
-
                                                 <label class="col-sm-1 col-form-label showZoneAdd" style="display:none">
-                                                    区位损坏新增
+                                                    <c:if test="${projectInfo.projectCategoryId ne landCategoryId}">
+                                                        区位损坏新增
+                                                    </c:if>
+                                                    <c:if test="${projectInfo.projectCategoryId eq landCategoryId}">
+                                                        土地管制新增
+                                                    </c:if>
                                                 </label>
                                                 <div class="col-sm-3 showZoneAdd" style="display:none">
                                                     <div class="btn btn-xs btn-success"
@@ -320,7 +329,7 @@
                                     <div class="entity">
 
                                     </div>
-                                    <c:if test="${projectInfo.projectCategoryId == houseLand}">
+                                    <c:if test="${projectInfo.projectCategoryId == landCategoryId}">
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="form-inline x-valid">
@@ -345,73 +354,69 @@
                     </div>
 
                     <!-- 转让限制 start -->
-                    <c:if test="${projectInfo.projectCategoryId != houseLand}">
-                        <div class="col-md-12">
-                            <div class="card full-height">
-                                <div class="card-header collapse-link">
-                                    <div class="card-head-row">
-                                        <div class="card-title">
-                                            转让限制
-                                        </div>
-                                        <div class="card-tools">
-                                            <button class="btn  btn-link btn-primary btn-xs"><span
-                                                    class="fa fa-angle-down"></span>
-                                            </button>
-                                        </div>
+                    <div class="col-md-12">
+                        <div class="card full-height">
+                            <div class="card-header collapse-link">
+                                <div class="card-head-row">
+                                    <div class="card-title">
+                                        转让限制
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn  btn-link btn-primary btn-xs"><span
+                                                class="fa fa-angle-down"></span>
+                                        </button>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div class="card-body">
-                                    <form class="form-horizontal">
-                                        <div class="row form-group">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1  col-form-label">
-                                                        是否有转让限制
-                                                    </label>
-                                                    <div class="col-sm-3">
-                                                        <select id="bisLimit"
-                                                                class='form-control input-full'
-                                                                onchange="showLimit()">
-                                                            <option value="请选择">-请选择-</option>
-                                                            <option value="是">是</option>
-                                                            <option value="否">否</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <button type="button" class="btn btn-sm btn-success"
-                                                                onclick="survey.findDeclareRecord() ;">
-                                                            权证查看
-                                                        </button>
-                                                        <button type="button" class="btn btn-sm btn-success"
-                                                                onclick="survey.findRightDetail();">
-                                                            他项权力查看
-                                                        </button>
-                                                    </div>
+                            <div class="card-body">
+                                <form class="form-horizontal">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1  col-form-label">
+                                                    是否有转让限制
+                                                </label>
+                                                <div class="col-sm-3">
+                                                    <select id="bisLimit"
+                                                            class='form-control input-full'
+                                                            onchange="showLimit()">
+                                                        <option value="请选择">-请选择-</option>
+                                                        <option value="是">是</option>
+                                                        <option value="否">否</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button type="button" class="btn btn-sm btn-success"
+                                                            onclick="survey.findDeclareRecord() ;">
+                                                        权证查看
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-success"
+                                                            onclick="survey.findRightDetail();">
+                                                        他项权力查看
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row form-group showLimit">
-                                            <div class="col-md-12">
-                                                <div class="form-inline x-valid">
-                                                    <label class="col-sm-1  col-form-label">
-                                                        转让限制
-                                                    </label>
-                                                    <div class="col-sm-11">
+                                    </div>
+                                    <div class="row form-group showLimit">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1  col-form-label">
+                                                    转让限制
+                                                </label>
+                                                <div class="col-sm-11">
                                     <textarea placeholder="转让限制" name="transferLimit" id="transferLimit"
                                               class="form-control input-full"
                                               value="${surveyAssetInventory.transferLimit}"></textarea>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </form>
-                                </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </c:if>
-
-
+                    </div>
                 </div>
             </div>
         </div>

@@ -45,6 +45,8 @@ public class SurveyAssetInventoryController {
     private BaseService baseService;
     @Autowired
     private SurveyAssetInfoItemService surveyAssetInfoItemService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     private final String applyViewName = "/project/stageSurvey/inventory/surveyAssetInventoryIndex";
     private final String detailView = "/project/stageSurvey/inventory/surveyAssetInventoryDetail";
@@ -132,9 +134,10 @@ public class SurveyAssetInventoryController {
         List<SurveyAssetInventoryContentVo> surveyAssetInventoryContentVos = surveyAssetInventoryContentService.getVoList(surveyAssetInventoryContentService.getSurveyAssetInventoryContentListByMasterId(inventoryId));
         modelAndView.addObject("surveyAssetInventoryContentVos", surveyAssetInventoryContentVos);
 
+        modelAndView.addObject("projectInfo",projectInfoService.getProjectInfoById(declareRecord.getProjectId()));
         //土地类型
-        BaseProjectClassify houseLand = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
-        modelAndView.addObject("houseLand", houseLand.getId());
+        BaseProjectClassify landClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
+        modelAndView.addObject("landCategoryId", landClassify.getId());
     }
 
 

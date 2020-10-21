@@ -1,55 +1,59 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeAreaGroupMapper" >
-  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="pid" property="pid" jdbcType="INTEGER" />
-    <result column="project_id" property="projectId" jdbcType="INTEGER" />
-    <result column="province" property="province" jdbcType="VARCHAR" />
-    <result column="city" property="city" jdbcType="VARCHAR" />
-    <result column="district" property="district" jdbcType="VARCHAR" />
-    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
-    <result column="value_time_point" property="valueTimePoint" jdbcType="TIMESTAMP" />
-    <result column="time_point_explain" property="timePointExplain" jdbcType="VARCHAR" />
-    <result column="entrust_purpose" property="entrustPurpose" jdbcType="INTEGER" />
-    <result column="entrust_aim_type" property="entrustAimType" jdbcType="INTEGER" />
-    <result column="remark_entrust_purpose" property="remarkEntrustPurpose" jdbcType="VARCHAR" />
-    <result column="value_definition" property="valueDefinition" jdbcType="INTEGER" />
-    <result column="value_definition_desc" property="valueDefinitionDesc" jdbcType="VARCHAR" />
-    <result column="value_connotation" property="valueConnotation" jdbcType="VARCHAR" />
-    <result column="value_connotation_desc" property="valueConnotationDesc" jdbcType="VARCHAR" />
-    <result column="property_scope" property="propertyScope" jdbcType="INTEGER" />
-    <result column="scope_include" property="scopeInclude" jdbcType="VARCHAR" />
-    <result column="scope_not_include" property="scopeNotInclude" jdbcType="VARCHAR" />
-    <result column="split_from" property="splitFrom" jdbcType="INTEGER" />
-    <result column="bis_new" property="bisNew" jdbcType="BIT" />
-    <result column="bis_enable" property="bisEnable" jdbcType="BIT" />
-    <result column="bis_split" property="bisSplit" jdbcType="BIT" />
-    <result column="bis_merge" property="bisMerge" jdbcType="BIT" />
-    <result column="sorting" property="sorting" jdbcType="INTEGER" />
-    <result column="creator" property="creator" jdbcType="VARCHAR" />
-    <result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP" />
-    <result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.copower.pmcc.assess.dal.basis.mapper.SchemeAreaGroupMapper">
+  <resultMap id="BaseResultMap" type="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="district" jdbcType="VARCHAR" property="district" />
+    <result column="area_name" jdbcType="VARCHAR" property="areaName" />
+    <result column="value_time_point" jdbcType="TIMESTAMP" property="valueTimePoint" />
+    <result column="time_point_explain" jdbcType="VARCHAR" property="timePointExplain" />
+    <result column="entrust_purpose" jdbcType="INTEGER" property="entrustPurpose" />
+    <result column="entrust_aim_type" jdbcType="INTEGER" property="entrustAimType" />
+    <result column="remark_entrust_purpose" jdbcType="VARCHAR" property="remarkEntrustPurpose" />
+    <result column="entrust_purpose_limit" jdbcType="VARCHAR" property="entrustPurposeLimit" />
+    <result column="value_definition" jdbcType="INTEGER" property="valueDefinition" />
+    <result column="value_definition_desc" jdbcType="VARCHAR" property="valueDefinitionDesc" />
+    <result column="value_connotation" jdbcType="VARCHAR" property="valueConnotation" />
+    <result column="value_connotation_desc" jdbcType="VARCHAR" property="valueConnotationDesc" />
+    <result column="property_scope" jdbcType="INTEGER" property="propertyScope" />
+    <result column="scope_include" jdbcType="VARCHAR" property="scopeInclude" />
+    <result column="scope_not_include" jdbcType="VARCHAR" property="scopeNotInclude" />
+    <result column="best_use" jdbcType="INTEGER" property="bestUse" />
+    <result column="best_use_desc" jdbcType="VARCHAR" property="bestUseDesc" />
+    <result column="current_situation" jdbcType="VARCHAR" property="currentSituation" />
+    <result column="split_from" jdbcType="INTEGER" property="splitFrom" />
+    <result column="bis_new" jdbcType="BIT" property="bisNew" />
+    <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
+    <result column="bis_split" jdbcType="BIT" property="bisSplit" />
+    <result column="bis_merge" jdbcType="BIT" property="bisMerge" />
+    <result column="sorting" jdbcType="INTEGER" property="sorting" />
+    <result column="creator" jdbcType="VARCHAR" property="creator" />
+    <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+    <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -60,25 +64,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -89,339 +93,378 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
+  <sql id="Base_Column_List">
     id, pid, project_id, province, city, district, area_name, value_time_point, time_point_explain, 
-    entrust_purpose, entrust_aim_type, remark_entrust_purpose, value_definition, value_definition_desc, 
-    value_connotation, value_connotation_desc, property_scope, scope_include, scope_not_include, 
+    entrust_purpose, entrust_aim_type, remark_entrust_purpose, entrust_purpose_limit, 
+    value_definition, value_definition_desc, value_connotation, value_connotation_desc, 
+    property_scope, scope_include, scope_not_include, best_use, best_use_desc, current_situation, 
     split_from, bis_new, bis_enable, bis_split, bis_merge, sorting, creator, gmt_created, 
     gmt_modified
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" >
+  <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_scheme_area_group
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_scheme_area_group
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_scheme_area_group
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" >
+  <delete id="deleteByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample">
     delete from tb_scheme_area_group
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_area_group (pid, project_id, province, 
       city, district, area_name, 
       value_time_point, time_point_explain, entrust_purpose, 
-      entrust_aim_type, remark_entrust_purpose, value_definition, 
-      value_definition_desc, value_connotation, 
+      entrust_aim_type, remark_entrust_purpose, entrust_purpose_limit, 
+      value_definition, value_definition_desc, value_connotation, 
       value_connotation_desc, property_scope, scope_include, 
-      scope_not_include, split_from, bis_new, 
+      scope_not_include, best_use, best_use_desc, 
+      current_situation, split_from, bis_new, 
       bis_enable, bis_split, bis_merge, 
       sorting, creator, gmt_created, 
       gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{province,jdbcType=VARCHAR}, 
       #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{areaName,jdbcType=VARCHAR}, 
       #{valueTimePoint,jdbcType=TIMESTAMP}, #{timePointExplain,jdbcType=VARCHAR}, #{entrustPurpose,jdbcType=INTEGER}, 
-      #{entrustAimType,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, #{valueDefinition,jdbcType=INTEGER}, 
-      #{valueDefinitionDesc,jdbcType=VARCHAR}, #{valueConnotation,jdbcType=VARCHAR}, 
+      #{entrustAimType,jdbcType=INTEGER}, #{remarkEntrustPurpose,jdbcType=VARCHAR}, #{entrustPurposeLimit,jdbcType=VARCHAR}, 
+      #{valueDefinition,jdbcType=INTEGER}, #{valueDefinitionDesc,jdbcType=VARCHAR}, #{valueConnotation,jdbcType=VARCHAR}, 
       #{valueConnotationDesc,jdbcType=VARCHAR}, #{propertyScope,jdbcType=INTEGER}, #{scopeInclude,jdbcType=VARCHAR}, 
-      #{scopeNotInclude,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, #{bisNew,jdbcType=BIT}, 
+      #{scopeNotInclude,jdbcType=VARCHAR}, #{bestUse,jdbcType=INTEGER}, #{bestUseDesc,jdbcType=VARCHAR}, 
+      #{currentSituation,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, #{bisNew,jdbcType=BIT}, 
       #{bisEnable,jdbcType=BIT}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
       #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
       #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup" >
-    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_area_group
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="pid != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
         pid,
       </if>
-      <if test="projectId != null" >
+      <if test="projectId != null">
         project_id,
       </if>
-      <if test="province != null" >
+      <if test="province != null">
         province,
       </if>
-      <if test="city != null" >
+      <if test="city != null">
         city,
       </if>
-      <if test="district != null" >
+      <if test="district != null">
         district,
       </if>
-      <if test="areaName != null" >
+      <if test="areaName != null">
         area_name,
       </if>
-      <if test="valueTimePoint != null" >
+      <if test="valueTimePoint != null">
         value_time_point,
       </if>
-      <if test="timePointExplain != null" >
+      <if test="timePointExplain != null">
         time_point_explain,
       </if>
-      <if test="entrustPurpose != null" >
+      <if test="entrustPurpose != null">
         entrust_purpose,
       </if>
-      <if test="entrustAimType != null" >
+      <if test="entrustAimType != null">
         entrust_aim_type,
       </if>
-      <if test="remarkEntrustPurpose != null" >
+      <if test="remarkEntrustPurpose != null">
         remark_entrust_purpose,
       </if>
-      <if test="valueDefinition != null" >
+      <if test="entrustPurposeLimit != null">
+        entrust_purpose_limit,
+      </if>
+      <if test="valueDefinition != null">
         value_definition,
       </if>
-      <if test="valueDefinitionDesc != null" >
+      <if test="valueDefinitionDesc != null">
         value_definition_desc,
       </if>
-      <if test="valueConnotation != null" >
+      <if test="valueConnotation != null">
         value_connotation,
       </if>
-      <if test="valueConnotationDesc != null" >
+      <if test="valueConnotationDesc != null">
         value_connotation_desc,
       </if>
-      <if test="propertyScope != null" >
+      <if test="propertyScope != null">
         property_scope,
       </if>
-      <if test="scopeInclude != null" >
+      <if test="scopeInclude != null">
         scope_include,
       </if>
-      <if test="scopeNotInclude != null" >
+      <if test="scopeNotInclude != null">
         scope_not_include,
       </if>
-      <if test="splitFrom != null" >
+      <if test="bestUse != null">
+        best_use,
+      </if>
+      <if test="bestUseDesc != null">
+        best_use_desc,
+      </if>
+      <if test="currentSituation != null">
+        current_situation,
+      </if>
+      <if test="splitFrom != null">
         split_from,
       </if>
-      <if test="bisNew != null" >
+      <if test="bisNew != null">
         bis_new,
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         bis_enable,
       </if>
-      <if test="bisSplit != null" >
+      <if test="bisSplit != null">
         bis_split,
       </if>
-      <if test="bisMerge != null" >
+      <if test="bisMerge != null">
         bis_merge,
       </if>
-      <if test="sorting != null" >
+      <if test="sorting != null">
         sorting,
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator,
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created,
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="pid != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
         #{pid,jdbcType=INTEGER},
       </if>
-      <if test="projectId != null" >
+      <if test="projectId != null">
         #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="province != null" >
+      <if test="province != null">
         #{province,jdbcType=VARCHAR},
       </if>
-      <if test="city != null" >
+      <if test="city != null">
         #{city,jdbcType=VARCHAR},
       </if>
-      <if test="district != null" >
+      <if test="district != null">
         #{district,jdbcType=VARCHAR},
       </if>
-      <if test="areaName != null" >
+      <if test="areaName != null">
         #{areaName,jdbcType=VARCHAR},
       </if>
-      <if test="valueTimePoint != null" >
+      <if test="valueTimePoint != null">
         #{valueTimePoint,jdbcType=TIMESTAMP},
       </if>
-      <if test="timePointExplain != null" >
+      <if test="timePointExplain != null">
         #{timePointExplain,jdbcType=VARCHAR},
       </if>
-      <if test="entrustPurpose != null" >
+      <if test="entrustPurpose != null">
         #{entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="entrustAimType != null" >
+      <if test="entrustAimType != null">
         #{entrustAimType,jdbcType=INTEGER},
       </if>
-      <if test="remarkEntrustPurpose != null" >
+      <if test="remarkEntrustPurpose != null">
         #{remarkEntrustPurpose,jdbcType=VARCHAR},
       </if>
-      <if test="valueDefinition != null" >
+      <if test="entrustPurposeLimit != null">
+        #{entrustPurposeLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="valueDefinition != null">
         #{valueDefinition,jdbcType=INTEGER},
       </if>
-      <if test="valueDefinitionDesc != null" >
+      <if test="valueDefinitionDesc != null">
         #{valueDefinitionDesc,jdbcType=VARCHAR},
       </if>
-      <if test="valueConnotation != null" >
+      <if test="valueConnotation != null">
         #{valueConnotation,jdbcType=VARCHAR},
       </if>
-      <if test="valueConnotationDesc != null" >
+      <if test="valueConnotationDesc != null">
         #{valueConnotationDesc,jdbcType=VARCHAR},
       </if>
-      <if test="propertyScope != null" >
+      <if test="propertyScope != null">
         #{propertyScope,jdbcType=INTEGER},
       </if>
-      <if test="scopeInclude != null" >
+      <if test="scopeInclude != null">
         #{scopeInclude,jdbcType=VARCHAR},
       </if>
-      <if test="scopeNotInclude != null" >
+      <if test="scopeNotInclude != null">
         #{scopeNotInclude,jdbcType=VARCHAR},
       </if>
-      <if test="splitFrom != null" >
+      <if test="bestUse != null">
+        #{bestUse,jdbcType=INTEGER},
+      </if>
+      <if test="bestUseDesc != null">
+        #{bestUseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="currentSituation != null">
+        #{currentSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="splitFrom != null">
         #{splitFrom,jdbcType=INTEGER},
       </if>
-      <if test="bisNew != null" >
+      <if test="bisNew != null">
         #{bisNew,jdbcType=BIT},
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         #{bisEnable,jdbcType=BIT},
       </if>
-      <if test="bisSplit != null" >
+      <if test="bisSplit != null">
         #{bisSplit,jdbcType=BIT},
       </if>
-      <if test="bisMerge != null" >
+      <if test="bisMerge != null">
         #{bisMerge,jdbcType=BIT},
       </if>
-      <if test="sorting != null" >
+      <if test="sorting != null">
         #{sorting,jdbcType=INTEGER},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroupExample" resultType="java.lang.Long">
     select count(*) from tb_scheme_area_group
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update tb_scheme_area_group
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.pid != null" >
+      <if test="record.pid != null">
         pid = #{record.pid,jdbcType=INTEGER},
       </if>
-      <if test="record.projectId != null" >
+      <if test="record.projectId != null">
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
-      <if test="record.province != null" >
+      <if test="record.province != null">
         province = #{record.province,jdbcType=VARCHAR},
       </if>
-      <if test="record.city != null" >
+      <if test="record.city != null">
         city = #{record.city,jdbcType=VARCHAR},
       </if>
-      <if test="record.district != null" >
+      <if test="record.district != null">
         district = #{record.district,jdbcType=VARCHAR},
       </if>
-      <if test="record.areaName != null" >
+      <if test="record.areaName != null">
         area_name = #{record.areaName,jdbcType=VARCHAR},
       </if>
-      <if test="record.valueTimePoint != null" >
+      <if test="record.valueTimePoint != null">
         value_time_point = #{record.valueTimePoint,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.timePointExplain != null" >
+      <if test="record.timePointExplain != null">
         time_point_explain = #{record.timePointExplain,jdbcType=VARCHAR},
       </if>
-      <if test="record.entrustPurpose != null" >
+      <if test="record.entrustPurpose != null">
         entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="record.entrustAimType != null" >
+      <if test="record.entrustAimType != null">
         entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
       </if>
-      <if test="record.remarkEntrustPurpose != null" >
+      <if test="record.remarkEntrustPurpose != null">
         remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
       </if>
-      <if test="record.valueDefinition != null" >
+      <if test="record.entrustPurposeLimit != null">
+        entrust_purpose_limit = #{record.entrustPurposeLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.valueDefinition != null">
         value_definition = #{record.valueDefinition,jdbcType=INTEGER},
       </if>
-      <if test="record.valueDefinitionDesc != null" >
+      <if test="record.valueDefinitionDesc != null">
         value_definition_desc = #{record.valueDefinitionDesc,jdbcType=VARCHAR},
       </if>
-      <if test="record.valueConnotation != null" >
+      <if test="record.valueConnotation != null">
         value_connotation = #{record.valueConnotation,jdbcType=VARCHAR},
       </if>
-      <if test="record.valueConnotationDesc != null" >
+      <if test="record.valueConnotationDesc != null">
         value_connotation_desc = #{record.valueConnotationDesc,jdbcType=VARCHAR},
       </if>
-      <if test="record.propertyScope != null" >
+      <if test="record.propertyScope != null">
         property_scope = #{record.propertyScope,jdbcType=INTEGER},
       </if>
-      <if test="record.scopeInclude != null" >
+      <if test="record.scopeInclude != null">
         scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
       </if>
-      <if test="record.scopeNotInclude != null" >
+      <if test="record.scopeNotInclude != null">
         scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
       </if>
-      <if test="record.splitFrom != null" >
+      <if test="record.bestUse != null">
+        best_use = #{record.bestUse,jdbcType=INTEGER},
+      </if>
+      <if test="record.bestUseDesc != null">
+        best_use_desc = #{record.bestUseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currentSituation != null">
+        current_situation = #{record.currentSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.splitFrom != null">
         split_from = #{record.splitFrom,jdbcType=INTEGER},
       </if>
-      <if test="record.bisNew != null" >
+      <if test="record.bisNew != null">
         bis_new = #{record.bisNew,jdbcType=BIT},
       </if>
-      <if test="record.bisEnable != null" >
+      <if test="record.bisEnable != null">
         bis_enable = #{record.bisEnable,jdbcType=BIT},
       </if>
-      <if test="record.bisSplit != null" >
+      <if test="record.bisSplit != null">
         bis_split = #{record.bisSplit,jdbcType=BIT},
       </if>
-      <if test="record.bisMerge != null" >
+      <if test="record.bisMerge != null">
         bis_merge = #{record.bisMerge,jdbcType=BIT},
       </if>
-      <if test="record.sorting != null" >
+      <if test="record.sorting != null">
         sorting = #{record.sorting,jdbcType=INTEGER},
       </if>
-      <if test="record.creator != null" >
+      <if test="record.creator != null">
         creator = #{record.creator,jdbcType=VARCHAR},
       </if>
-      <if test="record.gmtCreated != null" >
+      <if test="record.gmtCreated != null">
         gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.gmtModified != null" >
+      <if test="record.gmtModified != null">
         gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update tb_scheme_area_group
     set id = #{record.id,jdbcType=INTEGER},
       pid = #{record.pid,jdbcType=INTEGER},
@@ -435,6 +478,7 @@
       entrust_purpose = #{record.entrustPurpose,jdbcType=INTEGER},
       entrust_aim_type = #{record.entrustAimType,jdbcType=INTEGER},
       remark_entrust_purpose = #{record.remarkEntrustPurpose,jdbcType=VARCHAR},
+      entrust_purpose_limit = #{record.entrustPurposeLimit,jdbcType=VARCHAR},
       value_definition = #{record.valueDefinition,jdbcType=INTEGER},
       value_definition_desc = #{record.valueDefinitionDesc,jdbcType=VARCHAR},
       value_connotation = #{record.valueConnotation,jdbcType=VARCHAR},
@@ -442,6 +486,9 @@
       property_scope = #{record.propertyScope,jdbcType=INTEGER},
       scope_include = #{record.scopeInclude,jdbcType=VARCHAR},
       scope_not_include = #{record.scopeNotInclude,jdbcType=VARCHAR},
+      best_use = #{record.bestUse,jdbcType=INTEGER},
+      best_use_desc = #{record.bestUseDesc,jdbcType=VARCHAR},
+      current_situation = #{record.currentSituation,jdbcType=VARCHAR},
       split_from = #{record.splitFrom,jdbcType=INTEGER},
       bis_new = #{record.bisNew,jdbcType=BIT},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
@@ -451,98 +498,110 @@
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup">
     update tb_scheme_area_group
-    <set >
-      <if test="pid != null" >
+    <set>
+      <if test="pid != null">
         pid = #{pid,jdbcType=INTEGER},
       </if>
-      <if test="projectId != null" >
+      <if test="projectId != null">
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
-      <if test="province != null" >
+      <if test="province != null">
         province = #{province,jdbcType=VARCHAR},
       </if>
-      <if test="city != null" >
+      <if test="city != null">
         city = #{city,jdbcType=VARCHAR},
       </if>
-      <if test="district != null" >
+      <if test="district != null">
         district = #{district,jdbcType=VARCHAR},
       </if>
-      <if test="areaName != null" >
+      <if test="areaName != null">
         area_name = #{areaName,jdbcType=VARCHAR},
       </if>
-      <if test="valueTimePoint != null" >
+      <if test="valueTimePoint != null">
         value_time_point = #{valueTimePoint,jdbcType=TIMESTAMP},
       </if>
-      <if test="timePointExplain != null" >
+      <if test="timePointExplain != null">
         time_point_explain = #{timePointExplain,jdbcType=VARCHAR},
       </if>
-      <if test="entrustPurpose != null" >
+      <if test="entrustPurpose != null">
         entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       </if>
-      <if test="entrustAimType != null" >
+      <if test="entrustAimType != null">
         entrust_aim_type = #{entrustAimType,jdbcType=INTEGER},
       </if>
-      <if test="remarkEntrustPurpose != null" >
+      <if test="remarkEntrustPurpose != null">
         remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
       </if>
-      <if test="valueDefinition != null" >
+      <if test="entrustPurposeLimit != null">
+        entrust_purpose_limit = #{entrustPurposeLimit,jdbcType=VARCHAR},
+      </if>
+      <if test="valueDefinition != null">
         value_definition = #{valueDefinition,jdbcType=INTEGER},
       </if>
-      <if test="valueDefinitionDesc != null" >
+      <if test="valueDefinitionDesc != null">
         value_definition_desc = #{valueDefinitionDesc,jdbcType=VARCHAR},
       </if>
-      <if test="valueConnotation != null" >
+      <if test="valueConnotation != null">
         value_connotation = #{valueConnotation,jdbcType=VARCHAR},
       </if>
-      <if test="valueConnotationDesc != null" >
+      <if test="valueConnotationDesc != null">
         value_connotation_desc = #{valueConnotationDesc,jdbcType=VARCHAR},
       </if>
-      <if test="propertyScope != null" >
+      <if test="propertyScope != null">
         property_scope = #{propertyScope,jdbcType=INTEGER},
       </if>
-      <if test="scopeInclude != null" >
+      <if test="scopeInclude != null">
         scope_include = #{scopeInclude,jdbcType=VARCHAR},
       </if>
-      <if test="scopeNotInclude != null" >
+      <if test="scopeNotInclude != null">
         scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
       </if>
-      <if test="splitFrom != null" >
+      <if test="bestUse != null">
+        best_use = #{bestUse,jdbcType=INTEGER},
+      </if>
+      <if test="bestUseDesc != null">
+        best_use_desc = #{bestUseDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="currentSituation != null">
+        current_situation = #{currentSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="splitFrom != null">
         split_from = #{splitFrom,jdbcType=INTEGER},
       </if>
-      <if test="bisNew != null" >
+      <if test="bisNew != null">
         bis_new = #{bisNew,jdbcType=BIT},
       </if>
-      <if test="bisEnable != null" >
+      <if test="bisEnable != null">
         bis_enable = #{bisEnable,jdbcType=BIT},
       </if>
-      <if test="bisSplit != null" >
+      <if test="bisSplit != null">
         bis_split = #{bisSplit,jdbcType=BIT},
       </if>
-      <if test="bisMerge != null" >
+      <if test="bisMerge != null">
         bis_merge = #{bisMerge,jdbcType=BIT},
       </if>
-      <if test="sorting != null" >
+      <if test="sorting != null">
         sorting = #{sorting,jdbcType=INTEGER},
       </if>
-      <if test="creator != null" >
+      <if test="creator != null">
         creator = #{creator,jdbcType=VARCHAR},
       </if>
-      <if test="gmtCreated != null" >
+      <if test="gmtCreated != null">
         gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       </if>
-      <if test="gmtModified != null" >
+      <if test="gmtModified != null">
         gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup" >
+  <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeAreaGroup">
     update tb_scheme_area_group
     set pid = #{pid,jdbcType=INTEGER},
       project_id = #{projectId,jdbcType=INTEGER},
@@ -555,6 +614,7 @@
       entrust_purpose = #{entrustPurpose,jdbcType=INTEGER},
       entrust_aim_type = #{entrustAimType,jdbcType=INTEGER},
       remark_entrust_purpose = #{remarkEntrustPurpose,jdbcType=VARCHAR},
+      entrust_purpose_limit = #{entrustPurposeLimit,jdbcType=VARCHAR},
       value_definition = #{valueDefinition,jdbcType=INTEGER},
       value_definition_desc = #{valueDefinitionDesc,jdbcType=VARCHAR},
       value_connotation = #{valueConnotation,jdbcType=VARCHAR},
@@ -562,6 +622,9 @@
       property_scope = #{propertyScope,jdbcType=INTEGER},
       scope_include = #{scopeInclude,jdbcType=VARCHAR},
       scope_not_include = #{scopeNotInclude,jdbcType=VARCHAR},
+      best_use = #{bestUse,jdbcType=INTEGER},
+      best_use_desc = #{bestUseDesc,jdbcType=VARCHAR},
+      current_situation = #{currentSituation,jdbcType=VARCHAR},
       split_from = #{splitFrom,jdbcType=INTEGER},
       bis_new = #{bisNew,jdbcType=BIT},
       bis_enable = #{bisEnable,jdbcType=BIT},
