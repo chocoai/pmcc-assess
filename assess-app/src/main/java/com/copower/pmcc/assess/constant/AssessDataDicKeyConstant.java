@@ -80,6 +80,21 @@ public class AssessDataDicKeyConstant {
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_BLOCK = "report.analysis.category.background.block"; //同类房地产市场板块状况
     public static final String REPORT_ANALYSIS_CATEGORY_BACKGROUND_PROPERTY = "report.analysis.category.background.property"; //背景估价对象区域物业总体状况
 
+    public static final String REPORT_GENERAL_FACTORS = "report.general.factors"; //一般因素 报告配置
+    public static final String REPORT_GENERAL_FACTORS_CITY_RESOURCE_STATUS = "report.general.factors.city.resource.status"; //城市资源状况 属于一般因素
+    public static final String REPORT_GENERAL_REAL_ESTATE_SYSTEM = "report.general.factors.real.estate.system"; //房地产制度  属于一般因素
+    public static final String REPORT_GENERAL_LAND_MARKET_CONDITION = "report.general.factors.land.market.condition"; //房地产状况  属于一般因素
+    public static final String REPORT_GENERAL_HOUSE_MARKET_CONDITION = "report.general.factors.house.market.condition"; //房地产状况  属于一般因素
+    public static final String REPORT_GENERAL_INDUSTRIAL_POLICY = "report.general.factors.industrial.policy"; //产业政策  属于一般因素
+    public static final String REPORT_GENERAL_TAX_POLICY = "report.general.factors.tax.policy"; //税收政策  属于一般因素
+    public static final String REPORT_GENERAL_FINANCIAL_POLICY = "report.general.factors.financial.policy"; //金融政策  属于一般因素
+    public static final String REPORT_GENERAL_URBAN_PLANNING_DEVELOPMENT_GOALS = "report.general.factors.urban.planning.development.goals"; //城市规划与发展目标  属于一般因素
+    public static final String REPORT_GENERAL_URBAN_SOCIAL_ECONOMIC_DEVELOPMENT = "report.general.factors.urban.social.economic.development"; //城市社会经济发展状况  属于一般因素
+    public static final String REPORT_GENERAL_SUMMARY_GENERAL_FACTORS = "report.general.factors.summary.general.factors"; //一般因素总结  属于一般因素
+    public static final String REPORT_GENERAL_MARKET_RISK = "report.general.factors.market.risk"; //市场风险  属于一般因素
+    public static final String REPORT_GENERAL_REALIZATION_RISK = "report.general.factors.realization.risk"; //变现风险  属于一般因素
+    public static final String REPORT_GENERAL_TAX_RISK = "report.general.factors.tax.risk"; //税收风险  属于一般因素
+
 
     /*
      * 报告模板附件
