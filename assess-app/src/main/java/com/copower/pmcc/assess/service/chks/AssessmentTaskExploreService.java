@@ -160,6 +160,8 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
         if (transform.contains(BasicFormClassifyEnum.HOUSE.getTableName()))
             workHoursMap.put(WORK_HOURS_HOUSE, "房屋信息");
         for (Map.Entry<String, String> entry : workHoursMap.entrySet()) {
+            List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, entry.getKey());
+            if (CollectionUtils.isEmpty(assessmentItemDtos)) continue;//没有配置考核模板则不生成考核任务
             AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
             dto.setProcessInsId(processInsId);
             dto.setAppKey(applicationConstant.getAppKey());
