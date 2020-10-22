@@ -114,6 +114,20 @@ public class AssessmentPerformanceService {
         if (Boolean.TRUE.equals(where.getBisProphase())) {//往期数据不能使用流程id进行查询
             where.setProcessInsId(null);
         }
+        List<String> currApprovers = Lists.newArrayList();
+        try {
+            List<ActivitiTaskNodeDto> activitiTaskNodeDtos = bpmRpcActivitiProcessManageService.queryProcessCurrentTask(where.getProcessInsId());
+            if(CollectionUtils.isNotEmpty(activitiTaskNodeDtos)){
+                for (ActivitiTaskNodeDto activitiTaskNodeDto : activitiTaskNodeDtos) {
+                    if(CollectionUtils.isNotEmpty(activitiTaskNodeDto.getUsers())){
+                        currApprovers.addAll(activitiTaskNodeDto.getUsers());
+                    }
+                }
+            }
+        } catch (BpmException e) {
+            logger.error(e.getMessage(), e);
+        }
+
         Boolean isSpotGroupUser = assessmentCommonService.isSpotGroupUser(boxId, commonService.thisUserAccount());
         if (isAdmin || isSpotGroupUser) {//管理员和抽查组可查看全部数据
             bootstrapTableVo = performanceService.getPerformanceDtoListByParam(where, null, requestBaseParam.getOffset(), requestBaseParam.getLimit());
@@ -138,7 +152,9 @@ public class AssessmentPerformanceService {
                         row.setCanAdjust(true);
                     } else if (Boolean.TRUE.equals(row.getCanAdjust()) && commonService.thisUserAccount().equals(row.getExaminePeople())) {
                         row.setCanAdjust(true);
-                    }  else {
+                    } else if (currApprovers.contains(commonService.thisUserAccount())) {
+                        row.setCanAdjust(true);
+                    } else {
                         row.setCanAdjust(false);
                     }
                 } else {

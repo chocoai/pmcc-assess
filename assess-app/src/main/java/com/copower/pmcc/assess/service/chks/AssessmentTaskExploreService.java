@@ -107,7 +107,7 @@ public class AssessmentTaskExploreService implements AssessmentTaskInterface {
                 assessmentKey = strings.length > 0 ? strings[0] : basicApplyBatchDetail.getType();
             }
             List<AssessmentItemDto> assessmentItemDtos = bpmRpcBoxService.getAssessmentItemListByKey(boxReDto.getId(), activityId, assessmentKey);
-            if (CollectionUtils.isEmpty(assessmentItemDtos)) return;//没有配置考核模板则不生成考核任务
+            if (CollectionUtils.isEmpty(assessmentItemDtos)) continue;//没有配置考核模板则不生成考核任务
             AssessmentPerformanceDto dto = new AssessmentPerformanceDto();
             dto.setProcessInsId(processInsId);
             dto.setAppKey(applicationConstant.getAppKey());
