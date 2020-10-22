@@ -3924,6 +3924,25 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
+    public String getReportGeneralFactorsSetting()throws Exception{
+        String localPath = getLocalPath();
+        Document document = new Document();
+        DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
+        DataReportGeneralFactorsService dataReportGeneralFactorsService = generateCommonMethod.getDataReportGeneralFactorsService();
+        SchemeAreaGroup schemeAreaGroup = getSchemeAreaGroup();
+        Map<String, String> stringStringMap = dataReportGeneralFactorsService.getFactorsMap(schemeAreaGroup.getProvince(), schemeAreaGroup.getCity(), schemeAreaGroup.getDistrict(), null);
+        if (!stringStringMap.isEmpty()) {
+            Iterator<Map.Entry<String, String>> iterator = stringStringMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, String> stringEntry = iterator.next();
+                documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + stringEntry.getKey() + "</div>"), true);
+                documentBuilder.insertHtml(stringEntry.getValue(),false);
+            }
+        }
+        AsposeUtils.saveWord(localPath, document);
+        return localPath;
+    }
+
     /**
      * 变现能力分析小微快贷
      *

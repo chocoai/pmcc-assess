@@ -11,6 +11,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseAttachmentService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.basic.*;
+import com.copower.pmcc.assess.service.data.DataReportGeneralFactorsService;
 import com.copower.pmcc.assess.service.method.MdBaseLandPriceService;
 import com.copower.pmcc.assess.service.method.MdCostApproachService;
 import com.copower.pmcc.assess.service.method.MdDevelopmentService;
@@ -94,10 +95,15 @@ public class GenerateCommonMethod {
     private MdCostApproachService mdCostApproachService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private DataReportGeneralFactorsService dataReportGeneralFactorsService;
 
 
     public static final String SchemeJudgeObjectName = "委估对象";
     private final Logger logger = LoggerFactory.getLogger(getClass());
+    public DataReportGeneralFactorsService getDataReportGeneralFactorsService(){
+        return dataReportGeneralFactorsService ;
+    }
     public BasicEstateLandCategoryInfoService getBasicEstateLandCategoryInfoService(){
         return basicEstateLandCategoryInfoService;
     }
@@ -1284,7 +1290,7 @@ public class GenerateCommonMethod {
      * @param number
      * @return
      */
-    final public String parseToCircleNumber(final Integer number) {
+     public  static String parseToCircleNumber(final Integer number) {
         if (number == null) {
             return null;
         }
