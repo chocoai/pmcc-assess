@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class BasicHouseFaceStreetExample {
+    /**
+     * tb_basic_house_face_street
+     */
     protected String orderByClause;
 
+    /**
+     * tb_basic_house_face_street
+     */
     protected boolean distinct;
 
+    /**
+     * tb_basic_house_face_street
+     */
     protected List<Criteria> oredCriteria;
 
     public BasicHouseFaceStreetExample() {
@@ -64,6 +73,9 @@ public class BasicHouseFaceStreetExample {
         distinct = false;
     }
 
+    /**
+     * tb_basic_house_face_street
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -352,6 +364,76 @@ public class BasicHouseFaceStreetExample {
 
         public Criteria andStreetLevelNotBetween(Integer value1, Integer value2) {
             addCriterion("street_level not between", value1, value2, "streetLevel");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIsNull() {
+            addCriterion("distance is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIsNotNull() {
+            addCriterion("distance is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceEqualTo(String value) {
+            addCriterion("distance =", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotEqualTo(String value) {
+            addCriterion("distance <>", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceGreaterThan(String value) {
+            addCriterion("distance >", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceGreaterThanOrEqualTo(String value) {
+            addCriterion("distance >=", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLessThan(String value) {
+            addCriterion("distance <", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLessThanOrEqualTo(String value) {
+            addCriterion("distance <=", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceLike(String value) {
+            addCriterion("distance like", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotLike(String value) {
+            addCriterion("distance not like", value, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceIn(List<String> values) {
+            addCriterion("distance in", values, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotIn(List<String> values) {
+            addCriterion("distance not in", values, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceBetween(String value1, String value2) {
+            addCriterion("distance between", value1, value2, "distance");
+            return (Criteria) this;
+        }
+
+        public Criteria andDistanceNotBetween(String value1, String value2) {
+            addCriterion("distance not between", value1, value2, "distance");
             return (Criteria) this;
         }
 
@@ -793,6 +875,9 @@ public class BasicHouseFaceStreetExample {
         }
     }
 
+    /**
+     * tb_basic_house_face_street
+     */
     public static class Criterion {
         private String condition;
 

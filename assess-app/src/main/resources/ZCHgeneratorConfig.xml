@@ -51,13 +51,23 @@
         </javaClientGenerator>
 
         <!-- 具体表 -->
-        <table tableName="tb_data_house_price_index_detail" domainObjectName="DataHousePriceIndexDetail">
+        <table tableName="tb_basic_house_trading" domainObjectName="BasicHouseTrading">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnOverride column="restrictions_remark" jdbcType="VARCHAR"></columnOverride>
+            <columnOverride column="restrictions" jdbcType="VARCHAR"></columnOverride>
+        </table>
+
+       <table tableName="tb_basic_house_face_street" domainObjectName="BasicHouseFaceStreet">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
 
-        <!--<table tableName="tb_report_provider" domainObjectName="ReportProvider">
+        <table tableName="tb_basic_estate" domainObjectName="BasicEstate">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>-->
+        </table>
+
+        <table tableName="tb_basic_estate_land_state" domainObjectName="BasicEstateLandState">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
 
         <!--<table tableName="tb_sys_menu" domainObjectName="SysMenu">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>

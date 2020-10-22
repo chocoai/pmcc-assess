@@ -309,6 +309,7 @@
                     houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeLease, true);
 
                 }
+                houseCommon.loadRestrictionsHTML(data.basicHouseTrading ,houseCommon.houseTradingForm) ;
             }
         });
 
@@ -1301,6 +1302,67 @@
             }
         })
     }
+
+    houseCommon.appendRestrictionsHTML = function(that,field){
+        var html = houseCommon.getRestrictionsHTML(field ,'') ;
+        var group = $(that).closest(".form-group") ;
+        group.after(html) ;
+    } ;
+
+    houseCommon.loadRestrictionsHTML = function(data ,target) {
+        var restrictionsFields = ['restrictions' ,'restrictionsRemark'] ;
+        for (var i = 0; i < restrictionsFields.length ; i++) {
+            var field = restrictionsFields[i] ;
+            var value = data[field] ;
+            if (!value) {
+                continue ;
+            }
+            var ele = target.find("input[name="+field+"]") ;
+            if (ele.size() == 0){
+                continue ;
+            }
+            var group = ele.closest(".form-group") ;
+            var arr = value.split(",") ;
+            $.each(arr,function (k,item) {
+                if (k == 0){
+                    ele.val(item) ;
+                }else {
+                    group.after(houseCommon.getRestrictionsHTML(field,item)) ;
+                }
+            }) ;
+        }
+    } ;
+
+    houseCommon.getRestrictionsHTML = function(field,value){
+        var html = "" ;
+        var name = "" ;
+        html += "<label class='col-sm-1'>{name}</label>" ;
+        if (field == 'restrictions') {
+            name = "限制事项" ;
+        }
+        if (field == 'restrictionsRemark') {
+            name = "限制说明" ;
+        }
+        html += "<div class='col-sm-3'><input type='text' placeholder='{name}' name='{field}' value='{value}' class='form-control input-full'></div>" ;
+
+        html += "<div class='col-sm-3'><span class='input-group-btn'> <input type='button' class='btn btn-warning btn-sm' value='X' onclick='houseCommon.appendRestrictionsClear(this);'> </span></div>" ;
+        html = html.replace(/{name}/g, name);
+        html = html.replace(/{value}/g, value);
+        html = html.replace(/{field}/g, field);
+        var parentHtml = "" ;
+        parentHtml += "<div class='row form-group'>" ;
+        parentHtml += "<div class='col-md-12'>" ;
+        parentHtml += "<div class='form-inline x-valid'>" ;
+        parentHtml += html ;
+        parentHtml += "</div>" ;
+        parentHtml += "</div>" ;
+        parentHtml += "</div>" ;
+        return parentHtml;
+    } ;
+    houseCommon.appendRestrictionsClear = function(that){
+        var group = $(that).closest(".form-group") ;
+        group.remove() ;
+    } ;
     //户型信息管理--------------------------------------------------------------------------------------------
 
     window.houseCommon = houseCommon;

@@ -106,6 +106,7 @@
                 data.basicHouseTradingGroups.push(item);
             }
         });
+        // console.log(data) ;
         var formData = JSON.stringify(data);
         $.ajax({
             url: "${pageContext.request.contextPath}/basicApplyBatch/saveDraft",

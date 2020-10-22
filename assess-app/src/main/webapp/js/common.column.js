@@ -999,6 +999,7 @@ commonColumn.houseFaceStreetColumn = function () {
     cols.push({field: 'streetLevelName', title: '街道级别'});
     cols.push({field: 'trafficFlowName', title: '交通流量'});
     cols.push({field: 'visitorsFlowrateName', title: '人流量'});
+    cols.push({field: 'distanceName', title: '距离'});
     return cols;
 }
 

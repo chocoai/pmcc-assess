@@ -100,17 +100,36 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <%--<div class="row form-group">--%>
-                                        <%--<div class="col-md-12">--%>
-                                            <%--<div class="form-inline x-valid">--%>
-                                                <%--<label class="col-sm-1 control-label">基础版块描述<span--%>
-                                                        <%--class="symbol required"></span></label>--%>
-                                                <%--<div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">--%>
-                                                    <%--<label class="form-control input-full">${basicEstate.blockDescription}</label>--%>
-                                                <%--</div>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">地块编号<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="landPieceNumbering">${basicEstate.landPieceNumbering}</label>
+
+                                                </div>
+                                                <label class="col-sm-1">基础版块<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="blockName">${basicEstate.blockName}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1 control-label">基础版块描述<span
+                                                        class="symbol required"></span></label>
+                                                <div class=" col-xs-11  col-sm-11  col-md-11  col-lg-11 ">
+                                                    <label class="form-control input-full">${basicEstate.blockDescription}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
@@ -356,6 +375,58 @@
                                                                name="bearingCapacityName">${basicEstateLandState.bearingCapacityName}</label>
                                                     </div>
                                                 </c:if>
+
+                                                <label class="col-sm-1">建筑限高</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="buildingHeightLimit">${basicEstateLandState.buildingHeightLimit}</label>
+                                                </div>
+
+                                                <label class="col-sm-1">兼容比例</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="compatibleRatio">${basicEstateLandState.compatibleRatio}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">容积率</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="plotRatio">${basicEstateLandState.plotRatio}</label>
+                                                </div>
+                                                <label class="col-sm-1">建筑密度</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="buildingDensity">${basicEstateLandState.buildingDensity}</label>
+                                                </div>
+                                                <label class="col-sm-1">绿地率</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="greenSpaceRate">${basicEstateLandState.greenSpaceRate}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">容积率说明</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="plotRatioRemark">${basicEstateLandState.plotRatioRemark}</label>
+                                                </div>
+
+                                                <label class="col-sm-1">兼容比例类型</label>
+                                                <div class="col-sm-3">
+                                                    <label class="form-control input-full"
+                                                           name="compatibleRatioType">${basicEstateLandState.compatibleRatioType}</label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

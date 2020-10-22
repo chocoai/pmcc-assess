@@ -263,6 +263,23 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">限制事项</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="restrictions">${basicHouseTrading.restrictions}</label>
+                                </div>
+
+                                <label class="col-sm-1 control-label">限制事项</label>
+                                <div class="col-sm-3">
+                                    <label class="form-control input-full"
+                                           name="restrictionsRemark">${basicHouseTrading.restrictionsRemark}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div id="houseTradingFilePart_number"></div>
                 </form>
             </div>

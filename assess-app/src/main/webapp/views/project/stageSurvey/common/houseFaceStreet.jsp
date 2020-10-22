@@ -92,7 +92,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="streetLevel"
-                                                    class="form-control input-full  streetLevel">
+                                                    class="form-control input-full  search-select select2">
                                             </select>
                                         </div>
                                     </div>
@@ -106,7 +106,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="visitorsFlowrate"
-                                                    class="form-control input-full  visitorsFlowrate">
+                                                    class="form-control input-full  search-select select2">
                                             </select>
                                         </div>
                                     </div>
@@ -120,13 +120,26 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="position"
-                                                    class="form-control input-full  position">
+                                                    class="form-control input-full  search-select select2">
                                             </select>
                                         </div>
                                     </div>
                                     </div>
                                 </div>
-
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                与金融机构的距离
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select  name="distance"
+                                                        class="form-control input-full  search-select select2">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                     <div class="form-inline x-valid">
@@ -135,7 +148,7 @@
                                         </label>
                                         <div class="col-sm-10">
                                             <select required="required" name="trafficFlow"
-                                                    class="form-control input-full  trafficFlow">
+                                                    class="form-control input-full  search-select select2">
                                             </select>
                                         </div>
                                     </div>

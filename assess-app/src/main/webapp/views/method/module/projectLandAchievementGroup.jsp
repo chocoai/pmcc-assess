@@ -240,6 +240,9 @@
         var tr = $(that).closest('tr');
         var id = tr.find("[name=dataLandLevelAchievement]").val();
         var selectValue = $(that).val();
+        if (!selectValue) {
+            return false ;
+        }
         selectValue = AssessCommon.percentToPoint(selectValue);
         var data = {id: id, selectValue: selectValue};
         landAchievementGroup.updateProjectLandAchievementGroup(data, function () {

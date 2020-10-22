@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class BasicEstateLandStateExample {
+    /**
+     * tb_basic_estate_land_state
+     */
     protected String orderByClause;
 
+    /**
+     * tb_basic_estate_land_state
+     */
     protected boolean distinct;
 
+    /**
+     * tb_basic_estate_land_state
+     */
     protected List<Criteria> oredCriteria;
 
     public BasicEstateLandStateExample() {
@@ -65,6 +74,9 @@ public class BasicEstateLandStateExample {
         distinct = false;
     }
 
+    /**
+     * tb_basic_estate_land_state
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -613,76 +625,6 @@ public class BasicEstateLandStateExample {
 
         public Criteria andLandFactorTotalScoreNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("land_factor_total_score not between", value1, value2, "landFactorTotalScore");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentIsNull() {
-            addCriterion("land_level_content is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentIsNotNull() {
-            addCriterion("land_level_content is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentEqualTo(String value) {
-            addCriterion("land_level_content =", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotEqualTo(String value) {
-            addCriterion("land_level_content <>", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentGreaterThan(String value) {
-            addCriterion("land_level_content >", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentGreaterThanOrEqualTo(String value) {
-            addCriterion("land_level_content >=", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLessThan(String value) {
-            addCriterion("land_level_content <", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLessThanOrEqualTo(String value) {
-            addCriterion("land_level_content <=", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentLike(String value) {
-            addCriterion("land_level_content like", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotLike(String value) {
-            addCriterion("land_level_content not like", value, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentIn(List<String> values) {
-            addCriterion("land_level_content in", values, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotIn(List<String> values) {
-            addCriterion("land_level_content not in", values, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentBetween(String value1, String value2) {
-            addCriterion("land_level_content between", value1, value2, "landLevelContent");
-            return (Criteria) this;
-        }
-
-        public Criteria andLandLevelContentNotBetween(String value1, String value2) {
-            addCriterion("land_level_content not between", value1, value2, "landLevelContent");
             return (Criteria) this;
         }
 
@@ -1956,6 +1898,76 @@ public class BasicEstateLandStateExample {
             return (Criteria) this;
         }
 
+        public Criteria andPlotRatioRemarkIsNull() {
+            addCriterion("plot_ratio_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkIsNotNull() {
+            addCriterion("plot_ratio_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkEqualTo(String value) {
+            addCriterion("plot_ratio_remark =", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkNotEqualTo(String value) {
+            addCriterion("plot_ratio_remark <>", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkGreaterThan(String value) {
+            addCriterion("plot_ratio_remark >", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_remark >=", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkLessThan(String value) {
+            addCriterion("plot_ratio_remark <", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkLessThanOrEqualTo(String value) {
+            addCriterion("plot_ratio_remark <=", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkLike(String value) {
+            addCriterion("plot_ratio_remark like", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkNotLike(String value) {
+            addCriterion("plot_ratio_remark not like", value, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkIn(List<String> values) {
+            addCriterion("plot_ratio_remark in", values, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkNotIn(List<String> values) {
+            addCriterion("plot_ratio_remark not in", values, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkBetween(String value1, String value2) {
+            addCriterion("plot_ratio_remark between", value1, value2, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andPlotRatioRemarkNotBetween(String value1, String value2) {
+            addCriterion("plot_ratio_remark not between", value1, value2, "plotRatioRemark");
+            return (Criteria) this;
+        }
+
         public Criteria andPlotRatioIsNull() {
             addCriterion("plot_ratio is null");
             return (Criteria) this;
@@ -2163,6 +2175,76 @@ public class BasicEstateLandStateExample {
 
         public Criteria andGreenSpaceRateNotBetween(String value1, String value2) {
             addCriterion("green_space_rate not between", value1, value2, "greenSpaceRate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeIsNull() {
+            addCriterion("compatible_ratio_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeIsNotNull() {
+            addCriterion("compatible_ratio_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeEqualTo(String value) {
+            addCriterion("compatible_ratio_type =", value, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeNotEqualTo(String value) {
+            addCriterion("compatible_ratio_type <>", value, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeGreaterThan(String value) {
+            addCriterion("compatible_ratio_type >", value, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeGreaterThanOrEqualTo(String value) {
+            addCriterion("compatible_ratio_type >=", value, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeLessThan(String value) {
+            addCriterion("compatible_ratio_type <", value, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeLessThanOrEqualTo(String value) {
+            addCriterion("compatible_ratio_type <=", value, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeLike(String value) {
+            addCriterion("compatible_ratio_type like", value, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeNotLike(String value) {
+            addCriterion("compatible_ratio_type not like", value, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeIn(List<String> values) {
+            addCriterion("compatible_ratio_type in", values, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeNotIn(List<String> values) {
+            addCriterion("compatible_ratio_type not in", values, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeBetween(String value1, String value2) {
+            addCriterion("compatible_ratio_type between", value1, value2, "compatibleRatioType");
+            return (Criteria) this;
+        }
+
+        public Criteria andCompatibleRatioTypeNotBetween(String value1, String value2) {
+            addCriterion("compatible_ratio_type not between", value1, value2, "compatibleRatioType");
             return (Criteria) this;
         }
 
@@ -3364,6 +3446,9 @@ public class BasicEstateLandStateExample {
         }
     }
 
+    /**
+     * tb_basic_estate_land_state
+     */
     public static class Criterion {
         private String condition;
 
