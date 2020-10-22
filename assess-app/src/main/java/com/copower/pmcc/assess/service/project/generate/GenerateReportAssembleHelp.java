@@ -707,6 +707,9 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldEnum.ENUM_TAX_RISK.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportNewLiquidity(ReportFieldEnum.getEnumByName(name)));
         }
+        if (Objects.equal(ReportFieldEnum.ReportGeneralFactorsSetting.getName(), name)) {
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getReportGeneralFactorsSetting());
+        }
         //--
         return false;
     }

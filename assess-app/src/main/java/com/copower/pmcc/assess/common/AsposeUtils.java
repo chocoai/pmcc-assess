@@ -956,6 +956,12 @@ public class AsposeUtils {
         return getWarpCssHtml(html, keyValueDtoList);
     }
 
+    public static String getWarpCssHtml(String html, KeyValueDto keyValueDto) {
+        List<KeyValueDto> keyValueDtoList = new ArrayList<>(1);
+        keyValueDtoList.add(keyValueDto);
+        return getWarpCssHtml(html, keyValueDtoList);
+    }
+
     public static String getWarpElementCssHtml(String html, String element, String key, String value) {
         List<KeyValueDto> keyValueDtoList = new ArrayList<>(1);
         keyValueDtoList.add(new KeyValueDto(key, value));

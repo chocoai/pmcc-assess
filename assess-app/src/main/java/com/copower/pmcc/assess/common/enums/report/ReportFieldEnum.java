@@ -81,6 +81,8 @@ public enum ReportFieldEnum implements Serializable {
     ENUM_REALIZATION_RISK("变现风险"),//模板
     ENUM_TAX_RISK("税收风险"),//模板
 
+    ReportGeneralFactorsSetting("一般因素配置"),
+
 
 
     AssetInventoryFile("清查证明文件"),
