@@ -39,6 +39,8 @@
     <result column="per_mu_price" jdbcType="DECIMAL" property="perMuPrice" />
     <result column="cost" jdbcType="DECIMAL" property="cost" />
     <result column="bis_mark" jdbcType="BIT" property="bisMark" />
+    <result column="restrictions_remark" jdbcType="VARCHAR" property="restrictionsRemark" />
+    <result column="restrictions" jdbcType="VARCHAR" property="restrictions" />
     <result column="bis_delete" jdbcType="BIT" property="bisDelete" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
@@ -109,8 +111,8 @@
     transaction_situation, tax_burden, scope_property, scope_include, scope_not_include, 
     scope_property_explain, down_payment_ratio, lending_rate, loan_period, deposit, information_type, 
     information_category, name, phone, land_buyer_seller, price_type, price_connotation, 
-    price_connotation_unit, per_mu_price, cost, bis_mark, bis_delete, creator, gmt_created, 
-    gmt_modified
+    price_connotation_unit, per_mu_price, cost, bis_mark, restrictions_remark, restrictions, 
+    bis_delete, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.BasicHouseTradingExample" resultMap="BaseResultMap">
     select
@@ -159,8 +161,9 @@
       phone, land_buyer_seller, price_type, 
       price_connotation, price_connotation_unit, 
       per_mu_price, cost, bis_mark, 
-      bis_delete, creator, gmt_created, 
-      gmt_modified)
+      restrictions_remark, restrictions, bis_delete, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{applyId,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER}, #{tradingTime,jdbcType=TIMESTAMP}, 
       #{tradingType,jdbcType=INTEGER}, #{tradingTotalPrice,jdbcType=DECIMAL}, #{transactionLevel,jdbcType=VARCHAR}, 
       #{tradingUnitPrice,jdbcType=DECIMAL}, #{buyerExtraTax,jdbcType=VARCHAR}, #{buyerExtraFee,jdbcType=VARCHAR}, 
@@ -174,8 +177,9 @@
       #{phone,jdbcType=VARCHAR}, #{landBuyerSeller,jdbcType=VARCHAR}, #{priceType,jdbcType=INTEGER}, 
       #{priceConnotation,jdbcType=INTEGER}, #{priceConnotationUnit,jdbcType=VARCHAR}, 
       #{perMuPrice,jdbcType=DECIMAL}, #{cost,jdbcType=DECIMAL}, #{bisMark,jdbcType=BIT}, 
-      #{bisDelete,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+      #{restrictionsRemark,jdbcType=VARCHAR}, #{restrictions,jdbcType=VARCHAR}, #{bisDelete,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="map">
     <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
@@ -297,6 +301,12 @@
           </if>
           <if test="record.bisMark != null">
             bis_mark,
+          </if>
+          <if test="record.restrictionsRemark != null">
+            restrictions_remark,
+          </if>
+          <if test="record.restrictions != null">
+            restrictions,
           </if>
           <if test="record.bisDelete != null">
             bis_delete,
@@ -430,6 +440,12 @@
           </if>
           <if test="record.bisMark != null">
             #{record.bisMark,jdbcType=BIT},
+          </if>
+          <if test="record.restrictionsRemark != null">
+            #{record.restrictionsRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.restrictions != null">
+            #{record.restrictions,jdbcType=VARCHAR},
           </if>
           <if test="record.bisDelete != null">
             #{record.bisDelete,jdbcType=BIT},
@@ -575,6 +591,12 @@
           <if test="record.bisMark != null">
             bis_mark = #{record.bisMark,jdbcType=BIT},
           </if>
+          <if test="record.restrictionsRemark != null">
+            restrictions_remark = #{record.restrictionsRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.restrictions != null">
+            restrictions = #{record.restrictions,jdbcType=VARCHAR},
+          </if>
           <if test="record.bisDelete != null">
             bis_delete = #{record.bisDelete,jdbcType=BIT},
           </if>
@@ -633,6 +655,8 @@
       per_mu_price = #{record.perMuPrice,jdbcType=DECIMAL},
       cost = #{record.cost,jdbcType=DECIMAL},
       bis_mark = #{record.bisMark,jdbcType=BIT},
+      restrictions_remark = #{record.restrictionsRemark,jdbcType=VARCHAR},
+      restrictions = #{record.restrictions,jdbcType=VARCHAR},
       bis_delete = #{record.bisDelete,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
@@ -760,6 +784,12 @@
           <if test="record.bisMark != null">
             bis_mark = #{record.bisMark,jdbcType=BIT},
           </if>
+          <if test="record.restrictionsRemark != null">
+            restrictions_remark = #{record.restrictionsRemark,jdbcType=VARCHAR},
+          </if>
+          <if test="record.restrictions != null">
+            restrictions = #{record.restrictions,jdbcType=VARCHAR},
+          </if>
           <if test="record.bisDelete != null">
             bis_delete = #{record.bisDelete,jdbcType=BIT},
           </if>
@@ -815,6 +845,8 @@
       per_mu_price = #{perMuPrice,jdbcType=DECIMAL},
       cost = #{cost,jdbcType=DECIMAL},
       bis_mark = #{bisMark,jdbcType=BIT},
+      restrictions_remark = #{restrictionsRemark,jdbcType=VARCHAR},
+      restrictions = #{restrictions,jdbcType=VARCHAR},
       bis_delete = #{bisDelete,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
@@ -829,8 +861,8 @@
       transaction_situation, tax_burden, scope_property, scope_include, scope_not_include, 
       scope_property_explain, down_payment_ratio, lending_rate, loan_period, deposit, 
       information_type, information_category, name, phone, land_buyer_seller, price_type, 
-      price_connotation, price_connotation_unit, per_mu_price, cost, bis_mark, bis_delete, 
-      creator, gmt_created, gmt_modified)
+      price_connotation, price_connotation_unit, per_mu_price, cost, bis_mark, restrictions_remark, 
+      restrictions, bis_delete, creator, gmt_created, gmt_modified)
     values
     <foreach collection="list" item="item" separator=",">
       (#{item.applyId,jdbcType=INTEGER}, #{item.houseId,jdbcType=INTEGER}, #{item.tradingTime,jdbcType=TIMESTAMP}, 
@@ -848,9 +880,9 @@
         #{item.informationCategory,jdbcType=INTEGER}, #{item.name,jdbcType=VARCHAR}, #{item.phone,jdbcType=VARCHAR}, 
         #{item.landBuyerSeller,jdbcType=VARCHAR}, #{item.priceType,jdbcType=INTEGER}, #{item.priceConnotation,jdbcType=INTEGER}, 
         #{item.priceConnotationUnit,jdbcType=VARCHAR}, #{item.perMuPrice,jdbcType=DECIMAL}, 
-        #{item.cost,jdbcType=DECIMAL}, #{item.bisMark,jdbcType=BIT}, #{item.bisDelete,jdbcType=BIT}, 
-        #{item.creator,jdbcType=VARCHAR}, #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}
-        )
+        #{item.cost,jdbcType=DECIMAL}, #{item.bisMark,jdbcType=BIT}, #{item.restrictionsRemark,jdbcType=VARCHAR}, 
+        #{item.restrictions,jdbcType=VARCHAR}, #{item.bisDelete,jdbcType=BIT}, #{item.creator,jdbcType=VARCHAR}, 
+        #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP})
     </foreach>
   </insert>
   <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
@@ -970,6 +1002,12 @@
         </if>
         <if test="'bis_mark'.toString() == column.value">
           #{item.bisMark,jdbcType=BIT}
+        </if>
+        <if test="'restrictions_remark'.toString() == column.value">
+          #{item.restrictionsRemark,jdbcType=VARCHAR}
+        </if>
+        <if test="'restrictions'.toString() == column.value">
+          #{item.restrictions,jdbcType=VARCHAR}
         </if>
         <if test="'bis_delete'.toString() == column.value">
           #{item.bisDelete,jdbcType=BIT}

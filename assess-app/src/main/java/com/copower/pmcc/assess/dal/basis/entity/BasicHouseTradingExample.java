@@ -2508,6 +2508,146 @@ public class BasicHouseTradingExample {
             return (Criteria) this;
         }
 
+        public Criteria andRestrictionsRemarkIsNull() {
+            addCriterion("restrictions_remark is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkIsNotNull() {
+            addCriterion("restrictions_remark is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkEqualTo(String value) {
+            addCriterion("restrictions_remark =", value, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkNotEqualTo(String value) {
+            addCriterion("restrictions_remark <>", value, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkGreaterThan(String value) {
+            addCriterion("restrictions_remark >", value, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkGreaterThanOrEqualTo(String value) {
+            addCriterion("restrictions_remark >=", value, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkLessThan(String value) {
+            addCriterion("restrictions_remark <", value, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkLessThanOrEqualTo(String value) {
+            addCriterion("restrictions_remark <=", value, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkLike(String value) {
+            addCriterion("restrictions_remark like", value, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkNotLike(String value) {
+            addCriterion("restrictions_remark not like", value, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkIn(List<String> values) {
+            addCriterion("restrictions_remark in", values, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkNotIn(List<String> values) {
+            addCriterion("restrictions_remark not in", values, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkBetween(String value1, String value2) {
+            addCriterion("restrictions_remark between", value1, value2, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsRemarkNotBetween(String value1, String value2) {
+            addCriterion("restrictions_remark not between", value1, value2, "restrictionsRemark");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsIsNull() {
+            addCriterion("restrictions is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsIsNotNull() {
+            addCriterion("restrictions is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsEqualTo(String value) {
+            addCriterion("restrictions =", value, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsNotEqualTo(String value) {
+            addCriterion("restrictions <>", value, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsGreaterThan(String value) {
+            addCriterion("restrictions >", value, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsGreaterThanOrEqualTo(String value) {
+            addCriterion("restrictions >=", value, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsLessThan(String value) {
+            addCriterion("restrictions <", value, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsLessThanOrEqualTo(String value) {
+            addCriterion("restrictions <=", value, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsLike(String value) {
+            addCriterion("restrictions like", value, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsNotLike(String value) {
+            addCriterion("restrictions not like", value, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsIn(List<String> values) {
+            addCriterion("restrictions in", values, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsNotIn(List<String> values) {
+            addCriterion("restrictions not in", values, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsBetween(String value1, String value2) {
+            addCriterion("restrictions between", value1, value2, "restrictions");
+            return (Criteria) this;
+        }
+
+        public Criteria andRestrictionsNotBetween(String value1, String value2) {
+            addCriterion("restrictions not between", value1, value2, "restrictions");
+            return (Criteria) this;
+        }
+
         public Criteria andBisDeleteIsNull() {
             addCriterion("bis_delete is null");
             return (Criteria) this;

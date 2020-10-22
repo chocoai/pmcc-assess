@@ -193,6 +193,16 @@ public class BasicHouseTrading implements Serializable {
     private Boolean bisMark;
 
     /**
+     * 限制说明
+     */
+    private String restrictionsRemark;
+
+    /**
+     * 限制事项
+     */
+    private String restrictions;
+
+    /**
      * 
      */
     private Boolean bisDelete;
@@ -810,6 +820,38 @@ public class BasicHouseTrading implements Serializable {
     }
 
     /**
+     * 限制说明
+     * @return restrictions_remark 限制说明
+     */
+    public String getRestrictionsRemark() {
+        return restrictionsRemark;
+    }
+
+    /**
+     * 限制说明
+     * @param restrictionsRemark 限制说明
+     */
+    public void setRestrictionsRemark(String restrictionsRemark) {
+        this.restrictionsRemark = restrictionsRemark == null ? null : restrictionsRemark.trim();
+    }
+
+    /**
+     * 限制事项
+     * @return restrictions 限制事项
+     */
+    public String getRestrictions() {
+        return restrictions;
+    }
+
+    /**
+     * 限制事项
+     * @param restrictions 限制事项
+     */
+    public void setRestrictions(String restrictions) {
+        this.restrictions = restrictions == null ? null : restrictions.trim();
+    }
+
+    /**
      * 
      * @return bis_delete 
      */
@@ -1224,6 +1266,24 @@ public class BasicHouseTrading implements Serializable {
         }
 
         /**
+         * 限制事项
+         * @param restrictions 限制事项
+         */
+        public Builder restrictions(String restrictions) {
+            obj.setRestrictions(restrictions);
+            return this;
+        }
+
+        /**
+         * 限制说明
+         * @param restrictionsRemark 限制说明
+         */
+        public Builder restrictionsRemark(String restrictionsRemark) {
+            obj.setRestrictionsRemark(restrictionsRemark);
+            return this;
+        }
+
+        /**
          * 
          * @param bisDelete 
          */
@@ -1302,6 +1362,8 @@ public class BasicHouseTrading implements Serializable {
         perMuPrice("per_mu_price", "perMuPrice", "DECIMAL", false),
         cost("cost", "cost", "DECIMAL", false),
         bisMark("bis_mark", "bisMark", "BIT", false),
+        restrictionsRemark("restrictions_remark", "restrictionsRemark", "VARCHAR", false),
+        restrictions("restrictions", "restrictions", "VARCHAR", false),
         bisDelete("bis_delete", "bisDelete", "BIT", false),
         creator("creator", "creator", "VARCHAR", false),
         gmtCreated("gmt_created", "gmtCreated", "TIMESTAMP", false),

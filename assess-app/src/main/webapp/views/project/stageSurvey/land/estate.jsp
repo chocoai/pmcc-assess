@@ -112,6 +112,60 @@
                                     <div class="row form-group">
                                         <div class="col-md-12">
                                             <div class="form-inline x-valid">
+                                                <label class="col-sm-1">地块编号<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" placeholder="地块编号" name="landPieceNumbering"
+                                                           class="form-control input-full"
+                                                           value="${basicEstate.landPieceNumbering}">
+                                                </div>
+                                                <label class="col-sm-1">基础版块<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-3">
+                                                    <div class="input-group">
+                                                        <input type="hidden" name="blockId"
+                                                               value="${basicEstate.blockId}">
+                                                        <input type="text"
+                                                               onchange="$(this).closest('.input-group').find('[name=blockId]').val('0');"
+                                                               placeholder="基础版块" class="form-control"
+                                                               name="blockName"
+                                                               value="${basicEstate.blockName}">
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-warning btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="$(this).closest('.input-group').find('input').val('');">
+                                                                清空
+                                                            </button>
+                                                        </div>
+                                                        <div class="input-group-prepend">
+                                                            <button class="btn btn-primary btn-sm "
+                                                                    style="border-bottom-right-radius:.25rem;border-top-right-radius:.25rem;"
+                                                                    type="button"
+                                                                    onclick="estateCommon.blockSelect(this);">
+                                                                选择
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">基础版块描述<span
+                                                        class="symbol required"></span></label>
+                                                <div class="col-sm-11">
+                        <textarea class="form-control input-full" name="blockDescription" id="blockDescription" required
+                                  placeholder="基础版块描述">${basicEstate.blockDescription}</textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
                                                 <label class="col-xs-1  col-sm-1  col-md-1  col-lg-1 col-form-label">
                                                     土地取得方式
                                                 </label>
@@ -433,6 +487,72 @@
                                                     <select class="form-control input-full  "
                                                             name="bearingCapacity" required>
                                                     </select>
+                                                </div>
+
+                                                <label class="col-sm-1">建筑限高</label>
+                                                <div class="col-sm-3">
+                                                    <input type="number" class="form-control input-full"
+                                                           data-rule-number='true'
+                                                           placeholder="建筑限高(数字)" name="buildingHeightLimit"
+                                                           value="${basicEstateLandState.buildingHeightLimit}">
+                                                </div>
+
+                                                <label class="col-sm-1">兼容比例</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="兼容比例"
+                                                           name="compatibleRatio"
+                                                           value="${basicEstateLandState.compatibleRatio}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">容积率</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control input-full "
+                                                           placeholder="容积率"
+                                                           name="plotRatio"
+                                                           value="${basicEstateLandState.plotRatio}">
+                                                </div>
+                                                <label class="col-sm-1">建筑密度</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="建筑密度"
+                                                           name="buildingDensity"
+                                                           value="${basicEstateLandState.buildingDensity}">
+                                                </div>
+                                                <label class="col-sm-1">绿地率</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="绿地率"
+                                                           name="greenSpaceRate"
+                                                           value="${basicEstateLandState.greenSpaceRate}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="form-inline x-valid">
+                                                <label class="col-sm-1">容积率说明</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="容积率说明"
+                                                           name="plotRatioRemark"
+                                                           value="${basicEstateLandState.plotRatioRemark}">
+                                                </div>
+
+                                                <label class="col-sm-1">兼容比例类型</label>
+                                                <div class="col-sm-3">
+                                                    <input type="text" class="form-control input-full"
+                                                           placeholder="兼容比例类型"
+                                                           name="compatibleRatioType"
+                                                           value="${basicEstateLandState.compatibleRatioType}">
                                                 </div>
                                             </div>
                                         </div>

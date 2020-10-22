@@ -57,6 +57,6 @@ public class BasicHouseFaceStreetDao {
     public int countByHouseId(Integer houseId) {
         BasicHouseFaceStreetExample example = new BasicHouseFaceStreetExample();
         example.createCriteria().andBisDeleteEqualTo(false).andHouseIdEqualTo(houseId);
-        return basicHouseFaceStreetMapper.countByExample(example);
+        return (int)basicHouseFaceStreetMapper.countByExample(example);
     }
 }

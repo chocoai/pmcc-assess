@@ -40,14 +40,6 @@
     <div class="row form-group">
         <div class="col-md-12">
             <div class="form-inline x-valid">
-                <label class="col-sm-1">税费负担<span
-                        class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select class="form-control input-full search-select select2 taxBurden"
-                            name="taxBurden"
-                            required>
-                    </select>
-                </div>
                 <label class="col-sm-1">交易情况<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -64,26 +56,12 @@
                             required>
                     </select>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="row form-group">
-        <div class="col-md-12">
-            <div class="form-inline x-valid"
-                 id="abnormalTransaction"
-                 style="display: none;">
+
                 <label class="col-sm-1">说明事项类型</label>
                 <div class="col-sm-3">
                     <select class="form-control input-full descriptionType"
                             name="descriptionType">
                     </select>
-                </div>
-                <label class="col-sm-1">说明事项内容</label>
-                <div class="col-sm-3">
-                    <input type="text" placeholder="说明事项内容"
-                           name="descriptionContent"
-                           class="form-control input-full"
-                           value="${basicHouseTrading.descriptionContent}">
                 </div>
             </div>
         </div>
@@ -91,6 +69,34 @@
     <div class="row form-group">
         <div class="col-md-12">
             <div class="form-inline x-valid">
+
+                <label class="col-sm-1">说明事项内容</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="说明事项内容"
+                           name="descriptionContent"
+                           class="form-control input-full"
+                           value="${basicHouseTrading.descriptionContent}">
+                </div>
+
+                <label class="col-sm-1">付款方式<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control input-full paymentMethod"
+                            name="paymentMethod" required>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row form-group">
+        <div class="col-md-12">
+            <div class="form-inline x-valid">
+                <label class="col-sm-1">市场级别</label>
+                <div class="col-sm-3">
+                    <select class="form-control input-full "
+                            name="transactionLevel" >
+                    </select>
+                </div>
                 <label class="col-sm-1">交易类型<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
@@ -99,17 +105,12 @@
                             required="required">
                     </select>
                 </div>
-                <label class="col-sm-1">付款方式<span
+                <label class="col-sm-1">税费负担<span
                         class="symbol required"></span></label>
                 <div class="col-sm-3">
-                    <select class="form-control input-full paymentMethod"
-                            name="paymentMethod" required>
-                    </select>
-                </div>
-                <label class="col-sm-1">市场级别</label>
-                <div class="col-sm-3">
-                    <select class="form-control input-full "
-                            name="transactionLevel" >
+                    <select class="form-control input-full search-select select2 taxBurden"
+                            name="taxBurden"
+                            required>
                     </select>
                 </div>
             </div>
@@ -365,6 +366,42 @@
             </div>
         </div>
     </div>
+    <div class="row form-group">
+        <div class="col-md-12">
+            <div class="form-inline x-valid">
+
+                <label class="col-sm-1 ">限制事项</label>
+                <div class="col-sm-3 ">
+                    <input type="text" placeholder="限制事项"
+                           class="form-control input-full"
+                           name="restrictions" >
+                </div>
+
+                <div class="col-sm-3 ">
+                    <button class="btn btn-sm btn-success" type="button" onclick="houseCommon.appendRestrictionsHTML(this ,'restrictions');"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <div class="col-md-12">
+            <div class="form-inline x-valid">
+
+                <label class="col-sm-1 ">限制说明</label>
+                <div class="col-sm-3 ">
+                    <input type="text" placeholder="限制说明"
+                           class="form-control input-full"
+                           name="restrictionsRemark" >
+                </div>
+
+                <div class="col-sm-3 ">
+                    <button class="btn btn-sm btn-success" type="button" onclick="houseCommon.appendRestrictionsHTML(this ,'restrictionsRemark');"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="houseTradingFilePart"></div>
 </form>
 </div>
@@ -563,53 +600,55 @@
     houseLandTrading.initBasicHouseTradingForm = function (data, number) {
         console.log("test2") ;
         var houseTradingFormId = houseLandTrading.basicHouseTradingFrm + number;
+        var target = $("#" + houseTradingFormId) ;
         houseLandTrading.changeEvent(data, number);
-        if (data != null) {
-            $("#" + houseTradingFormId).initForm(data);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionSituation, data.transactionSituation, function (html, data) {
-                $("#" + houseTradingFormId).find("select.transactionSituation").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, data.scopeProperty, function (html, data) {
-                $("#" + houseTradingFormId).find("select.scopeProperty").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, data.taxBurden, function (html, data) {
-                $("#" + houseTradingFormId).find("select.taxBurden").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType, data.descriptionType, function (html, data) {
-                $("#" + houseTradingFormId).find("select.descriptionType").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, data.tradingType, function (html, data) {
-                $("#" + houseTradingFormId).find("select.tradingType").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionTransactionLevel, data.transactionLevel, function (html, data) {
-                $("#" + houseTradingFormId).find("select[name=transactionLevel]").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, data.financingConditions, function (html, data) {
-                $("#" + houseTradingFormId).find("select.financingConditions").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseInformationSourceType, data.informationType, function (html, data) {
-                $("#" + houseTradingFormId).find("select.informationType").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseInformationSourceCategory, data.informationCategory, function (html, data) {
-                $("#" + houseTradingFormId).find("select.informationCategory").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePriceConnotation, data.priceConnotation, function (html, data) {
-                $("#" + houseTradingFormId).find("select.priceConnotation").empty().html(html).trigger('change');
-            }, false);
-            AssessCommon.loadDataDicByKey(AssessDicKey.examineHouse_transaction_price_type, data.priceType, function (html, data) {
-                $("#" + houseTradingFormId).find("select.priceType").empty().html(html).trigger('change');
-            }, false);
-            houseLandTrading.showPriceConnotationUnit(data, number);
-            var fileId = "houseTradingFilePart" + number;
-            houseLandTrading.getFilePartHtml(fileId, number);
-
-            //初始化上传控件
-            $.each(houseLandTrading.houseFileControlIdArray, function (i, item) {
-                houseLandTrading.fileUpload(item, number);
-                houseLandTrading.fileShow(item, number, true);
-            });
-            $("#" + houseTradingFormId).closest('.col-md-12').find("input[name='bisMark']").prop("checked", data.bisMark);
+        if (!data ) {
+            return false ;
         }
+        target.initForm(data);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionSituation, data.transactionSituation, function (html, data) {
+            target.find("select.transactionSituation").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseScopeProperty, data.scopeProperty, function (html, data) {
+            target.find("select.scopeProperty").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHousetaxBurden, data.taxBurden, function (html, data) {
+            target.find("select.taxBurden").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseDescriptionType, data.descriptionType, function (html, data) {
+            target.find("select.descriptionType").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionType, data.tradingType, function (html, data) {
+            target.find("select.tradingType").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseTransactionTransactionLevel, data.transactionLevel, function (html, data) {
+            target.find("select[name=transactionLevel]").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseFinancingConditions, data.financingConditions, function (html, data) {
+            target.find("select.financingConditions").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseInformationSourceType, data.informationType, function (html, data) {
+            target.find("select.informationType").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouseInformationSourceCategory, data.informationCategory, function (html, data) {
+            target.find("select.informationCategory").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHousePriceConnotation, data.priceConnotation, function (html, data) {
+            target.find("select.priceConnotation").empty().html(html).trigger('change');
+        }, false);
+        AssessCommon.loadDataDicByKey(AssessDicKey.examineHouse_transaction_price_type, data.priceType, function (html, data) {
+            target.find("select.priceType").empty().html(html).trigger('change');
+        }, false);
+        houseLandTrading.showPriceConnotationUnit(data, number);
+        var fileId = "houseTradingFilePart" + number;
+        houseLandTrading.getFilePartHtml(fileId, number);
+        //初始化上传控件
+        $.each(houseLandTrading.houseFileControlIdArray, function (i, item) {
+            houseLandTrading.fileUpload(item, number);
+            houseLandTrading.fileShow(item, number, true);
+        });
+        target.closest('.col-md-12').find("input[name='bisMark']").prop("checked", data.bisMark);
+        houseCommon.loadRestrictionsHTML(data,target) ;
     };
 
 

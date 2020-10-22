@@ -1193,23 +1193,28 @@ var houseFaceStreet;
             })
         },
         init: function (item) {
-            $("#" + houseFaceStreet.prototype.config().frm).clearAll();
-            $("#" + houseFaceStreet.prototype.config().frm).initForm(item);
+            var frm = $("#" + houseFaceStreet.prototype.config().frm);
+            frm.clearAll();
+            frm.initForm(item);
             if (houseFaceStreet.prototype.isNotBlank(item.streetName)) {
                 houseFaceStreet.prototype.writeHTMLData(item.streetName);
             }
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_street_level, item.streetLevel, function (html, data) {
-                $("#" + houseFaceStreet.prototype.config().frm).find("select.streetLevel").empty().html(html).trigger('change');
+                frm.find("select[name=streetLevel]").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_traffic_flow, item.trafficFlow, function (html, data) {
-                $("#" + houseFaceStreet.prototype.config().frm).find("select.trafficFlow").empty().html(html).trigger('change');
+                frm.find("select[name=trafficFlow]").empty().html(html).trigger('change');
             });
             AssessCommon.loadDataDicByKey(AssessDicKey.examine_house_visitors_flowrate, item.visitorsFlowrate, function (html, data) {
-                $("#" + houseFaceStreet.prototype.config().frm).find("select.visitorsFlowrate").empty().html(html).trigger('change');
+                frm.find("select[name=visitorsFlowrate]").empty().html(html).trigger('change');
             });
             AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_position, item.position, function (html, data) {
-                $("#" + houseFaceStreet.prototype.config().frm).find('select.position').empty().html(html).trigger('change');
+                frm.find('select[name=position]').empty().html(html).trigger('change');
             }, true);
+            AssessCommon.loadAsyncDataDicByKey(AssessDicKey.estate_distance, item.distance, function (html, data) {
+                frm.find('select[name=distance]').empty().html(html).trigger('change');
+            }, true);
+            AssessCommon.initArraySelect2(frm, item, ['streetLevel', 'trafficFlow', 'visitorsFlowrate', 'position','distance']);
         },
         appendHTML: function (item, this_) {
             var lableValue = "街道（道路）名称";

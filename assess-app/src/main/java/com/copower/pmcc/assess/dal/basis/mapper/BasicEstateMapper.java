@@ -14,17 +14,21 @@ public interface BasicEstateMapper {
 
     int insert(BasicEstate record);
 
-    int insertSelective(BasicEstate record);
+    int insertSelective(@Param("record") BasicEstate record, @Param("selective") BasicEstate.Column ... selective);
 
     List<BasicEstate> selectByExample(BasicEstateExample example);
 
     BasicEstate selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") BasicEstate record, @Param("example") BasicEstateExample example);
+    int updateByExampleSelective(@Param("record") BasicEstate record, @Param("example") BasicEstateExample example, @Param("selective") BasicEstate.Column ... selective);
 
     int updateByExample(@Param("record") BasicEstate record, @Param("example") BasicEstateExample example);
 
-    int updateByPrimaryKeySelective(BasicEstate record);
+    int updateByPrimaryKeySelective(@Param("record") BasicEstate record, @Param("selective") BasicEstate.Column ... selective);
 
     int updateByPrimaryKey(BasicEstate record);
+
+    int batchInsert(@Param("list") List<BasicEstate> list);
+
+    int batchInsertSelective(@Param("list") List<BasicEstate> list, @Param("selective") BasicEstate.Column ... selective);
 }

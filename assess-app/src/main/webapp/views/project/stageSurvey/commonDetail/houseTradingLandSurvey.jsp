@@ -33,11 +33,7 @@
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline x-valid">
-                    <label class="col-sm-1 control-label">税费负担</label>
-                    <div class="col-sm-3">
-                        <label class="form-control input-full"
-                               name="taxBurdenName">${basicHouseTrading.taxBurdenName}</label>
-                    </div>
+
 
                     <label class="col-sm-1 control-label">交易情况</label>
                     <div class="col-sm-3">
@@ -50,26 +46,42 @@
                         <label class="form-control input-full"
                                name="priceTypeName">${basicHouseTrading.priceTypeName}</label>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-                <div class="form-inline x-valid">
+
                     <c:if test="${!empty basicHouseTrading.descriptionTypeName}">
                         <label class="col-sm-1 control-label">说明事项类型</label>
                         <div class="col-sm-3">
                             <label class="form-control input-full"
                                    name="descriptionTypeName">${basicHouseTrading.descriptionTypeName}</label>
                         </div>
-
                     </c:if>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
+
                     <c:if test="${!empty basicHouseTrading.descriptionContent}">
 
                         <label class="col-sm-1 control-label">说明事项内容</label>
                         <div class="col-sm-3">
                             <label class="form-control input-full"
                                    name="descriptionContent">${basicHouseTrading.descriptionContent}</label>
+                        </div>
+                    </c:if>
+
+                    <label class="col-sm-1 control-label">付款方式</label>
+                    <div class="col-sm-3">
+                        <label class="form-control input-full"
+                               name="paymentMethodName">${basicHouseTrading.paymentMethodName}</label>
+                    </div>
+
+                    <c:if test="${!empty basicHouseTrading.installmentInterestRate}">
+
+                        <label class="col-sm-1 control-label">分期支付利率</label>
+                        <div class="col-sm-3">
+                            <label class="form-control input-full"
+                                   name="installmentInterestRate">${basicHouseTrading.installmentInterestRate}</label>
                         </div>
                     </c:if>
                 </div>
@@ -85,24 +97,16 @@
                                name="tradingTypeName">${basicHouseTrading.tradingTypeName}</label>
                     </div>
 
-                    <label class="col-sm-1 control-label">付款方式</label>
-                    <div class="col-sm-3">
-                        <label class="form-control input-full"
-                               name="paymentMethodName">${basicHouseTrading.paymentMethodName}</label>
-                    </div>
                     <label class="col-sm-1">市场级别</label>
                     <div class="col-sm-3">
                         <label class="form-control input-full"
                                name="transactionLevelName">${basicHouseTrading.transactionLevelName}</label>
                     </div>
-                    <c:if test="${!empty basicHouseTrading.installmentInterestRate}">
-
-                        <label class="col-sm-1 control-label">分期支付利率</label>
-                        <div class="col-sm-3">
-                            <label class="form-control input-full"
-                                   name="installmentInterestRate">${basicHouseTrading.installmentInterestRate}</label>
-                        </div>
-                    </c:if>
+                    <label class="col-sm-1 control-label">税费负担</label>
+                    <div class="col-sm-3">
+                        <label class="form-control input-full"
+                               name="taxBurdenName">${basicHouseTrading.taxBurdenName}</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -267,6 +271,23 @@
                                    name="phone">${basicHouseTrading.phone}</label>
                         </div>
                     </c:if>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
+                    <label class="col-sm-1 control-label">限制事项</label>
+                    <div class="col-sm-3">
+                        <label class="form-control input-full"
+                               name="restrictions">${basicHouseTrading.restrictions}</label>
+                    </div>
+
+                    <label class="col-sm-1 control-label">限制事项</label>
+                    <div class="col-sm-3">
+                        <label class="form-control input-full"
+                               name="restrictionsRemark">${basicHouseTrading.restrictionsRemark}</label>
+                    </div>
                 </div>
             </div>
         </div>

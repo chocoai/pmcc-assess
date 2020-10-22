@@ -15,6 +15,7 @@ public class BasicHouseFaceStreetVo extends BasicHouseFaceStreet {
     private String visitorsFlowrateName;
     private String positionName;
     private String creatorName;
+    private String distanceName;
 
     public String getStreetLevelName() {
         return streetLevelName;
@@ -54,5 +55,13 @@ public class BasicHouseFaceStreetVo extends BasicHouseFaceStreet {
 
     public void setCreatorName(String creatorName) {
         this.creatorName = creatorName;
+    }
+
+    public String getDistanceName() {
+        return distanceName;
+    }
+
+    public void setDistanceName(String distanceName) {
+        this.distanceName = distanceName;
     }
 }

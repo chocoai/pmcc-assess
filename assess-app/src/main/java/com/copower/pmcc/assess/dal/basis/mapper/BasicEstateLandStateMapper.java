@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface BasicEstateLandStateMapper {
-    int countByExample(BasicEstateLandStateExample example);
+    long countByExample(BasicEstateLandStateExample example);
 
     int deleteByExample(BasicEstateLandStateExample example);
 
@@ -14,17 +14,27 @@ public interface BasicEstateLandStateMapper {
 
     int insert(BasicEstateLandState record);
 
-    int insertSelective(BasicEstateLandState record);
+    int insertSelective(@Param("record") BasicEstateLandState record, @Param("selective") BasicEstateLandState.Column ... selective);
+
+    List<BasicEstateLandState> selectByExampleWithBLOBs(BasicEstateLandStateExample example);
 
     List<BasicEstateLandState> selectByExample(BasicEstateLandStateExample example);
 
     BasicEstateLandState selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") BasicEstateLandState record, @Param("example") BasicEstateLandStateExample example);
+    int updateByExampleSelective(@Param("record") BasicEstateLandState record, @Param("example") BasicEstateLandStateExample example, @Param("selective") BasicEstateLandState.Column ... selective);
+
+    int updateByExampleWithBLOBs(@Param("record") BasicEstateLandState record, @Param("example") BasicEstateLandStateExample example);
 
     int updateByExample(@Param("record") BasicEstateLandState record, @Param("example") BasicEstateLandStateExample example);
 
-    int updateByPrimaryKeySelective(BasicEstateLandState record);
+    int updateByPrimaryKeySelective(@Param("record") BasicEstateLandState record, @Param("selective") BasicEstateLandState.Column ... selective);
+
+    int updateByPrimaryKeyWithBLOBs(BasicEstateLandState record);
 
     int updateByPrimaryKey(BasicEstateLandState record);
+
+    int batchInsert(@Param("list") List<BasicEstateLandState> list);
+
+    int batchInsertSelective(@Param("list") List<BasicEstateLandState> list, @Param("selective") BasicEstateLandState.Column ... selective);
 }
