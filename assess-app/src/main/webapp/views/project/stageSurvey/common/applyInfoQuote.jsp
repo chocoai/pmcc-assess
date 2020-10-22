@@ -17,7 +17,7 @@
                             <label class="col-sm-1 control-label">
                                 名称
                             </label>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <input type="hidden" name="province">
                                 <input type="hidden" name="city">
                                 <input type="hidden" name="applyBatchDetailId">
@@ -25,11 +25,13 @@
                                        placeholder="名称" name="name"
                                        class="form-control input-full">
                             </div>
-                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                    onclick="applyInfoQuote.loadCaseEstateList();">
-                                <span class="btn-label"><i class="fa fa-search"></i></span>
-                                查询
-                            </button>
+                            <div class="col-sm-2">
+                                <button class="btn btn-info  btn-sm" type="button"
+                                        onclick="applyInfoQuote.loadCaseEstateList();">
+                                    <span class="btn-label"><i class="fa fa-search"></i></span>
+                                    查询
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,18 +68,20 @@
                             <label class="col-sm-1 control-label">
                                 名称
                             </label>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <input type="hidden" name="quoteId">
                                 <input type="hidden" name="applyBatchDetailId">
                                 <input type="text" data-rule-maxlength="50"
                                        placeholder="名称" name="name"
                                        class="form-control input-full">
                             </div>
-                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                    onclick="applyInfoQuote.loadCaseOtherList()">
-                                <span class="btn-label"><i class="fa fa-search"></i></span>
-                                查询
-                            </button>
+                            <div class="col-sm-2">
+                                <button class="btn btn-info  btn-sm" type="button"
+                                        onclick="applyInfoQuote.loadCaseOtherList()">
+                                    <span class="btn-label"><i class="fa fa-search"></i></span>
+                                    查询
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -113,18 +117,30 @@
                             <label class="col-sm-1 control-label">
                                 名称
                             </label>
-                            <div class="col-sm-5">
+                            <div class="col-sm-4">
                                 <input type="hidden" name="quoteId">
                                 <input type="hidden" name="applyBatchDetailId">
                                 <input type="text" data-rule-maxlength="50"
                                        placeholder="名称" name="name"
                                        class="form-control input-full">
                             </div>
-                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                    onclick="applyInfoQuote.loadCaseAlternativeList()">
-                                <span class="btn-label"><i class="fa fa-search"></i></span>
-                                查询
-                            </button>
+                            <label class="col-sm-1 control-label">
+                                类型
+                            </label>
+                            <div class="col-sm-4">
+                                <select class="form-control input-full" name="type">
+                                    <option value="">-请选择-</option>
+                                    <option value="house">房产</option>
+                                    <option value="land">土地</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-info  btn-sm" type="button"
+                                        onclick="applyInfoQuote.loadCaseAlternativeList()">
+                                    <span class="btn-label"><i class="fa fa-search"></i></span>
+                                    查询
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -161,7 +177,7 @@
     //加载楼盘案例数据
     applyInfoQuote.loadCaseEstateList = function () {
         var cols = [];
-        cols.push({field: 'estateName', title: '名称', width: '80%'});
+        cols.push({field: 'estateName', title: '名称', width: '60%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -224,7 +240,7 @@
     //加载楼栋、单元、房屋案例数据
     applyInfoQuote.loadCaseOtherList = function () {
         var cols = [];
-        cols.push({field: 'name', title: '名称', width: '80%'});
+        cols.push({field: 'name', title: '名称', width: '60%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -285,7 +301,8 @@
     //加载备选案例数据列表
     applyInfoQuote.loadCaseAlternativeList = function () {
         var cols = [];
-        cols.push({field: 'name', title: '名称', width: '80%'});
+        cols.push({field: 'name', title: '名称', width: '50%'});
+        cols.push({field: 'typeName', title: '类型', width: '30%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -301,6 +318,7 @@
         $("#tbCaseAlternativeList").bootstrapTable('destroy');
         TableInit("tbCaseAlternativeList", "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
             name: $("#caseAlternativeModal").find('[name=name]').val(),
+            type: $("#caseAlternativeModal").find('[name=type]').val(),
             applyBatchDetailId: $("#caseAlternativeModal").find('[name=applyBatchDetailId]').val()
         }, {
             showColumns: false,

@@ -9,6 +9,10 @@ public class BasicAlternativeCase {
 
     private Integer batchDetailId;
 
+    private String type;
+
+    private Integer projectCategoryId;
+
     private String businessKey;
 
     private Integer businessId;
@@ -18,8 +22,6 @@ public class BasicAlternativeCase {
     private Date gmtCreated;
 
     private Date gmtModified;
-
-    private Integer projectCategoryId;
 
     public Integer getId() {
         return id;
@@ -43,6 +45,22 @@ public class BasicAlternativeCase {
 
     public void setBatchDetailId(Integer batchDetailId) {
         this.batchDetailId = batchDetailId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
+    }
+
+    public Integer getProjectCategoryId() {
+        return projectCategoryId;
+    }
+
+    public void setProjectCategoryId(Integer projectCategoryId) {
+        this.projectCategoryId = projectCategoryId;
     }
 
     public String getBusinessKey() {
@@ -83,13 +101,5 @@ public class BasicAlternativeCase {
 
     public void setGmtModified(Date gmtModified) {
         this.gmtModified = gmtModified;
-    }
-
-    public Integer getProjectCategoryId() {
-        return projectCategoryId;
-    }
-
-    public void setProjectCategoryId(Integer projectCategoryId) {
-        this.projectCategoryId = projectCategoryId;
     }
 }

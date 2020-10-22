@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface BasicAlternativeCaseMapper {
-    int countByExample(BasicAlternativeCaseExample example);
+    long countByExample(BasicAlternativeCaseExample example);
 
     int deleteByExample(BasicAlternativeCaseExample example);
 

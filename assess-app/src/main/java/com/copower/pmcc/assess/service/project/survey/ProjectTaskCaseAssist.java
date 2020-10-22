@@ -47,13 +47,9 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
     @Autowired
     private SurveyCommonService surveyCommonService;
     @Autowired
-    private BpmRpcActivitiProcessManageService bpmRpcActivitiProcessManageService;
-    @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
     private ProjectInfoService projectInfoService;
-    @Autowired
-    private BpmRpcProjectTaskService bpmRpcProjectTaskService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -107,29 +103,18 @@ public class ProjectTaskCaseAssist implements ProjectTaskInterface {
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(projectPlanDetails.getDeclareRecordId());
         modelAndView.addObject("declareRecord", declareRecord);
         modelAndView.addObject("applyBatch", basicApplyBatchService.getBasicApplyBatchByPlanDetailsId(projectPlanDetails.getId()));
-        modelAndView.addObject("formClassifyList", getFormClassifyList(projectPlanDetails.getProjectId()));
+        modelAndView.addObject("formClassifyList", getFormClassifyList());
         modelAndView.addObject("examineFormTypeList", surveyCommonService.getExamineFormTypeList());
         List<BaseDataDic> buildingStatusList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_BUILDING_STATUS);
         modelAndView.addObject("buildingStatusList", buildingStatusList);
         modelAndView.addObject("userAccount", processControllerComponent.getThisUser());
     }
 
-    private List<BaseDataDic> getFormClassifyList(Integer projectId) {
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        List<BaseDataDic> dataDicList = baseDataDicService.getCacheDataDicList(AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY);
+    private List<BaseDataDic> getFormClassifyList() {
         List<BaseDataDic> resultList = Lists.newArrayList();
-        if (CollectionUtils.isEmpty(dataDicList)) return resultList;
-        AssessProjectTypeEnum projectTypeEnum = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-        if (projectTypeEnum == null) return resultList;
-        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE == projectTypeEnum) {
-            resultList = LangUtils.filter(dataDicList, o -> {
-                return AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_SINGEL.equals(o.getFieldName()) || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE.equals(o.getFieldName());
-            });
-        }
-        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND == projectTypeEnum) {
-            resultList = LangUtils.filter(dataDicList, o -> {
-                return AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND_ONLY.equals(o.getFieldName()) || AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_LAND.equals(o.getFieldName());
-            });
+        BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.PROJECT_SURVEY_FORM_CLASSIFY_MULTIPLE);
+        if (baseDataDic != null) {
+            resultList.add(baseDataDic);
         }
         return resultList;
     }

@@ -22,6 +22,10 @@
                                         <button type="button" class="btn btn-sm btn-primary"
                                                 onclick="showHistoryModal();">历史记录
                                         </button>
+                                        <button type="button" class="btn btn-sm btn-primary"
+                                                onclick="applyInfoQuote.showCaseAlternativeModal('${applyBatchDetail.id}');">
+                                            引用备选案例
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -555,13 +559,6 @@
     function showHistoryModal() {
         historyInfo.caseEstate.showModel('${tbId}', '${formClassify}', '${tbType}', '${basicApplyBatch.id}');
     };
-
-    function showCaseQuoteModal() {
-        caseFun.caseEstate.showModel();
-    }
-    function showProjectQuoteModal() {
-        projectData.prototype.showModel();
-    }
 </script>
 <script type="text/javascript">
     $(function () {

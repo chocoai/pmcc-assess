@@ -140,7 +140,8 @@
                                                             name="segmentationLimit"
                                                             required>
                                                         <option value="可分">可分</option>
-                                                        <option value="不可分" selected>不可分</option>
+                                                        <option value="不可分(适中)" selected>不可分(适中)</option>
+                                                        <option value="不可分(较小)" selected>不可分(较小)</option>
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
