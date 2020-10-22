@@ -72,7 +72,7 @@
                                 html += "<option value='" + item.id + "'>" + item.name + "</option>";
                             }
                         })
-                        $(_this).append(html);
+                        $(_this).empty().append(html);
                         projectTypeObj.typeChange(_this, category);
                     }
                 } else {
@@ -87,6 +87,8 @@
 
     //类型切换
     projectTypeObj.typeChange = function (_this, category) {
+        var categoryEle=$(_this).closest('.form-group').find('[name=category]');
+        categoryEle.empty();
         $.ajax({
             url: "${pageContext.request.contextPath}/baseProjectClassify/getCacheProjectClassifyListByPid",
             type: "post",
@@ -104,7 +106,7 @@
                                 option += "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             }
                         }
-                        $(_this).closest('.form-group').find('[name=category]').append(option);
+                        categoryEle.append(option);
                     }
                 } else {
                     AlertError("失败", "调用服务端方法失败，失败原因:" + result.errmsg);

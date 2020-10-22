@@ -126,6 +126,24 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
+                                                评估方法<span class="symbol required"></span>
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <select name="method" multiple="multiple"
+                                                        class="form-control input-full search-select select2"
+                                                        required="required">
+                                                    <c:forEach items="${methodDicList}" var="item">
+                                                        <option value="${item.id}">${item.name}</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
                                                 委托目的<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">
@@ -213,9 +231,11 @@
     //加载 评估原则 数据列表
     function loadPrincipleList() {
         var cols = [];
-        cols.push({field: 'name', title: '名称'});
-        cols.push({field: 'typeName', title: '项目类型'});
-        cols.push({field: 'entrustmentPurposeStr', title: '委托目的'});
+        cols.push({field: 'name', title: '名称', width: '20%'});
+        cols.push({field: 'typeName', title: '项目类型', width: '10%'});
+        cols.push({field: 'methodStr', title: '评估方法', width: '20%'});
+        cols.push({field: 'entrustmentPurposeStr', title: '委托目的', width: '30%'});
+        cols.push({field: 'sorting', title: '排序', width: '10%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<button onclick="editPrinciple(' + index + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
@@ -255,8 +275,7 @@
                     if (result.ret) {
                         notifySuccess("成功", "删除数据成功");
                         loadPrincipleList();//重载 (刷新)
-                    }
-                    else {
+                    } else {
                         AlertError("删除数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -272,7 +291,7 @@
     //对新增 评估原则 数据处理
     function addPrinciple() {
         $("#frm").clearAll();
-        reload();
+        ue.setContent('', false);
     }
 
     //新增 评估原则 数据
@@ -289,6 +308,7 @@
         })
         data.type = type;//方便like查询
         data.category = category;//方便like查询
+        data.method = ',' + data.method + ',';//方便like查询
         data.template = ue.getContent();
         if ($("#frm").valid()) {
             $.ajax({
@@ -303,8 +323,7 @@
                         AlertSuccess("成功", "数据已成功保存到数据库");
                         loadPrincipleList();
                         $('#divBox').modal('hide');
-                    }
-                    else {
+                    } else {
                         AlertError("保存数据失败，失败原因:" + result.errmsg);
                     }
                 },
@@ -328,7 +347,10 @@
                 if (result.ret) {
                     $("#frm").clearAll();
                     $("#frm").clearAll().initForm(result.data);
-                    projectTypeObj.editTypeHtml(result.data.type,result.data.category);
+                    projectTypeObj.editTypeHtml(result.data.type, result.data.category);
+                    if (row.method) {
+                        $("#frm").find("[name='method']").val(row.method.split(',')).trigger('change');
+                    }
                     $("#frm").find("[name='entrustmentPurpose']").val(row.entrustmentPurpose.split(',')).trigger('change');
                     var content = result.data.template;
                     setTimeout(function () {

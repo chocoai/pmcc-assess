@@ -48,7 +48,6 @@ public class EvaluationPrincipleController {
         modelAndView.addObject("methodDicList", methodDicList);
         modelAndView.addObject("purposeDicList", purposeDicList);
         modelAndView.addObject("types", types);
-
         dataReportTemplateItemService.initClean();
         return modelAndView;
     }
