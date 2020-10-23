@@ -6106,7 +6106,7 @@ public class GenerateBaseDataService {
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地用途:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Land_use))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("权益人:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.Stakeholder))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("规划条件:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.PLANNINGCONDITIONS))));
-                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地使用期限:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.LAND_USE_PERIOD))));
+                    stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地终止日期:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.LAND_USE_PERIOD))));
                     stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("土地开发程度:%s", generateEquityService.getLandEquityValue(entry.getKey(), entry.getValue(), GenerateEquityService.DEGREEOFLANDDEVELOPMENT))));
 
 
