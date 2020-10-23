@@ -20,6 +20,8 @@ public enum ReportFieldLandEnum {
     LAND_ENUM_RightType_Content("土地他项权力内容"),
     LAND_ENUM_PlotRatio("土地容积率"),
     LAND_ENUM_PlotRatio_Desc("土地容积率描述"),
+    LAND_ENUM_PLANNING_CONSTRAINTS("土地规划限制条件"),
+    LAND_ENUM_RESTRICTIONS("土地限制事项"),
     LAND_ENUM_BuildingDensity("土地建筑密度"),
     LAND_ENUM_GreeningRate("土地绿地率"),
     LAND_ENUM_CompatibilityRate("土地兼容比"),

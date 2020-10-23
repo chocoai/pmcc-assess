@@ -532,7 +532,7 @@ public class ZCHDemo {
         map.put(ReportFieldLandEnum.LAND_ENUM_Seat.getName(), Arrays.asList("座落","坐落" ));
         map.put(ReportFieldLandEnum.LAND_ENUM_OWNERSHIP.getName(), Arrays.asList("土地使用权人" ,"权利人、土地使用权人"));
         map.put(ReportFieldLandEnum.LAND_ENUM_OpenTime.getName(), Arrays.asList("取得日期" ));
-        map.put(ReportFieldLandEnum.LAND_ENUM_LandRightType.getName(), Arrays.asList("使用权类型" ));
+        map.put(ReportFieldLandEnum.LAND_ENUM_LandRightType.getName(), Arrays.asList("使用权类型" ,"方案设定使用权类型，规则同权证" ));
         map.put(ReportFieldEnum.JudgeObjectNumber.getName(), Arrays.asList("估价对象" ));
         Multimap<String, String> textMap = ArrayListMultimap.create();
         if (!map.isEmpty()) {
@@ -552,7 +552,7 @@ public class ZCHDemo {
             }
         }
 
-        List<String> paths = Arrays.asList("D:\\data\\土地技术报告模板.doc" ,"D:\\data\\土地预评模板.doc") ;
+        List<String> paths = Arrays.asList("D:\\data\\土地技术报告模板.doc" ,"D:\\data\\土地预评模板.doc" ,"D:\\data\\土地评估结果报告模板.doc") ;
         for (String path:paths) {
             Document document = new Document(path);
             String text = null;

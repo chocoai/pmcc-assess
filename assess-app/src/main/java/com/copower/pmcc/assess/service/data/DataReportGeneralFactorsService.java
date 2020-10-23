@@ -149,6 +149,15 @@ public class DataReportGeneralFactorsService {
         final int repeat = 2;
         //目前只处理4个层级
         List<DataReportGeneralFactors> dataReportGeneralFactorsList = getDataReportGeneralFactorsList(null, province, city, district, name, null, true, null);
+        if (CollectionUtils.isEmpty(dataReportGeneralFactorsList)){
+            dataReportGeneralFactorsList = getDataReportGeneralFactorsList(null, province, city, null, name, null, true, null);
+        }
+        if (CollectionUtils.isEmpty(dataReportGeneralFactorsList)){
+            dataReportGeneralFactorsList = getDataReportGeneralFactorsList(null, province, null, null, name, null, true, null);
+        }
+        if (CollectionUtils.isEmpty(dataReportGeneralFactorsList)){
+            dataReportGeneralFactorsList = getDataReportGeneralFactorsList(null, province, null, null, null, null, true, null);
+        }
         if (CollectionUtils.isNotEmpty(dataReportGeneralFactorsList)) {
             for (DataReportGeneralFactors factors : dataReportGeneralFactorsList) {
                 List<DataReportGeneralFactors> reportGeneralFactorsList = getDataReportGeneralFactorsListByPid(factors.getId());

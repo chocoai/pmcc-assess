@@ -350,8 +350,9 @@ public class GenerateLandRegionalFactorsDescService {
         return StringUtils.isNotBlank(value) ? value : defaultString;
     }
 
-    public String getSummaryRregionalFactors(List<SchemeJudgeObject> judgeObjectList){
+    public String getSummaryRregionalFactors(BasicEstate basicEstate ,List<SchemeJudgeObject> judgeObjectList){
 
-        return  "区域因素总结，根据各类表单确定后，写规则自动生成文本，最后处理 区域土地利用状况询问后处理" ;
+//        return  "区域因素总结，根据各类表单确定后，写规则自动生成文本，最后处理 区域土地利用状况询问后处理" ;
+        return basicEstate.getLocationDescribe() ;
     }
 }

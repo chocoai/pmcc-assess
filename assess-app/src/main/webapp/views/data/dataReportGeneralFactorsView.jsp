@@ -35,30 +35,53 @@
                             </div>
                             <div class="card-body">
                                 <form id="frmQuery" class="form-horizontal">
+
                                     <div class="form-group form-inline">
+                                        <label class="col-md-1 col-form-label">省</label>
+                                        <div class="col-md-2 p-0">
+                                            <select name="province"
+                                                    class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">市</label>
+                                        <div class="col-md-2 p-0">
+                                            <select name="city" class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+                                        <label class="col-md-1 col-form-label">区县</label>
+                                        <div class="col-md-2 p-0">
+                                            <select name="district"
+                                                    class="form-control input-full search-select select2">
+                                            </select>
+                                        </div>
+
                                         <label for="name" class="col-md-1 col-form-label">名称</label>
                                         <div class="col-md-2 p-0">
                                             <input type="text" data-rule-maxlength="50"
                                                    placeholder="名称" id="name" name="name"
                                                    class="form-control input-full  input-full">
                                         </div>
-                                        <label  class="col-md-1 col-form-label">类型</label>
-                                        <div class="col-md-2 p-0">
-                                            <select name="type"
-                                                    class="form-control input-full search-select select2"
-                                                    required="required">
-                                            </select>
+                                    </div>
+                                    <div class="form-group form-inline">
+                                        <div class="col-md-1 p-0">
                                         </div>
-
                                         <div class="col-md-3 p-0">
                                             <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                    onclick="objFactors.loadBootstrapTable()">
+                                                    onclick="objFactors.loadBootstrapTable({pid:0})">
 											<span class="btn-label">
 												<i class="fa fa-search"></i>
 											</span>
                                                 查询
                                             </button>
+                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
+                                                    onclick="objFactors.resetSearch()">
+                                                <span class="fa fa-eraser" aria-hidden="true" class="-space"></span>
+                                                重置
+                                            </button>
+                                        </div>
 
+
+                                        <div class="col-md-3 p-0">
                                             <button style="margin-left: 10px" class="btn btn-success btn-sm"
                                                     type="button" href="#modelDataReportGeneralFactors"
                                                     onclick="objFactors.initDataReportGeneralFactorsForm({id:0,pid:0,bisEnable:true,setting:true});">
@@ -66,22 +89,6 @@
 												<i class="fa fa-plus"></i>
 											</span>
                                                 新增
-                                            </button>
-                                        </div>
-
-
-                                        <div class="col-md-3 p-0">
-                                            <button style="margin-left: 10px" class="btn btn-info  btn-sm" type="button"
-                                                    onclick="objFactors.resetSearch()">
-                                                <span class="fa fa-eraser" aria-hidden="true" class="-space"></span>
-                                                重置
-                                            </button>
-
-                                            <button style="margin-left: 10px" class="btn btn-primary  btn-sm"
-                                                    type="button"
-                                                    onclick="objFactors.editDataReportGeneralFactors();">
-                                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                                编辑
                                             </button>
                                             <button style="margin-left: 10px" class="btn btn-warning  btn-sm"
                                                     type="button"
@@ -163,7 +170,13 @@
         var cols = [];
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<button onclick="objFactors.setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                var str = "" ;
+
+                str += '<button onclick="javascript:objFactors.editDataReportGeneralFactors(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
+                str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+
+                str +=  '<button onclick="objFactors.setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
                 str += '<i class="fa fa-search"></i>';
                 str += '</button>';
                 return str;
@@ -186,8 +199,8 @@
             };
             var cols = [];
             cols.push({checkbox: true, width: "5%"});
-            cols.push({field: 'name', title: '名称', width: "10%"});
-            cols.push({field: 'typeName', title: '类型', width: "5%"});
+            cols.push({field: 'name', title: '标题名称', width: "10%"});
+            // cols.push({field: 'typeName', title: '类型', width: "5%"});
             // cols.push({field: 'fieldName', title: '字段', width: "10%"});
             cols.push({
                 field: 'bisEnable', title: '启用与否', width: "5%", formatter: function (value, row, index) {
@@ -317,20 +330,14 @@
     };
 
     /*编辑*/
-    objFactors.editDataReportGeneralFactors = function () {
-        var rows = objFactors.table.bootstrapTable('getSelections');
-        if (!rows || rows.length <= 0) {
-            notifyInfo('提示', "请选择要编辑的数据");
-        } else {
-            $(objFactors.modelId).modal("show");
-            var data = rows[0];
-            objFactors.initDataReportGeneralFactorsForm(data);
-            var value = data.template;
-            setTimeout(function () {
-                ue.setContent(value, false);
-            }, 500);
-            objFactors.table.bootstrapTable('uncheckAll');
-        }
+    objFactors.editDataReportGeneralFactors = function (id) {
+        var data = objFactors.table.bootstrapTable("getRowByUniqueId", id);
+        $(objFactors.modelId).modal("show");
+        objFactors.initDataReportGeneralFactorsForm(data);
+        var value = data.template;
+        setTimeout(function () {
+            ue.setContent(value, false);
+        }, 500);
     };
 
     /*删除*/
@@ -486,11 +493,13 @@
         var cols = [];
         cols.push({
             field: 'id', title: '操作', width: '20%', formatter: function (value, row, index) {
-                var str = '<button onclick="objFactors.setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
-                str += '<i class="fa fa-search"></i>';
-                str += '</button>';
+                var str = "" ;
                 str += '<button onclick="javascript:objFactors.editSubDataDic(' + row.id + ')"  style="margin-left: 5px;"  class="btn  btn-primary  btn-xs tooltips"  data-placement="bottom" data-original-title="编辑">';
                 str += '<i class="fa fa-pen"></i>';
+                str += '</button>';
+
+                str += '<button onclick="objFactors.setSubDataDic(' + row.id + ')" style="margin-left: 5px;" class="btn  btn-info  btn-xs tooltips"  data-placement="bottom" data-original-title="查看子项">';
+                str += '<i class="fa fa-search"></i>';
                 str += '</button>';
                 return str;
             }
@@ -505,14 +514,23 @@
     $(document).ready(function () {
         objFactors.loadBootstrapTable({pid:0});
 
-        AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_GENERAL_FACTORS, null, function (html, data) {
             var frm = $(objFactors.frmQuery.selector) ;
+        AssessCommon.loadDataDicByKey(AssessDicKey.REPORT_GENERAL_FACTORS, null, function (html, data) {
             frm.find("select[name=type]").empty().html(html).trigger('change');
+        });
+        AssessCommon.initAreaInfo({
+            provinceTarget: frm.find("select[name=province]"),
+            cityTarget: frm.find("select[name=city]"),
+            districtTarget: frm.find("select[name=district]"),
+            provinceValue: '',
+            cityValue: '',
+            districtValue: ''
         });
     });
 
 
 </script>
+
 <div id="modelDataReportGeneralFactors" class="modal fade bs-example-modal-lg" data-backdrop="static" tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -530,30 +548,6 @@
                     <input type="hidden" name="pid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="row form-group">
-                                <div class="col-md-6">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 col-form-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control input-full " name="name"
-                                                   placeholder="名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <%--<div class="col-md-6">--%>
-                                    <%--<div class="form-inline x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--字段--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<input type="text" class="form-control input-full " name="fieldName"--%>
-                                                   <%--placeholder="字段">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            </div>
                             <div class="row form-group">
                                 <div class="col-md-6">
                                     <div class="form-inline x-valid">
@@ -614,12 +608,11 @@
                                 <div class="col-md-6">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 col-form-label">
-                                            类型
+                                            标题名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="type"
-                                                    class="form-control input-full search-select select2">
-                                            </select>
+                                            <input type="text" class="form-control input-full " name="name"
+                                                   placeholder="标题名称" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -638,10 +631,10 @@
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <div class="form-inline x-valid">
-                                        <label class="col-sm-2 col-form-label">
+                                        <label class="col-sm-1 col-form-label">
                                             模板
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-11">
                                             <div style="width:99%;height:200px;" id="description"></div>
                                         </div>
                                     </div>
@@ -744,30 +737,7 @@
                     <input type="hidden" name="pid">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="row form-group">
-                                <div class="col-md-6">
-                                    <div class="form-inline x-valid">
-                                        <label class="col-sm-2 col-form-label">
-                                            名称<span class="symbol required"></span>
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control input-full " name="name"
-                                                   placeholder="名称" required="required">
-                                        </div>
-                                    </div>
-                                </div>
-                                <%--<div class="col-md-6">--%>
-                                    <%--<div class="form-inline x-valid">--%>
-                                        <%--<label class="col-sm-2 control-label">--%>
-                                            <%--字段--%>
-                                        <%--</label>--%>
-                                        <%--<div class="col-sm-10">--%>
-                                            <%--<input type="text" class="form-control input-full " name="fieldName"--%>
-                                                   <%--placeholder="字段">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            </div>
+
                             <div class="row form-group">
                                 <div class="col-md-6">
                                     <div class="form-inline x-valid">
@@ -826,12 +796,11 @@
                                 <div class="col-md-6">
                                     <div class="form-inline x-valid">
                                         <label class="col-sm-2 col-form-label">
-                                            类型
+                                            标题名称<span class="symbol required"></span>
                                         </label>
                                         <div class="col-sm-10">
-                                            <select name="type"
-                                                    class="form-control input-full search-select select2">
-                                            </select>
+                                            <input type="text" class="form-control input-full " name="name"
+                                                   placeholder="标题名称" required="required">
                                         </div>
                                     </div>
                                 </div>
@@ -850,10 +819,10 @@
                             <div class="row form-group">
                                 <div class="col-md-12">
                                     <div class="form-inline x-valid">
-                                        <label class="col-sm-2 col-form-label">
+                                        <label class="col-sm-1 col-form-label">
                                             模板
                                         </label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-11">
                                             <div style="width:99%;height:200px;" id="template"></div>
                                         </div>
                                     </div>
