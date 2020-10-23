@@ -66,6 +66,8 @@ public class SurveyCommonService {
     private ProjectInfoService projectInfoService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
+    @Autowired
+    private ProjectPhaseService projectPhaseService;
 
 
     /**
@@ -139,17 +141,20 @@ public class SurveyCommonService {
         ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
         AssessProjectTypeEnum projectTypeEnum = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
         List<BasicApply> basicApplyList = basicApplyService.getBasicApplyListByPlanDetailsId(projectPlanDetails.getId());
+        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseById(projectPlanDetails.getProjectPhaseId());
         if (CollectionUtils.isNotEmpty(basicApplyList)) {
             for (BasicApply basicApply : basicApplyList) {
                 BasicHouse house = basicHouseService.getHouseByBasicApply(basicApply);
                 if (house == null) continue;
                 DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(basicApply.getDeclareRecordId());
-                if (declareRecord != null) continue;
-                if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectTypeEnum)) {
-                    declareRecord.setPracticalUse(house.getPracticalUse());
-                } else if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectTypeEnum)) {
+                if (declareRecord == null) continue;
+                if (projectPhase != null && StringUtils.isNotBlank(projectPhase.getPhaseKey())
+                        &&AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectTypeEnum)
+                        && projectPhase.getPhaseKey().contains(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey())) {
                     BasicEstateLandCategoryInfo landCategoryInfo = basicEstateLandCategoryInfoService.getBasicEstateLandCategoryInfoByHouseId(house.getId());
-                    declareRecord.setPracticalUse(landCategoryInfo.getLandUseCategory());
+                    declareRecord.setPracticalUse(landCategoryInfo.getLandUseType());
+                } else if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_HOUSE.equals(projectTypeEnum)) {
+                    declareRecord.setPracticalUse(house.getPracticalUse());
                 }
                 declareRecordService.saveAndUpdateDeclareRecord(declareRecord);
             }

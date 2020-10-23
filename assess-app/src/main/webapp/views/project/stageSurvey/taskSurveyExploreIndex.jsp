@@ -1004,6 +1004,7 @@
         Loading.progressShow();
         var node = zTreeObj.getSelectedNodes()[0];
         var data = {};
+        data.type='house';
         data.business_id = node.id;
         data.business_key = node.type;
         $.ajax({

@@ -170,7 +170,8 @@ public class MdMarketCompareService {
         if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId() != 0) {
             setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
         } else {
-            List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+            ProjectPhase projectPhase = projectPhaseService.getSceneExplorePhase(isLand);
+            List<BasicApply> basicApplyList = getStandardJudgeList(schemeJudgeObject.getDeclareRecordId(),projectPhase.getId());
             if (CollectionUtils.isNotEmpty(basicApplyList)) {//检查估价对象是否有多个标准 如果有多个标准则不处理 由前端选择后初始化
                 setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyList.get(basicApplyList.size() - 1), mdMarketCompare.getId(), setUseFieldList, isLand);
             }
@@ -280,12 +281,21 @@ public class MdMarketCompareService {
     /**
      * 获取标准估价对象数据
      *
-     * @param schemeJudgeObject
+     * @param declareId
      * @return
      */
-    public List<BasicApply> getStandardJudgeList(SchemeJudgeObject schemeJudgeObject) {
-        if (schemeJudgeObject == null) return null;
-        List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(schemeJudgeObject.getDeclareRecordId());
+    public List<BasicApply> getStandardJudgeList(Integer declareId, Integer projectPhaseId) {
+        if (declareId == null) return null;
+        List<BasicApply> basicApplyList = basicApplyService.getListByDeclareRecordId(declareId);
+        if (CollectionUtils.isEmpty(basicApplyList)) return null;
+        basicApplyList = LangUtils.filter(basicApplyList, p -> {
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(p.getPlanDetailsId());
+            if (planDetails != null && planDetails.getProjectPhaseId().equals(projectPhaseId)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
         return basicApplyList;
     }
 
@@ -597,17 +607,11 @@ public class MdMarketCompareService {
      * @param projectId
      * @return
      */
-    public BootstrapTableVo getCasesAll(Integer projectId, String projectPhaseName) {
+    public BootstrapTableVo getCasesAll(Integer projectId,Boolean isLand, String projectPhaseName) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         List<Integer> projectPhaseIds = Lists.newArrayList();
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
-        ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND, projectInfo.getProjectCategoryId());
-        if (projectPhase != null) {
-            projectPhaseIds.add(projectPhase.getId());
-        }
-        //土地案例
-        projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(AssessPhaseKeyConstant.CASE_STUDY_EXTEND_LAND, projectInfo.getProjectCategoryId());
+        ProjectPhase projectPhase = projectPhaseService.getCaseStudyPhase(isLand);
         if (projectPhase != null) {
             projectPhaseIds.add(projectPhase.getId());
         }

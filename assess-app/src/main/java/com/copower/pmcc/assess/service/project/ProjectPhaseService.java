@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project;
 
 
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.project.ProjectPhaseDao;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectPhase;
 import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
@@ -134,11 +135,13 @@ public class ProjectPhaseService {
         }
     }
 
-    public List<ProjectPhase> getProjectPhaseListByKey(String key) {
+    public ProjectPhase getProjectPhaseListByKey(String key) {
         if (StringUtils.isBlank(key)) return null;
         ProjectPhase projectPhase = new ProjectPhase();
         projectPhase.setPhaseKey(key);
-        return projectPhaseDao.getProjectPhaseList(projectPhase);
+        List<ProjectPhase> list = projectPhaseDao.getProjectPhaseList(projectPhase);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
     }
 
     public List<ProjectPhase> getCacheProjectPhaseByCategoryId(Integer categoryId) {
@@ -170,11 +173,11 @@ public class ProjectPhaseService {
         referencePhaseList = LangUtils.filter(referencePhaseList, o -> o.getWorkStageId().equals(workStageId));
         List<ProjectPhase> resultPhaseList = Lists.newArrayList();
         HashSet<String> keys = Sets.newHashSet();
-        if(CollectionUtils.isNotEmpty(selfPhases)){
+        if (CollectionUtils.isNotEmpty(selfPhases)) {
             selfPhases.forEach(o -> keys.add(o.getPhaseKey()));
             resultPhaseList.addAll(selfPhases);
         }
-        if(CollectionUtils.isNotEmpty(referencePhaseList)){
+        if (CollectionUtils.isNotEmpty(referencePhaseList)) {
             for (ProjectPhase projectPhase : referencePhaseList) {
                 if (StringUtils.isNotBlank(projectPhase.getPhaseKey()) && keys.contains(projectPhase.getPhaseKey())) {
                     continue;
@@ -192,5 +195,23 @@ public class ProjectPhaseService {
     public List<ProjectPhase> getProjectPhaseListByIds(List<Integer> ids) {
         if (CollectionUtils.isEmpty(ids)) return null;
         return projectPhaseDao.getProjectPhaseListByIds(ids);
+    }
+
+    //获取查勘工作事项
+    public ProjectPhase getSceneExplorePhase(Boolean isLand) {
+        if (Boolean.TRUE.equals(isLand)) {
+            return getProjectPhaseListByKey(AssessPhaseKeyConstant.SCENE_EXPLORE_LAND);
+        } else {
+            return getProjectPhaseListByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
+        }
+    }
+
+    //获取交易案例工作事项
+    public ProjectPhase getCaseStudyPhase(Boolean isLand) {
+        if (Boolean.TRUE.equals(isLand)) {
+            return getProjectPhaseListByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND_LAND);
+        } else {
+            return getProjectPhaseListByKey(AssessPhaseKeyConstant.CASE_STUDY_EXTEND);
+        }
     }
 }

@@ -278,6 +278,7 @@ public class BasicEstateService extends BasicEntityAbstract {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingMedical.class), estateId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicMatchingTraffic.class), estateId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateStreetInfo.class), estateId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateVillage.class), estateId));
         if (estateLandState != null) {
             sqlBulder.append(String.format(baseLandSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class), estateLandState.getId()));
         }

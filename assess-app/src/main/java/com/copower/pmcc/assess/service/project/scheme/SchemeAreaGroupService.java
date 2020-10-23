@@ -315,6 +315,17 @@ public class SchemeAreaGroupService {
             basicApplyList = basicApplyService.getBasicApplyListByOtherDeclare(String.format(",%s,", declareRecord.getId()));
         }
         if (CollectionUtils.isEmpty(basicApplyList)) return;
+        //只保留与当前项目类型相同的查勘数据
+        ProjectPhase projectPhase = projectPhaseService.getSceneExplorePhase(isLand);
+        basicApplyList = LangUtils.filter(basicApplyList, p -> {
+            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(p.getPlanDetailsId());
+            if (planDetails != null && planDetails.getProjectPhaseId().equals(projectPhase.getId())) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
         //经济指标
         MdEconomicIndicators economicIndicators = null;
         if (isLand) {
@@ -344,7 +355,7 @@ public class SchemeAreaGroupService {
                 BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
                 schemeJudgeObject.setParcelOuterDevelop(estateLandState.getDevelopmentDegreeContent());
                 schemeJudgeObject.setCurrentSituation(estateLandState.getCurrentSituation());
-                if (estateLandState.getPlotRatio() != null&& NumberUtils.isNumber(estateLandState.getPlotRatio())) {
+                if (estateLandState.getPlotRatio() != null && NumberUtils.isNumber(estateLandState.getPlotRatio())) {
                     schemeJudgeObject.setPlanPlotRatio(estateLandState.getPlotRatio());
                     schemeJudgeObject.setSetPlotRatio(new BigDecimal(estateLandState.getPlotRatio()));
                 }

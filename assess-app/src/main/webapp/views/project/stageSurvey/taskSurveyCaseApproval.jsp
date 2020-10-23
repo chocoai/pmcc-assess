@@ -213,6 +213,7 @@
         var node = zTreeObj.getSelectedNodes()[0];
         var data = {};
         data.batchDetailId = node.id;
+        data.type='house';
         data.business_id = node.tableId;
         data.business_key = node.type;
         $.ajax({

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.method;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.common.enums.basic.MethodCompareFieldEnum;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.controller.BaseController;
 import com.copower.pmcc.assess.dal.basis.entity.*;
@@ -12,6 +13,7 @@ import com.copower.pmcc.assess.dto.output.method.MdCompareInitParamVo;
 import com.copower.pmcc.assess.service.basic.BasicApplyService;
 import com.copower.pmcc.assess.service.basic.BasicEstateLandCategoryInfoService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
@@ -41,7 +43,7 @@ public class MarketCompareController extends BaseController {
     @Autowired
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
-    private BasicApplyService basicApplyService;
+    private ProjectPhaseService projectPhaseService;
     @Autowired
     private BasicEstateLandCategoryInfoService basicEstateLandCategoryInfoService;
 
@@ -61,13 +63,14 @@ public class MarketCompareController extends BaseController {
         if (marketCompare == null) {
             marketCompare = mdMarketCompareService.initExplore(judgeObject, isLand);
         }
-        if(isLand){
+        Integer projectPhaseId = projectPhaseService.getSceneExplorePhase(isLand).getId();
+        if (isLand) {
             modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getLandFieldListByApplyId(judgeObject.getBasicApplyId())));
-        }else{
-            modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE,null,null)));
+        } else {
+            modelAndView.addObject("fieldsJSON", JSON.toJSONString(mdMarketCompareService.getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE, null, null)));
         }
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
-        List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
+        List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject.getDeclareRecordId(), projectPhaseId);
         modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(CollectionUtils.isEmpty(standardJudgeList) ? Lists.newArrayList() : standardJudgeList));
         modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
 
@@ -99,8 +102,8 @@ public class MarketCompareController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/getCasesAll", name = "获取所有案例", method = RequestMethod.GET)
-    public BootstrapTableVo getCasesAll(Integer projectId, String projectPhaseName) {
-        BootstrapTableVo casesAll = mdMarketCompareService.getCasesAll(projectId, projectPhaseName);
+    public BootstrapTableVo getCasesAll(Integer projectId,Boolean isLand, String projectPhaseName) {
+        BootstrapTableVo casesAll = mdMarketCompareService.getCasesAll(projectId,isLand, projectPhaseName);
         return casesAll;
     }
 
@@ -111,7 +114,7 @@ public class MarketCompareController extends BaseController {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectCase(mcId, planDetailsIdList, judgeObjectId, isLand, jsonData);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("保存失败");
         }
     }
@@ -123,7 +126,7 @@ public class MarketCompareController extends BaseController {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.selectJudge(judgeObjectId, applyId, mcId, isLand);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("保存失败");
         }
     }
@@ -134,7 +137,7 @@ public class MarketCompareController extends BaseController {
         try {
             return HttpResult.newCorrectResult(mdMarketCompareService.getMdMarketCompare(id));
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");
         }
     }
@@ -145,7 +148,7 @@ public class MarketCompareController extends BaseController {
         try {
             return HttpResult.newCorrectResult(mdMarketCompareService.getMarketCompareItemById(id));
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("获取失败");
         }
     }
@@ -157,7 +160,7 @@ public class MarketCompareController extends BaseController {
             mdMarketCompareService.saveMarketCompareItem(mdMarketCompareItem);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("保存失败");
         }
     }
@@ -169,7 +172,7 @@ public class MarketCompareController extends BaseController {
             mdMarketCompareService.updateAnnualCoefficient(judgeObjectId, mcId, rewardRateId, rewardRate);
             return HttpResult.newCorrectResult();
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("更新年期修正系数异常");
         }
     }
@@ -181,7 +184,7 @@ public class MarketCompareController extends BaseController {
             MdCompareInitParamVo mdCompareInitParamVo = mdMarketCompareService.refreshData(mcId, judgeObjectId, isLand);
             return HttpResult.newCorrectResult(mdCompareInitParamVo);
         } catch (Exception e) {
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             return HttpResult.newErrorResult("保存失败");
         }
     }

@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.constant.BaseConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApplyDto;
@@ -10,6 +11,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -41,7 +43,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     @Autowired
     private MdMarketCompareService mdMarketCompareService;
     @Autowired
-    private ProjectInfoService projectInfoService;
+    private ProjectPhaseService projectPhaseService;
     @Autowired
     private SchemeInfoService schemeInfoService;
     @Autowired
@@ -80,7 +82,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
             logger.error(e.getMessage(), e);
         }
 
-        setViewParam(projectPlanDetails, info, judgeObject, modelAndView);
+        setViewParam(info, judgeObject, modelAndView);
     }
 
     @Override
@@ -92,7 +94,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
     private ModelAndView getView(ProjectPlanDetails projectPlanDetails, ModelAndView modelAndView) {
         SchemeInfo info = schemeInfoService.getSchemeInfo(projectPlanDetails.getId());
         SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(projectPlanDetails.getJudgeObjectId());
-        setViewParam(projectPlanDetails, info, judgeObject, modelAndView);
+        setViewParam(info, judgeObject, modelAndView);
         return modelAndView;
     }
 
@@ -118,7 +120,7 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
      *
      * @param modelAndView
      */
-    private void setViewParam(ProjectPlanDetails projectPlanDetails, SchemeInfo info, SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
+    private void setViewParam(SchemeInfo info, SchemeJudgeObject judgeObject, ModelAndView modelAndView) {
         //市场比较法相关
         try {
             MdMarketCompare marketCompare = mdMarketCompareService.getMdMarketCompare(info.getMethodDataId());
@@ -128,7 +130,8 @@ public class ProjectTaskCompareAssist implements ProjectTaskInterface {
             if (judgeObject.getStandardJudgeId() != null) {
                 modelAndView.addObject("standardJudgeObject", schemeJudgeObjectService.getSchemeJudgeObject(judgeObject.getStandardJudgeId()));
             }
-            List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
+            Integer projectPhaseId = projectPhaseService.getSceneExplorePhase(false).getId();
+            List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject.getDeclareRecordId(), projectPhaseId);
             modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(CollectionUtils.isEmpty(standardJudgeList) ? Lists.newArrayList() : standardJudgeList));
             modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
             modelAndView.addObject("fieldsJSON", JSON.toJSONString(fieldList));

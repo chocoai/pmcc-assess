@@ -126,6 +126,7 @@ public class BasicBuildingOutfitService {
     }
 
     public List<BasicBuildingOutfitVo> getBasicBuildingOutfitVos(Integer buildingId) {
+        if (buildingId == null) return null;
         BasicBuildingOutfit where = new BasicBuildingOutfit();
         where.setBuildingId(buildingId);
         List<BasicBuildingOutfit> basicBuildingOutfitList = basicBuildingOutfitDao.basicBuildingOutfitList(where);

@@ -431,6 +431,10 @@
                     }
                 });
             }
+            if ($(this).find('option:selected').val()) {
+                var description = $(this).find('option:selected').text();
+                houseCommon.houseForm.find("[name=decorateSituationDescription]").val(description);
+            }
         });
     }
 

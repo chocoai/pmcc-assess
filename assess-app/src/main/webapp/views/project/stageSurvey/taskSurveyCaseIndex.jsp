@@ -247,36 +247,40 @@
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
-                    <div class="row">
+                    <div class="row form-group ">
                         <div class="col-md-12">
-                            <div class="card-body">
-                                <div class="row form-group ">
-                                    <div class="col-md-12">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-1 control-label">
-                                                名称
-                                            </label>
-                                            <div class="col-sm-5">
-                                                <input type="text" data-rule-maxlength="50" placeholder="名称"
-                                                       id="queryAlternativeName" class="form-control input-full">
-                                            </div>
-                                            <div class="col-sm-5">
-                                                <button type="button" class="btn btn-sm btn-info"
-                                                        onclick="batchTreeTool.loadAlternativeCaseList();">
-                                                    <span class="btn-label"><i class="fa fa-search"></i></span>
-                                                    查询
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="form-inline x-valid">
+                                <label class="col-sm-1 control-label">
+                                    名称
+                                </label>
+                                <div class="col-sm-3">
+                                    <input type="text" data-rule-maxlength="50" placeholder="名称"
+                                           id="queryAlternativeName" class="form-control input-full">
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12">
-                                        <table class="table table-bordered" id="basicAlternativeCaseList">
-                                        </table>
-                                    </div>
+                                <label class="col-sm-1 control-label">
+                                    类型
+                                </label>
+                                <div class="col-sm-3">
+                                    <select class="form-control input-full" name="type">
+                                        <option value="">-请选择-</option>
+                                        <option value="house">房产</option>
+                                        <option value="land">土地</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button type="button" class="btn btn-sm btn-info"
+                                            onclick="batchTreeTool.loadAlternativeCaseList();">
+                                        <span class="btn-label"><i class="fa fa-search"></i></span>
+                                        查询
+                                    </button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <table class="table table-bordered" id="basicAlternativeCaseList">
+                            </table>
                         </div>
                     </div>
                 </form>
@@ -634,6 +638,7 @@
         var node = zTreeObj.getSelectedNodes()[0];
         var data = {};
         data.batchDetailId = node.id;
+        data.type='house';
         data.business_id = node.tableId;
         data.business_key = node.type;
         $.ajax({
@@ -686,7 +691,8 @@
     //加载备选案例数据列表
     batchTreeTool.loadAlternativeCaseList = function () {
         var cols = [];
-        cols.push({field: 'name', title: '名称', width: '80%'});
+        cols.push({field: 'name', title: '名称', width: '50%'});
+        cols.push({field: 'typeName', title: '类型', width: '30%'});
         cols.push({
             field: 'id', title: '操作', formatter: function (value, row, index) {
                 var str = '<div class="btn-margin">';
@@ -699,6 +705,7 @@
         $("#basicAlternativeCaseList").bootstrapTable('destroy');
         TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
             name: $('#queryAlternativeName').val(),
+            type: $('#reference_modal').find('[name=type]').val(),
             projectId: '${projectId}'
         }, {
             showColumns: false,

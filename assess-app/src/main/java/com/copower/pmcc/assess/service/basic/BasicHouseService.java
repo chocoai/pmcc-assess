@@ -247,6 +247,7 @@ public class BasicHouseService extends BasicEntityAbstract {
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseWaterDrain.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegree.class), houseId));
         sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicHouseDamagedDegreeDetail.class), houseId));
+        sqlBulder.append(String.format(baseSql, FormatUtils.entityNameConvertToTableName(BasicEstateLandCategoryInfo.class), houseId));
         ddlMySqlAssist.customTableDdl(sqlBulder.toString());
     }
 

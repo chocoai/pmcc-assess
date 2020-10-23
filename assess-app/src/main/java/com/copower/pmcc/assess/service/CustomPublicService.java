@@ -13,6 +13,7 @@ import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,10 @@ public class CustomPublicService {
     public BootstrapTableVo getSurveyEstateTimesList(String userAccount) {
         BootstrapTableVo bootstrapTableVo = new BootstrapTableVo();
         if (StringUtils.isBlank(userAccount)) return bootstrapTableVo;
-        List<ProjectPhase> phaseList = projectPhaseService.getProjectPhaseListByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
+        ProjectPhase projectPhase = projectPhaseService.getProjectPhaseListByKey(AssessPhaseKeyConstant.SCENE_EXPLORE);
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
         Page<PageInfo> page = PageHelper.startPage(requestBaseParam.getOffset(), requestBaseParam.getLimit());
-        List<CustomSurveyEstateTimes> surveyEstateTimesList = customPublicMapper.getSurveyEstateTimesList(userAccount, LangUtils.transform(phaseList, p -> p.getId()));
+        List<CustomSurveyEstateTimes> surveyEstateTimesList = customPublicMapper.getSurveyEstateTimesList(userAccount, Lists.newArrayList(projectPhase.getId()));
         bootstrapTableVo.setTotal(page.getTotal());
         bootstrapTableVo.setRows(surveyEstateTimesList);
         return bootstrapTableVo;

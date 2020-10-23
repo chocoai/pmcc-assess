@@ -72,7 +72,7 @@ public class BasicBuildingFunctionService {
         } else {
             if (updateNull) {
                 BasicBuildingFunction buildingFunction = basicBuildingFunctionDao.getBasicBuildingFunctionById(basicBuildingFunction.getId());
-                if(buildingFunction!=null){
+                if (buildingFunction != null) {
                     basicBuildingFunction.setBisDelete(buildingFunction.getBisDelete());
                     basicBuildingFunction.setCreator(buildingFunction.getCreator());
                     basicBuildingFunction.setGmtCreated(buildingFunction.getGmtCreated());
@@ -112,6 +112,7 @@ public class BasicBuildingFunctionService {
     }
 
     public List<BasicBuildingFunction> getBasicBuildingFunctionList(Integer buildingId) {
+        if (buildingId == null) return null;
         BasicBuildingFunction where = new BasicBuildingFunction();
         where.setBuildingId(buildingId);
         return basicBuildingFunctionDao.basicBuildingFunctionList(where);

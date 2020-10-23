@@ -257,7 +257,6 @@
 
 
         var marketCompare = {};
-        var marketCompare = {};
         //初始化 1.初始化表格的标题 2.初始化表格内容
         marketCompare.isPass = true;
         marketCompare.isLand = false;
@@ -934,6 +933,7 @@
             $("#select_case_list").bootstrapTable('destroy');
             TableInit("select_case_list", getContextPath() + "/marketCompare/getCasesAll", cols, {
                 projectId: marketCompare.projectId,
+                isLand: marketCompare.isLand,
                 projectPhaseName: $("#modal_select_case").find('[name=projectPhaseName]').val()
             }, {
                 showColumns: false,

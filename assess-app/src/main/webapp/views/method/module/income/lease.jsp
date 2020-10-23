@@ -637,6 +637,7 @@
     //调用市场比较法
     lease.callCompareMethod = function (_this) {
         var mcId = $("#frm_lease_income").find('[name=mcId]').val();
+        var isLand = 'land' == '${assessProjectType}';
         var frame = layer.open({
             type: 2,
             title: '市场比较法',
@@ -644,7 +645,7 @@
             shade: true,
             maxmin: false, //开启最大化最小化按钮
             area: ['90%', '90%'],
-            content: '${pageContext.request.contextPath}/marketCompare/index?mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}',
+            content: '${pageContext.request.contextPath}/marketCompare/index?mcId=' + mcId + '&judgeObjectId=${projectPlanDetails.judgeObjectId}&isLand=' + isLand,
             cancel: function (index, layero) {
                 var iframe = window[layero.find('iframe')[0]['name']];
                 if (iframe && iframe.marketCompare && iframe.marketCompare.mcId) {

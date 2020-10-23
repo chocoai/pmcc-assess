@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
+import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
 import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.scheme.SchemeMarketCompareApplyDto;
 import com.copower.pmcc.assess.dto.output.basic.BasicApplyVo;
@@ -9,6 +10,7 @@ import com.copower.pmcc.assess.proxy.face.ProjectTaskInterface;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.method.MdMarketCompareService;
 import com.copower.pmcc.assess.service.project.ProjectInfoService;
+import com.copower.pmcc.assess.service.project.ProjectPhaseService;
 import com.copower.pmcc.bpm.api.annotation.WorkFlowAnnotation;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
 import com.copower.pmcc.erp.common.exception.BusinessException;
@@ -45,7 +47,7 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
     @Autowired
     private BaseDataDicService baseDataDicService;
     @Autowired
-    private ProjectInfoService projectInfoService;
+    private ProjectPhaseService projectPhaseService;
 
     @Override
     public ModelAndView applyView(ProjectPlanDetails projectPlanDetails) {
@@ -115,7 +117,8 @@ public class ProjectTaskLandCompareAssist implements ProjectTaskInterface {
         List<DataSetUseField> fieldList = mdMarketCompareService.getLandFieldListByApplyId(judgeObject.getBasicApplyId());
         MdMarketCompareItem evaluationObject = mdMarketCompareService.getEvaluationByMcId(marketCompare.getId());
         List<MdMarketCompareItem> caseList = mdMarketCompareService.getCaseListByMcId(marketCompare.getId());
-        List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject);
+        Integer projectPhaseId = projectPhaseService.getSceneExplorePhase(true).getId();
+        List<BasicApply> standardJudgeList = mdMarketCompareService.getStandardJudgeList(judgeObject.getDeclareRecordId(),projectPhaseId);
         modelAndView.addObject("standardJudgesJSON", JSON.toJSONString(CollectionUtils.isEmpty(standardJudgeList) ? Lists.newArrayList() : standardJudgeList));
         modelAndView.addObject("marketCompareJSON", JSON.toJSONString(marketCompare));
         modelAndView.addObject("fieldsJSON", JSON.toJSONString(fieldList));

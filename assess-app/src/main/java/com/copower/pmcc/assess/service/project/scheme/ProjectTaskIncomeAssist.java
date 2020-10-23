@@ -1,6 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 import com.alibaba.fastjson.JSON;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.method.MethodIncomeOperationModeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -150,7 +151,7 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         modelAndView.addObject("judgeObject", judgeObject);
         DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
         if (declareRecord != null) {
-            BasicApply basicApply =  basicApplyService.getByBasicApplyId(judgeObject.getBasicApplyId());
+            BasicApply basicApply = basicApplyService.getByBasicApplyId(judgeObject.getBasicApplyId());
             if (basicApply != null) {
                 BasicBuilding basicBuilding = basicBuildingService.getBasicBuildingByApplyId(basicApply.getId());
                 if (basicBuilding != null) {
@@ -196,6 +197,10 @@ public class ProjectTaskIncomeAssist implements ProjectTaskInterface {
         modelAndView.addObject("transactionTaxeFeeRatioReadonly", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.MD_INCOME_TRANSACTION_TAXE_FEE_RATIO_READONLY).getRemark());
         BaseDataDic INCOME = baseDataDicService.getCacheDataDicByFieldName(AssessReportFieldConstant.INCOME);
         modelAndView.addObject("methodTypeObj", INCOME);
+
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectPlanDetails.getProjectId());
+        AssessProjectTypeEnum assessProjectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+        modelAndView.addObject("assessProjectType", assessProjectType.getKey());
     }
 
     /**

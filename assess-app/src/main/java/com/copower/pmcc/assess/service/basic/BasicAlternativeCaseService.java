@@ -61,18 +61,10 @@ public class BasicAlternativeCaseService extends BaseService {
     public Integer addBasicAlternativeCase(BasicAlternativeCase basicAlternativeCase) {
         String name = basicApplyBatchDetailService.getFullNameByBatchDetailId(basicAlternativeCase.getBatchDetailId());
         basicAlternativeCase.setName(name);
-        //设置项目类别
         BasicApplyBatchDetail applyBatchDetail = basicApplyBatchDetailService.getDataById(basicAlternativeCase.getBatchDetailId());
-        BasicApplyBatch basicApplyBatch = basicApplyBatchDao.getBasicApplyBatchById(applyBatchDetail.getApplyBatchId());
-        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(basicApplyBatch.getProjectId());
-        if (projectInfo == null && basicApplyBatch.getPlanDetailsId() != null) {
-            ProjectPlanDetails planDetails = projectPlanDetailsService.getProjectPlanDetailsById(basicApplyBatch.getPlanDetailsId());
-            projectInfo = projectInfoService.getProjectInfoById(planDetails.getProjectId());
-        }
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(applyBatchDetail.getProjectId());
         if (projectInfo != null) {
             basicAlternativeCase.setProjectCategoryId(projectInfo.getProjectCategoryId());
-            AssessProjectTypeEnum projectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
-            basicAlternativeCase.setType(projectType.getKey());
         }
         basicAlternativeCase.setCreator(commonService.thisUserAccount());
         return basicAlternativeCaseDao.addBasicAlternativeCase(basicAlternativeCase);
