@@ -1239,6 +1239,7 @@ public class GenerateBaseDataService {
         return value;
     }
 
+
     public String getLandReportFieldValue(String enumName) {
         ReportFieldLandEnum baseReportEnum = ReportFieldLandEnum.getEnumByName(enumName);
         Map<Integer, String> map = Maps.newHashMap();
@@ -1266,6 +1267,24 @@ public class GenerateBaseDataService {
             }
             String value = null;
             switch (baseReportEnum) {
+                case LAND_ENUM_RESTRICTIONS:{
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    if (basicApply.getId() == null) {
+                        continue;
+                    }
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    BasicHouseTrading basicTrading = generateBaseExamineService.getBasicTrading();
+                    if (basicTrading == null){
+                        continue;
+                    }
+                    if (StringUtils.isNotBlank(basicTrading.getRestrictions()) && StringUtils.isNotBlank(basicTrading.getRestrictionsRemark())){
+                        value = String.format("%s : %s",basicTrading.getRestrictions() ,basicTrading.getRestrictionsRemark()) ;
+                    }
+                    break;
+                }
                 case LAND_ENUM_NATURE: {
                     if (declareRealtyLandCert.getLandRightType() != null) {
                         value = baseDataDicService.getNameById(declareRealtyLandCert.getLandRightType());
@@ -1459,6 +1478,43 @@ public class GenerateBaseDataService {
                     value = basicEstateLandState.getCompatibleRatio();
                     break;
                 }
+                case LAND_ENUM_PLANNING_CONSTRAINTS:{
+                    BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
+                    if (basicApply == null) {
+                        continue;
+                    }
+                    if (basicApply.getId() == null) {
+                        continue;
+                    }
+                    GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
+                    BasicEstateLandStateVo basicEstateLandState = generateBaseExamineService.getBasicEstateLandState();
+                    StringBuilder stringBuilder = new StringBuilder(12);
+                    int count = 0;
+                    if (StringUtils.isNotBlank(basicEstateLandState.getPlotRatio())) {
+                        stringBuilder.append("容积率").append(basicEstateLandState.getPlotRatio()).append("、");
+                        count++;
+                    }
+                    if (StringUtils.isNotBlank(basicEstateLandState.getBuildingDensity())) {
+                        stringBuilder.append("建筑密度").append(basicEstateLandState.getBuildingDensity()).append("、");
+                        count++;
+                    }
+                    if (StringUtils.isNotBlank(basicEstateLandState.getGreenSpaceRate())) {
+                        stringBuilder.append("绿地率").append(basicEstateLandState.getGreenSpaceRate()).append("、");
+                        count++;
+                    }
+                    if (StringUtils.isNotBlank(basicEstateLandState.getCompatibleRatio())) {
+                        stringBuilder.append("兼容比").append(basicEstateLandState.getCompatibleRatio()).append("、");
+                        count++;
+                    }
+                    if (basicEstateLandState.getBuildingHeightLimit() != null) {
+                        stringBuilder.append("建筑高度").append(ArithmeticUtils.getBigDecimalString(basicEstateLandState.getBuildingHeightLimit())).append("、");
+                        count++;
+                    }
+                    if (count != 0) {
+                        value = stringBuilder.toString();
+                    }
+                    break;
+                }
                 case LAND_ENUM_PlotRatio_Desc: {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
@@ -1513,7 +1569,6 @@ public class GenerateBaseDataService {
 
     /**
      * 土地报告 区域因素描述表
-     *
      * @return
      * @throws Exception
      */
@@ -1564,7 +1619,7 @@ public class GenerateBaseDataService {
 
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、规划条件:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getPlanningConditions(judgeObjects)))));
 
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("区域土地利用状况:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getSummaryRregionalFactors(judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("区域土地利用状况:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getSummaryRregionalFactors( basicEstate,judgeObjects)))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
             }
         }
