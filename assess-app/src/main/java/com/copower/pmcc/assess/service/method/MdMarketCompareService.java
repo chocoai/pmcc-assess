@@ -167,9 +167,13 @@ public class MdMarketCompareService {
         } else {
             setUseFieldList = getSetUseFieldList(BaseConstant.ASSESS_DATA_SET_USE_FIELD_HOUSE, null, null);
         }
-        if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId() != 0) {
-            setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
-        } else {
+        Boolean landProject = projectInfoService.isLandProject(schemeJudgeObject.getProjectId());
+        //1.如果项目类型与当前要处理的类型一致，则用估价对象的applyId确认
+        if(landProject.equals(isLand)){
+            if (schemeJudgeObject.getBasicApplyId() != null && schemeJudgeObject.getBasicApplyId() != 0) {
+                setJudgeCompareItem(areaGroup, schemeJudgeObject, basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId()), mdMarketCompare.getId(), setUseFieldList, isLand);
+            }
+        }else {
             ProjectPhase projectPhase = projectPhaseService.getSceneExplorePhase(isLand);
             List<BasicApply> basicApplyList = getStandardJudgeList(schemeJudgeObject.getDeclareRecordId(),projectPhase.getId());
             if (CollectionUtils.isNotEmpty(basicApplyList)) {//检查估价对象是否有多个标准 如果有多个标准则不处理 由前端选择后初始化

@@ -835,6 +835,19 @@ public class ProjectInfoService {
         return null;
     }
 
+    /**
+     * 是否为土地项目
+     *
+     * @param projectId
+     * @return
+     */
+    public Boolean isLandProject(Integer projectId) {
+        if (projectId == null) return false;
+        ProjectInfo projectInfo = getProjectInfoById(projectId);
+        AssessProjectTypeEnum assessProjectType = getAssessProjectType(projectInfo.getProjectCategoryId());
+        return AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.getKey().equals(assessProjectType.getKey());
+    }
+
     public List<KeyValueDto> getAssessProjectTypeList() {
         List<KeyValueDto> list = Lists.newArrayList();
         for (AssessProjectTypeEnum assessProjectTypeEnum : AssessProjectTypeEnum.values()) {
