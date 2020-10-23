@@ -324,7 +324,8 @@ public class GenerateReportService {
         Arrays.asList(ReportFieldSifaEnum.values()).forEach(oo -> names.add(oo.getName()));
         //土地比较法 字段
         Arrays.asList(ReportFieldLandCompareEnum.values()).forEach(oo -> names.add(oo.getName()));
-        return names;
+        Arrays.asList(ReportFieldLandEnum.values()).forEach(oo -> names.add(oo.getName()));
+        return names.stream().distinct().collect(Collectors.toList());
     }
 
 

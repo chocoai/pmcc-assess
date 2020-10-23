@@ -19,6 +19,7 @@ import com.copower.pmcc.assess.service.project.survey.SurveyAssetInventoryServic
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightGroupService;
 import com.copower.pmcc.assess.service.project.survey.SurveyAssetRightItemService;
 import com.copower.pmcc.assess.service.project.survey.SurveyCommonService;
+import com.copower.pmcc.erp.common.utils.DateUtils;
 import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.google.common.collect.Lists;
@@ -90,6 +91,7 @@ public class GenerateEquityService {
         Map<Integer, String> natrueMap = Maps.newHashMap();
         Map<Integer, String> landCertUseMap = Maps.newHashMap();
         Map<Integer, String> ownershipMap = Maps.newHashMap();
+        Map<Integer, String> useEndDateMap = Maps.newHashMap();
         for (SchemeJudgeObject judgeObject : judgeObjects) {
             DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(judgeObject.getDeclareRecordId());
             if (declareRecord != null) {
@@ -97,10 +99,20 @@ public class GenerateEquityService {
                 natrueMap.put(number, declareRecord.getLandRightNature());
                 landCertUseMap.put(number, declareRecord.getLandCertUse());
                 ownershipMap.put(number, declareRecord.getOwnership());
+                if (declareRecord.getLandUseEndDate() != null) {
+                    useEndDateMap.put(number, DateUtils.format(declareRecord.getLandUseEndDate(), DateUtils.DATE_CHINESE_PATTERN));
+                }
             }
         }
         String value = "无";
         switch (key) {
+            case LAND_USE_PERIOD: {
+                if (!useEndDateMap.isEmpty()) {
+                    String v = generateCommonMethod.judgeEachDesc(useEndDateMap, "", ",", false);
+                    value = generateCommonMethod.trim(v);
+                }
+                break;
+            }
             case Land_acquisition_methods: {
                 if (!natrueMap.isEmpty()) {
                     String natrueString = generateCommonMethod.judgeEachDesc(natrueMap, "", ",", false);
@@ -128,21 +140,6 @@ public class GenerateEquityService {
         BasicEstateLandState estateLandState = basicEstateLandStateService.getLandStateByEstateId(basicEstate.getId());
         if (estateLandState != null) {
             switch (key) {
-                case LAND_USE_PERIOD: {
-                    List<BasicEstateLandCategoryInfo> basicEstateLandCategoryInfoList = basicEstateLandCategoryInfoService.getListByEstateId(basicEstate.getId());
-                    if (CollectionUtils.isNotEmpty(basicEstateLandCategoryInfoList)) {
-                        List<BigDecimal> bigDecimalList = LangUtils.transform(basicEstateLandCategoryInfoList, obj -> obj.getLandUseYear());
-                        if (CollectionUtils.isNotEmpty(bigDecimalList)) {
-                            bigDecimalList = LangUtils.filter(bigDecimalList, obj -> obj != null);
-                        }
-                        if (CollectionUtils.isNotEmpty(bigDecimalList)) {
-                            BigDecimal bigDecimal = ArithmeticUtils.add(bigDecimalList);
-                            String round = ArithmeticUtils.round(bigDecimal, 2);
-                            value = String.format("%s年",round) ;
-                        }
-                    }
-                    break;
-                }
                 case PLOTRATIO: {
                     value = estateLandState.getPlotRatio();//容积率
                     break;
