@@ -14,17 +14,21 @@ public interface SchemeJudgeObjectMapper {
 
     int insert(SchemeJudgeObject record);
 
-    int insertSelective(SchemeJudgeObject record);
+    int insertSelective(@Param("record") SchemeJudgeObject record, @Param("selective") SchemeJudgeObject.Column ... selective);
 
     List<SchemeJudgeObject> selectByExample(SchemeJudgeObjectExample example);
 
     SchemeJudgeObject selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") SchemeJudgeObject record, @Param("example") SchemeJudgeObjectExample example);
+    int updateByExampleSelective(@Param("record") SchemeJudgeObject record, @Param("example") SchemeJudgeObjectExample example, @Param("selective") SchemeJudgeObject.Column ... selective);
 
     int updateByExample(@Param("record") SchemeJudgeObject record, @Param("example") SchemeJudgeObjectExample example);
 
-    int updateByPrimaryKeySelective(SchemeJudgeObject record);
+    int updateByPrimaryKeySelective(@Param("record") SchemeJudgeObject record, @Param("selective") SchemeJudgeObject.Column ... selective);
 
     int updateByPrimaryKey(SchemeJudgeObject record);
+
+    int batchInsert(@Param("list") List<SchemeJudgeObject> list);
+
+    int batchInsertSelective(@Param("list") List<SchemeJudgeObject> list, @Param("selective") SchemeJudgeObject.Column ... selective);
 }

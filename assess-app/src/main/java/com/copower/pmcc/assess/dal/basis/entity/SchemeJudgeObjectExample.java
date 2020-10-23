@@ -6,10 +6,19 @@ import java.util.Date;
 import java.util.List;
 
 public class SchemeJudgeObjectExample {
+    /**
+     * tb_scheme_judge_object
+     */
     protected String orderByClause;
 
+    /**
+     * tb_scheme_judge_object
+     */
     protected boolean distinct;
 
+    /**
+     * tb_scheme_judge_object
+     */
     protected List<Criteria> oredCriteria;
 
     public SchemeJudgeObjectExample() {
@@ -65,6 +74,9 @@ public class SchemeJudgeObjectExample {
         distinct = false;
     }
 
+    /**
+     * tb_scheme_judge_object
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -3584,6 +3596,9 @@ public class SchemeJudgeObjectExample {
         }
     }
 
+    /**
+     * tb_scheme_judge_object
+     */
     public static class Criterion {
         private String condition;
 
