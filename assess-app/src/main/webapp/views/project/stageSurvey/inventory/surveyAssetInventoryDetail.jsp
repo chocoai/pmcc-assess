@@ -120,7 +120,7 @@
                                                 <label class="col-sm-1 col-form-label">
                                                     分割限制<span class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <label class="form-control input-full">${surveyAssetInventory.segmentationLimit}</label>
+                                                    <label class="form-control input-full">${surveyAssetInventory.segmentationLimitName}</label>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
                                                     影响对象

@@ -137,7 +137,10 @@ public class SurveyAssetInventoryController {
         modelAndView.addObject("projectInfo",projectInfoService.getProjectInfoById(declareRecord.getProjectId()));
         //土地类型
         BaseProjectClassify landClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE_SIMPLE);
+        //房产类型
+        BaseProjectClassify houseClassify = baseProjectClassifyService.getCacheProjectClassifyByFieldName(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE_SIMPLE);
         modelAndView.addObject("landCategoryId", landClassify.getId());
+        modelAndView.addObject("houseCategoryId", houseClassify.getId());
     }
 
 

@@ -60,7 +60,7 @@
                                                     查看方法
                                                 </label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full" name="findMethod">
+                                                    <select class="form-control input-full search-select select2" name="findMethod">
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1 control-label">
@@ -136,12 +136,9 @@
                                                 <label class="col-sm-1 col-form-label">
                                                     分割限制<span class="symbol required"></span></label>
                                                 <div class="col-sm-3">
-                                                    <select class="form-control input-full"
+                                                    <select class="form-control input-full search-select select2"
                                                             name="segmentationLimit"
                                                             required>
-                                                        <option value="可分">可分</option>
-                                                        <option value="不可分(适中)" selected>不可分(适中)</option>
-                                                        <option value="不可分(较小)" selected>不可分(较小)</option>
                                                     </select>
                                                 </div>
                                                 <label class="col-sm-1 col-form-label">
@@ -561,12 +558,33 @@
                 frm.find("select[name='affected']").val(data.affected.split(",")).trigger('change');
             }
         }, true, false);
-        AssessCommon.loadNewAsyncDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor, data.influenceFactor, function (html, item) {
-            frm.find("select[name='influenceFactor']").empty().html(html);
-            if (data.influenceFactor) {
-                frm.find("select[name='influenceFactor']").val(data.influenceFactor.split(",")).trigger('change');
+        (function (data,frm,projectCategoryId) {
+            var baseKey = null;
+            if (projectCategoryId == '${landCategoryId}') {
+                baseKey = AssessDicKey.project_survey_inventory_segmentationLimit_land ;
             }
-        }, true, false);
+            if (projectCategoryId == '${houseCategoryId}') {
+                baseKey = AssessDicKey.project_survey_inventory_segmentationLimit_house ;
+            }
+            AssessCommon.loadDataDicByKey(baseKey, data.segmentationLimit, function (html, item) {
+                frm.find("select[name='segmentationLimit']").empty().html(html).trigger('change');
+            });
+        }(data,frm,'${projectInfo.projectCategoryId}')) ;
+        frm.find("select[name='segmentationLimit']").change(function () {
+            var id = $(this).val();
+            AssessCommon.loadDataDicByPid(id, data.influenceFactor, function (html, item) {
+                frm.find("select[name='influenceFactor']").empty().html(html).trigger('change');
+                if (data.influenceFactor) {
+                    frm.find("select[name='influenceFactor']").val(data.influenceFactor.split(",")).trigger('change');
+                }
+            }, true, false);
+            // AssessCommon.loadNewAsyncDataDicByKey(AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor, data.influenceFactor, function (html, item) {
+            //     frm.find("select[name='influenceFactor']").empty().html(html);
+            //     if (data.influenceFactor) {
+            //         frm.find("select[name='influenceFactor']").val(data.influenceFactor.split(",")).trigger('change');
+            //     }
+            // }, true, false);
+        });
         frm.find("select[name='influenceFactor']").change(function () {
             var ids = $(this).val();
             if (!ids) {
@@ -656,6 +674,8 @@
                 frm.find(".bisCheckOriginalZero").show();
             }
         });
+        var select2Field = ['findOriginal','application','certificate','findMethod','affected','influenceFactor','bisCheckOriginal' ,'segmentationLimit'] ;
+        AssessCommon.initArraySelect2(frm,data,select2Field) ;
     };
 
 

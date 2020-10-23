@@ -20,6 +20,7 @@ public class SurveyAssetInventoryVo extends SurveyAssetInventory {
     private String affectedName;
 
     private String influenceFactorName;
+    private String segmentationLimitName;
     private List<KeyValueDto> influenceFactorRemarkList = new ArrayList<>() ;
 
     public String getCertificateName() {
@@ -76,5 +77,13 @@ public class SurveyAssetInventoryVo extends SurveyAssetInventory {
 
     public void setInfluenceFactorRemarkList(List<KeyValueDto> influenceFactorRemarkList) {
         this.influenceFactorRemarkList = influenceFactorRemarkList;
+    }
+
+    public String getSegmentationLimitName() {
+        return segmentationLimitName;
+    }
+
+    public void setSegmentationLimitName(String segmentationLimitName) {
+        this.segmentationLimitName = segmentationLimitName;
     }
 }

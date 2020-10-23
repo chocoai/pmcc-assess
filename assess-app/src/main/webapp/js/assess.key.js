@@ -372,6 +372,8 @@ AssessDicKey.projectSurveyInventoryContentDefaultAffected = "project.survey.inve
 AssessDicKey.projectSurveyInventoryContentDefaultInfluenceFactor = "project.survey.inventory.content.default.influenceFactor";//影响要素
 AssessDicKey.projectSurveyInventoryContentDefaultCheckOriginal = "project.survey.inventory.content.default.checkOriginal";//查看原件
 AssessDicKey.CERTIFICATE_HANDLING_TYPE = "certificate.handling.type";//是否办证
+AssessDicKey.project_survey_inventory_segmentationLimit_land = "project.survey.inventory.segmentationLimit.land";//清查分割限制土地
+AssessDicKey.project_survey_inventory_segmentationLimit_house = "project.survey.inventory.segmentationLimit.house";//清查分割限制房产
 
 
 /**

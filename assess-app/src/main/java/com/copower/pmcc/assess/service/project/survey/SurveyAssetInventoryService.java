@@ -203,6 +203,7 @@ public class SurveyAssetInventoryService extends BaseService {
         }
         vo.setFindOriginalName(baseDataDicService.getNameById(surveyAssetInventory.getFindOriginal()));
         vo.setFindMethodName(baseDataDicService.getNameById(surveyAssetInventory.getFindMethod()));
+        vo.setSegmentationLimitName(baseDataDicService.getNameById(surveyAssetInventory.getSegmentationLimit()));
         if (StringUtils.isNotBlank(surveyAssetInventory.getInfluenceFactor())) {
             List<Integer> string2Integer = FormatUtils.transformString2Integer(surveyAssetInventory.getInfluenceFactor());
             List<String> stringList = new ArrayList<>();

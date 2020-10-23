@@ -355,7 +355,9 @@ $(function () {
                     var value = data[name];
                     if (value) {
                         var select = frm.find("select[name=" + name + "]");
-                        select.val(value).trigger('change');
+                        var tempArr = value.split(",") ;
+                        // select.val(value).trigger('change');
+                        select.val(tempArr).trigger('change');
                     }
                 }
             }
