@@ -64,17 +64,13 @@
                     <c:if test="${!empty basicHouseTrading.descriptionContent}">
 
                         <label class="col-sm-1 control-label">说明事项内容</label>
-                        <div class="col-sm-3">
+                        <div class="col-sm-6">
                             <label class="form-control input-full"
                                    name="descriptionContent">${basicHouseTrading.descriptionContent}</label>
                         </div>
                     </c:if>
 
-                    <label class="col-sm-1 control-label">付款方式</label>
-                    <div class="col-sm-3">
-                        <label class="form-control input-full"
-                               name="paymentMethodName">${basicHouseTrading.paymentMethodName}</label>
-                    </div>
+
 
                     <c:if test="${!empty basicHouseTrading.installmentInterestRate}">
 
@@ -138,6 +134,11 @@
             <div class="row form-group">
                 <div class="col-md-12">
                     <div class="form-inline x-valid">
+                        <label class="col-sm-1 control-label">付款方式</label>
+                        <div class="col-sm-3">
+                            <label class="form-control input-full"
+                                   name="paymentMethodName">${basicHouseTrading.paymentMethodName}</label>
+                        </div>
                         <label class="col-sm-1 control-label">买方额外支付的税</label>
                         <div class="col-sm-3">
                             <label class="form-control input-full"

@@ -32,6 +32,12 @@ public class AssessReportFieldConstant {
     public static final String MARKET_COMPARE = "md.market.compare"; //比较法
     public static final String DEVELOPMENT = "md.development"; //假设开发法
 
+    public static final String MARKET_SUPPLY_PRINCIPLE = "market.supply.principle";  //市场供给原则
+    public static final String MOST_EFFECTIVE_USE_PRINCIPLE = "most.effective.use.principle";  //最有效使用原则
+    public static final String ALTERATION_PRINCIPLE = "alteration.principle";  //变动原则
+    public static final String EXPECTED_RETURN_PRINCIPLE = "expected.return.principle";  //预期收益原则
+    public static final String INCREASING_DECREASING_RETURNS_PRINCIPLE = "increasing.decreasing.returns.principle";  //报酬递增递减原则
+    public static final String CAUTIOUS_PRINCIPLE = "cautious.principle";  //谨慎原则
     public static final String LEGAL_PRINCIPLE = "legal.principle";  //合法原则
     public static final String EVALUATE_RESULTS = "evaluate.results";  //估价结果
 

@@ -88,6 +88,10 @@ public class DataReportGeneralFactorsService {
         return dataReportGeneralFactorsDao.getDataReportGeneralFactorsList(type, province, city, district, name, fieldName, bisEnable, pid);
     }
 
+    public List<DataReportGeneralFactors> getDataReportGeneralFactorsList(String province, String city, String district, Boolean bisEnable, Integer pid) {
+        return getDataReportGeneralFactorsList(null, province, city, district, null, null, bisEnable, pid);
+    }
+
     public BootstrapTableVo getBootstrapTableVo(String type, String province, String city, String district, String name, String fieldName, Boolean bisEnable, Integer pid) {
         BootstrapTableVo vo = new BootstrapTableVo();
         RequestBaseParam requestBaseParam = RequestContext.getRequestBaseParam();
@@ -140,7 +144,8 @@ public class DataReportGeneralFactorsService {
     }
 
     public Map<String, String> getFactorsMap(String province, String city, String district, String name) throws Exception {
-        String[] chineseNumbers = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四"};
+        //标题级数一般都不会超过10所以这样处理没关系的
+        String[] chineseNumbers = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "十一", "十二", "十三", "十四","十五","十六","十七","二十","二十一"};
         Map<String, String> map = new HashMap<>();
         List<KeyValueDto> keyValueDtoList = Arrays.asList(new KeyValueDto("text-indent", "2em"),
                 new KeyValueDto("font-family", "仿宋_GB2312"),
@@ -160,7 +165,10 @@ public class DataReportGeneralFactorsService {
         }
         if (CollectionUtils.isNotEmpty(dataReportGeneralFactorsList)) {
             for (DataReportGeneralFactors factors : dataReportGeneralFactorsList) {
-                List<DataReportGeneralFactors> reportGeneralFactorsList = getDataReportGeneralFactorsListByPid(factors.getId());
+                List<DataReportGeneralFactors> reportGeneralFactorsList = getDataReportGeneralFactorsList(province, city, district, true,factors.getId());
+                if (CollectionUtils.isEmpty(reportGeneralFactorsList)) {
+                    reportGeneralFactorsList = getDataReportGeneralFactorsListByPid(factors.getId());
+                }
                 if (CollectionUtils.isEmpty(reportGeneralFactorsList)) {
                     continue;
                 }
@@ -168,10 +176,17 @@ public class DataReportGeneralFactorsService {
                 //1
                 for (DataReportGeneralFactors generalFactors : reportGeneralFactorsList) {
                     Integer sorting = generalFactors.getSorting() == null ? 0 : generalFactors.getSorting();
-                    stringBuilder.append(AsposeUtils.getWarpCssHtml(getFactorsHandleText(generalFactors, chineseNumbers[sorting]), keyValueDtoList));
+                    String t1 = sorting.toString();
+                    if (sorting <= sorting-1){
+                        t1 = chineseNumbers[sorting] ;
+                    }
+                    stringBuilder.append(AsposeUtils.getWarpCssHtml(getFactorsHandleText(generalFactors, t1), keyValueDtoList));
                     //插入换行符
                     stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
-                    List<DataReportGeneralFactors> generalFactorsList = getDataReportGeneralFactorsListByPid(generalFactors.getId());
+                    List<DataReportGeneralFactors> generalFactorsList = getDataReportGeneralFactorsList(province, city, district, true,generalFactors.getId());
+                    if (CollectionUtils.isEmpty(generalFactorsList)) {
+                        generalFactorsList = getDataReportGeneralFactorsListByPid(generalFactors.getId());
+                    }
                     if (CollectionUtils.isEmpty(generalFactorsList)) {
                         continue;
                     }
@@ -181,8 +196,10 @@ public class DataReportGeneralFactorsService {
                         stringBuilder.append(AsposeUtils.getWarpCssHtml(getFactorsHandleText(reportGeneralFactors, title), keyValueDtoList));
                         //插入换行符
                         stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
-
-                        List<DataReportGeneralFactors> factorsList = getDataReportGeneralFactorsListByPid(reportGeneralFactors.getId());
+                        List<DataReportGeneralFactors> factorsList = getDataReportGeneralFactorsList(province, city, district, true,reportGeneralFactors.getId());
+                        if (CollectionUtils.isEmpty(factorsList)) {
+                            factorsList = getDataReportGeneralFactorsListByPid(reportGeneralFactors.getId());
+                        }
                         if (CollectionUtils.isEmpty(factorsList)) {
                             continue;
                         }
@@ -193,7 +210,10 @@ public class DataReportGeneralFactorsService {
                             stringBuilder.append(AsposeUtils.getWarpCssHtml(getFactorsHandleText(dataReportGeneralFactors, titleA), keyValueDtoList));
                             //插入换行符
                             stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
-                            List<DataReportGeneralFactors> list = getDataReportGeneralFactorsListByPid(dataReportGeneralFactors.getId());
+                            List<DataReportGeneralFactors> list = getDataReportGeneralFactorsList(province, city, district, true,dataReportGeneralFactors.getId());
+                            if (CollectionUtils.isEmpty(list)) {
+                                list = getDataReportGeneralFactorsListByPid(dataReportGeneralFactors.getId());
+                            }
                             if (CollectionUtils.isEmpty(list)) {
                                 continue;
                             }

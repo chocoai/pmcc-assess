@@ -12,6 +12,7 @@ import java.util.List;
 public enum SchemeSupportTypeEnum {
     HYPOTHESIS("hypothesis", "评估假设"),//假设
     PRINCIPLE("principle", "评估原则"),//原则
+    LAND_PRINCIPLE("principle.land", "土地评估原则"),//原则
     BASIS("basis", "评估依据"),//依据
     REPORT_ANALYSIS_CATEGORY_LIQUIDITY("report.analysis.category.liquidity", "变现能力分析"),//报告分析(变现能力分析)
     REPORT_ANALYSIS_CATEGORY_RISK("report.analysis.category.risk", "风险分析"),//报告分析(风险分析)

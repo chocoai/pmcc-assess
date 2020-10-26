@@ -334,6 +334,9 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldCommonEnum.CommonStatementPurposeEntrustment.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatementPurposeEntrustment());
         }
+        if (Objects.equal(ReportFieldCommonEnum.CommonEntrustPurposeLimit.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getStatementPurposeEntrustmentLimit());
+        }
         //评估方法 ,估价对象评估方法
         if (Objects.equal(ReportFieldCommonEnum.CommonEvaluationMethod.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationMethod());
@@ -1066,6 +1069,9 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PlotRatio_Desc.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_JudgeObjectPRINCIPLE_UseCert.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_USE_MATERIAL.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }
@@ -1110,6 +1116,10 @@ public final class GenerateReportAssembleHelp {
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_IndividualFactorsDesc.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getIndividualFactorsDescSheet());
+        }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_EVALUATION_PRINCIPLE.getName(), name)) {
+            String principle = generateBaseDataService.getPrincipleBasisHypothesis(SchemeSupportTypeEnum.LAND_PRINCIPLE);
+            return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, principle);
         }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_Asset_InventoryDesc.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandInventoryDesc());

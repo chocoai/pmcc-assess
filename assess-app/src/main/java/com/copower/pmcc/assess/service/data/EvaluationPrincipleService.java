@@ -1,6 +1,8 @@
 package com.copower.pmcc.assess.service.data;
 
 import com.alibaba.fastjson.JSON;
+import com.aspose.words.ControlChar;
+import com.copower.pmcc.assess.common.AsposeUtils;
 import com.copower.pmcc.assess.common.enums.SchemeSupportTypeEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessReportFieldConstant;
@@ -18,14 +20,18 @@ import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.scheme.SchemeInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeFunctionService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestContext;
+import com.copower.pmcc.erp.common.utils.FormatUtils;
 import com.copower.pmcc.erp.common.utils.LangUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -34,8 +40,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 3.1.2.11	评估原则
@@ -165,6 +170,128 @@ public class EvaluationPrincipleService {
         }
         vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(evaluationPrinciple.getType(), evaluationPrinciple.getCategory()));
         return vo;
+    }
+
+    public String getLandReportPrinciple(ProjectInfo projectInfo, Integer areaGroupId) {
+        List<KeyValueDto> keyValueDtoList = Arrays.asList(new KeyValueDto("text-indent", "2em"),
+                new KeyValueDto("font-family", "仿宋_GB2312"),
+                new KeyValueDto("font-size", "14pt"),
+                new KeyValueDto("line-height", "100%"));
+        final int repeat = 1;
+        List<DataEvaluationPrinciple> principleList = getPrincipleList(projectInfo.getProjectTypeId(), projectInfo.getProjectCategoryId(), projectInfo.getEntrustPurpose());
+        if (CollectionUtils.isEmpty(principleList)) return "";
+        List<SchemeJudgeObject> judgeObjectList = schemeJudgeObjectService.getJudgeObjectDeclareListByAreaId(areaGroupId);
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String title = "根据地价评估的技术规程及估价对象具体状况，在本次估价过程中，我们遵循的主要原则有：";
+        stringBuilder.append(AsposeUtils.getWarpCssHtml(title, keyValueDtoList));
+        //插入换行符
+        stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+
+        int count = 0;
+        DataEvaluationPrinciple evaluationPrinciple = null;
+        List<DataEvaluationPrinciple> evaluationPrincipleList = LangUtils.filter(principleList, obj -> obj.getFieldName().equals(AssessReportFieldConstant.LEGAL_PRINCIPLE));
+        if (CollectionUtils.isNotEmpty(evaluationPrincipleList)) {
+            evaluationPrinciple = evaluationPrincipleList.get(0);
+            String v = String.join("",String.valueOf(++count),".",evaluationPrinciple.getName()) ;
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(v,keyValueDtoList));
+            //插入换行符
+            stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(evaluationPrinciple.getTemplate(),keyValueDtoList));
+        }
+        List<DataEvaluationPrinciple> evaluationPrincipleList2 = LangUtils.filter(principleList, obj -> obj.getFieldName().equals(AssessReportFieldConstant.MARKET_SUPPLY_PRINCIPLE));
+        if (CollectionUtils.isNotEmpty(evaluationPrincipleList2)) {
+            String v = String.join("",String.valueOf(++count),".",evaluationPrinciple.getName()) ;
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(v,keyValueDtoList));
+            //插入换行符
+            stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(evaluationPrinciple.getTemplate(),keyValueDtoList));
+        }
+
+        List<DataEvaluationPrinciple> evaluationPrincipleList3 = LangUtils.filter(principleList, obj -> obj.getFieldName().equals(AssessReportFieldConstant.MOST_EFFECTIVE_USE_PRINCIPLE));
+        if (CollectionUtils.isNotEmpty(evaluationPrincipleList3)) {
+            evaluationPrinciple = evaluationPrincipleList3.get(0);
+            String v = String.join("",String.valueOf(++count),".",evaluationPrinciple.getName()) ;
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(v,keyValueDtoList));
+            //插入换行符
+            stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(evaluationPrinciple.getTemplate(),keyValueDtoList));
+        }
+
+        List<DataEvaluationPrinciple> evaluationPrincipleList4 = LangUtils.filter(principleList, obj -> obj.getFieldName().equals(AssessReportFieldConstant.ALTERATION_PRINCIPLE));
+        if (CollectionUtils.isNotEmpty(evaluationPrincipleList4)) {
+            evaluationPrinciple = evaluationPrincipleList4.get(0);
+            String v = String.join("",String.valueOf(++count),".",evaluationPrinciple.getName()) ;
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(v,keyValueDtoList));
+            //插入换行符
+            stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(evaluationPrinciple.getTemplate(),keyValueDtoList));
+        }
+
+        //
+        Map<Integer, List<Integer>> map = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(judgeObjectList)) {
+            for (SchemeJudgeObject judgeObject : judgeObjectList) {
+                List<Integer> integerList = FormatUtils.transformString2Integer(judgeObject.getJudgeFunction());
+                if (CollectionUtils.isEmpty(integerList)) {
+                    continue;
+                }
+                for (DataEvaluationPrinciple principle : principleList) {
+                    for (Integer integer : integerList) {
+                        if (StringUtils.isBlank(principle.getMethod())) {
+                            continue;
+                        }
+                        if (StringUtils.contains(principle.getMethod(), integer.toString())) {
+                            if (map.containsKey(judgeObject.getId())) {
+                                map.get(judgeObject.getId()).add(principle.getId());
+                            }else {
+                                map.put(judgeObject.getId(), Lists.newArrayList(principle.getId())) ;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        List<DataEvaluationPrinciple> evaluationPrincipleList5 = LangUtils.filter(principleList, obj -> obj.getFieldName().equals(AssessReportFieldConstant.REPLACE_PRINCIPLE));
+        if (CollectionUtils.isNotEmpty(evaluationPrincipleList5) && !map.isEmpty()) {
+            evaluationPrinciple = evaluationPrincipleList5.get(0);
+            String v = String.join("",String.valueOf(++count),".",evaluationPrinciple.getName()) ;
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(v,keyValueDtoList));
+            //插入换行符
+            stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(evaluationPrinciple.getTemplate(),keyValueDtoList));
+        }
+
+        List<DataEvaluationPrinciple> evaluationPrincipleList6 = LangUtils.filter(principleList, obj -> obj.getFieldName().equals(AssessReportFieldConstant.EXPECTED_RETURN_PRINCIPLE));
+        if (CollectionUtils.isNotEmpty(evaluationPrincipleList6)) {
+            evaluationPrinciple = evaluationPrincipleList6.get(0);
+            String v = String.join("",String.valueOf(++count),".",evaluationPrinciple.getName()) ;
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(v,keyValueDtoList));
+            //插入换行符
+            stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(evaluationPrinciple.getTemplate(),keyValueDtoList));
+        }
+
+        List<DataEvaluationPrinciple> evaluationPrincipleList7 = LangUtils.filter(principleList, obj -> obj.getFieldName().equals(AssessReportFieldConstant.INCREASING_DECREASING_RETURNS_PRINCIPLE));
+        if (CollectionUtils.isNotEmpty(evaluationPrincipleList7)) {
+            evaluationPrinciple = evaluationPrincipleList7.get(0);
+            String v = String.join("",String.valueOf(++count),".",evaluationPrinciple.getName()) ;
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(v,keyValueDtoList));
+            //插入换行符
+            stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(evaluationPrinciple.getTemplate(),keyValueDtoList));
+        }
+
+        List<DataEvaluationPrinciple> evaluationPrincipleList8 = LangUtils.filter(principleList, obj -> obj.getFieldName().equals(AssessReportFieldConstant.CAUTIOUS_PRINCIPLE));
+        if (CollectionUtils.isNotEmpty(evaluationPrincipleList8)) {
+            evaluationPrinciple = evaluationPrincipleList8.get(0);
+            String v = String.join("",String.valueOf(++count),".",evaluationPrinciple.getName()) ;
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(v,keyValueDtoList));
+            //插入换行符
+            stringBuilder.append(StringUtils.repeat(ControlChar.LINE_BREAK, repeat));
+            stringBuilder.append(AsposeUtils.getWarpCssHtml(evaluationPrinciple.getTemplate(),keyValueDtoList));
+        }
+        return stringBuilder.toString();
     }
 
     /**
