@@ -1045,6 +1045,9 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PlotRatio.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }
+        if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_PLANNING_CONSTRAINTS.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
+        }
         if (Objects.equal(ReportFieldLandEnum.LAND_ENUM_BuildingDensity.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLandReportFieldValue(name));
         }

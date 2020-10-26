@@ -354,9 +354,9 @@ $(function () {
                 if (name) {
                     var value = data[name];
                     if (value) {
+                        value +=  "" ;
                         var select = frm.find("select[name=" + name + "]");
                         var tempArr = value.split(",") ;
-                        // select.val(value).trigger('change');
                         select.val(tempArr).trigger('change');
                     }
                 }
