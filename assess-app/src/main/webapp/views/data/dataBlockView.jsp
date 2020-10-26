@@ -64,8 +64,6 @@
                                             }
                                         </script>
                                     </div>
-
-
                                 </form>
                                 <table class="table table-bordered" id="tb_FatherList">
                                     <!-- cerare document add ajax data-->
@@ -79,12 +77,8 @@
         </div>
         <%@include file="/views/share/main_footer.jsp" %>
     </div>
-
 </div>
-
 </body>
-
-
 <script type="text/javascript">
     function residueRatioTest() {
         residueRatio.init({

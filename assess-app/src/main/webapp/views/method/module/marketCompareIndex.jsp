@@ -930,6 +930,7 @@
             var cols = [];
             cols.push({field: 'name', title: '名称'});
             cols.push({field: 'area', title: '面积'});
+            cols.push({field: 'price', title: '价格'});
             $("#select_case_list").bootstrapTable('destroy');
             TableInit("select_case_list", getContextPath() + "/marketCompare/getCasesAll", cols, {
                 projectId: marketCompare.projectId,

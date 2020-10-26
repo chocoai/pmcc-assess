@@ -633,6 +633,10 @@ public class MdMarketCompareService {
                 if (basicHouse != null) {
                     mdCompareCaseVo.setArea(basicHouse.getArea());
                     mdCompareCaseVo.setAreaDesc(basicHouse.getAreaDesc());
+                    BasicHouseTrading houseTrading = basicHouseTradingService.getTradingByHouseId(basicHouse.getId());
+                    if(houseTrading!=null){
+                        mdCompareCaseVo.setPrice(houseTrading.getTradingUnitPrice());
+                    }
                 }
                 voList.add(mdCompareCaseVo);
             }

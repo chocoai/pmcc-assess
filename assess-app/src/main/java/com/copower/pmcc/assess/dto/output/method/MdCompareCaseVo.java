@@ -10,6 +10,7 @@ public class MdCompareCaseVo {
     private String name;
     private BigDecimal area;
     private String areaDesc;
+    private BigDecimal price;
 
     public Integer getPlanDetailsId() {
         return planDetailsId;
@@ -41,5 +42,13 @@ public class MdCompareCaseVo {
 
     public void setAreaDesc(String areaDesc) {
         this.areaDesc = areaDesc;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }
