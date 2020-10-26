@@ -45,6 +45,8 @@ public enum ReportFieldLandEnum {
     LAND_ENUM_Asset_InventoryAddRess("土地资产清查证载地址"),
     LAND_ENUM_NumberDenominations("土地宗数"),
     ENUM_OPTIMAL_USE_LAND("土地最佳利用"),//模板
+    LAND_ENUM_EVALUATION_PRINCIPLE("土地估价原则"),//模板
+    LAND_ENUM_JudgeObjectPRINCIPLE_UseCert("土地估价结果有证依据"),
 
 
     ;

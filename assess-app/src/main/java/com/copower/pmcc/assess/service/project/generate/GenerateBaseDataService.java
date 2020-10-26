@@ -1338,6 +1338,16 @@ public class GenerateBaseDataService {
                     }
                     break;
                 }
+                case LAND_ENUM_JudgeObjectPRINCIPLE_UseCert: {
+                    if (declareRecord.getHasCert() != null){
+                        if (declareRecord.getHasCert()){
+                            value = "土地使用权人已按国家、省、市法律法规一次性交纳完土地出让金及其它各种税费，并取得相应的产权依据和其它法律保护依据。" ;
+                        }else {
+                            value = "设定土地使用权人已按国家、省、市法律法规一次性交纳完土地出让金及其它各种税费，并能依法取得相应的产权且能得到其它相关法律保护。" ;
+                        }
+                    }
+                    break;
+                }
                 case LAND_ENUM_RemainingYear: {
                     BigDecimal landRemainingYear = schemeJudgeObject.getLandRemainingYear();
                     if (landRemainingYear == null) {
@@ -1490,28 +1500,30 @@ public class GenerateBaseDataService {
                     BasicEstateLandStateVo basicEstateLandState = generateBaseExamineService.getBasicEstateLandState();
                     StringBuilder stringBuilder = new StringBuilder(12);
                     int count = 0;
+                    List<String> stringList = new ArrayList<>() ;
                     if (StringUtils.isNotBlank(basicEstateLandState.getPlotRatio())) {
                         stringBuilder.append("容积率").append(basicEstateLandState.getPlotRatio()).append("、");
+                        stringList.add(String.join("" ,"容积率" ,basicEstateLandState.getPlotRatio())) ;
                         count++;
                     }
                     if (StringUtils.isNotBlank(basicEstateLandState.getBuildingDensity())) {
-                        stringBuilder.append("建筑密度").append(basicEstateLandState.getBuildingDensity()).append("、");
+                        stringList.add(String.join("" ,"建筑密度" ,basicEstateLandState.getBuildingDensity())) ;
                         count++;
                     }
                     if (StringUtils.isNotBlank(basicEstateLandState.getGreenSpaceRate())) {
-                        stringBuilder.append("绿地率").append(basicEstateLandState.getGreenSpaceRate()).append("、");
+                        stringList.add(String.join("" ,"绿地率" ,basicEstateLandState.getGreenSpaceRate())) ;
                         count++;
                     }
                     if (StringUtils.isNotBlank(basicEstateLandState.getCompatibleRatio())) {
-                        stringBuilder.append("兼容比").append(basicEstateLandState.getCompatibleRatio()).append("、");
+                        stringList.add(String.join("" ,"兼容比" ,basicEstateLandState.getCompatibleRatio())) ;
                         count++;
                     }
                     if (basicEstateLandState.getBuildingHeightLimit() != null) {
-                        stringBuilder.append("建筑高度").append(ArithmeticUtils.getBigDecimalString(basicEstateLandState.getBuildingHeightLimit())).append("、");
+                        stringList.add(String.join("" ,"建筑高度" ,ArithmeticUtils.getBigDecimalString(basicEstateLandState.getBuildingHeightLimit()))) ;
                         count++;
                     }
                     if (count != 0) {
-                        value = stringBuilder.toString();
+                        value = StringUtils.join(stringList,"、");
                     }
                     break;
                 }
@@ -3616,6 +3628,15 @@ public class GenerateBaseDataService {
         }
         return errorStr;
     }
+    public String getStatementPurposeEntrustmentLimit() {
+        String entrustPurposeLimit = getSchemeAreaGroup().getEntrustPurposeLimit();
+        if (StringUtils.isNotEmpty(entrustPurposeLimit)) {
+            if (StringUtils.isNotEmpty(entrustPurposeLimit.trim())) {
+                return generateCommonMethod.trim(entrustPurposeLimit);
+            }
+        }
+        return errorStr;
+    }
 
     /**
      * 功能描述: 委托目的
@@ -3917,6 +3938,9 @@ public class GenerateBaseDataService {
                 case PRINCIPLE:
                     result = evaluationPrincipleService.getReportPrinciple(this.projectInfo, areaId);
                     break;
+                case LAND_PRINCIPLE:{
+                    result = evaluationPrincipleService.getLandReportPrinciple(this.projectInfo, areaId);
+                }
                 default:
                     break;
             }

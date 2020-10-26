@@ -71,20 +71,14 @@
             <div class="form-inline x-valid">
 
                 <label class="col-sm-1">说明事项内容</label>
-                <div class="col-sm-3">
+                <div class="col-sm-6">
                     <input type="text" placeholder="说明事项内容"
                            name="descriptionContent"
                            class="form-control input-full"
                            value="${basicHouseTrading.descriptionContent}">
                 </div>
 
-                <label class="col-sm-1">付款方式<span
-                        class="symbol required"></span></label>
-                <div class="col-sm-3">
-                    <select class="form-control input-full paymentMethod"
-                            name="paymentMethod" required>
-                    </select>
-                </div>
+
             </div>
         </div>
     </div>
@@ -168,6 +162,13 @@
          style="display: none">
         <div class="col-md-12">
             <div class="form-inline x-valid">
+                <label class="col-sm-1">付款方式<span
+                        class="symbol required"></span></label>
+                <div class="col-sm-3">
+                    <select class="form-control input-full paymentMethod"
+                            name="paymentMethod" required>
+                    </select>
+                </div>
                 <label class="col-sm-1">买方额外支付的税</label>
                 <div class="col-sm-3">
                     <input type="text" placeholder="买方额外支付的税"

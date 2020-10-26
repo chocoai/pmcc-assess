@@ -20,6 +20,7 @@ public enum ReportFieldCommonEnum implements Serializable {
     CommonReportIssuanceDate("公共报告出具日期"),//ReportIssuanceDate("报告出具日期")
     CommonDelegatePurpose("公共委托目的"),//DelegatePurpose("委托目的")
     CommonStatementPurposeEntrustment("公共委托目的描述"),//StatementPurposeEntrustment("委托目的描述")
+    CommonEntrustPurposeLimit("公共委托目的限制"),//StatementPurposeEntrustment("委托目的描述")
     CommonValueTimePoint("公共价值时点"),//ValueTimePoint("价值时点") 评估基准日
     CommonValueTimePointRemark("公共价值时点说明"),//ValueTimePointRemark("价值时点说明") 评估基准日说明
     CommonValueType("公共价值类型"), //ValueType("价值类型")

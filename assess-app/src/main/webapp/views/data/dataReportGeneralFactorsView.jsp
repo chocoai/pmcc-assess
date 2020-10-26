@@ -371,7 +371,7 @@
         }
         objFactors.common.save(data, function () {
             $(objFactors.modelId).modal("hide");
-            objFactors.loadBootstrapTable();
+            objFactors.loadBootstrapTable({pid:0});
         });
     };
 
