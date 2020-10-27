@@ -129,9 +129,25 @@ public class GenerateReportService {
             List<String> handlePath = fullReportHandlePath(baseReportTemplate, generateReportInfo, baseDataDic, reportGroup);
             if (CollectionUtils.isNotEmpty(handlePath)) {
                 for (String path : handlePath) {
+                    updateFields(path) ;
                     this.createBodySysAttachment(path, baseDataDic, sysAttachmentDtoList, reportGroup);
                 }
             }
+        }
+    }
+
+    /**
+     * 更新目录
+     * @param path
+     * @throws Exception
+     */
+    private void updateFields(String path)throws Exception{
+        try {
+            Document doc = new Document(path);
+            doc.updateFields();// 更新域
+            AsposeUtils.saveWord(path,doc);
+        } catch (Exception e) {
+            logger.error(e.getMessage(),e);
         }
     }
 
