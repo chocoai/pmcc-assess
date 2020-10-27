@@ -378,30 +378,16 @@
                            name="restrictions" >
                 </div>
 
+                <label class="col-sm-1">限制说明</label>
+                <div class="col-sm-3"><input type="text" placeholder="限制说明" name="restrictionsRemark" value="" class="form-control input-full"></div>
+
                 <div class="col-sm-3 ">
-                    <button class="btn btn-sm btn-success" type="button" onclick="houseCommon.appendRestrictionsHTML(this ,'restrictions');"><i class="fa fa-plus"></i></button>
+                    <button class="btn btn-sm btn-success" type="button" onclick="houseCommon.appendRestrictionsHTML(this );"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row form-group">
-        <div class="col-md-12">
-            <div class="form-inline x-valid">
-
-                <label class="col-sm-1 ">限制说明</label>
-                <div class="col-sm-3 ">
-                    <input type="text" placeholder="限制说明"
-                           class="form-control input-full"
-                           name="restrictionsRemark" >
-                </div>
-
-                <div class="col-sm-3 ">
-                    <button class="btn btn-sm btn-success" type="button" onclick="houseCommon.appendRestrictionsHTML(this ,'restrictionsRemark');"><i class="fa fa-plus"></i></button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div id="houseTradingFilePart"></div>
 </form>

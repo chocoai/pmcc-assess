@@ -37,29 +37,29 @@
     //附件上传控件id数组
     houseCommon.houseFileControlIdArray = [];
 
-    houseCommon.getUploadKey = function(bisDetail){
-        houseCommon.getFilePartHtml(AssessDicKey.examineHouseFilePart,bisDetail);
-        houseCommon.getFilePartHtml(AssessDicKey.examineHouseHuxingFilePart,bisDetail);
-        houseCommon.getFilePartHtml(AssessDicKey.examineHouseTradingFilePart,bisDetail);
+    houseCommon.getUploadKey = function (bisDetail) {
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseFilePart, bisDetail);
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseHuxingFilePart, bisDetail);
+        houseCommon.getFilePartHtml(AssessDicKey.examineHouseTradingFilePart, bisDetail);
     };
 
-    houseCommon.getFilePartHtml = function(fieldName,bisDetail){
-        var fileDiv = $('#'+fieldName);
+    houseCommon.getFilePartHtml = function (fieldName, bisDetail) {
+        var fileDiv = $('#' + fieldName);
         fileDiv.empty();
         var houseFileHtml = '';
         AssessCommon.loadAsyncDataDicByKey(fieldName, '', function (html, resultData) {
 
-            var groupIndex= 2;//分成2个一组
+            var groupIndex = 2;//分成2个一组
             var result = [];
-            for(var k=0,len=resultData.length;k<len;k+=groupIndex){
-                result.push(resultData.slice(k,k+groupIndex));
+            for (var k = 0, len = resultData.length; k < len; k += groupIndex) {
+                result.push(resultData.slice(k, k + groupIndex));
             }
-            $.each(result , function (i,data) {
+            $.each(result, function (i, data) {
                 houseFileHtml += '<div class="row form-group">';
                 houseFileHtml += '<div class="col-md-12">';
                 houseFileHtml += '<div class="form-inline x-valid">';
-                $.each(data,function (j,item) {
-                    houseFileHtml += '<label class="col-sm-1 col-md-2">'+item.name+'</label>';
+                $.each(data, function (j, item) {
+                    houseFileHtml += '<label class="col-sm-1 col-md-2">' + item.name + '</label>';
                     houseFileHtml += '<div class="col-sm-5 col-md-4">';
                     if (bisDetail != false) {
                         houseFileHtml += '<input id="' + item.fieldName + '" placeholder="上传附件" class="form-control input-full" type="file">';
@@ -67,11 +67,11 @@
                     houseFileHtml += '<div id="_' + item.fieldName + '"></div>';
                     houseFileHtml += '</div>';
                     houseCommon.houseFileControlIdArray.push(item.fieldName);
-                }) ;
+                });
                 houseFileHtml += "</div>";
                 houseFileHtml += "</div>";
                 houseFileHtml += "</div>";
-            }) ;
+            });
 
         }, false);
         fileDiv.append(houseFileHtml);
@@ -309,7 +309,7 @@
                     houseCommon.loadTradingSellAndLeaseList(AssessDicKey.examineHouseTransactionTypeLease, true);
 
                 }
-                houseCommon.loadRestrictionsHTML(data.basicHouseTrading ,houseCommon.houseTradingForm) ;
+                houseCommon.loadRestrictionsHTML(data.basicHouseTrading, houseCommon.houseTradingForm);
             }
         });
 
@@ -355,7 +355,7 @@
         }
     };
 
-    houseCommon.landUseTypeChange = function(){
+    houseCommon.landUseTypeChange = function () {
         var value = houseCommon.landCategoryInfoForm.find('[name=landUseType]').val();
         AssessCommon.getSonTextAppendDicList(AssessDicKey.estate_total_land_use, value, null, function (html, data) {
             houseCommon.landCategoryInfoForm.find("#landUseCategoryList").empty().html(html).trigger('change');
@@ -401,7 +401,7 @@
 
     houseCommon.showHouseDecorate = function (data) {
         if (houseCommon.isNotBlank(data.basicHouse.decorateSituation)) {
-            var strArr = ["清水","毛坯"];//来自于实体描述1(1).docx中的规则
+            var strArr = ["清水", "毛坯"];//来自于实体描述1(1).docx中的规则
             var decorateSituationId = data.basicHouse.decorateSituation;
             if (decorateSituationId) {
                 AssessCommon.getDataDicInfo(decorateSituationId, function (decorateSituationData) {
@@ -418,7 +418,7 @@
 
         //绑定变更事件
         houseCommon.houseForm.find("select.decorateSituation").off('change').on('change', function () {
-            var strArr = ["清水","毛坯"];//来自于实体描述1(1).docx中的规则
+            var strArr = ["清水", "毛坯"];//来自于实体描述1(1).docx中的规则
             var decorateSituationId = houseCommon.houseForm.find("select.decorateSituation").val();
             if (decorateSituationId) {
                 AssessCommon.getDataDicInfo(decorateSituationId, function (decorateSituationData) {
@@ -438,15 +438,18 @@
         });
     }
 
-    houseCommon.getPriceExportColumns = function(tenementType){
+    houseCommon.getPriceExportColumns = function (tenementType) {
         if (tenementType) {
-            AssessCommon.ajaxServerMethod({tenementType: tenementType,num:1}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+            AssessCommon.ajaxServerMethod({
+                tenementType: tenementType,
+                num: 1
+            }, "/basicTenementType/getTenementTypeValue", "get", function (value) {
                 houseCommon.houseHuxingForm.find("input[name='priceExportColumns']").val(JSON.stringify(value));
             });
         }
     };
 
-    houseCommon.tenementTypeChange = function(data){
+    houseCommon.tenementTypeChange = function (data) {
         if (houseCommon.isNotBlank(data.basicHouseHuxing.tenementType)) {
             houseCommon.getPriceExportColumns(data.basicHouseHuxing.tenementType);
         }
@@ -965,7 +968,7 @@
     //计算单价
     houseCommon.computeUnitPrice = function (_this) {
         var area = houseCommon.houseForm.find('[name=area]').val();
-        if(!area){
+        if (!area) {
             area = houseCommon.houseTradingForm.find('[id=tempLandArea]').val();
         }
         var tradingTotalPrice = $(_this).closest('form').find('[name=tradingTotalPrice]').val();
@@ -993,8 +996,11 @@
             return;
         }
         var html = ' <option value="">-请选择-</option>';
-        AssessCommon.ajaxServerMethod({tenementType: tenementType,num:3}, "/basicTenementType/getTenementTypeValue", "get", function (value) {
-            html += value ;
+        AssessCommon.ajaxServerMethod({
+            tenementType: tenementType,
+            num: 3
+        }, "/basicTenementType/getTenementTypeValue", "get", function (value) {
+            html += value;
             $('#huxingSpecialPart').empty().append(html);
         });
     };
@@ -1077,8 +1083,8 @@
             var value = $(item).find('[name=number]').val();
             if (value) {
                 var keyValue = {};
-                var desc=$.trim($(item).find('label').attr('data-desc'));
-                var text=$.trim($(item).find('label').text());
+                var desc = $.trim($(item).find('label').attr('data-desc'));
+                var text = $.trim($(item).find('label').text());
                 keyValue.key = text;
                 keyValue.explain = text;
                 if (desc) {
@@ -1097,12 +1103,12 @@
     //回显户型名称
     houseCommon.displayHouseHuxing = function (_this) {
         var $form = $(_this).closest('form');
-        var huxingData=$form.find('[name=huxingData]').val();
-        if(huxingData){
-            var array=JSON.parse(huxingData);
+        var huxingData = $form.find('[name=huxingData]').val();
+        if (huxingData) {
+            var array = JSON.parse(huxingData);
             $('#frmHouseHuxing').find('.item').closest('.form-group').remove();
-            $.each(array,function (i,item) {
-                houseCommon.appendHuxingItemHtml($('#frmHouseHuxing'),item.key,item.value,item.explain);
+            $.each(array, function (i, item) {
+                houseCommon.appendHuxingItemHtml($('#frmHouseHuxing'), item.key, item.value, item.explain);
             })
         }
         houseCommon.huxingSpecialPartInit();
@@ -1307,66 +1313,88 @@
         })
     }
 
-    houseCommon.appendRestrictionsHTML = function(that,field){
-        var html = houseCommon.getRestrictionsHTML(field ,'') ;
-        var group = $(that).closest(".form-group") ;
-        group.after(html) ;
-    } ;
+    houseCommon.appendRestrictionsHTML = function (that) {
+        var html = houseCommon.getRestrictionsHTML({});
+        var group = $(that).closest(".form-group");
+        group.after(html);
+    };
 
-    houseCommon.loadRestrictionsHTML = function(data ,target) {
-        var restrictionsFields = ['restrictions' ,'restrictionsRemark'] ;
-        for (var i = 0; i < restrictionsFields.length ; i++) {
-            var field = restrictionsFields[i] ;
-            var value = data[field] ;
-            if (!value) {
-                continue ;
-            }
-            var ele = target.find("input[name="+field+"]") ;
-            if (ele.size() == 0){
-                continue ;
-            }
-            var group = ele.closest(".form-group") ;
-            var arr = value.split(",") ;
-            $.each(arr,function (k,item) {
-                if (k == 0){
-                    ele.val(item) ;
+    houseCommon.loadRestrictionsHTML = function (data, target) {
+        var restrictions = [];
+        var restrictionsRemark = [];
+        if (data.restrictions){
+            restrictions = (data.restrictions+"").split(",") ;
+        }
+        if (data.restrictionsRemark){
+            restrictionsRemark = (data.restrictionsRemark+"").split(",") ;
+        }
+        var ele = target.find("[name="+'restrictions'+"]") ;
+        if (ele.size() == 0){
+           return false ;
+        }
+        var url = ""+window.location.href +""; /* 获取完整URL */
+        var group = ele.closest(".form-group") ;
+        for (var i = 0; i < restrictions.length ; i++) {
+            var obj = {restrictions:restrictions[i],restrictionsRemark:restrictionsRemark[i]} ;
+            if (i == 0){
+                if (url.indexOf('Edit') != -1) {
+                    target.find("[name="+'restrictions'+"]").val(obj.restrictions);
+                    target.find("[name="+'restrictionsRemark'+"]").val(obj.restrictionsRemark);
                 }else {
-                    group.after(houseCommon.getRestrictionsHTML(field,item)) ;
+                    target.find("[name="+'restrictions'+"]").html(obj.restrictions);
+                    target.find("[name="+'restrictionsRemark'+"]").html(obj.restrictionsRemark);
                 }
-            }) ;
+            }else {
+                group.after(houseCommon.getRestrictionsHTML(obj)) ;
+            }
         }
-    } ;
+    };
 
-    houseCommon.getRestrictionsHTML = function(field,value){
-        var html = "" ;
-        var name = "" ;
-        html += "<label class='col-sm-1'>{name}</label>" ;
-        if (field == 'restrictions') {
-            name = "限制事项" ;
-        }
-        if (field == 'restrictionsRemark') {
-            name = "限制说明" ;
-        }
-        html += "<div class='col-sm-3'><input type='text' placeholder='{name}' name='{field}' value='{value}' class='form-control input-full'></div>" ;
 
-        html += "<div class='col-sm-3'><span class='input-group-btn'> <input type='button' class='btn btn-warning btn-sm' value='X' onclick='houseCommon.appendRestrictionsClear(this);'> </span></div>" ;
-        html = html.replace(/{name}/g, name);
-        html = html.replace(/{value}/g, value);
-        html = html.replace(/{field}/g, field);
-        var parentHtml = "" ;
-        parentHtml += "<div class='row form-group'>" ;
-        parentHtml += "<div class='col-md-12'>" ;
-        parentHtml += "<div class='form-inline x-valid'>" ;
-        parentHtml += html ;
-        parentHtml += "</div>" ;
-        parentHtml += "</div>" ;
-        parentHtml += "</div>" ;
+    houseCommon.getRestrictionsHTML = function (data) {
+        var fields = ['restrictions', 'restrictionsRemark'];
+        var parentHtml = "";
+        parentHtml += "<div class='row form-group'>";
+        parentHtml += "<div class='col-md-12'>";
+        parentHtml += "<div class='form-inline x-valid'>";
+        var url = ""+window.location.href +""; /* 获取完整URL */
+        var edit = url.indexOf('Edit') != -1 ;
+        $.each(fields, function (k, field) {
+            var html = "";
+            var name = "";
+            var value = '' ;
+            if (data[field]) {
+                value = data[field] ;
+            }
+            html += "<label class='col-sm-1'>{name}</label>";
+            if (field == 'restrictions') {
+                name = "限制事项";
+            }
+            if (field == 'restrictionsRemark') {
+                name = "限制说明";
+            }
+            if (edit) {
+                html += "<div class='col-sm-3'><input type='text' placeholder='{name}' name='{field}' value='{value}' class='form-control input-full'></div>";
+            } else {
+                html += "<div class='col-sm-3'><label class='form-control input-full'>{value}</label></div>";
+            }
+            html = html.replace(/{name}/g, name);
+            html = html.replace(/{value}/g, value);
+            html = html.replace(/{field}/g, field);
+            parentHtml += html;
+        });
+        if (edit) {
+            parentHtml += "<div class='col-sm-3'><span class='input-group-btn'> <input type='button' class='btn btn-warning btn-sm' value='X' onclick='houseCommon.appendRestrictionsClear(this);'> </span></div>";
+        }
+        parentHtml += "</div>";
+        parentHtml += "</div>";
+        parentHtml += "</div>";
         return parentHtml;
-    } ;
-    houseCommon.appendRestrictionsClear = function(that){
-        var group = $(that).closest(".form-group") ;
-        group.remove() ;
-    } ;
+    };
+    houseCommon.appendRestrictionsClear = function (that) {
+        var group = $(that).closest(".form-group");
+        group.remove();
+    };
     //户型信息管理--------------------------------------------------------------------------------------------
 
     window.houseCommon = houseCommon;
