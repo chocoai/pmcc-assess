@@ -43,10 +43,8 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_script_template" domainObjectName="ScriptTemplate" >
+        <table tableName="tb_data_evaluation_method" domainObjectName="DataEvaluationMethod" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-            <columnOverride column="template_original_text" javaType="java.lang.String" jdbcType="VARCHAR" />
-            <columnOverride column="script_template" javaType="java.lang.String" jdbcType="VARCHAR" />
         </table>
     </context>
 </generatorConfiguration>

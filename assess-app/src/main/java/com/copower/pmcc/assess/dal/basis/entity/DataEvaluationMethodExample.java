@@ -575,6 +575,76 @@ public class DataEvaluationMethodExample {
             return (Criteria) this;
         }
 
+        public Criteria andDefinitionIsNull() {
+            addCriterion("definition is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionIsNotNull() {
+            addCriterion("definition is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionEqualTo(String value) {
+            addCriterion("definition =", value, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionNotEqualTo(String value) {
+            addCriterion("definition <>", value, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionGreaterThan(String value) {
+            addCriterion("definition >", value, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionGreaterThanOrEqualTo(String value) {
+            addCriterion("definition >=", value, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionLessThan(String value) {
+            addCriterion("definition <", value, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionLessThanOrEqualTo(String value) {
+            addCriterion("definition <=", value, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionLike(String value) {
+            addCriterion("definition like", value, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionNotLike(String value) {
+            addCriterion("definition not like", value, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionIn(List<String> values) {
+            addCriterion("definition in", values, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionNotIn(List<String> values) {
+            addCriterion("definition not in", values, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionBetween(String value1, String value2) {
+            addCriterion("definition between", value1, value2, "definition");
+            return (Criteria) this;
+        }
+
+        public Criteria andDefinitionNotBetween(String value1, String value2) {
+            addCriterion("definition not between", value1, value2, "definition");
+            return (Criteria) this;
+        }
+
         public Criteria andApplicationDescIsNull() {
             addCriterion("application_desc is null");
             return (Criteria) this;

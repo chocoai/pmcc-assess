@@ -4,9 +4,9 @@ import com.copower.pmcc.assess.dal.basis.entity.ScriptTemplate;
 import com.copower.pmcc.assess.dal.basis.entity.ScriptTemplateExample;
 import com.copower.pmcc.assess.dal.basis.mapper.ScriptTemplateMapper;
 import com.copower.pmcc.erp.common.utils.MybatisUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -18,30 +18,39 @@ import java.util.List;
 @Repository
 public class ScriptTemplateDao {
     @Autowired
-    private ScriptTemplateMapper dataBlockMapper;
+    private ScriptTemplateMapper scriptTemplateMapper;
 
     public Integer addScriptTemplate(ScriptTemplate scriptTemplate) {
-        dataBlockMapper.insertSelective(scriptTemplate);
+        scriptTemplateMapper.insertSelective(scriptTemplate);
         return scriptTemplate.getId();
     }
 
     public ScriptTemplate getScriptTemplateById(Integer id) {
-        return dataBlockMapper.selectByPrimaryKey(id);
+        return scriptTemplateMapper.selectByPrimaryKey(id);
+    }
+
+    public ScriptTemplate getScriptTemplateByKey(String key) {
+        ScriptTemplateExample example = new ScriptTemplateExample();
+        ScriptTemplateExample.Criteria criteria = example.createCriteria();
+        criteria.andTemplateKeyEqualTo(key);
+        List<ScriptTemplate> list = scriptTemplateMapper.selectByExample(example);
+        if (CollectionUtils.isEmpty(list)) return null;
+        return list.get(0);
     }
 
     public boolean updateScriptTemplate(ScriptTemplate dataBlock) {
-        return dataBlockMapper.updateByPrimaryKeySelective(dataBlock) == 1;
+        return scriptTemplateMapper.updateByPrimaryKeySelective(dataBlock) == 1;
     }
 
     public void removeScriptTemplate(ScriptTemplate scriptTemplate) {
         ScriptTemplateExample example = new ScriptTemplateExample();
         MybatisUtils.convertObj2Example(scriptTemplate, example);
-        dataBlockMapper.deleteByExample(example);
+        scriptTemplateMapper.deleteByExample(example);
     }
 
     public List<ScriptTemplate> getScriptTemplateList(ScriptTemplate scriptTemplate) {
         ScriptTemplateExample example = new ScriptTemplateExample();
         MybatisUtils.convertObj2Example(scriptTemplate, example);
-        return dataBlockMapper.selectByExample(example);
+        return scriptTemplateMapper.selectByExample(example);
     }
 }

@@ -78,20 +78,19 @@ public class ScriptTemplateService {
     /**
      * 执行模板
      *
-     * @param projectId
-     * @param templateId
+     * @param templateKey
      * @return
      * @throws BusinessException
      */
-    public String executeScriptTemplate(Integer projectId, Integer templateId) throws BusinessException {
+    public String executeScriptTemplate(String templateKey) throws BusinessException {
         String contentResult = "";
 
-        if (templateId == null) {
+        if (templateKey == null) {
             return contentResult;
         }
 
         //获取模板
-        ScriptTemplate scriptTemplate = scriptTemplateDao.getScriptTemplateById(templateId);
+        ScriptTemplate scriptTemplate = scriptTemplateDao.getScriptTemplateByKey(templateKey);
         if (scriptTemplate == null) {
             throw new BusinessException("未找到配置的脚本模板");
         }
@@ -115,15 +114,15 @@ public class ScriptTemplateService {
      * @param evn
      * @return
      */
-    public String executeScriptTemplate(Integer templateId, Map<String, Object> evn) throws BusinessException {
+    public String executeScriptTemplate(String templateKey, Map<String, Object> evn) throws BusinessException {
         String contentResult = "";
 
-        if (templateId == null) {
+        if (templateKey == null) {
             return contentResult;
         }
 
         //获取模板
-        ScriptTemplate scriptTemplate = scriptTemplateDao.getScriptTemplateById(templateId);
+        ScriptTemplate scriptTemplate = scriptTemplateDao.getScriptTemplateByKey(templateKey);
         if (scriptTemplate == null) {
             throw new BusinessException("未找到配置的脚本模板");
         }
@@ -137,29 +136,6 @@ public class ScriptTemplateService {
         contentResult = (String) expression.execute(evn);
 
         return contentResult;
-    }
-
-    /**
-     * 执行脚本
-     *
-     * @param evn
-     * @return
-     */
-    public String executeScriptTemplate(String scriptTemplate, Map<String, Object> evn) {
-        String contentResult = "";
-
-        if (StringUtils.isBlank(scriptTemplate)) {
-            return contentResult;
-        }
-
-        String cacheKey = Md5Utils.md5Encode(scriptTemplate);
-        try {
-            //脚本执行
-            Expression expression = this.aviatorEvaluatorInstance.compile(cacheKey, scriptTemplate, true);
-            return (String) expression.execute(evn);
-        } finally {
-            this.aviatorEvaluatorInstance.invalidateCacheByKey(cacheKey);
-        }
     }
 
 

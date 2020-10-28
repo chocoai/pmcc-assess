@@ -9,6 +9,7 @@
     <result column="not_applicable_reason" jdbcType="VARCHAR" property="notApplicableReason" />
     <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="definition" jdbcType="VARCHAR" property="definition" />
     <result column="application_desc" jdbcType="VARCHAR" property="applicationDesc" />
     <result column="bis_enable" jdbcType="BIT" property="bisEnable" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
@@ -74,8 +75,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, name, method, applicable_reason, not_applicable_reason, type, category, application_desc, 
-    bis_enable, creator, gmt_created, gmt_modified
+    id, name, method, applicable_reason, not_applicable_reason, type, category, definition, 
+    application_desc, bis_enable, creator, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationMethodExample" resultMap="BaseResultMap">
     select
@@ -113,12 +114,14 @@
     </selectKey>
     insert into tb_data_evaluation_method (name, method, applicable_reason, 
       not_applicable_reason, type, category, 
-      application_desc, bis_enable, creator, 
-      gmt_created, gmt_modified)
+      definition, application_desc, bis_enable, 
+      creator, gmt_created, gmt_modified
+      )
     values (#{name,jdbcType=VARCHAR}, #{method,jdbcType=INTEGER}, #{applicableReason,jdbcType=VARCHAR}, 
       #{notApplicableReason,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{category,jdbcType=VARCHAR}, 
-      #{applicationDesc,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, #{creator,jdbcType=VARCHAR}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{definition,jdbcType=VARCHAR}, #{applicationDesc,jdbcType=VARCHAR}, #{bisEnable,jdbcType=BIT}, 
+      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.DataEvaluationMethod">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -143,6 +146,9 @@
       </if>
       <if test="category != null">
         category,
+      </if>
+      <if test="definition != null">
+        definition,
       </if>
       <if test="applicationDesc != null">
         application_desc,
@@ -178,6 +184,9 @@
       </if>
       <if test="category != null">
         #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="definition != null">
+        #{definition,jdbcType=VARCHAR},
       </if>
       <if test="applicationDesc != null">
         #{applicationDesc,jdbcType=VARCHAR},
@@ -226,6 +235,9 @@
       <if test="record.category != null">
         category = #{record.category,jdbcType=VARCHAR},
       </if>
+      <if test="record.definition != null">
+        definition = #{record.definition,jdbcType=VARCHAR},
+      </if>
       <if test="record.applicationDesc != null">
         application_desc = #{record.applicationDesc,jdbcType=VARCHAR},
       </if>
@@ -255,6 +267,7 @@
       not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
       type = #{record.type,jdbcType=VARCHAR},
       category = #{record.category,jdbcType=VARCHAR},
+      definition = #{record.definition,jdbcType=VARCHAR},
       application_desc = #{record.applicationDesc,jdbcType=VARCHAR},
       bis_enable = #{record.bisEnable,jdbcType=BIT},
       creator = #{record.creator,jdbcType=VARCHAR},
@@ -285,6 +298,9 @@
       <if test="category != null">
         category = #{category,jdbcType=VARCHAR},
       </if>
+      <if test="definition != null">
+        definition = #{definition,jdbcType=VARCHAR},
+      </if>
       <if test="applicationDesc != null">
         application_desc = #{applicationDesc,jdbcType=VARCHAR},
       </if>
@@ -311,6 +327,7 @@
       not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
       type = #{type,jdbcType=VARCHAR},
       category = #{category,jdbcType=VARCHAR},
+      definition = #{definition,jdbcType=VARCHAR},
       application_desc = #{applicationDesc,jdbcType=VARCHAR},
       bis_enable = #{bisEnable,jdbcType=BIT},
       creator = #{creator,jdbcType=VARCHAR},
