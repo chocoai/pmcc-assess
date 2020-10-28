@@ -51,8 +51,8 @@ public class EvaluationMethodController {
 
     @ResponseBody
     @RequestMapping(value = "/getMethodList", name = "根据评估方法获取数据列表", method = RequestMethod.GET)
-    public HttpResult getMethodList(Integer method) {
-        List<DataEvaluationMethod> hypothesisList = evaluationMethodService.getMethodListByMethod(method);
+    public HttpResult getMethodList(Integer method,Integer projectId) {
+        List<DataEvaluationMethod> hypothesisList = evaluationMethodService.getMethodListByMethod(method,projectId);
         return HttpResult.newCorrectResult(hypothesisList);
     }
 

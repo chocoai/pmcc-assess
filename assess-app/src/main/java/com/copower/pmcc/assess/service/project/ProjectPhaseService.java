@@ -188,6 +188,22 @@ public class ProjectPhaseService {
         return resultPhaseList;
     }
 
+    /**
+     * 使用别名显示
+     *
+     * @param projectPhases
+     */
+    public List<ProjectPhase> useProjectPhaseAlias(List<ProjectPhase> projectPhases) {
+        if (CollectionUtils.isNotEmpty(projectPhases)) {
+            for (ProjectPhase projectPhase : projectPhases) {
+                if (StringUtils.isNotBlank(projectPhase.getAliasName())) {
+                    projectPhase.setProjectPhaseName(projectPhase.getAliasName());
+                }
+            }
+        }
+        return projectPhases;
+    }
+
     public List<ProjectPhase> getProjectPhaseList(ProjectPhase projectPhase) {
         return projectPhaseDao.getProjectPhaseList(projectPhase);
     }

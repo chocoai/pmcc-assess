@@ -2,9 +2,11 @@ package com.copower.pmcc.assess.service.data;
 
 import com.copower.pmcc.assess.dal.basis.dao.data.EvaluationMethodDao;
 import com.copower.pmcc.assess.dal.basis.entity.DataEvaluationMethod;
+import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
 import com.copower.pmcc.assess.dto.output.data.DataEvaluationMethodVo;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -41,6 +43,8 @@ public class EvaluationMethodService {
     private EvaluationMethodDao evaluationMethodDao;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     /**
      * 保存数据
@@ -98,6 +102,14 @@ public class EvaluationMethodService {
         return evaluationMethodDao.getMethodListByMethod(method);
     }
 
+    public List<DataEvaluationMethod> getMethodListByMethod(Integer method, Integer projectId) {
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(projectId);
+        String projectType=String.format(",%s,",projectInfo.getProjectTypeId());
+        String projectCategory=String.format(",%s,",projectInfo.getProjectCategoryId());
+        List<DataEvaluationMethod> list = evaluationMethodDao.getMethodListByMethod(method, projectType, projectCategory);
+        return list;
+    }
+
     public List<DataEvaluationMethod> getMethodAllList() {
         return evaluationMethodDao.getMethodAllList();
     }
@@ -108,7 +120,7 @@ public class EvaluationMethodService {
         DataEvaluationMethodVo vo = new DataEvaluationMethodVo();
         BeanUtils.copyProperties(method, vo);
         vo.setMethodStr(baseDataDicService.getNameById(method.getMethod()));
-        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(method.getType(),method.getCategory()));
+        vo.setTypeName(baseProjectClassifyService.getTypeAndCategoryName(method.getType(), method.getCategory()));
         return vo;
     }
 

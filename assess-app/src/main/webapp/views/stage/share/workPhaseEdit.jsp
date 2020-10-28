@@ -15,7 +15,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form id="modify_project_phase_form" class="form-horizontal">
                     <input type="hidden" id="id" name="id">
@@ -54,6 +53,31 @@
                                                         <option value="${item.assistName}">${item.name}</option>
                                                     </c:forEach>
                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                别名
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control input-full"
+                                                       name="aliasName"
+                                                       data-rule-maxlength="255" placeholder="别名">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 col-form-label">
+                                                切面Bean
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control input-full" name="serviceBean"
+                                                       data-rule-maxlength="255" placeholder="主要针对事项任务删除等操作的前置或后置处理">
                                             </div>
                                         </div>
                                     </div>
@@ -119,19 +143,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-6">
-                                        <div class="form-inline x-valid">
-                                            <label class="col-sm-2 col-form-label">
-                                                工作事项Bean
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control input-full" name="serviceBean"
-                                                       data-rule-maxlength="255" placeholder="工作事项Bean">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+
                                 <div class="row form-group">
                                     <div class="col-md-6">
                                         <div class="form-inline x-valid">

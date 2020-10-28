@@ -10,6 +10,7 @@
     <result column="work_stage_id" jdbcType="INTEGER" property="workStageId" />
     <result column="assets_setting_id" jdbcType="INTEGER" property="assetsSettingId" />
     <result column="project_phase_name" jdbcType="VARCHAR" property="projectPhaseName" />
+    <result column="alias_name" jdbcType="VARCHAR" property="aliasName" />
     <result column="phase_time" jdbcType="DECIMAL" property="phaseTime" />
     <result column="phase_form" jdbcType="VARCHAR" property="phaseForm" />
     <result column="box_name" jdbcType="VARCHAR" property="boxName" />
@@ -87,8 +88,8 @@
   </sql>
   <sql id="Base_Column_List">
     id, pid, project_class_id, project_type_id, project_category_id, work_stage_id, assets_setting_id, 
-    project_phase_name, phase_time, phase_form, box_name, phase_key, phase_sort, service_bean, 
-    manager_review_score, manager_review_standard, ce_review_score, ce_review_standard, 
+    project_phase_name, alias_name, phase_time, phase_form, box_name, phase_key, phase_sort, 
+    service_bean, manager_review_score, manager_review_standard, ce_review_score, ce_review_standard, 
     bis_wait, bis_enable, bis_use_box, bis_can_return, gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhaseExample" resultMap="BaseResultMap">
@@ -127,20 +128,22 @@
     </selectKey>
     insert into tb_project_phase (pid, project_class_id, project_type_id, 
       project_category_id, work_stage_id, assets_setting_id, 
-      project_phase_name, phase_time, phase_form, 
-      box_name, phase_key, phase_sort, 
-      service_bean, manager_review_score, manager_review_standard, 
-      ce_review_score, ce_review_standard, bis_wait, 
-      bis_enable, bis_use_box, bis_can_return, 
-      gmt_created, gmt_modified)
+      project_phase_name, alias_name, phase_time, 
+      phase_form, box_name, phase_key, 
+      phase_sort, service_bean, manager_review_score, 
+      manager_review_standard, ce_review_score, ce_review_standard, 
+      bis_wait, bis_enable, bis_use_box, 
+      bis_can_return, gmt_created, gmt_modified
+      )
     values (#{pid,jdbcType=INTEGER}, #{projectClassId,jdbcType=INTEGER}, #{projectTypeId,jdbcType=INTEGER}, 
       #{projectCategoryId,jdbcType=INTEGER}, #{workStageId,jdbcType=INTEGER}, #{assetsSettingId,jdbcType=INTEGER}, 
-      #{projectPhaseName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, #{phaseForm,jdbcType=VARCHAR}, 
-      #{boxName,jdbcType=VARCHAR}, #{phaseKey,jdbcType=VARCHAR}, #{phaseSort,jdbcType=INTEGER}, 
-      #{serviceBean,jdbcType=VARCHAR}, #{managerReviewScore,jdbcType=DECIMAL}, #{managerReviewStandard,jdbcType=VARCHAR}, 
-      #{ceReviewScore,jdbcType=DECIMAL}, #{ceReviewStandard,jdbcType=VARCHAR}, #{bisWait,jdbcType=BIT}, 
-      #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, #{bisCanReturn,jdbcType=BIT}, 
-      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
+      #{projectPhaseName,jdbcType=VARCHAR}, #{aliasName,jdbcType=VARCHAR}, #{phaseTime,jdbcType=DECIMAL}, 
+      #{phaseForm,jdbcType=VARCHAR}, #{boxName,jdbcType=VARCHAR}, #{phaseKey,jdbcType=VARCHAR}, 
+      #{phaseSort,jdbcType=INTEGER}, #{serviceBean,jdbcType=VARCHAR}, #{managerReviewScore,jdbcType=DECIMAL}, 
+      #{managerReviewStandard,jdbcType=VARCHAR}, #{ceReviewScore,jdbcType=DECIMAL}, #{ceReviewStandard,jdbcType=VARCHAR}, 
+      #{bisWait,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, #{bisUseBox,jdbcType=BIT}, 
+      #{bisCanReturn,jdbcType=BIT}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ProjectPhase">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
@@ -168,6 +171,9 @@
       </if>
       <if test="projectPhaseName != null">
         project_phase_name,
+      </if>
+      <if test="aliasName != null">
+        alias_name,
       </if>
       <if test="phaseTime != null">
         phase_time,
@@ -239,6 +245,9 @@
       </if>
       <if test="projectPhaseName != null">
         #{projectPhaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="aliasName != null">
+        #{aliasName,jdbcType=VARCHAR},
       </if>
       <if test="phaseTime != null">
         #{phaseTime,jdbcType=DECIMAL},
@@ -323,6 +332,9 @@
       <if test="record.projectPhaseName != null">
         project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
       </if>
+      <if test="record.aliasName != null">
+        alias_name = #{record.aliasName,jdbcType=VARCHAR},
+      </if>
       <if test="record.phaseTime != null">
         phase_time = #{record.phaseTime,jdbcType=DECIMAL},
       </if>
@@ -386,6 +398,7 @@
       work_stage_id = #{record.workStageId,jdbcType=INTEGER},
       assets_setting_id = #{record.assetsSettingId,jdbcType=INTEGER},
       project_phase_name = #{record.projectPhaseName,jdbcType=VARCHAR},
+      alias_name = #{record.aliasName,jdbcType=VARCHAR},
       phase_time = #{record.phaseTime,jdbcType=DECIMAL},
       phase_form = #{record.phaseForm,jdbcType=VARCHAR},
       box_name = #{record.boxName,jdbcType=VARCHAR},
@@ -429,6 +442,9 @@
       </if>
       <if test="projectPhaseName != null">
         project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
+      </if>
+      <if test="aliasName != null">
+        alias_name = #{aliasName,jdbcType=VARCHAR},
       </if>
       <if test="phaseTime != null">
         phase_time = #{phaseTime,jdbcType=DECIMAL},
@@ -490,6 +506,7 @@
       work_stage_id = #{workStageId,jdbcType=INTEGER},
       assets_setting_id = #{assetsSettingId,jdbcType=INTEGER},
       project_phase_name = #{projectPhaseName,jdbcType=VARCHAR},
+      alias_name = #{aliasName,jdbcType=VARCHAR},
       phase_time = #{phaseTime,jdbcType=DECIMAL},
       phase_form = #{phaseForm,jdbcType=VARCHAR},
       box_name = #{boxName,jdbcType=VARCHAR},

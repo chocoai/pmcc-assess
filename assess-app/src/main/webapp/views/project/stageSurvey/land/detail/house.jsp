@@ -24,9 +24,6 @@
                             </div>
                             <div class="card-body">
                                 <div class="x_content">
-                                    <div class="card-header">
-                                        <div class="card-title">土地类型</div>
-                                    </div>
                                     <%@include
                                             file="/views/project/stageSurvey/commonDetail/estateLandUseCategory.jsp" %>
                                     <form id="basicHouseFrm" class="form-horizontal" style="display: none">
@@ -53,9 +50,7 @@
                                         <%@include
                                                 file="/views/project/stageSurvey/commonDetail/houseTradingLandCase.jsp" %>
                                     </c:if>
-
                                 </div>
-
                                 <div class="x_content">
                                     <c:if test="${projectPhase ne 'caseStudyExtend'}">
                                         <%@include

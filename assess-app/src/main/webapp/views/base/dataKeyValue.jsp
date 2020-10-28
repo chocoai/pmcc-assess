@@ -53,7 +53,7 @@
                 </div>
                 <label class="col-sm-1 control-label">说明</label>
                 <div class="col-sm-2">
-                    <input type="text" required class="form-control input-full" name="explain" value="{explain}">
+                    <input type="text" class="form-control input-full" name="explain" value="{explain}">
                 </div>
                 <div class="col-sm-1">
                     <input class='btn btn-warning btn-sm' type='button' value='X'

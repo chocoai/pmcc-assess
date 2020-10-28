@@ -37,8 +37,8 @@ public class EvaluationMethodDao {//evaluationMethodDao
     public List<DataEvaluationMethod> getMethodList(String name) {
         DataEvaluationMethodExample example = new DataEvaluationMethodExample();
         DataEvaluationMethodExample.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(name)){
-            criteria.andNameLike(String.format("%%%s%%",name));
+        if (StringUtils.isNotBlank(name)) {
+            criteria.andNameLike(String.format("%%%s%%", name));
         }
         return evaluationMethodMapper.selectByExample(example);
     }
@@ -47,6 +47,19 @@ public class EvaluationMethodDao {//evaluationMethodDao
         DataEvaluationMethodExample example = new DataEvaluationMethodExample();
         DataEvaluationMethodExample.Criteria criteria = example.createCriteria();
         criteria.andMethodEqualTo(method);
+        return evaluationMethodMapper.selectByExample(example);
+    }
+
+    public List<DataEvaluationMethod> getMethodListByMethod(Integer method, String projectType, String projectCategory) {
+        DataEvaluationMethodExample example = new DataEvaluationMethodExample();
+        DataEvaluationMethodExample.Criteria criteria = example.createCriteria();
+        criteria.andMethodEqualTo(method);
+        if (StringUtils.isNotBlank(projectType)) {
+            criteria.andTypeLike(String.format("%%%s%%", projectType));
+        }
+        if (StringUtils.isNotBlank(projectCategory)) {
+            criteria.andCategoryLike(String.format("%%%s%%", projectCategory));
+        }
         return evaluationMethodMapper.selectByExample(example);
     }
 

@@ -3,10 +3,7 @@ package com.copower.pmcc.assess.controller.project;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
-import com.copower.pmcc.assess.dal.basis.entity.BaseDataDic;
-import com.copower.pmcc.assess.dal.basis.entity.DocumentTemplate;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectInfo;
-import com.copower.pmcc.assess.dal.basis.entity.ProjectWorkStage;
+import com.copower.pmcc.assess.dal.basis.entity.*;
 import com.copower.pmcc.assess.dto.input.project.QueryProjectInfo;
 import com.copower.pmcc.assess.dto.output.project.ProjectPlanVo;
 import com.copower.pmcc.assess.service.PublicService;
@@ -187,8 +184,8 @@ public class ProjectCenterController {
         modelAndView.addObject("projectId", projectId);
         modelAndView.addObject(StringUtils.uncapitalize(ProjectInfo.class.getSimpleName()), projectInfoService.getSimpleProjectInfoVo(projectInfo));
         modelAndView.addObject("companyId", publicService.getCurrentCompany().getCompanyId());
-        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId(),null);
-        List<DocumentTemplate> documentClientTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH_CLIENT).getId(),null);
+        List<DocumentTemplate> documentTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH).getId(), null);
+        List<DocumentTemplate> documentClientTemplateList = documentTemplateService.getDocumentTemplateList("", baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_DISPATCH_CLIENT).getId(), null);
         modelAndView.addObject("documentTemplateList", documentTemplateList);
         modelAndView.addObject("documentClientTemplateList", documentClientTemplateList);
 
@@ -197,7 +194,7 @@ public class ProjectCenterController {
         BaseDataDic signBillDataDic = null;
         signBillDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.DATA_TEMPLATE_TYPE_REPORT_SIGNFOR);
         if (signBillDataDic != null) {
-            signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId(),null);
+            signBill = documentTemplateService.getDocumentTemplateList("", signBillDataDic.getId(), null);
             modelAndView.addObject("signBill", signBill);
         }
         //项目经理
@@ -222,7 +219,8 @@ public class ProjectCenterController {
             for (ProjectPlanVo projectPlanVo : projectPlanList) {
                 if (projectPlanVo.getWorkStageId().equals(workStageId)) {
                     modelAndView.addObject("projectPlan", projectPlanVo);
-                    modelAndView.addObject("projectPhaseVoList", projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(), workStageId));
+                    List<ProjectPhase> projectPhaseList = projectPhaseService.useProjectPhaseAlias(projectPhaseService.getCacheProjectPhaseByCategoryId(projectInfo.getProjectCategoryId(), workStageId));
+                    modelAndView.addObject("projectPhaseVoList", projectPhaseList);
                 }
             }
         }

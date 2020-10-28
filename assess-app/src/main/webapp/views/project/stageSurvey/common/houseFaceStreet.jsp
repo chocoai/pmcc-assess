@@ -130,7 +130,7 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
-                                                与金融机构的距离
+                                                距离
                                             </label>
                                             <div class="col-sm-10">
                                                 <select  name="distance"

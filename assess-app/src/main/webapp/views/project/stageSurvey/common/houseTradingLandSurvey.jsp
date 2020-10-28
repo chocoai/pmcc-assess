@@ -69,16 +69,13 @@
     <div class="row form-group">
         <div class="col-md-12">
             <div class="form-inline x-valid">
-
                 <label class="col-sm-1">说明事项内容</label>
-                <div class="col-sm-6">
+                <div class="col-sm-11">
                     <input type="text" placeholder="说明事项内容"
                            name="descriptionContent"
                            class="form-control input-full"
                            value="${basicHouseTrading.descriptionContent}">
                 </div>
-
-
             </div>
         </div>
     </div>

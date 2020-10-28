@@ -136,9 +136,7 @@ public class BaseDataDicService {
      * @return
      */
     public List<BaseDataDic> getCacheDataDicList(String fieldName) {
-
         try {
-
             String costsKeyPrefix = CacheConstant.getCostsKeyPrefix(AssessCacheConstant.PMCC_ASSESS_DATA_DIC_FIELD, fieldName);
             List<BaseDataDic> dataDics = LangUtils.listCache(costsKeyPrefix, fieldName, BaseDataDic.class, input -> cmsBaseDataDicDao.getEnableList(input));
             return dataDics;
@@ -148,10 +146,10 @@ public class BaseDataDicService {
 
     }
 
-    public Integer getDataDicIdByName(List<BaseDataDic> dataDicList,String name) {
-        if(CollectionUtils.isEmpty(dataDicList)) return 0;
+    public Integer getDataDicIdByName(List<BaseDataDic> dataDicList, String name) {
+        if (CollectionUtils.isEmpty(dataDicList)) return 0;
         for (BaseDataDic baseDataDic : dataDicList) {
-            if(name.equals(baseDataDic.getName()))
+            if (name.equals(baseDataDic.getName()))
                 return baseDataDic.getId();
         }
         return 0;
@@ -193,13 +191,13 @@ public class BaseDataDicService {
      *
      * @return
      */
-    public void getBestLowDicListByPid(List<BaseDataDic> list,Integer pid) {
+    public void getBestLowDicListByPid(List<BaseDataDic> list, Integer pid) {
         List<BaseDataDic> dataDicList = cmsBaseDataDicDao.getEnableListByPid(pid);
-        if(CollectionUtils.isNotEmpty(dataDicList)){
-            for (BaseDataDic item: dataDicList) {
-                getBestLowDicListByPid(list,item.getId());
+        if (CollectionUtils.isNotEmpty(dataDicList)) {
+            for (BaseDataDic item : dataDicList) {
+                getBestLowDicListByPid(list, item.getId());
             }
-        }else {
+        } else {
             BaseDataDic singleObject = cmsBaseDataDicDao.getSingleObject(pid);
             list.add(singleObject);
         }
@@ -352,10 +350,10 @@ public class BaseDataDicService {
         return ztreeDto;
     }
 
-    public String getNameByIds(String ids){
+    public String getNameByIds(String ids) {
         List<String> stringList = FormatUtils.transformString2List(ids);
-        stringList = LangUtils.transform(stringList,obj -> getNameById(obj)) ;
-        return StringUtils.join(stringList,",") ;
+        stringList = LangUtils.transform(stringList, obj -> getNameById(obj));
+        return StringUtils.join(stringList, ",");
     }
 
     /**
@@ -394,6 +392,24 @@ public class BaseDataDicService {
     }
 
     /**
+     * 使用别名显示
+     *
+     * @param list
+     * @param aliasKey 别名key
+     */
+    public List<BaseDataDic> useDataDicAlias(List<BaseDataDic> list, String aliasKey) {
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (BaseDataDic dataDic : list) {
+                String value = getValueByKey(aliasKey, dataDic);
+                if (StringUtils.isNotBlank(value)) {
+                    dataDic.setName(value);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
      * 获取集合中对应名称
      *
      * @param dataDicList
@@ -423,19 +439,19 @@ public class BaseDataDicService {
      * @param data
      * @return
      */
-    public String getValueByKey(String key,BaseDataDic data){
-        if(StringUtils.isNotBlank(key)&&data!=null){
+    public String getValueByKey(String key, BaseDataDic data) {
+        if (StringUtils.isNotBlank(key) && data != null) {
             List<KeyValueDto> keyValueDtos = JSON.parseArray(data.getKeyValue(), KeyValueDto.class);
-            if(CollectionUtils.isNotEmpty(keyValueDtos)) {
+            if (CollectionUtils.isNotEmpty(keyValueDtos)) {
                 for (KeyValueDto dto : keyValueDtos) {
                     if (key.equals(dto.getKey())) {
                         return dto.getValue();
                     }
                 }
-            }else{
+            } else {
                 BaseDataDic parentData = this.getDataDicById(data.getPid());
                 keyValueDtos = JSON.parseArray(parentData.getKeyValue(), KeyValueDto.class);
-                if(CollectionUtils.isNotEmpty(keyValueDtos)) {
+                if (CollectionUtils.isNotEmpty(keyValueDtos)) {
                     for (KeyValueDto dto : keyValueDtos) {
                         if (key.equals(dto.getKey())) {
                             return dto.getValue();

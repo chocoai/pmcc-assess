@@ -129,6 +129,18 @@
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">
                                             <label class="col-sm-2 control-label">
+                                                方法定义
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <textarea placeholder="方法定义" class="form-control input-full" name="definition"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
                                                 适用原因模板<span class="symbol required"></span>
                                             </label>
                                             <div class="col-sm-10">

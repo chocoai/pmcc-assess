@@ -130,7 +130,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="row">
@@ -250,7 +249,6 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
-
             <div class="modal-body">
                 <form class="form-horizontal">
                     <input type="hidden" name="planDetailsId">
@@ -270,8 +268,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div class="row form-group">
                                     <div class="col-md-12">
                                         <div class="form-inline x-valid">

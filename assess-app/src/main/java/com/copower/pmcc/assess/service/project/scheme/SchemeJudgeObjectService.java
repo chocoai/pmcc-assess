@@ -1,10 +1,7 @@
 package com.copower.pmcc.assess.service.project.scheme;
 
 
-import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
-import com.copower.pmcc.assess.common.enums.ComputeDataTypeEnum;
-import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
-import com.copower.pmcc.assess.common.enums.ResponsibileModelEnum;
+import com.copower.pmcc.assess.common.enums.*;
 import com.copower.pmcc.assess.constant.AssessCacheConstant;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.constant.AssessPhaseKeyConstant;
@@ -954,7 +951,7 @@ public class SchemeJudgeObjectService {
                     if (CollectionUtils.isNotEmpty(item.getRemoveMethodList())) {
                         for (Integer methodType : item.getRemoveMethodList()) {
                             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(methodType);
-                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(baseDataDic.getFieldName(),projectInfo.getProjectCategoryId());
+                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(baseDataDic.getFieldName(), projectInfo.getProjectCategoryId());
                             ProjectPlanDetails where = new ProjectPlanDetails();
                             where.setProjectId(projectInfo.getId());
                             where.setProjectPhaseId(projectPhase.getId());
@@ -968,7 +965,7 @@ public class SchemeJudgeObjectService {
                         String planRemark = generatePlanRemark(item.getSchemeJudgeObject());
                         for (Integer methodType : item.getNewMethodList()) {
                             BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicById(methodType);
-                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(baseDataDic.getFieldName(),projectInfo.getProjectCategoryId());
+                            ProjectPhase projectPhase = projectPhaseService.getCacheProjectPhaseByCategoryId(baseDataDic.getFieldName(), projectInfo.getProjectCategoryId());
                             if (!hasPlanDetails(projectInfo.getId(), null, projectPhase.getId(), item.getJudgeObjectId()))
                                 savePlanDetails(projectInfo, projectWorkStage, projectPlan, 0, item.getSchemeAreaGroup(), item.getJudgeObjectId(), planRemark, projectPhase, projectManager);
                         }
@@ -1068,6 +1065,10 @@ public class SchemeJudgeObjectService {
         details.setPlanId(projectPlan.getId());
         details.setProjectId(projectPlan.getProjectId());
         details.setProjectPhaseName(projectPhase.getProjectPhaseName());
+        AssessProjectTypeEnum projectType = projectInfoService.getAssessProjectType(projectInfo.getProjectCategoryId());
+        if (AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectType) && StringUtils.isNotBlank(projectPhase.getAliasName())) {
+            details.setProjectPhaseName(projectPhase.getAliasName());
+        }
         details.setProjectPhaseId(projectPhase.getId());
         if (schemeAreaGroup != null)
             details.setAreaId(schemeAreaGroup.getId());

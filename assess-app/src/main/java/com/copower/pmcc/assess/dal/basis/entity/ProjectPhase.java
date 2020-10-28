@@ -20,6 +20,8 @@ public class ProjectPhase {
 
     private String projectPhaseName;
 
+    private String aliasName;
+
     private BigDecimal phaseTime;
 
     private String phaseForm;
@@ -114,6 +116,14 @@ public class ProjectPhase {
 
     public void setProjectPhaseName(String projectPhaseName) {
         this.projectPhaseName = projectPhaseName == null ? null : projectPhaseName.trim();
+    }
+
+    public String getAliasName() {
+        return aliasName;
+    }
+
+    public void setAliasName(String aliasName) {
+        this.aliasName = aliasName == null ? null : aliasName.trim();
     }
 
     public BigDecimal getPhaseTime() {

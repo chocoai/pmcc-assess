@@ -2141,7 +2141,8 @@
             url: '${pageContext.request.contextPath}/evaluationMethod/getMethodList',
             type: 'get',
             data: {
-                method: methodType
+                method: methodType,
+                projectId:'${projectId}'
             },
             success: function (result) {
                 if (result.ret) {

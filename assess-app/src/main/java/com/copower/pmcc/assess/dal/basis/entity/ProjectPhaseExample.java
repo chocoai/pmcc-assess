@@ -596,6 +596,76 @@ public class ProjectPhaseExample {
             return (Criteria) this;
         }
 
+        public Criteria andAliasNameIsNull() {
+            addCriterion("alias_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameIsNotNull() {
+            addCriterion("alias_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameEqualTo(String value) {
+            addCriterion("alias_name =", value, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameNotEqualTo(String value) {
+            addCriterion("alias_name <>", value, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameGreaterThan(String value) {
+            addCriterion("alias_name >", value, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameGreaterThanOrEqualTo(String value) {
+            addCriterion("alias_name >=", value, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameLessThan(String value) {
+            addCriterion("alias_name <", value, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameLessThanOrEqualTo(String value) {
+            addCriterion("alias_name <=", value, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameLike(String value) {
+            addCriterion("alias_name like", value, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameNotLike(String value) {
+            addCriterion("alias_name not like", value, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameIn(List<String> values) {
+            addCriterion("alias_name in", values, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameNotIn(List<String> values) {
+            addCriterion("alias_name not in", values, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameBetween(String value1, String value2) {
+            addCriterion("alias_name between", value1, value2, "aliasName");
+            return (Criteria) this;
+        }
+
+        public Criteria andAliasNameNotBetween(String value1, String value2) {
+            addCriterion("alias_name not between", value1, value2, "aliasName");
+            return (Criteria) this;
+        }
+
         public Criteria andPhaseTimeIsNull() {
             addCriterion("phase_time is null");
             return (Criteria) this;

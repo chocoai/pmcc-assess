@@ -45,33 +45,30 @@ public class MdCommonService {
         BaseProjectClassify projectClassify = baseProjectClassifyService.getCacheProjectClassifyById(projectCategory);
         String classifyFieldName = projectClassify.getFieldName();
         for (BaseDataDic baseDataDic : allMethodList) {
-
-            if (AssessDataDicKeyConstant.MD_INCOME.equals(baseDataDic.getFieldName())) {
-                baseMethodList.add(baseDataDic);
-            }
+            if (StringUtils.isBlank(baseDataDic.getFieldName())) continue;
             if (StringUtils.isNotBlank(classifyFieldName) && classifyFieldName.contains(AssessProjectClassifyConstant.SINGLE_HOUSE_PROPERTY_CERTIFICATE_TYPE)) {
-                if (AssessDataDicKeyConstant.MD_MARKET_COMPARE.equals(baseDataDic.getFieldName())) {
-                    baseMethodList.add(baseDataDic);
+                switch (baseDataDic.getFieldName()) {
+                    case AssessDataDicKeyConstant.MD_MARKET_COMPARE:
+                    case AssessDataDicKeyConstant.MD_INCOME:
+                    case AssessDataDicKeyConstant.MD_COST:
+                    case AssessDataDicKeyConstant.MD_DEVELOPMENT:
+                        baseMethodList.add(baseDataDic);
+                        break;
                 }
-            }
-            if (AssessDataDicKeyConstant.MD_COST.equals(baseDataDic.getFieldName())) {
-                baseMethodList.add(baseDataDic);
-            }
-            if (AssessDataDicKeyConstant.MD_DEVELOPMENT.equals(baseDataDic.getFieldName())) {
-                baseMethodList.add(baseDataDic);
             }
             if (StringUtils.isNotBlank(classifyFieldName) && classifyFieldName.contains(AssessProjectClassifyConstant.SINGLE_HOUSE_LAND_CERTIFICATE_TYPE)) {
-                if (AssessDataDicKeyConstant.MD_BASE_LAND_PRICE.equals(baseDataDic.getFieldName())) {
-                    baseMethodList.add(baseDataDic);
-                }
-                if (AssessDataDicKeyConstant.MD_COST_APPROACH.equals(baseDataDic.getFieldName())) {
-                    baseMethodList.add(baseDataDic);
-                }
-                if (AssessDataDicKeyConstant.MD_LAND_COMPARE.equals(baseDataDic.getFieldName())) {
-                    baseMethodList.add(baseDataDic);
+                switch (baseDataDic.getFieldName()) {
+                    case AssessDataDicKeyConstant.MD_LAND_COMPARE:
+                    case AssessDataDicKeyConstant.MD_INCOME:
+                    case AssessDataDicKeyConstant.MD_COST_APPROACH:
+                    case AssessDataDicKeyConstant.MD_DEVELOPMENT:
+                    case AssessDataDicKeyConstant.MD_BASE_LAND_PRICE:
+                        baseMethodList.add(baseDataDic);
+                        break;
                 }
             }
         }
+        baseDataDicService.useDataDicAlias(baseMethodList, AssessDataDicKeyConstant.EXTEND_PROP_METHOD_LAND_ALIAS);
         return baseMethodList;
     }
 
@@ -85,7 +82,7 @@ public class MdCommonService {
         List<BaseDataDic> allMethodList = getAllMethodList();
         if (CollectionUtils.isEmpty(allMethodList)) return otherMethodList;
         for (BaseDataDic baseDataDic : allMethodList) {
-            if(!isBaseMethod(projectCategory,baseDataDic.getId())){
+            if (!isBaseMethod(projectCategory, baseDataDic.getId())) {
                 otherMethodList.add(baseDataDic);
             }
         }
@@ -98,7 +95,7 @@ public class MdCommonService {
      * @param method
      * @return
      */
-    public Boolean isBaseMethod(Integer projectCategory,Integer method) {
+    public Boolean isBaseMethod(Integer projectCategory, Integer method) {
         List<BaseDataDic> methodList = getBaseMethodList(projectCategory);
         for (BaseDataDic baseDataDic : methodList) {
             if (method.equals(baseDataDic.getId()))
@@ -113,7 +110,7 @@ public class MdCommonService {
      * @param method
      * @return
      */
-    public Boolean isOtherMethod(Integer projectCategory,Integer method) {
+    public Boolean isOtherMethod(Integer projectCategory, Integer method) {
         List<BaseDataDic> methodList = getOtherMethodList(projectCategory);
         for (BaseDataDic baseDataDic : methodList) {
             if (method.equals(baseDataDic.getId()))

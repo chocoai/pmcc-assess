@@ -4,6 +4,9 @@
  房屋交易信息
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<div class="card-header">
+    <div class="card-title">交易信息</div>
+</div>
 <div class="x_content">
     <form class="form-horizontal" id="basicTradingFrm">
         <input type="hidden" name="id" value="${basicHouseTrading.id}">
@@ -33,8 +36,6 @@
         <div class="row form-group">
             <div class="col-md-12">
                 <div class="form-inline x-valid">
-
-
                     <label class="col-sm-1 control-label">交易情况</label>
                     <div class="col-sm-3">
                         <label class="form-control input-full"
@@ -46,57 +47,37 @@
                         <label class="form-control input-full"
                                name="priceTypeName">${basicHouseTrading.priceTypeName}</label>
                     </div>
-
-                    <c:if test="${!empty basicHouseTrading.descriptionTypeName}">
-                        <label class="col-sm-1 control-label">说明事项类型</label>
-                        <div class="col-sm-3">
-                            <label class="form-control input-full"
-                                   name="descriptionTypeName">${basicHouseTrading.descriptionTypeName}</label>
-                        </div>
-                    </c:if>
-                </div>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-                <div class="form-inline x-valid">
-
-                    <c:if test="${!empty basicHouseTrading.descriptionContent}">
-
-                        <label class="col-sm-1 control-label">说明事项内容</label>
-                        <div class="col-sm-6">
-                            <label class="form-control input-full"
-                                   name="descriptionContent">${basicHouseTrading.descriptionContent}</label>
-                        </div>
-                    </c:if>
-
-
-
-                    <c:if test="${!empty basicHouseTrading.installmentInterestRate}">
-
-                        <label class="col-sm-1 control-label">分期支付利率</label>
-                        <div class="col-sm-3">
-                            <label class="form-control input-full"
-                                   name="installmentInterestRate">${basicHouseTrading.installmentInterestRate}</label>
-                        </div>
-                    </c:if>
-                </div>
-
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-12">
-                <div class="form-inline x-valid">
-                    <label class="col-sm-1 control-label">交易类型</label>
+                    <label class="col-sm-1 control-label">说明事项类型</label>
                     <div class="col-sm-3">
                         <label class="form-control input-full"
-                               name="tradingTypeName">${basicHouseTrading.tradingTypeName}</label>
+                               name="descriptionTypeName">${basicHouseTrading.descriptionTypeName}</label>
                     </div>
-
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
+                    <label class="col-sm-1 control-label">说明事项内容</label>
+                    <div class="col-sm-11">
+                        <label class="form-control input-full"
+                               name="descriptionContent">${basicHouseTrading.descriptionContent}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-md-12">
+                <div class="form-inline x-valid">
                     <label class="col-sm-1">市场级别</label>
                     <div class="col-sm-3">
                         <label class="form-control input-full"
                                name="transactionLevelName">${basicHouseTrading.transactionLevelName}</label>
+                    </div>
+                    <label class="col-sm-1 control-label">交易类型</label>
+                    <div class="col-sm-3">
+                        <label class="form-control input-full"
+                               name="tradingTypeName">${basicHouseTrading.tradingTypeName}</label>
                     </div>
                     <label class="col-sm-1 control-label">税费负担</label>
                     <div class="col-sm-3">
@@ -115,7 +96,6 @@
                         <label class="form-control input-full"
                                name="downPaymentRatio">${basicHouseTrading.downPaymentRatio}</label>
                     </div>
-
                     <label class="col-sm-1 control-label">贷款利率</label>
                     <div class="col-sm-3">
                         <label class="form-control input-full"
@@ -129,7 +109,6 @@
                 </div>
             </div>
         </div>
-
         <c:if test="${basicHouseTrading.tradingTypeName=='出售'}">
             <div class="row form-group">
                 <div class="col-md-12">
@@ -210,7 +189,6 @@
                                 value='${basicHouseTrading.tradingTime}'
                                 pattern='yyyy-MM-dd'/></label>
                     </div>
-
                     <label class="col-sm-1 control-label">交易总价（元）</label>
                     <div class="col-sm-3">
                         <label class="form-control input-full"
