@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeAreaGroupService;
 import com.copower.pmcc.assess.service.project.scheme.SchemeJudgeObjectService;
 import com.copower.pmcc.bpm.core.process.ProcessControllerComponent;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,21 +126,14 @@ public class MdBaseLandPriceService {
         return temp1.divide(temp2, 4, BigDecimal.ROUND_HALF_UP);
     }
 
+
     /**
      * 获取 基准地价期日修正
      */
-    public BigDecimal getBaseLandPriceDateAmend(Integer schemeJudgeObjectId) {
-        SchemeJudgeObject schemeJudgeObject = schemeJudgeObjectService.getSchemeJudgeObject(schemeJudgeObjectId);
-        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-        DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
+    public KeyValueDto getBaseLandPriceDateAmend(String province, String city, String district, Date valuationDate, Date valueTimePoint) {
+        DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(province, city, district, valuationDate);
         if (priceIndex == null) return null;
-        return dataHousePriceIndexService.getCorrectionFactor(priceIndex, areaGroup.getValueTimePoint());
-    }
-
-    public BigDecimal getBaseLandPriceDateAmend(String province, String city, String district, Date valueTimePoint) {
-        DataHousePriceIndex priceIndex = dataHousePriceIndexService.getLandPriceIndexByArea(province, city, district, valueTimePoint);
-        if (priceIndex == null) return null;
-        return dataHousePriceIndexService.getCorrectionFactor(priceIndex, valueTimePoint);
+        return dataHousePriceIndexService.getCorrectionFactor(priceIndex, valuationDate,valueTimePoint);
     }
 
     public MdBaseLandPrice initObject(Integer judgeObjectId) {
@@ -324,21 +318,17 @@ public class MdBaseLandPriceService {
         }
         //期日修正系数
         if (mdBaseLandPrice != null) {
-            getBaseLandPriceDateAmend(schemeJudgeObject.getId());
             if (levelDetail != null) {
                 dataLandLevel = dataLandLevelService.getDataLandLevelById(levelDetail.getLandLevelId());
             }
-            BigDecimal dateAmend = null;
-            if (dataLandLevel != null) {
-                dateAmend = getBaseLandPriceDateAmend(dataLandLevel.getProvince(), dataLandLevel.getCity(), dataLandLevel.getDistrict(), dataLandLevel.getValuationDate());
-            } else {
-                SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
-                dateAmend = getBaseLandPriceDateAmend(areaGroup.getProvince(), areaGroup.getCity(), areaGroup.getDistrict(), areaGroup.getValueTimePoint());
+            KeyValueDto dateAmend = new KeyValueDto("0","0");
+            SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(schemeJudgeObject.getAreaGroupId());
+            if (dataLandLevel != null && areaGroup != null) {
+                dateAmend = getBaseLandPriceDateAmend(dataLandLevel.getProvince(), dataLandLevel.getCity(), dataLandLevel.getDistrict(), dataLandLevel.getValuationDate(), areaGroup.getValueTimePoint());
             }
-            if (dateAmend == null) {
-                dateAmend = mdBaseLandPrice.getDateAmend();
-            }
-            modelAndView.addObject("dateAmend", dateAmend);
+
+            modelAndView.addObject("dateAmend", dateAmend.getKey());
+            modelAndView.addObject("dateAmendIndex", dateAmend.getValue());
         }
     }
 }

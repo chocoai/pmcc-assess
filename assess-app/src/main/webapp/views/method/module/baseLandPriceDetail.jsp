@@ -388,8 +388,11 @@
             cols.push({
                 field: 'indexNumber', title: '指数', formatter: function (value, row, index) {
                     var str = value;
-                    if (row.bisBase) {
-                        str += '<span class="label label-success">基期</span>';
+                    var dateAmendIndex = '${dateAmendIndex}' ;
+                    if (dateAmendIndex) {
+                        if (dateAmendIndex == row.id){
+                            str += '<span class="label label-success">基期</span>';
+                        }
                     }
                     return str;
                 }

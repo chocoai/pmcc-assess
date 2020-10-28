@@ -1,5 +1,6 @@
 package com.copower.pmcc.assess.service.data;
 
+import com.copower.pmcc.assess.common.ArithmeticUtils;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDao;
 import com.copower.pmcc.assess.dal.basis.dao.data.DataHousePriceIndexDetailDao;
@@ -9,6 +10,7 @@ import com.copower.pmcc.assess.dal.basis.entity.DataHousePriceIndexDetail;
 import com.copower.pmcc.assess.dto.output.data.DataHousePriceIndexVo;
 import com.copower.pmcc.assess.service.ErpAreaService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
+import com.copower.pmcc.erp.api.dto.KeyValueDto;
 import com.copower.pmcc.erp.api.dto.model.BootstrapTableVo;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.support.mvc.request.RequestBaseParam;
@@ -182,11 +184,12 @@ public class DataHousePriceIndexService {
 
     /**
      * 获取当前指数
+     *
      * @param priceIndex
      * @param valueDate
      * @return
      */
-    public BigDecimal getCurrIndexNumber(DataHousePriceIndex priceIndex, Date valueDate){
+    public BigDecimal getCurrIndexNumber(DataHousePriceIndex priceIndex, Date valueDate) {
         if (priceIndex == null || valueDate == null) return null;
         Date currDate = DateUtils.convertDate(valueDate, DateUtils.MONTH_PATTERN);
         List<DataHousePriceIndexDetail> priceIndexDetails = housePriceIndexDetailService.getPriceIndexDetailListByMasterId(priceIndex.getId());
@@ -211,25 +214,40 @@ public class DataHousePriceIndexService {
      * @param priceIndex
      * @return
      */
-    public BigDecimal getCorrectionFactor(DataHousePriceIndex priceIndex, Date valueDate) {
+    public KeyValueDto getCorrectionFactor(DataHousePriceIndex priceIndex, Date valueDate, Date valuationDate) {
         //期日修正系数=当前系数/基期系数
         if (priceIndex == null || valueDate == null) return null;
         Date currDate = DateUtils.convertDate(valueDate, DateUtils.MONTH_PATTERN);
+        Date currValuationDate = DateUtils.convertDate(valuationDate, DateUtils.MONTH_PATTERN);
         List<DataHousePriceIndexDetail> priceIndexDetails = housePriceIndexDetailService.getPriceIndexDetailListByMasterId(priceIndex.getId());
         if (CollectionUtils.isEmpty(priceIndexDetails)) return null;
         List<DataHousePriceIndexDetail> basePriceIndexDetails = LangUtils.filter(priceIndexDetails, o -> Boolean.TRUE.equals(o.getBisBase()));
         if (CollectionUtils.isEmpty(basePriceIndexDetails)) return null;
         DataHousePriceIndexDetail currPriceIndexDetails = null;
+        DataHousePriceIndexDetail currValuationPriceIndexDetails = null;
         for (DataHousePriceIndexDetail priceIndexDetail : priceIndexDetails) {
             Date startDate = DateUtils.convertDate(priceIndexDetail.getStartDate(), DateUtils.MONTH_PATTERN);
             Date endDate = DateUtils.convertDate(priceIndexDetail.getEndDate(), DateUtils.MONTH_PATTERN);
             if (DateUtils.compareDate(currDate, startDate) > -1 && DateUtils.compareDate(endDate, currDate) > -1) {
                 currPriceIndexDetails = priceIndexDetail;
             }
+            if (DateUtils.compareDate(currValuationDate, startDate) > -1 && DateUtils.compareDate(endDate, currValuationDate) > -1) {
+                currValuationPriceIndexDetails = priceIndexDetail;
+            }
         }
         if (currPriceIndexDetails == null) {
             currPriceIndexDetails = priceIndexDetails.get(priceIndexDetails.size() - 1);
         }
-        return currPriceIndexDetails.getIndexNumber().divide(basePriceIndexDetails.get(0).getIndexNumber(), 4, RoundingMode.HALF_UP);
+        if (currValuationPriceIndexDetails == null) {
+            currValuationPriceIndexDetails = priceIndexDetails.get(priceIndexDetails.size() - 1);
+        }
+        BigDecimal bigDecimal = null;
+        if (currPriceIndexDetails.getIndexNumber().doubleValue() > currValuationPriceIndexDetails.getIndexNumber().doubleValue()) {
+            bigDecimal = currPriceIndexDetails.getIndexNumber().divide(currValuationPriceIndexDetails.getIndexNumber(), 4, RoundingMode.HALF_UP);
+        }else {
+            bigDecimal = currValuationPriceIndexDetails.getIndexNumber().divide(currPriceIndexDetails.getIndexNumber(), 4, RoundingMode.HALF_UP);
+        }
+        KeyValueDto keyValueDto = new KeyValueDto(ArithmeticUtils.getBigDecimalString(bigDecimal), currPriceIndexDetails.getId().toString());
+        return keyValueDto;
     }
 }
