@@ -20,7 +20,7 @@ import java.util.List;
 public class DataReportGeneralFactorsController {
     private final String errorName = "报告一般因素配置" ;
     @Autowired
-    private DataReportGeneralFactorsService DataReportGeneralFactorsService;
+    private DataReportGeneralFactorsService reportGeneralFactorsService;
     @Autowired
     private BaseService baseService;
     @Autowired
@@ -34,14 +34,14 @@ public class DataReportGeneralFactorsController {
 
     @GetMapping(value = "/getBootstrapTableVo")
     public BootstrapTableVo getBootstrapTableVo( String type,String province, String city, String district, String name, String fieldName, Boolean bisEnable, Integer pid){
-        return DataReportGeneralFactorsService.getBootstrapTableVo( type,province, city, district, name, fieldName, bisEnable, pid);
+        return reportGeneralFactorsService.getBootstrapTableVo( type,province, city, district, name, fieldName, bisEnable, pid);
     }
 
     @PostMapping(value = "/saveDataReportGeneralFactors")
     public HttpResult saveDataReportGeneralFactors(String formData) {
         try {
             DataReportGeneralFactors DataReportGeneralFactors = JSONObject.parseObject(formData, DataReportGeneralFactors.class);
-            DataReportGeneralFactorsService.saveAndUpdateDataReportGeneralFactors(DataReportGeneralFactors);
+            reportGeneralFactorsService.saveAndUpdateDataReportGeneralFactors(DataReportGeneralFactors);
             return HttpResult.newCorrectResult(200, DataReportGeneralFactors);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,errorName);
@@ -53,7 +53,7 @@ public class DataReportGeneralFactorsController {
     @GetMapping(value = "/getDataReportGeneralFactorsById")
     public HttpResult getDataReportGeneralFactors(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200, DataReportGeneralFactorsService.getDataReportGeneralFactorsById(id));
+            return HttpResult.newCorrectResult(200, reportGeneralFactorsService.getDataReportGeneralFactorsById(id));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,errorName);
             return HttpResult.newErrorResult(500, e);
@@ -63,7 +63,7 @@ public class DataReportGeneralFactorsController {
     @DeleteMapping(value = "/deleteDataReportGeneralFactorsById/{id}")
     public HttpResult deleteDataReportGeneralFactorsById(@PathVariable String id) {
         try {
-            DataReportGeneralFactorsService.deleteByIds(FormatUtils.transformString2Integer(id)) ;
+            reportGeneralFactorsService.deleteByIds(FormatUtils.transformString2Integer(id)) ;
             return HttpResult.newCorrectResult(200,"success");
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,errorName);
@@ -74,7 +74,7 @@ public class DataReportGeneralFactorsController {
     @GetMapping(value = "/getDataReportGeneralFactorsList")
     public HttpResult getDataReportGeneralFactorsList(DataReportGeneralFactors DataReportGeneralFactors) {
         try {
-            List<DataReportGeneralFactors> objs = DataReportGeneralFactorsService.getDataReportGeneralFactorsList(DataReportGeneralFactors);
+            List<DataReportGeneralFactors> objs = reportGeneralFactorsService.getDataReportGeneralFactorsList(DataReportGeneralFactors);
             return HttpResult.newCorrectResult(200, objs);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e,errorName);
@@ -85,13 +85,13 @@ public class DataReportGeneralFactorsController {
 
     @GetMapping("/getBootstrapTableVoByPid")
     public BootstrapTableVo getBootstrapTableVoByPid(Integer pid) {
-        return DataReportGeneralFactorsService.getDataReportGeneralFactorsByPid(pid);
+        return reportGeneralFactorsService.getDataReportGeneralFactorsByPid(pid);
     }
 
     @PostMapping(value = "/getDataReportGeneralFactorsLevel", name = "获取层级")
     public HttpResult getReportFieldLevel(Integer id) {
         try {
-            return HttpResult.newCorrectResult(200, DataReportGeneralFactorsService.getDataAssetsAppraisalDicLevel(id));
+            return HttpResult.newCorrectResult(200, reportGeneralFactorsService.getDataAssetsAppraisalDicLevel(id));
         } catch (Exception e) {
             baseService.writeExceptionInfo(e);
             return HttpResult.newErrorResult(500, e.getMessage());

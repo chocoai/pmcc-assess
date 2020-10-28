@@ -5,11 +5,14 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="template_name" jdbcType="VARCHAR" property="templateName" />
     <result column="template_key" jdbcType="VARCHAR" property="templateKey" />
-    <result column="template_original_text" jdbcType="VARCHAR" property="templateOriginalText" />
-    <result column="script_template" jdbcType="VARCHAR" property="scriptTemplate" />
     <result column="creator" jdbcType="VARCHAR" property="creator" />
     <result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
     <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplateWithBLOBs">
+    <result column="parameter" jdbcType="LONGVARCHAR" property="parameter" />
+    <result column="template_original_text" jdbcType="LONGVARCHAR" property="templateOriginalText" />
+    <result column="script_template" jdbcType="LONGVARCHAR" property="scriptTemplate" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -70,9 +73,27 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, template_name, template_key, template_original_text, script_template, creator, 
-    gmt_created, gmt_modified
+    id, template_name, template_key, creator, gmt_created, gmt_modified
   </sql>
+  <sql id="Blob_Column_List">
+    parameter, template_original_text, script_template
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplateExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tb_script_template
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplateExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -87,9 +108,11 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from tb_script_template
     where id = #{id,jdbcType=INTEGER}
   </select>
@@ -103,68 +126,96 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplate">
+  <insert id="insert" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplateWithBLOBs">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_script_template (template_name, template_key, template_original_text, 
-      script_template, creator, gmt_created, 
-      gmt_modified)
-    values (#{templateName,jdbcType=VARCHAR}, #{templateKey,jdbcType=VARCHAR}, #{templateOriginalText,jdbcType=VARCHAR}, 
-      #{scriptTemplate,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, 
-      #{gmtModified,jdbcType=TIMESTAMP})
+    insert into tb_script_template (template_name, template_key, creator, 
+      gmt_created, gmt_modified, parameter, 
+      template_original_text, script_template
+      )
+    values (#{templateName,jdbcType=VARCHAR}, #{templateKey,jdbcType=VARCHAR}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}, #{parameter,jdbcType=LONGVARCHAR}, 
+      #{templateOriginalText,jdbcType=LONGVARCHAR}, #{scriptTemplate,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplate">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+  <insert id="insertSelective" parameterType="map">
+    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_script_template
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="templateName != null">
-        template_name,
-      </if>
-      <if test="templateKey != null">
-        template_key,
-      </if>
-      <if test="templateOriginalText != null">
-        template_original_text,
-      </if>
-      <if test="scriptTemplate != null">
-        script_template,
-      </if>
-      <if test="creator != null">
-        creator,
-      </if>
-      <if test="gmtCreated != null">
-        gmt_created,
-      </if>
-      <if test="gmtModified != null">
-        gmt_modified,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="templateName != null">
-        #{templateName,jdbcType=VARCHAR},
-      </if>
-      <if test="templateKey != null">
-        #{templateKey,jdbcType=VARCHAR},
-      </if>
-      <if test="templateOriginalText != null">
-        #{templateOriginalText,jdbcType=VARCHAR},
-      </if>
-      <if test="scriptTemplate != null">
-        #{scriptTemplate,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null">
-        #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null">
-        #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          ${column.escapedColumnName}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.templateName != null">
+            template_name,
+          </if>
+          <if test="record.templateKey != null">
+            template_key,
+          </if>
+          <if test="record.creator != null">
+            creator,
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created,
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified,
+          </if>
+          <if test="record.parameter != null">
+            parameter,
+          </if>
+          <if test="record.templateOriginalText != null">
+            template_original_text,
+          </if>
+          <if test="record.scriptTemplate != null">
+            script_template,
+          </if>
+        </trim>
+        <trim prefix="(" suffix=")" suffixOverrides="," />
+      </otherwise>
+    </choose>
+    values
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach close=")" collection="selective" item="column" open="(" separator=",">
+          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="record.templateName != null">
+            #{record.templateName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.templateKey != null">
+            #{record.templateKey,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.parameter != null">
+            #{record.parameter,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.templateOriginalText != null">
+            #{record.templateOriginalText,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.scriptTemplate != null">
+            #{record.scriptTemplate,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplateExample" resultType="java.lang.Long">
     select count(*) from tb_script_template
@@ -174,32 +225,60 @@
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update tb_script_template
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.templateName != null">
-        template_name = #{record.templateName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.templateKey != null">
-        template_key = #{record.templateKey,jdbcType=VARCHAR},
-      </if>
-      <if test="record.templateOriginalText != null">
-        template_original_text = #{record.templateOriginalText,jdbcType=VARCHAR},
-      </if>
-      <if test="record.scriptTemplate != null">
-        script_template = #{record.scriptTemplate,jdbcType=VARCHAR},
-      </if>
-      <if test="record.creator != null">
-        creator = #{record.creator,jdbcType=VARCHAR},
-      </if>
-      <if test="record.gmtCreated != null">
-        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="record.gmtModified != null">
-        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.id != null">
+            id = #{record.id,jdbcType=INTEGER},
+          </if>
+          <if test="record.templateName != null">
+            template_name = #{record.templateName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.templateKey != null">
+            template_key = #{record.templateKey,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.parameter != null">
+            parameter = #{record.parameter,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.templateOriginalText != null">
+            template_original_text = #{record.templateOriginalText,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.scriptTemplate != null">
+            script_template = #{record.scriptTemplate,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update tb_script_template
+    set id = #{record.id,jdbcType=INTEGER},
+      template_name = #{record.templateName,jdbcType=VARCHAR},
+      template_key = #{record.templateKey,jdbcType=VARCHAR},
+      creator = #{record.creator,jdbcType=VARCHAR},
+      gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      parameter = #{record.parameter,jdbcType=LONGVARCHAR},
+      template_original_text = #{record.templateOriginalText,jdbcType=LONGVARCHAR},
+      script_template = #{record.scriptTemplate,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -209,8 +288,6 @@
     set id = #{record.id,jdbcType=INTEGER},
       template_name = #{record.templateName,jdbcType=VARCHAR},
       template_key = #{record.templateKey,jdbcType=VARCHAR},
-      template_original_text = #{record.templateOriginalText,jdbcType=VARCHAR},
-      script_template = #{record.scriptTemplate,jdbcType=VARCHAR},
       creator = #{record.creator,jdbcType=VARCHAR},
       gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP}
@@ -218,42 +295,115 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplate">
+  <update id="updateByPrimaryKeySelective" parameterType="map">
     update tb_script_template
-    <set>
-      <if test="templateName != null">
-        template_name = #{templateName,jdbcType=VARCHAR},
-      </if>
-      <if test="templateKey != null">
-        template_key = #{templateKey,jdbcType=VARCHAR},
-      </if>
-      <if test="templateOriginalText != null">
-        template_original_text = #{templateOriginalText,jdbcType=VARCHAR},
-      </if>
-      <if test="scriptTemplate != null">
-        script_template = #{scriptTemplate,jdbcType=VARCHAR},
-      </if>
-      <if test="creator != null">
-        creator = #{creator,jdbcType=VARCHAR},
-      </if>
-      <if test="gmtCreated != null">
-        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
-      </if>
-      <if test="gmtModified != null">
-        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
-      </if>
-    </set>
+    SET
+    <choose>
+      <when test="selective != null and selective.length > 0">
+        <foreach collection="selective" item="column" separator=",">
+          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
+        </foreach>
+      </when>
+      <otherwise>
+        <trim suffixOverrides=",">
+          <if test="record.templateName != null">
+            template_name = #{record.templateName,jdbcType=VARCHAR},
+          </if>
+          <if test="record.templateKey != null">
+            template_key = #{record.templateKey,jdbcType=VARCHAR},
+          </if>
+          <if test="record.creator != null">
+            creator = #{record.creator,jdbcType=VARCHAR},
+          </if>
+          <if test="record.gmtCreated != null">
+            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.gmtModified != null">
+            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+          </if>
+          <if test="record.parameter != null">
+            parameter = #{record.parameter,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.templateOriginalText != null">
+            template_original_text = #{record.templateOriginalText,jdbcType=LONGVARCHAR},
+          </if>
+          <if test="record.scriptTemplate != null">
+            script_template = #{record.scriptTemplate,jdbcType=LONGVARCHAR},
+          </if>
+        </trim>
+      </otherwise>
+    </choose>
+    where id = #{record.id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplateWithBLOBs">
+    update tb_script_template
+    set template_name = #{templateName,jdbcType=VARCHAR},
+      template_key = #{templateKey,jdbcType=VARCHAR},
+      creator = #{creator,jdbcType=VARCHAR},
+      gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      parameter = #{parameter,jdbcType=LONGVARCHAR},
+      template_original_text = #{templateOriginalText,jdbcType=LONGVARCHAR},
+      script_template = #{scriptTemplate,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.ScriptTemplate">
     update tb_script_template
     set template_name = #{templateName,jdbcType=VARCHAR},
       template_key = #{templateKey,jdbcType=VARCHAR},
-      template_original_text = #{templateOriginalText,jdbcType=VARCHAR},
-      script_template = #{scriptTemplate,jdbcType=VARCHAR},
       creator = #{creator,jdbcType=VARCHAR},
       gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_script_template
+    (template_name, template_key, creator, gmt_created, gmt_modified, parameter, template_original_text, 
+      script_template)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.templateName,jdbcType=VARCHAR}, #{item.templateKey,jdbcType=VARCHAR}, #{item.creator,jdbcType=VARCHAR}, 
+        #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP}, 
+        #{item.parameter,jdbcType=LONGVARCHAR}, #{item.templateOriginalText,jdbcType=LONGVARCHAR}, 
+        #{item.scriptTemplate,jdbcType=LONGVARCHAR})
+    </foreach>
+  </insert>
+  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
+    insert into tb_script_template (
+    <foreach collection="selective" item="column" separator=",">
+      ${column.escapedColumnName}
+    </foreach>
+    )
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      <foreach collection="selective" item="column" separator=",">
+        <if test="'template_name'.toString() == column.value">
+          #{item.templateName,jdbcType=VARCHAR}
+        </if>
+        <if test="'template_key'.toString() == column.value">
+          #{item.templateKey,jdbcType=VARCHAR}
+        </if>
+        <if test="'creator'.toString() == column.value">
+          #{item.creator,jdbcType=VARCHAR}
+        </if>
+        <if test="'gmt_created'.toString() == column.value">
+          #{item.gmtCreated,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'gmt_modified'.toString() == column.value">
+          #{item.gmtModified,jdbcType=TIMESTAMP}
+        </if>
+        <if test="'parameter'.toString() == column.value">
+          #{item.parameter,jdbcType=LONGVARCHAR}
+        </if>
+        <if test="'template_original_text'.toString() == column.value">
+          #{item.templateOriginalText,jdbcType=LONGVARCHAR}
+        </if>
+        <if test="'script_template'.toString() == column.value">
+          #{item.scriptTemplate,jdbcType=LONGVARCHAR}
+        </if>
+      </foreach>
+      )
+    </foreach>
+  </insert>
 </mapper>

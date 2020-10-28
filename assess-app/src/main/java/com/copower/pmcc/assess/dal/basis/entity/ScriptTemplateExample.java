@@ -5,10 +5,19 @@ import java.util.Date;
 import java.util.List;
 
 public class ScriptTemplateExample {
+    /**
+     * tb_script_template
+     */
     protected String orderByClause;
 
+    /**
+     * tb_script_template
+     */
     protected boolean distinct;
 
+    /**
+     * tb_script_template
+     */
     protected List<Criteria> oredCriteria;
 
     public ScriptTemplateExample() {
@@ -64,6 +73,9 @@ public class ScriptTemplateExample {
         distinct = false;
     }
 
+    /**
+     * tb_script_template
+     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -305,146 +317,6 @@ public class ScriptTemplateExample {
             return (Criteria) this;
         }
 
-        public Criteria andTemplateOriginalTextIsNull() {
-            addCriterion("template_original_text is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextIsNotNull() {
-            addCriterion("template_original_text is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextEqualTo(String value) {
-            addCriterion("template_original_text =", value, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextNotEqualTo(String value) {
-            addCriterion("template_original_text <>", value, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextGreaterThan(String value) {
-            addCriterion("template_original_text >", value, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextGreaterThanOrEqualTo(String value) {
-            addCriterion("template_original_text >=", value, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextLessThan(String value) {
-            addCriterion("template_original_text <", value, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextLessThanOrEqualTo(String value) {
-            addCriterion("template_original_text <=", value, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextLike(String value) {
-            addCriterion("template_original_text like", value, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextNotLike(String value) {
-            addCriterion("template_original_text not like", value, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextIn(List<String> values) {
-            addCriterion("template_original_text in", values, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextNotIn(List<String> values) {
-            addCriterion("template_original_text not in", values, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextBetween(String value1, String value2) {
-            addCriterion("template_original_text between", value1, value2, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andTemplateOriginalTextNotBetween(String value1, String value2) {
-            addCriterion("template_original_text not between", value1, value2, "templateOriginalText");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateIsNull() {
-            addCriterion("script_template is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateIsNotNull() {
-            addCriterion("script_template is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateEqualTo(String value) {
-            addCriterion("script_template =", value, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateNotEqualTo(String value) {
-            addCriterion("script_template <>", value, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateGreaterThan(String value) {
-            addCriterion("script_template >", value, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateGreaterThanOrEqualTo(String value) {
-            addCriterion("script_template >=", value, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateLessThan(String value) {
-            addCriterion("script_template <", value, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateLessThanOrEqualTo(String value) {
-            addCriterion("script_template <=", value, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateLike(String value) {
-            addCriterion("script_template like", value, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateNotLike(String value) {
-            addCriterion("script_template not like", value, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateIn(List<String> values) {
-            addCriterion("script_template in", values, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateNotIn(List<String> values) {
-            addCriterion("script_template not in", values, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateBetween(String value1, String value2) {
-            addCriterion("script_template between", value1, value2, "scriptTemplate");
-            return (Criteria) this;
-        }
-
-        public Criteria andScriptTemplateNotBetween(String value1, String value2) {
-            addCriterion("script_template not between", value1, value2, "scriptTemplate");
-            return (Criteria) this;
-        }
-
         public Criteria andCreatorIsNull() {
             addCriterion("creator is null");
             return (Criteria) this;
@@ -643,6 +515,9 @@ public class ScriptTemplateExample {
         }
     }
 
+    /**
+     * tb_script_template
+     */
     public static class Criterion {
         private String condition;
 
