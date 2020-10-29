@@ -82,8 +82,8 @@ public class ScriptTemplateService {
      * @return
      */
     private Expression fetchExpression(ScriptTemplateWithBLOBs scriptTemplateWithBLOBs) {
-//        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getId().toString(), scriptTemplateWithBLOBs.getScriptTemplate(), true);
-        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getScriptTemplate(), true);
+        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getId().toString(), scriptTemplateWithBLOBs.getScriptTemplate(), true);
+//        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getScriptTemplate(), true);
         return expression;
     }
 
@@ -146,10 +146,19 @@ public class ScriptTemplateService {
         if (StringUtils.isBlank(scriptTemplate.getScriptTemplate())) {
             return "";
         }
+        //失效
+//        invalidateScriptTemplate(scriptTemplate.getId()) ;
         //脚本执行
         Expression expression = fetchExpression(scriptTemplate);
         if (evn != null && !evn.isEmpty()) {
-            contentResult =  expression.execute(evn);
+            List<Object> objectList = new ArrayList<>() ;
+            evn.entrySet().forEach(obj -> {
+                objectList.add(obj.getKey()) ;
+                objectList.add(obj.getValue()) ;
+            });
+            Object[] toArray = objectList.toArray();
+            Map<String, Object> stringObjectMap = expression.newEnv(toArray);
+            contentResult =  expression.execute(stringObjectMap);
         }else {
             contentResult = expression.execute();
         }
