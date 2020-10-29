@@ -240,10 +240,15 @@
 
     //预览结果请求
     scriptTemplateObj.previewPost = function () {
+        var box = scriptTemplateObj.previewBox;
+        var frm = box.find("form") ;
         var scriptTemplate = scriptTemplateObj.templateEditor.getValue();
-        // var paramJsonStr =
-        var data = {templateKey:'${template.templateKey}' , id:'${template.id}',scriptTemplate:scriptTemplate};
+        var paramJsonStr = frm.find("[name=paramJsonStr]").val() ;
+        var data = {templateKey:'${template.templateKey}' , id:'${template.id}',scriptTemplate:scriptTemplate,paramJsonStr:paramJsonStr};
         console.log(data);
+        AssessCommon.ajaxServerMethod(data, "/scriptTemplate/previewScriptTemplate", "post", function (result) {
+            frm.find("[name=result]").html(result) ;
+        });
     };
 
     //代码编辑插入光标位置
@@ -291,7 +296,7 @@
         }('${template.templateOriginalText}'));
 
         //开启编辑器
-        scriptTemplateObj.templateEditor;
+        // scriptTemplateObj.templateEditor;
     });
 </script>
 

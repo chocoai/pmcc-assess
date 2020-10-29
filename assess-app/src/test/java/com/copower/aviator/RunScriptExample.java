@@ -104,6 +104,8 @@ public class RunScriptExample {
         stringBuilder.append("println( 'ais:' + a);");
         Expression compiledExp = AviatorEvaluator.compile(stringBuilder.toString());
         compiledExp.execute();
+        Object execute = AviatorEvaluator.compile("let a = 1+2; return a ;").execute();
+        System.out.println(execute);
     }
 
 
