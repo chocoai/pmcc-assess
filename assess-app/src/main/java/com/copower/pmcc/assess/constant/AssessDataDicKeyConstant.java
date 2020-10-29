@@ -242,5 +242,6 @@ public class AssessDataDicKeyConstant {
      */
     public static final String EXTEND_PROP_VALUEDATEEXPLAIN = "valueDateExplain"; //价值时点说明
     public static final String EXTEND_PROP_ENTRUST_PURPOSE_LIMIT = "entrust_purpose_limit"; //委托目的限制
+    public static final String EXTEND_PROP_ENTRUST_PURPOSE_DESC = "entrust_purpose_desc"; //委托目的描述
     public static final String EXTEND_PROP_METHOD_LAND_ALIAS = "land.alias"; //评估方法别名（土地）
 }

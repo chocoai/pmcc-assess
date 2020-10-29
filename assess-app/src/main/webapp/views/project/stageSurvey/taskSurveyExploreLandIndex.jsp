@@ -698,38 +698,6 @@
         });
     }
 
-    //显示弹窗
-    batchTreeTool.showAlternativeCaseModal = function () {
-        batchTreeTool.loadAlternativeCaseList();
-        $('#reference_modal_case').modal();
-    }
-
-    //加载备选案例数据列表
-    batchTreeTool.loadAlternativeCaseList = function () {
-        var cols = [];
-        cols.push({field: 'name', title: '名称', width: '80%'});
-        cols.push({
-            field: 'id', title: '操作', formatter: function (value, row, index) {
-                var str = '<div class="btn-margin">';
-                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="引用" onclick="batchTreeTool.referenceAlternativeCase(' + row.id + ')"><i class="fa fa-check"></i></button>';
-                str += '<button type="button" class="btn btn-xs btn-warning tooltips" style="margin-left: 5px;"  data-placement="top" data-original-title="删除" onclick="batchTreeTool.deleteAlternativeCase(' + row.id + ')"><i class="fa fa-minus"></i></button>';
-                str += '</div>';
-                return str;
-            }
-        });
-        $("#basicAlternativeCaseList").bootstrapTable('destroy');
-        TableInit($("#basicAlternativeCaseList"), "${pageContext.request.contextPath}/basicAlternativeCase/getBasicAlternativeCaseList", cols, {
-            name: $('#queryAlternativeName').val(),
-            projectId: '${projectId}'
-        }, {
-            showColumns: false,
-            showRefresh: false,
-            search: false,
-            onLoadSuccess: function () {
-                $('.tooltips').tooltip();
-            }
-        });
-    }
 
     //引用备选案例
     batchTreeTool.referenceAlternativeCase = function (id) {

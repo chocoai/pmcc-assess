@@ -108,6 +108,9 @@ public class SchemeJudgeFunctionService {
     public SchemeJudgeFunctionApplyDto getJudgeFunction(Integer judgeObjectId) {
         SchemeJudgeFunctionApplyDto schemeJudgeFunctionApplyDto = new SchemeJudgeFunctionApplyDto();
         schemeJudgeFunctionApplyDto.setJudgeFunctions(schemeJudgeFunctionService.getSchemeJudgeFunctions(judgeObjectId));
+        SchemeJudgeObject judgeObject = schemeJudgeObjectService.getSchemeJudgeObject(judgeObjectId);
+        schemeJudgeFunctionApplyDto.setJudgeObjectId(judgeObjectId);
+        schemeJudgeFunctionApplyDto.setSingleMethodRationale(judgeObject.getSingleMethodRationale());
         return schemeJudgeFunctionApplyDto;
     }
 
@@ -138,6 +141,7 @@ public class SchemeJudgeFunctionService {
                         methodList.add(String.valueOf(judgeFunction.getMethodType()));
                 }
                 schemeJudgeObject.setBisSetFunction(true);
+                schemeJudgeObject.setSingleMethodRationale(schemeJudgeFunctionApplyDto.getSingleMethodRationale());
                 schemeJudgeObject.setJudgeFunction(FormatUtils.transformListString(methodList));
                 schemeJudgeObject.setNotApplicableReason(schemeJudgeFunctionApplyDto.getNotApplicableReason());
                 schemeJudgeObjectService.updateSchemeJudgeObject(schemeJudgeObject);

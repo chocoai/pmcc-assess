@@ -19,6 +19,8 @@ public class DataEvaluationMethod {
 
     private String definition;
 
+    private String singleMethodRationale;
+
     private String applicationDesc;
 
     private Boolean bisEnable;
@@ -91,6 +93,14 @@ public class DataEvaluationMethod {
 
     public void setDefinition(String definition) {
         this.definition = definition == null ? null : definition.trim();
+    }
+
+    public String getSingleMethodRationale() {
+        return singleMethodRationale;
+    }
+
+    public void setSingleMethodRationale(String singleMethodRationale) {
+        this.singleMethodRationale = singleMethodRationale == null ? null : singleMethodRationale.trim();
     }
 
     public String getApplicationDesc() {

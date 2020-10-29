@@ -6,19 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 public class SchemeJudgeObjectExample {
-    /**
-     * tb_scheme_judge_object
-     */
     protected String orderByClause;
 
-    /**
-     * tb_scheme_judge_object
-     */
     protected boolean distinct;
 
-    /**
-     * tb_scheme_judge_object
-     */
     protected List<Criteria> oredCriteria;
 
     public SchemeJudgeObjectExample() {
@@ -74,9 +65,6 @@ public class SchemeJudgeObjectExample {
         distinct = false;
     }
 
-    /**
-     * tb_scheme_judge_object
-     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -2548,6 +2536,76 @@ public class SchemeJudgeObjectExample {
             return (Criteria) this;
         }
 
+        public Criteria andSingleMethodRationaleIsNull() {
+            addCriterion("single_method_rationale is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleIsNotNull() {
+            addCriterion("single_method_rationale is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleEqualTo(String value) {
+            addCriterion("single_method_rationale =", value, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleNotEqualTo(String value) {
+            addCriterion("single_method_rationale <>", value, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleGreaterThan(String value) {
+            addCriterion("single_method_rationale >", value, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleGreaterThanOrEqualTo(String value) {
+            addCriterion("single_method_rationale >=", value, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleLessThan(String value) {
+            addCriterion("single_method_rationale <", value, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleLessThanOrEqualTo(String value) {
+            addCriterion("single_method_rationale <=", value, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleLike(String value) {
+            addCriterion("single_method_rationale like", value, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleNotLike(String value) {
+            addCriterion("single_method_rationale not like", value, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleIn(List<String> values) {
+            addCriterion("single_method_rationale in", values, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleNotIn(List<String> values) {
+            addCriterion("single_method_rationale not in", values, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleBetween(String value1, String value2) {
+            addCriterion("single_method_rationale between", value1, value2, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
+        public Criteria andSingleMethodRationaleNotBetween(String value1, String value2) {
+            addCriterion("single_method_rationale not between", value1, value2, "singleMethodRationale");
+            return (Criteria) this;
+        }
+
         public Criteria andNotApplicableReasonIsNull() {
             addCriterion("not_applicable_reason is null");
             return (Criteria) this;
@@ -3596,9 +3654,6 @@ public class SchemeJudgeObjectExample {
         }
     }
 
-    /**
-     * tb_scheme_judge_object
-     */
     public static class Criterion {
         private String condition;
 

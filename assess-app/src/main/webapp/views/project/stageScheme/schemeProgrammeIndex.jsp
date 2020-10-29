@@ -508,6 +508,24 @@
                                 <tbody id="applicableTbody">
                                 </tbody>
                             </table>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="98%">单一方法理由</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <textarea class="form-control input-full"
+                                                  name="singleMethodRationale"></textarea>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-12">
+
                         </div>
                         <div class="col-sm-12">
                             <table class="table">
@@ -1020,17 +1038,22 @@
         if (!entrustAimType) {
             return false;
         }
-        AssessCommon.getDataDicInfo(entrustAimType, function (data) {
-            group.find("input[name='remarkEntrustPurpose']").val(data.remark);
-            if(data.keyValue){
-                var keyValue = JSON.parse(data.keyValue);
-                $.each(keyValue,function (i,item) {
-                    if(item.key=='entrust_purpose_limit'){
-                        group.find("input[name='entrustPurposeLimit']").val(AssessCommon.toString(item.value));
-                    }
-                })
+        $.post('${pageContext.request.contextPath}/projectInfo/getRemarkEntrustPurpose', {
+            entrustAimType: entrustAimType,
+            projectCategoryId: '${projectInfo.projectCategoryId}'
+        }, function (result) {
+            if (result.ret) {
+                group.find("input[name='remarkEntrustPurpose']").val(result.data.remark);
+                if (result.data.keyValue) {
+                    var keyValue = JSON.parse(result.data.keyValue);
+                    $.each(keyValue, function (i, item) {
+                        if (item.key == 'entrust_purpose_limit') {
+                            group.find("input[name='entrustPurposeLimit']").val(AssessCommon.toString(item.value));
+                        }
+                    })
+                }
             }
-        });
+        })
     };
 
     //设置价值内涵的值
@@ -2080,6 +2103,7 @@
                             $("#notApplicableTbody tr[data-method-type=" + item.methodType + "]").find('textarea').val(item.notApplicableReason);
                         }
                     })
+                    $('#frm_method_info').find('[name=singleMethodRationale]').val(result.data.singleMethodRationale);
                 }
             }
         })
@@ -2127,6 +2151,12 @@
                 programmeMethod.getMethodTemplate($("#notApplicableTbody").find('tr:last').find('select'), $(this).attr('data-method-type'));
             }
         })
+
+        if ($("#applicableTbody tr").length == 1) {
+            $('#frm_method_info').find('[name=singleMethodRationale]').closest('table').show();
+        } else {
+            $('#frm_method_info').find('[name=singleMethodRationale]').val('').closest('table').hide();
+        }
     }
 
     //其它方法选用
@@ -2142,13 +2172,13 @@
             type: 'get',
             data: {
                 method: methodType,
-                projectId:'${projectId}'
+                projectId: '${projectId}'
             },
             success: function (result) {
                 if (result.ret) {
                     var html = '<option>-请选择-</option>';
                     $.each(result.data, function (i, item) {
-                        html += ' <option value="' + item.id + '" data-applicableReason="' + item.applicableReason + '" data-notApplicableReason="' + item.notApplicableReason + '">' + item.name + '</option>';
+                        html += ' <option value="' + item.id + '" data-applicableReason="' + item.applicableReason + '" data-notApplicableReason="' + item.notApplicableReason + '" data-singleMethodRationale="' + item.singleMethodRationale + '">' + item.name + '</option>';
                     })
                     $element.append(html);
                 }
@@ -2160,6 +2190,7 @@
     programmeMethod.methodTempChange = function (_this) {
         $(_this).closest('tr').find('textarea[name^=applicableReason]').val($(_this).find('option:selected').attr('data-applicableReason'));
         $(_this).closest('tr').find('textarea[name^=notApplicableReason]').val($(_this).find('option:selected').attr('data-notApplicableReason'));
+        $('#frm_method_info').find('[name=singleMethodRationale]').val($(_this).find('option:selected').attr('data-singleMethodRationale'));
     }
 
     //获取保存的数据
@@ -2167,6 +2198,7 @@
         var data = {};
         var judgeObjectId = $("#frm_method_info").find('[name=judgeObjectId]').val();
         data.judgeObjectId = judgeObjectId;
+        data.singleMethodRationale = $('#frm_method_info').find('[name=singleMethodRationale]').val();
         data.notApplicableReason = $('#notApplicableReason').val();
         data.judgeFunctions = [];
         $("#applicableTbody tr").each(function () {

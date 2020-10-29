@@ -406,7 +406,10 @@
                 remarkEntrustPurpose.val('');
                 var entrustAimType = $("#" + objProject.config.info.frm).find("select[name='entrustAimType']").find("option:selected").val();
                 if (entrustAimType) {
-                    objProject.ajaxServerMethod({entrustAimType: entrustAimType}, '/projectInfo/getRemarkEntrustPurpose', "post", function (data) {
+                    objProject.ajaxServerMethod({
+                        entrustAimType: entrustAimType,
+                        projectCategoryId: '${projectInfo.projectCategoryId}'
+                    }, '/projectInfo/getRemarkEntrustPurpose', "post", function (data) {
                         remarkEntrustPurpose.val(data.remark);
                     });
                 }

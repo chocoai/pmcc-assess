@@ -11,6 +11,7 @@ public class SchemeJudgeFunctionApplyDto {
     private Integer areaId;
     private Integer judgeObjectId;
     private String notApplicableReason;
+    private String singleMethodRationale;
     private List<SchemeJudgeFunction> judgeFunctions;
 
     public Integer getAreaId() {
@@ -43,5 +44,13 @@ public class SchemeJudgeFunctionApplyDto {
 
     public void setJudgeFunctions(List<SchemeJudgeFunction> judgeFunctions) {
         this.judgeFunctions = judgeFunctions;
+    }
+
+    public String getSingleMethodRationale() {
+        return singleMethodRationale;
+    }
+
+    public void setSingleMethodRationale(String singleMethodRationale) {
+        this.singleMethodRationale = singleMethodRationale;
     }
 }

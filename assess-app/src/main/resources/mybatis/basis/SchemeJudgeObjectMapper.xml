@@ -40,6 +40,7 @@
     <result column="standard_judge_id" jdbcType="INTEGER" property="standardJudgeId" />
     <result column="standard_judge_explain" jdbcType="VARCHAR" property="standardJudgeExplain" />
     <result column="judge_function" jdbcType="VARCHAR" property="judgeFunction" />
+    <result column="single_method_rationale" jdbcType="VARCHAR" property="singleMethodRationale" />
     <result column="not_applicable_reason" jdbcType="VARCHAR" property="notApplicableReason" />
     <result column="merge_explain" jdbcType="VARCHAR" property="mergeExplain" />
     <result column="split_explain" jdbcType="VARCHAR" property="splitExplain" />
@@ -122,10 +123,10 @@
     land_legal_year, land_remaining_year, set_use_classify, set_use, best_use, floor_area, 
     evaluation_area, evaluation_number, evaluation_number_unit, price, factor, original_price, 
     set_plot_ratio, plan_plot_ratio, actual_plot_ratio, standard_judge_id, standard_judge_explain, 
-    judge_function, not_applicable_reason, merge_explain, split_explain, split_from, 
-    parcel_outer_develop, parcel_inner_develop, parcel_setting_inner_develop, current_situation, 
-    bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, gmt_created, 
-    gmt_modified
+    judge_function, single_method_rationale, not_applicable_reason, merge_explain, split_explain, 
+    split_from, parcel_outer_develop, parcel_inner_develop, parcel_setting_inner_develop, 
+    current_situation, bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, 
+    gmt_created, gmt_modified
   </sql>
   <select id="selectByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" resultMap="BaseResultMap">
     select
@@ -173,13 +174,13 @@
       evaluation_number_unit, price, factor, 
       original_price, set_plot_ratio, plan_plot_ratio, 
       actual_plot_ratio, standard_judge_id, standard_judge_explain, 
-      judge_function, not_applicable_reason, merge_explain, 
-      split_explain, split_from, parcel_outer_develop, 
-      parcel_inner_develop, parcel_setting_inner_develop, 
-      current_situation, bis_split, bis_merge, 
-      bis_enable, bis_set_function, sorting, 
-      creator, gmt_created, gmt_modified
-      )
+      judge_function, single_method_rationale, not_applicable_reason, 
+      merge_explain, split_explain, split_from, 
+      parcel_outer_develop, parcel_inner_develop, 
+      parcel_setting_inner_develop, current_situation, 
+      bis_split, bis_merge, bis_enable, 
+      bis_set_function, sorting, creator, 
+      gmt_created, gmt_modified)
     values (#{pid,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{areaGroupId,jdbcType=INTEGER}, 
       #{originalAreaGroupId,jdbcType=INTEGER}, #{declareRecordId,jdbcType=INTEGER}, #{buildingStatus,jdbcType=INTEGER}, 
       #{basicApplyId,jdbcType=INTEGER}, #{number,jdbcType=VARCHAR}, #{originalNumber,jdbcType=VARCHAR}, 
@@ -192,361 +193,347 @@
       #{evaluationNumberUnit,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{factor,jdbcType=VARCHAR}, 
       #{originalPrice,jdbcType=DECIMAL}, #{setPlotRatio,jdbcType=DECIMAL}, #{planPlotRatio,jdbcType=VARCHAR}, 
       #{actualPlotRatio,jdbcType=DECIMAL}, #{standardJudgeId,jdbcType=INTEGER}, #{standardJudgeExplain,jdbcType=VARCHAR}, 
-      #{judgeFunction,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, #{mergeExplain,jdbcType=VARCHAR}, 
-      #{splitExplain,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, #{parcelOuterDevelop,jdbcType=VARCHAR}, 
-      #{parcelInnerDevelop,jdbcType=VARCHAR}, #{parcelSettingInnerDevelop,jdbcType=VARCHAR}, 
-      #{currentSituation,jdbcType=VARCHAR}, #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, 
-      #{bisEnable,jdbcType=BIT}, #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, 
-      #{creator,jdbcType=VARCHAR}, #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP}
-      )
+      #{judgeFunction,jdbcType=VARCHAR}, #{singleMethodRationale,jdbcType=VARCHAR}, #{notApplicableReason,jdbcType=VARCHAR}, 
+      #{mergeExplain,jdbcType=VARCHAR}, #{splitExplain,jdbcType=VARCHAR}, #{splitFrom,jdbcType=INTEGER}, 
+      #{parcelOuterDevelop,jdbcType=VARCHAR}, #{parcelInnerDevelop,jdbcType=VARCHAR}, 
+      #{parcelSettingInnerDevelop,jdbcType=VARCHAR}, #{currentSituation,jdbcType=VARCHAR}, 
+      #{bisSplit,jdbcType=BIT}, #{bisMerge,jdbcType=BIT}, #{bisEnable,jdbcType=BIT}, 
+      #{bisSetFunction,jdbcType=BIT}, #{sorting,jdbcType=INTEGER}, #{creator,jdbcType=VARCHAR}, 
+      #{gmtCreated,jdbcType=TIMESTAMP}, #{gmtModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="map">
-    <selectKey keyProperty="record.id" order="AFTER" resultType="java.lang.Integer">
+  <insert id="insertSelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into tb_scheme_judge_object
-    <choose>
-      <when test="selective != null and selective.length > 0">
-        <foreach close=")" collection="selective" item="column" open="(" separator=",">
-          ${column.escapedColumnName}
-        </foreach>
-      </when>
-      <otherwise>
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-          <if test="record.pid != null">
-            pid,
-          </if>
-          <if test="record.projectId != null">
-            project_id,
-          </if>
-          <if test="record.areaGroupId != null">
-            area_group_id,
-          </if>
-          <if test="record.originalAreaGroupId != null">
-            original_area_group_id,
-          </if>
-          <if test="record.declareRecordId != null">
-            declare_record_id,
-          </if>
-          <if test="record.buildingStatus != null">
-            building_status,
-          </if>
-          <if test="record.basicApplyId != null">
-            basic_apply_id,
-          </if>
-          <if test="record.number != null">
-            number,
-          </if>
-          <if test="record.originalNumber != null">
-            original_number,
-          </if>
-          <if test="record.splitNumber != null">
-            split_number,
-          </if>
-          <if test="record.name != null">
-            name,
-          </if>
-          <if test="record.certName != null">
-            cert_name,
-          </if>
-          <if test="record.ownership != null">
-            ownership,
-          </if>
-          <if test="record.seat != null">
-            seat,
-          </if>
-          <if test="record.certUse != null">
-            cert_use,
-          </if>
-          <if test="record.practicalUse != null">
-            practical_use,
-          </if>
-          <if test="record.landCertUse != null">
-            land_cert_use,
-          </if>
-          <if test="record.landPracticalUse != null">
-            land_practical_use,
-          </if>
-          <if test="record.landUseEndDate != null">
-            land_use_end_date,
-          </if>
-          <if test="record.landLegalYear != null">
-            land_legal_year,
-          </if>
-          <if test="record.landRemainingYear != null">
-            land_remaining_year,
-          </if>
-          <if test="record.setUseClassify != null">
-            set_use_classify,
-          </if>
-          <if test="record.setUse != null">
-            set_use,
-          </if>
-          <if test="record.bestUse != null">
-            best_use,
-          </if>
-          <if test="record.floorArea != null">
-            floor_area,
-          </if>
-          <if test="record.evaluationArea != null">
-            evaluation_area,
-          </if>
-          <if test="record.evaluationNumber != null">
-            evaluation_number,
-          </if>
-          <if test="record.evaluationNumberUnit != null">
-            evaluation_number_unit,
-          </if>
-          <if test="record.price != null">
-            price,
-          </if>
-          <if test="record.factor != null">
-            factor,
-          </if>
-          <if test="record.originalPrice != null">
-            original_price,
-          </if>
-          <if test="record.setPlotRatio != null">
-            set_plot_ratio,
-          </if>
-          <if test="record.planPlotRatio != null">
-            plan_plot_ratio,
-          </if>
-          <if test="record.actualPlotRatio != null">
-            actual_plot_ratio,
-          </if>
-          <if test="record.standardJudgeId != null">
-            standard_judge_id,
-          </if>
-          <if test="record.standardJudgeExplain != null">
-            standard_judge_explain,
-          </if>
-          <if test="record.judgeFunction != null">
-            judge_function,
-          </if>
-          <if test="record.notApplicableReason != null">
-            not_applicable_reason,
-          </if>
-          <if test="record.mergeExplain != null">
-            merge_explain,
-          </if>
-          <if test="record.splitExplain != null">
-            split_explain,
-          </if>
-          <if test="record.splitFrom != null">
-            split_from,
-          </if>
-          <if test="record.parcelOuterDevelop != null">
-            parcel_outer_develop,
-          </if>
-          <if test="record.parcelInnerDevelop != null">
-            parcel_inner_develop,
-          </if>
-          <if test="record.parcelSettingInnerDevelop != null">
-            parcel_setting_inner_develop,
-          </if>
-          <if test="record.currentSituation != null">
-            current_situation,
-          </if>
-          <if test="record.bisSplit != null">
-            bis_split,
-          </if>
-          <if test="record.bisMerge != null">
-            bis_merge,
-          </if>
-          <if test="record.bisEnable != null">
-            bis_enable,
-          </if>
-          <if test="record.bisSetFunction != null">
-            bis_set_function,
-          </if>
-          <if test="record.sorting != null">
-            sorting,
-          </if>
-          <if test="record.creator != null">
-            creator,
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created,
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified,
-          </if>
-        </trim>
-        <trim prefix="(" suffix=")" suffixOverrides="," />
-      </otherwise>
-    </choose>
-    values
-    <choose>
-      <when test="selective != null and selective.length > 0">
-        <foreach close=")" collection="selective" item="column" open="(" separator=",">
-          #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
-        </foreach>
-      </when>
-      <otherwise>
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-          <if test="record.pid != null">
-            #{record.pid,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectId != null">
-            #{record.projectId,jdbcType=INTEGER},
-          </if>
-          <if test="record.areaGroupId != null">
-            #{record.areaGroupId,jdbcType=INTEGER},
-          </if>
-          <if test="record.originalAreaGroupId != null">
-            #{record.originalAreaGroupId,jdbcType=INTEGER},
-          </if>
-          <if test="record.declareRecordId != null">
-            #{record.declareRecordId,jdbcType=INTEGER},
-          </if>
-          <if test="record.buildingStatus != null">
-            #{record.buildingStatus,jdbcType=INTEGER},
-          </if>
-          <if test="record.basicApplyId != null">
-            #{record.basicApplyId,jdbcType=INTEGER},
-          </if>
-          <if test="record.number != null">
-            #{record.number,jdbcType=VARCHAR},
-          </if>
-          <if test="record.originalNumber != null">
-            #{record.originalNumber,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitNumber != null">
-            #{record.splitNumber,jdbcType=INTEGER},
-          </if>
-          <if test="record.name != null">
-            #{record.name,jdbcType=VARCHAR},
-          </if>
-          <if test="record.certName != null">
-            #{record.certName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.ownership != null">
-            #{record.ownership,jdbcType=VARCHAR},
-          </if>
-          <if test="record.seat != null">
-            #{record.seat,jdbcType=VARCHAR},
-          </if>
-          <if test="record.certUse != null">
-            #{record.certUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.practicalUse != null">
-            #{record.practicalUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landCertUse != null">
-            #{record.landCertUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landPracticalUse != null">
-            #{record.landPracticalUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landUseEndDate != null">
-            #{record.landUseEndDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.landLegalYear != null">
-            #{record.landLegalYear,jdbcType=DECIMAL},
-          </if>
-          <if test="record.landRemainingYear != null">
-            #{record.landRemainingYear,jdbcType=DECIMAL},
-          </if>
-          <if test="record.setUseClassify != null">
-            #{record.setUseClassify,jdbcType=INTEGER},
-          </if>
-          <if test="record.setUse != null">
-            #{record.setUse,jdbcType=INTEGER},
-          </if>
-          <if test="record.bestUse != null">
-            #{record.bestUse,jdbcType=INTEGER},
-          </if>
-          <if test="record.floorArea != null">
-            #{record.floorArea,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationArea != null">
-            #{record.evaluationArea,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationNumber != null">
-            #{record.evaluationNumber,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationNumberUnit != null">
-            #{record.evaluationNumberUnit,jdbcType=VARCHAR},
-          </if>
-          <if test="record.price != null">
-            #{record.price,jdbcType=DECIMAL},
-          </if>
-          <if test="record.factor != null">
-            #{record.factor,jdbcType=VARCHAR},
-          </if>
-          <if test="record.originalPrice != null">
-            #{record.originalPrice,jdbcType=DECIMAL},
-          </if>
-          <if test="record.setPlotRatio != null">
-            #{record.setPlotRatio,jdbcType=DECIMAL},
-          </if>
-          <if test="record.planPlotRatio != null">
-            #{record.planPlotRatio,jdbcType=VARCHAR},
-          </if>
-          <if test="record.actualPlotRatio != null">
-            #{record.actualPlotRatio,jdbcType=DECIMAL},
-          </if>
-          <if test="record.standardJudgeId != null">
-            #{record.standardJudgeId,jdbcType=INTEGER},
-          </if>
-          <if test="record.standardJudgeExplain != null">
-            #{record.standardJudgeExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.judgeFunction != null">
-            #{record.judgeFunction,jdbcType=VARCHAR},
-          </if>
-          <if test="record.notApplicableReason != null">
-            #{record.notApplicableReason,jdbcType=VARCHAR},
-          </if>
-          <if test="record.mergeExplain != null">
-            #{record.mergeExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitExplain != null">
-            #{record.splitExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitFrom != null">
-            #{record.splitFrom,jdbcType=INTEGER},
-          </if>
-          <if test="record.parcelOuterDevelop != null">
-            #{record.parcelOuterDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.parcelInnerDevelop != null">
-            #{record.parcelInnerDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.parcelSettingInnerDevelop != null">
-            #{record.parcelSettingInnerDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.currentSituation != null">
-            #{record.currentSituation,jdbcType=VARCHAR},
-          </if>
-          <if test="record.bisSplit != null">
-            #{record.bisSplit,jdbcType=BIT},
-          </if>
-          <if test="record.bisMerge != null">
-            #{record.bisMerge,jdbcType=BIT},
-          </if>
-          <if test="record.bisEnable != null">
-            #{record.bisEnable,jdbcType=BIT},
-          </if>
-          <if test="record.bisSetFunction != null">
-            #{record.bisSetFunction,jdbcType=BIT},
-          </if>
-          <if test="record.sorting != null">
-            #{record.sorting,jdbcType=INTEGER},
-          </if>
-          <if test="record.creator != null">
-            #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
-        </trim>
-      </otherwise>
-    </choose>
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="projectId != null">
+        project_id,
+      </if>
+      <if test="areaGroupId != null">
+        area_group_id,
+      </if>
+      <if test="originalAreaGroupId != null">
+        original_area_group_id,
+      </if>
+      <if test="declareRecordId != null">
+        declare_record_id,
+      </if>
+      <if test="buildingStatus != null">
+        building_status,
+      </if>
+      <if test="basicApplyId != null">
+        basic_apply_id,
+      </if>
+      <if test="number != null">
+        number,
+      </if>
+      <if test="originalNumber != null">
+        original_number,
+      </if>
+      <if test="splitNumber != null">
+        split_number,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="certName != null">
+        cert_name,
+      </if>
+      <if test="ownership != null">
+        ownership,
+      </if>
+      <if test="seat != null">
+        seat,
+      </if>
+      <if test="certUse != null">
+        cert_use,
+      </if>
+      <if test="practicalUse != null">
+        practical_use,
+      </if>
+      <if test="landCertUse != null">
+        land_cert_use,
+      </if>
+      <if test="landPracticalUse != null">
+        land_practical_use,
+      </if>
+      <if test="landUseEndDate != null">
+        land_use_end_date,
+      </if>
+      <if test="landLegalYear != null">
+        land_legal_year,
+      </if>
+      <if test="landRemainingYear != null">
+        land_remaining_year,
+      </if>
+      <if test="setUseClassify != null">
+        set_use_classify,
+      </if>
+      <if test="setUse != null">
+        set_use,
+      </if>
+      <if test="bestUse != null">
+        best_use,
+      </if>
+      <if test="floorArea != null">
+        floor_area,
+      </if>
+      <if test="evaluationArea != null">
+        evaluation_area,
+      </if>
+      <if test="evaluationNumber != null">
+        evaluation_number,
+      </if>
+      <if test="evaluationNumberUnit != null">
+        evaluation_number_unit,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="factor != null">
+        factor,
+      </if>
+      <if test="originalPrice != null">
+        original_price,
+      </if>
+      <if test="setPlotRatio != null">
+        set_plot_ratio,
+      </if>
+      <if test="planPlotRatio != null">
+        plan_plot_ratio,
+      </if>
+      <if test="actualPlotRatio != null">
+        actual_plot_ratio,
+      </if>
+      <if test="standardJudgeId != null">
+        standard_judge_id,
+      </if>
+      <if test="standardJudgeExplain != null">
+        standard_judge_explain,
+      </if>
+      <if test="judgeFunction != null">
+        judge_function,
+      </if>
+      <if test="singleMethodRationale != null">
+        single_method_rationale,
+      </if>
+      <if test="notApplicableReason != null">
+        not_applicable_reason,
+      </if>
+      <if test="mergeExplain != null">
+        merge_explain,
+      </if>
+      <if test="splitExplain != null">
+        split_explain,
+      </if>
+      <if test="splitFrom != null">
+        split_from,
+      </if>
+      <if test="parcelOuterDevelop != null">
+        parcel_outer_develop,
+      </if>
+      <if test="parcelInnerDevelop != null">
+        parcel_inner_develop,
+      </if>
+      <if test="parcelSettingInnerDevelop != null">
+        parcel_setting_inner_develop,
+      </if>
+      <if test="currentSituation != null">
+        current_situation,
+      </if>
+      <if test="bisSplit != null">
+        bis_split,
+      </if>
+      <if test="bisMerge != null">
+        bis_merge,
+      </if>
+      <if test="bisEnable != null">
+        bis_enable,
+      </if>
+      <if test="bisSetFunction != null">
+        bis_set_function,
+      </if>
+      <if test="sorting != null">
+        sorting,
+      </if>
+      <if test="creator != null">
+        creator,
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created,
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="areaGroupId != null">
+        #{areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="originalAreaGroupId != null">
+        #{originalAreaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="declareRecordId != null">
+        #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingStatus != null">
+        #{buildingStatus,jdbcType=INTEGER},
+      </if>
+      <if test="basicApplyId != null">
+        #{basicApplyId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="originalNumber != null">
+        #{originalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="splitNumber != null">
+        #{splitNumber,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="certName != null">
+        #{certName,jdbcType=VARCHAR},
+      </if>
+      <if test="ownership != null">
+        #{ownership,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null">
+        #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="certUse != null">
+        #{certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="practicalUse != null">
+        #{practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landCertUse != null">
+        #{landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landPracticalUse != null">
+        #{landPracticalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landUseEndDate != null">
+        #{landUseEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landLegalYear != null">
+        #{landLegalYear,jdbcType=DECIMAL},
+      </if>
+      <if test="landRemainingYear != null">
+        #{landRemainingYear,jdbcType=DECIMAL},
+      </if>
+      <if test="setUseClassify != null">
+        #{setUseClassify,jdbcType=INTEGER},
+      </if>
+      <if test="setUse != null">
+        #{setUse,jdbcType=INTEGER},
+      </if>
+      <if test="bestUse != null">
+        #{bestUse,jdbcType=INTEGER},
+      </if>
+      <if test="floorArea != null">
+        #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationArea != null">
+        #{evaluationArea,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationNumber != null">
+        #{evaluationNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationNumberUnit != null">
+        #{evaluationNumberUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="factor != null">
+        #{factor,jdbcType=VARCHAR},
+      </if>
+      <if test="originalPrice != null">
+        #{originalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="setPlotRatio != null">
+        #{setPlotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="planPlotRatio != null">
+        #{planPlotRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="actualPlotRatio != null">
+        #{actualPlotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="standardJudgeId != null">
+        #{standardJudgeId,jdbcType=INTEGER},
+      </if>
+      <if test="standardJudgeExplain != null">
+        #{standardJudgeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeFunction != null">
+        #{judgeFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="singleMethodRationale != null">
+        #{singleMethodRationale,jdbcType=VARCHAR},
+      </if>
+      <if test="notApplicableReason != null">
+        #{notApplicableReason,jdbcType=VARCHAR},
+      </if>
+      <if test="mergeExplain != null">
+        #{mergeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="splitExplain != null">
+        #{splitExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="splitFrom != null">
+        #{splitFrom,jdbcType=INTEGER},
+      </if>
+      <if test="parcelOuterDevelop != null">
+        #{parcelOuterDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelInnerDevelop != null">
+        #{parcelInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInnerDevelop != null">
+        #{parcelSettingInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="currentSituation != null">
+        #{currentSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="bisSplit != null">
+        #{bisSplit,jdbcType=BIT},
+      </if>
+      <if test="bisMerge != null">
+        #{bisMerge,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null">
+        #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="bisSetFunction != null">
+        #{bisSetFunction,jdbcType=BIT},
+      </if>
+      <if test="sorting != null">
+        #{sorting,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
   </insert>
   <select id="countByExample" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObjectExample" resultType="java.lang.Long">
     select count(*) from tb_scheme_judge_object
@@ -556,180 +543,173 @@
   </select>
   <update id="updateByExampleSelective" parameterType="map">
     update tb_scheme_judge_object
-    SET
-    <choose>
-      <when test="selective != null and selective.length > 0">
-        <foreach collection="selective" item="column" separator=",">
-          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
-        </foreach>
-      </when>
-      <otherwise>
-        <trim suffixOverrides=",">
-          <if test="record.id != null">
-            id = #{record.id,jdbcType=INTEGER},
-          </if>
-          <if test="record.pid != null">
-            pid = #{record.pid,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectId != null">
-            project_id = #{record.projectId,jdbcType=INTEGER},
-          </if>
-          <if test="record.areaGroupId != null">
-            area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
-          </if>
-          <if test="record.originalAreaGroupId != null">
-            original_area_group_id = #{record.originalAreaGroupId,jdbcType=INTEGER},
-          </if>
-          <if test="record.declareRecordId != null">
-            declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
-          </if>
-          <if test="record.buildingStatus != null">
-            building_status = #{record.buildingStatus,jdbcType=INTEGER},
-          </if>
-          <if test="record.basicApplyId != null">
-            basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
-          </if>
-          <if test="record.number != null">
-            number = #{record.number,jdbcType=VARCHAR},
-          </if>
-          <if test="record.originalNumber != null">
-            original_number = #{record.originalNumber,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitNumber != null">
-            split_number = #{record.splitNumber,jdbcType=INTEGER},
-          </if>
-          <if test="record.name != null">
-            name = #{record.name,jdbcType=VARCHAR},
-          </if>
-          <if test="record.certName != null">
-            cert_name = #{record.certName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.ownership != null">
-            ownership = #{record.ownership,jdbcType=VARCHAR},
-          </if>
-          <if test="record.seat != null">
-            seat = #{record.seat,jdbcType=VARCHAR},
-          </if>
-          <if test="record.certUse != null">
-            cert_use = #{record.certUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.practicalUse != null">
-            practical_use = #{record.practicalUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landCertUse != null">
-            land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landPracticalUse != null">
-            land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landUseEndDate != null">
-            land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.landLegalYear != null">
-            land_legal_year = #{record.landLegalYear,jdbcType=DECIMAL},
-          </if>
-          <if test="record.landRemainingYear != null">
-            land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
-          </if>
-          <if test="record.setUseClassify != null">
-            set_use_classify = #{record.setUseClassify,jdbcType=INTEGER},
-          </if>
-          <if test="record.setUse != null">
-            set_use = #{record.setUse,jdbcType=INTEGER},
-          </if>
-          <if test="record.bestUse != null">
-            best_use = #{record.bestUse,jdbcType=INTEGER},
-          </if>
-          <if test="record.floorArea != null">
-            floor_area = #{record.floorArea,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationArea != null">
-            evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationNumber != null">
-            evaluation_number = #{record.evaluationNumber,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationNumberUnit != null">
-            evaluation_number_unit = #{record.evaluationNumberUnit,jdbcType=VARCHAR},
-          </if>
-          <if test="record.price != null">
-            price = #{record.price,jdbcType=DECIMAL},
-          </if>
-          <if test="record.factor != null">
-            factor = #{record.factor,jdbcType=VARCHAR},
-          </if>
-          <if test="record.originalPrice != null">
-            original_price = #{record.originalPrice,jdbcType=DECIMAL},
-          </if>
-          <if test="record.setPlotRatio != null">
-            set_plot_ratio = #{record.setPlotRatio,jdbcType=DECIMAL},
-          </if>
-          <if test="record.planPlotRatio != null">
-            plan_plot_ratio = #{record.planPlotRatio,jdbcType=VARCHAR},
-          </if>
-          <if test="record.actualPlotRatio != null">
-            actual_plot_ratio = #{record.actualPlotRatio,jdbcType=DECIMAL},
-          </if>
-          <if test="record.standardJudgeId != null">
-            standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
-          </if>
-          <if test="record.standardJudgeExplain != null">
-            standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.judgeFunction != null">
-            judge_function = #{record.judgeFunction,jdbcType=VARCHAR},
-          </if>
-          <if test="record.notApplicableReason != null">
-            not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
-          </if>
-          <if test="record.mergeExplain != null">
-            merge_explain = #{record.mergeExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitExplain != null">
-            split_explain = #{record.splitExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitFrom != null">
-            split_from = #{record.splitFrom,jdbcType=INTEGER},
-          </if>
-          <if test="record.parcelOuterDevelop != null">
-            parcel_outer_develop = #{record.parcelOuterDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.parcelInnerDevelop != null">
-            parcel_inner_develop = #{record.parcelInnerDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.parcelSettingInnerDevelop != null">
-            parcel_setting_inner_develop = #{record.parcelSettingInnerDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.currentSituation != null">
-            current_situation = #{record.currentSituation,jdbcType=VARCHAR},
-          </if>
-          <if test="record.bisSplit != null">
-            bis_split = #{record.bisSplit,jdbcType=BIT},
-          </if>
-          <if test="record.bisMerge != null">
-            bis_merge = #{record.bisMerge,jdbcType=BIT},
-          </if>
-          <if test="record.bisEnable != null">
-            bis_enable = #{record.bisEnable,jdbcType=BIT},
-          </if>
-          <if test="record.bisSetFunction != null">
-            bis_set_function = #{record.bisSetFunction,jdbcType=BIT},
-          </if>
-          <if test="record.sorting != null">
-            sorting = #{record.sorting,jdbcType=INTEGER},
-          </if>
-          <if test="record.creator != null">
-            creator = #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
-        </trim>
-      </otherwise>
-    </choose>
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.pid != null">
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.projectId != null">
+        project_id = #{record.projectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.areaGroupId != null">
+        area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.originalAreaGroupId != null">
+        original_area_group_id = #{record.originalAreaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="record.declareRecordId != null">
+        declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="record.buildingStatus != null">
+        building_status = #{record.buildingStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.basicApplyId != null">
+        basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null">
+        number = #{record.number,jdbcType=VARCHAR},
+      </if>
+      <if test="record.originalNumber != null">
+        original_number = #{record.originalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.splitNumber != null">
+        split_number = #{record.splitNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certName != null">
+        cert_name = #{record.certName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ownership != null">
+        ownership = #{record.ownership,jdbcType=VARCHAR},
+      </if>
+      <if test="record.seat != null">
+        seat = #{record.seat,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certUse != null">
+        cert_use = #{record.certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.practicalUse != null">
+        practical_use = #{record.practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landCertUse != null">
+        land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landPracticalUse != null">
+        land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.landUseEndDate != null">
+        land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.landLegalYear != null">
+        land_legal_year = #{record.landLegalYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.landRemainingYear != null">
+        land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
+      </if>
+      <if test="record.setUseClassify != null">
+        set_use_classify = #{record.setUseClassify,jdbcType=INTEGER},
+      </if>
+      <if test="record.setUse != null">
+        set_use = #{record.setUse,jdbcType=INTEGER},
+      </if>
+      <if test="record.bestUse != null">
+        best_use = #{record.bestUse,jdbcType=INTEGER},
+      </if>
+      <if test="record.floorArea != null">
+        floor_area = #{record.floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evaluationArea != null">
+        evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evaluationNumber != null">
+        evaluation_number = #{record.evaluationNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="record.evaluationNumberUnit != null">
+        evaluation_number_unit = #{record.evaluationNumberUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.factor != null">
+        factor = #{record.factor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.originalPrice != null">
+        original_price = #{record.originalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.setPlotRatio != null">
+        set_plot_ratio = #{record.setPlotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.planPlotRatio != null">
+        plan_plot_ratio = #{record.planPlotRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="record.actualPlotRatio != null">
+        actual_plot_ratio = #{record.actualPlotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.standardJudgeId != null">
+        standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.standardJudgeExplain != null">
+        standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.judgeFunction != null">
+        judge_function = #{record.judgeFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.singleMethodRationale != null">
+        single_method_rationale = #{record.singleMethodRationale,jdbcType=VARCHAR},
+      </if>
+      <if test="record.notApplicableReason != null">
+        not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mergeExplain != null">
+        merge_explain = #{record.mergeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.splitExplain != null">
+        split_explain = #{record.splitExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="record.splitFrom != null">
+        split_from = #{record.splitFrom,jdbcType=INTEGER},
+      </if>
+      <if test="record.parcelOuterDevelop != null">
+        parcel_outer_develop = #{record.parcelOuterDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelInnerDevelop != null">
+        parcel_inner_develop = #{record.parcelInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parcelSettingInnerDevelop != null">
+        parcel_setting_inner_develop = #{record.parcelSettingInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="record.currentSituation != null">
+        current_situation = #{record.currentSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bisSplit != null">
+        bis_split = #{record.bisSplit,jdbcType=BIT},
+      </if>
+      <if test="record.bisMerge != null">
+        bis_merge = #{record.bisMerge,jdbcType=BIT},
+      </if>
+      <if test="record.bisEnable != null">
+        bis_enable = #{record.bisEnable,jdbcType=BIT},
+      </if>
+      <if test="record.bisSetFunction != null">
+        bis_set_function = #{record.bisSetFunction,jdbcType=BIT},
+      </if>
+      <if test="record.sorting != null">
+        sorting = #{record.sorting,jdbcType=INTEGER},
+      </if>
+      <if test="record.creator != null">
+        creator = #{record.creator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gmtCreated != null">
+        gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.gmtModified != null">
+        gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -774,6 +754,7 @@
       standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
       standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
       judge_function = #{record.judgeFunction,jdbcType=VARCHAR},
+      single_method_rationale = #{record.singleMethodRationale,jdbcType=VARCHAR},
       not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
       merge_explain = #{record.mergeExplain,jdbcType=VARCHAR},
       split_explain = #{record.splitExplain,jdbcType=VARCHAR},
@@ -794,180 +775,173 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="map">
+  <update id="updateByPrimaryKeySelective" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject">
     update tb_scheme_judge_object
-    SET
-    <choose>
-      <when test="selective != null and selective.length > 0">
-        <foreach collection="selective" item="column" separator=",">
-          ${column.escapedColumnName} = #{record.${column.javaProperty},jdbcType=${column.jdbcType}}
-        </foreach>
-      </when>
-      <otherwise>
-        <trim suffixOverrides=",">
-          <if test="record.pid != null">
-            pid = #{record.pid,jdbcType=INTEGER},
-          </if>
-          <if test="record.projectId != null">
-            project_id = #{record.projectId,jdbcType=INTEGER},
-          </if>
-          <if test="record.areaGroupId != null">
-            area_group_id = #{record.areaGroupId,jdbcType=INTEGER},
-          </if>
-          <if test="record.originalAreaGroupId != null">
-            original_area_group_id = #{record.originalAreaGroupId,jdbcType=INTEGER},
-          </if>
-          <if test="record.declareRecordId != null">
-            declare_record_id = #{record.declareRecordId,jdbcType=INTEGER},
-          </if>
-          <if test="record.buildingStatus != null">
-            building_status = #{record.buildingStatus,jdbcType=INTEGER},
-          </if>
-          <if test="record.basicApplyId != null">
-            basic_apply_id = #{record.basicApplyId,jdbcType=INTEGER},
-          </if>
-          <if test="record.number != null">
-            number = #{record.number,jdbcType=VARCHAR},
-          </if>
-          <if test="record.originalNumber != null">
-            original_number = #{record.originalNumber,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitNumber != null">
-            split_number = #{record.splitNumber,jdbcType=INTEGER},
-          </if>
-          <if test="record.name != null">
-            name = #{record.name,jdbcType=VARCHAR},
-          </if>
-          <if test="record.certName != null">
-            cert_name = #{record.certName,jdbcType=VARCHAR},
-          </if>
-          <if test="record.ownership != null">
-            ownership = #{record.ownership,jdbcType=VARCHAR},
-          </if>
-          <if test="record.seat != null">
-            seat = #{record.seat,jdbcType=VARCHAR},
-          </if>
-          <if test="record.certUse != null">
-            cert_use = #{record.certUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.practicalUse != null">
-            practical_use = #{record.practicalUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landCertUse != null">
-            land_cert_use = #{record.landCertUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landPracticalUse != null">
-            land_practical_use = #{record.landPracticalUse,jdbcType=VARCHAR},
-          </if>
-          <if test="record.landUseEndDate != null">
-            land_use_end_date = #{record.landUseEndDate,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.landLegalYear != null">
-            land_legal_year = #{record.landLegalYear,jdbcType=DECIMAL},
-          </if>
-          <if test="record.landRemainingYear != null">
-            land_remaining_year = #{record.landRemainingYear,jdbcType=DECIMAL},
-          </if>
-          <if test="record.setUseClassify != null">
-            set_use_classify = #{record.setUseClassify,jdbcType=INTEGER},
-          </if>
-          <if test="record.setUse != null">
-            set_use = #{record.setUse,jdbcType=INTEGER},
-          </if>
-          <if test="record.bestUse != null">
-            best_use = #{record.bestUse,jdbcType=INTEGER},
-          </if>
-          <if test="record.floorArea != null">
-            floor_area = #{record.floorArea,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationArea != null">
-            evaluation_area = #{record.evaluationArea,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationNumber != null">
-            evaluation_number = #{record.evaluationNumber,jdbcType=DECIMAL},
-          </if>
-          <if test="record.evaluationNumberUnit != null">
-            evaluation_number_unit = #{record.evaluationNumberUnit,jdbcType=VARCHAR},
-          </if>
-          <if test="record.price != null">
-            price = #{record.price,jdbcType=DECIMAL},
-          </if>
-          <if test="record.factor != null">
-            factor = #{record.factor,jdbcType=VARCHAR},
-          </if>
-          <if test="record.originalPrice != null">
-            original_price = #{record.originalPrice,jdbcType=DECIMAL},
-          </if>
-          <if test="record.setPlotRatio != null">
-            set_plot_ratio = #{record.setPlotRatio,jdbcType=DECIMAL},
-          </if>
-          <if test="record.planPlotRatio != null">
-            plan_plot_ratio = #{record.planPlotRatio,jdbcType=VARCHAR},
-          </if>
-          <if test="record.actualPlotRatio != null">
-            actual_plot_ratio = #{record.actualPlotRatio,jdbcType=DECIMAL},
-          </if>
-          <if test="record.standardJudgeId != null">
-            standard_judge_id = #{record.standardJudgeId,jdbcType=INTEGER},
-          </if>
-          <if test="record.standardJudgeExplain != null">
-            standard_judge_explain = #{record.standardJudgeExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.judgeFunction != null">
-            judge_function = #{record.judgeFunction,jdbcType=VARCHAR},
-          </if>
-          <if test="record.notApplicableReason != null">
-            not_applicable_reason = #{record.notApplicableReason,jdbcType=VARCHAR},
-          </if>
-          <if test="record.mergeExplain != null">
-            merge_explain = #{record.mergeExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitExplain != null">
-            split_explain = #{record.splitExplain,jdbcType=VARCHAR},
-          </if>
-          <if test="record.splitFrom != null">
-            split_from = #{record.splitFrom,jdbcType=INTEGER},
-          </if>
-          <if test="record.parcelOuterDevelop != null">
-            parcel_outer_develop = #{record.parcelOuterDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.parcelInnerDevelop != null">
-            parcel_inner_develop = #{record.parcelInnerDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.parcelSettingInnerDevelop != null">
-            parcel_setting_inner_develop = #{record.parcelSettingInnerDevelop,jdbcType=VARCHAR},
-          </if>
-          <if test="record.currentSituation != null">
-            current_situation = #{record.currentSituation,jdbcType=VARCHAR},
-          </if>
-          <if test="record.bisSplit != null">
-            bis_split = #{record.bisSplit,jdbcType=BIT},
-          </if>
-          <if test="record.bisMerge != null">
-            bis_merge = #{record.bisMerge,jdbcType=BIT},
-          </if>
-          <if test="record.bisEnable != null">
-            bis_enable = #{record.bisEnable,jdbcType=BIT},
-          </if>
-          <if test="record.bisSetFunction != null">
-            bis_set_function = #{record.bisSetFunction,jdbcType=BIT},
-          </if>
-          <if test="record.sorting != null">
-            sorting = #{record.sorting,jdbcType=INTEGER},
-          </if>
-          <if test="record.creator != null">
-            creator = #{record.creator,jdbcType=VARCHAR},
-          </if>
-          <if test="record.gmtCreated != null">
-            gmt_created = #{record.gmtCreated,jdbcType=TIMESTAMP},
-          </if>
-          <if test="record.gmtModified != null">
-            gmt_modified = #{record.gmtModified,jdbcType=TIMESTAMP},
-          </if>
-        </trim>
-      </otherwise>
-    </choose>
-    where id = #{record.id,jdbcType=INTEGER}
+    <set>
+      <if test="pid != null">
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null">
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="areaGroupId != null">
+        area_group_id = #{areaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="originalAreaGroupId != null">
+        original_area_group_id = #{originalAreaGroupId,jdbcType=INTEGER},
+      </if>
+      <if test="declareRecordId != null">
+        declare_record_id = #{declareRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="buildingStatus != null">
+        building_status = #{buildingStatus,jdbcType=INTEGER},
+      </if>
+      <if test="basicApplyId != null">
+        basic_apply_id = #{basicApplyId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null">
+        number = #{number,jdbcType=VARCHAR},
+      </if>
+      <if test="originalNumber != null">
+        original_number = #{originalNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="splitNumber != null">
+        split_number = #{splitNumber,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="certName != null">
+        cert_name = #{certName,jdbcType=VARCHAR},
+      </if>
+      <if test="ownership != null">
+        ownership = #{ownership,jdbcType=VARCHAR},
+      </if>
+      <if test="seat != null">
+        seat = #{seat,jdbcType=VARCHAR},
+      </if>
+      <if test="certUse != null">
+        cert_use = #{certUse,jdbcType=VARCHAR},
+      </if>
+      <if test="practicalUse != null">
+        practical_use = #{practicalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landCertUse != null">
+        land_cert_use = #{landCertUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landPracticalUse != null">
+        land_practical_use = #{landPracticalUse,jdbcType=VARCHAR},
+      </if>
+      <if test="landUseEndDate != null">
+        land_use_end_date = #{landUseEndDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="landLegalYear != null">
+        land_legal_year = #{landLegalYear,jdbcType=DECIMAL},
+      </if>
+      <if test="landRemainingYear != null">
+        land_remaining_year = #{landRemainingYear,jdbcType=DECIMAL},
+      </if>
+      <if test="setUseClassify != null">
+        set_use_classify = #{setUseClassify,jdbcType=INTEGER},
+      </if>
+      <if test="setUse != null">
+        set_use = #{setUse,jdbcType=INTEGER},
+      </if>
+      <if test="bestUse != null">
+        best_use = #{bestUse,jdbcType=INTEGER},
+      </if>
+      <if test="floorArea != null">
+        floor_area = #{floorArea,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationArea != null">
+        evaluation_area = #{evaluationArea,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationNumber != null">
+        evaluation_number = #{evaluationNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="evaluationNumberUnit != null">
+        evaluation_number_unit = #{evaluationNumberUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="factor != null">
+        factor = #{factor,jdbcType=VARCHAR},
+      </if>
+      <if test="originalPrice != null">
+        original_price = #{originalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="setPlotRatio != null">
+        set_plot_ratio = #{setPlotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="planPlotRatio != null">
+        plan_plot_ratio = #{planPlotRatio,jdbcType=VARCHAR},
+      </if>
+      <if test="actualPlotRatio != null">
+        actual_plot_ratio = #{actualPlotRatio,jdbcType=DECIMAL},
+      </if>
+      <if test="standardJudgeId != null">
+        standard_judge_id = #{standardJudgeId,jdbcType=INTEGER},
+      </if>
+      <if test="standardJudgeExplain != null">
+        standard_judge_explain = #{standardJudgeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="judgeFunction != null">
+        judge_function = #{judgeFunction,jdbcType=VARCHAR},
+      </if>
+      <if test="singleMethodRationale != null">
+        single_method_rationale = #{singleMethodRationale,jdbcType=VARCHAR},
+      </if>
+      <if test="notApplicableReason != null">
+        not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
+      </if>
+      <if test="mergeExplain != null">
+        merge_explain = #{mergeExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="splitExplain != null">
+        split_explain = #{splitExplain,jdbcType=VARCHAR},
+      </if>
+      <if test="splitFrom != null">
+        split_from = #{splitFrom,jdbcType=INTEGER},
+      </if>
+      <if test="parcelOuterDevelop != null">
+        parcel_outer_develop = #{parcelOuterDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelInnerDevelop != null">
+        parcel_inner_develop = #{parcelInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="parcelSettingInnerDevelop != null">
+        parcel_setting_inner_develop = #{parcelSettingInnerDevelop,jdbcType=VARCHAR},
+      </if>
+      <if test="currentSituation != null">
+        current_situation = #{currentSituation,jdbcType=VARCHAR},
+      </if>
+      <if test="bisSplit != null">
+        bis_split = #{bisSplit,jdbcType=BIT},
+      </if>
+      <if test="bisMerge != null">
+        bis_merge = #{bisMerge,jdbcType=BIT},
+      </if>
+      <if test="bisEnable != null">
+        bis_enable = #{bisEnable,jdbcType=BIT},
+      </if>
+      <if test="bisSetFunction != null">
+        bis_set_function = #{bisSetFunction,jdbcType=BIT},
+      </if>
+      <if test="sorting != null">
+        sorting = #{sorting,jdbcType=INTEGER},
+      </if>
+      <if test="creator != null">
+        creator = #{creator,jdbcType=VARCHAR},
+      </if>
+      <if test="gmtCreated != null">
+        gmt_created = #{gmtCreated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="gmtModified != null">
+        gmt_modified = #{gmtModified,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.copower.pmcc.assess.dal.basis.entity.SchemeJudgeObject">
     update tb_scheme_judge_object
@@ -1008,6 +982,7 @@
       standard_judge_id = #{standardJudgeId,jdbcType=INTEGER},
       standard_judge_explain = #{standardJudgeExplain,jdbcType=VARCHAR},
       judge_function = #{judgeFunction,jdbcType=VARCHAR},
+      single_method_rationale = #{singleMethodRationale,jdbcType=VARCHAR},
       not_applicable_reason = #{notApplicableReason,jdbcType=VARCHAR},
       merge_explain = #{mergeExplain,jdbcType=VARCHAR},
       split_explain = #{splitExplain,jdbcType=VARCHAR},
@@ -1026,215 +1001,4 @@
       gmt_modified = #{gmtModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
-    insert into tb_scheme_judge_object
-    (pid, project_id, area_group_id, original_area_group_id, declare_record_id, building_status, 
-      basic_apply_id, number, original_number, split_number, name, cert_name, ownership, 
-      seat, cert_use, practical_use, land_cert_use, land_practical_use, land_use_end_date, 
-      land_legal_year, land_remaining_year, set_use_classify, set_use, best_use, floor_area, 
-      evaluation_area, evaluation_number, evaluation_number_unit, price, factor, original_price, 
-      set_plot_ratio, plan_plot_ratio, actual_plot_ratio, standard_judge_id, standard_judge_explain, 
-      judge_function, not_applicable_reason, merge_explain, split_explain, split_from, 
-      parcel_outer_develop, parcel_inner_develop, parcel_setting_inner_develop, current_situation, 
-      bis_split, bis_merge, bis_enable, bis_set_function, sorting, creator, gmt_created, 
-      gmt_modified)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.pid,jdbcType=INTEGER}, #{item.projectId,jdbcType=INTEGER}, #{item.areaGroupId,jdbcType=INTEGER}, 
-        #{item.originalAreaGroupId,jdbcType=INTEGER}, #{item.declareRecordId,jdbcType=INTEGER}, 
-        #{item.buildingStatus,jdbcType=INTEGER}, #{item.basicApplyId,jdbcType=INTEGER}, 
-        #{item.number,jdbcType=VARCHAR}, #{item.originalNumber,jdbcType=VARCHAR}, #{item.splitNumber,jdbcType=INTEGER}, 
-        #{item.name,jdbcType=VARCHAR}, #{item.certName,jdbcType=VARCHAR}, #{item.ownership,jdbcType=VARCHAR}, 
-        #{item.seat,jdbcType=VARCHAR}, #{item.certUse,jdbcType=VARCHAR}, #{item.practicalUse,jdbcType=VARCHAR}, 
-        #{item.landCertUse,jdbcType=VARCHAR}, #{item.landPracticalUse,jdbcType=VARCHAR}, 
-        #{item.landUseEndDate,jdbcType=TIMESTAMP}, #{item.landLegalYear,jdbcType=DECIMAL}, 
-        #{item.landRemainingYear,jdbcType=DECIMAL}, #{item.setUseClassify,jdbcType=INTEGER}, 
-        #{item.setUse,jdbcType=INTEGER}, #{item.bestUse,jdbcType=INTEGER}, #{item.floorArea,jdbcType=DECIMAL}, 
-        #{item.evaluationArea,jdbcType=DECIMAL}, #{item.evaluationNumber,jdbcType=DECIMAL}, 
-        #{item.evaluationNumberUnit,jdbcType=VARCHAR}, #{item.price,jdbcType=DECIMAL}, 
-        #{item.factor,jdbcType=VARCHAR}, #{item.originalPrice,jdbcType=DECIMAL}, #{item.setPlotRatio,jdbcType=DECIMAL}, 
-        #{item.planPlotRatio,jdbcType=VARCHAR}, #{item.actualPlotRatio,jdbcType=DECIMAL}, 
-        #{item.standardJudgeId,jdbcType=INTEGER}, #{item.standardJudgeExplain,jdbcType=VARCHAR}, 
-        #{item.judgeFunction,jdbcType=VARCHAR}, #{item.notApplicableReason,jdbcType=VARCHAR}, 
-        #{item.mergeExplain,jdbcType=VARCHAR}, #{item.splitExplain,jdbcType=VARCHAR}, #{item.splitFrom,jdbcType=INTEGER}, 
-        #{item.parcelOuterDevelop,jdbcType=VARCHAR}, #{item.parcelInnerDevelop,jdbcType=VARCHAR}, 
-        #{item.parcelSettingInnerDevelop,jdbcType=VARCHAR}, #{item.currentSituation,jdbcType=VARCHAR}, 
-        #{item.bisSplit,jdbcType=BIT}, #{item.bisMerge,jdbcType=BIT}, #{item.bisEnable,jdbcType=BIT}, 
-        #{item.bisSetFunction,jdbcType=BIT}, #{item.sorting,jdbcType=INTEGER}, #{item.creator,jdbcType=VARCHAR}, 
-        #{item.gmtCreated,jdbcType=TIMESTAMP}, #{item.gmtModified,jdbcType=TIMESTAMP})
-    </foreach>
-  </insert>
-  <insert id="batchInsertSelective" keyColumn="id" keyProperty="list.id" parameterType="map" useGeneratedKeys="true">
-    insert into tb_scheme_judge_object (
-    <foreach collection="selective" item="column" separator=",">
-      ${column.escapedColumnName}
-    </foreach>
-    )
-    values
-    <foreach collection="list" item="item" separator=",">
-      (
-      <foreach collection="selective" item="column" separator=",">
-        <if test="'pid'.toString() == column.value">
-          #{item.pid,jdbcType=INTEGER}
-        </if>
-        <if test="'project_id'.toString() == column.value">
-          #{item.projectId,jdbcType=INTEGER}
-        </if>
-        <if test="'area_group_id'.toString() == column.value">
-          #{item.areaGroupId,jdbcType=INTEGER}
-        </if>
-        <if test="'original_area_group_id'.toString() == column.value">
-          #{item.originalAreaGroupId,jdbcType=INTEGER}
-        </if>
-        <if test="'declare_record_id'.toString() == column.value">
-          #{item.declareRecordId,jdbcType=INTEGER}
-        </if>
-        <if test="'building_status'.toString() == column.value">
-          #{item.buildingStatus,jdbcType=INTEGER}
-        </if>
-        <if test="'basic_apply_id'.toString() == column.value">
-          #{item.basicApplyId,jdbcType=INTEGER}
-        </if>
-        <if test="'number'.toString() == column.value">
-          #{item.number,jdbcType=VARCHAR}
-        </if>
-        <if test="'original_number'.toString() == column.value">
-          #{item.originalNumber,jdbcType=VARCHAR}
-        </if>
-        <if test="'split_number'.toString() == column.value">
-          #{item.splitNumber,jdbcType=INTEGER}
-        </if>
-        <if test="'name'.toString() == column.value">
-          #{item.name,jdbcType=VARCHAR}
-        </if>
-        <if test="'cert_name'.toString() == column.value">
-          #{item.certName,jdbcType=VARCHAR}
-        </if>
-        <if test="'ownership'.toString() == column.value">
-          #{item.ownership,jdbcType=VARCHAR}
-        </if>
-        <if test="'seat'.toString() == column.value">
-          #{item.seat,jdbcType=VARCHAR}
-        </if>
-        <if test="'cert_use'.toString() == column.value">
-          #{item.certUse,jdbcType=VARCHAR}
-        </if>
-        <if test="'practical_use'.toString() == column.value">
-          #{item.practicalUse,jdbcType=VARCHAR}
-        </if>
-        <if test="'land_cert_use'.toString() == column.value">
-          #{item.landCertUse,jdbcType=VARCHAR}
-        </if>
-        <if test="'land_practical_use'.toString() == column.value">
-          #{item.landPracticalUse,jdbcType=VARCHAR}
-        </if>
-        <if test="'land_use_end_date'.toString() == column.value">
-          #{item.landUseEndDate,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'land_legal_year'.toString() == column.value">
-          #{item.landLegalYear,jdbcType=DECIMAL}
-        </if>
-        <if test="'land_remaining_year'.toString() == column.value">
-          #{item.landRemainingYear,jdbcType=DECIMAL}
-        </if>
-        <if test="'set_use_classify'.toString() == column.value">
-          #{item.setUseClassify,jdbcType=INTEGER}
-        </if>
-        <if test="'set_use'.toString() == column.value">
-          #{item.setUse,jdbcType=INTEGER}
-        </if>
-        <if test="'best_use'.toString() == column.value">
-          #{item.bestUse,jdbcType=INTEGER}
-        </if>
-        <if test="'floor_area'.toString() == column.value">
-          #{item.floorArea,jdbcType=DECIMAL}
-        </if>
-        <if test="'evaluation_area'.toString() == column.value">
-          #{item.evaluationArea,jdbcType=DECIMAL}
-        </if>
-        <if test="'evaluation_number'.toString() == column.value">
-          #{item.evaluationNumber,jdbcType=DECIMAL}
-        </if>
-        <if test="'evaluation_number_unit'.toString() == column.value">
-          #{item.evaluationNumberUnit,jdbcType=VARCHAR}
-        </if>
-        <if test="'price'.toString() == column.value">
-          #{item.price,jdbcType=DECIMAL}
-        </if>
-        <if test="'factor'.toString() == column.value">
-          #{item.factor,jdbcType=VARCHAR}
-        </if>
-        <if test="'original_price'.toString() == column.value">
-          #{item.originalPrice,jdbcType=DECIMAL}
-        </if>
-        <if test="'set_plot_ratio'.toString() == column.value">
-          #{item.setPlotRatio,jdbcType=DECIMAL}
-        </if>
-        <if test="'plan_plot_ratio'.toString() == column.value">
-          #{item.planPlotRatio,jdbcType=VARCHAR}
-        </if>
-        <if test="'actual_plot_ratio'.toString() == column.value">
-          #{item.actualPlotRatio,jdbcType=DECIMAL}
-        </if>
-        <if test="'standard_judge_id'.toString() == column.value">
-          #{item.standardJudgeId,jdbcType=INTEGER}
-        </if>
-        <if test="'standard_judge_explain'.toString() == column.value">
-          #{item.standardJudgeExplain,jdbcType=VARCHAR}
-        </if>
-        <if test="'judge_function'.toString() == column.value">
-          #{item.judgeFunction,jdbcType=VARCHAR}
-        </if>
-        <if test="'not_applicable_reason'.toString() == column.value">
-          #{item.notApplicableReason,jdbcType=VARCHAR}
-        </if>
-        <if test="'merge_explain'.toString() == column.value">
-          #{item.mergeExplain,jdbcType=VARCHAR}
-        </if>
-        <if test="'split_explain'.toString() == column.value">
-          #{item.splitExplain,jdbcType=VARCHAR}
-        </if>
-        <if test="'split_from'.toString() == column.value">
-          #{item.splitFrom,jdbcType=INTEGER}
-        </if>
-        <if test="'parcel_outer_develop'.toString() == column.value">
-          #{item.parcelOuterDevelop,jdbcType=VARCHAR}
-        </if>
-        <if test="'parcel_inner_develop'.toString() == column.value">
-          #{item.parcelInnerDevelop,jdbcType=VARCHAR}
-        </if>
-        <if test="'parcel_setting_inner_develop'.toString() == column.value">
-          #{item.parcelSettingInnerDevelop,jdbcType=VARCHAR}
-        </if>
-        <if test="'current_situation'.toString() == column.value">
-          #{item.currentSituation,jdbcType=VARCHAR}
-        </if>
-        <if test="'bis_split'.toString() == column.value">
-          #{item.bisSplit,jdbcType=BIT}
-        </if>
-        <if test="'bis_merge'.toString() == column.value">
-          #{item.bisMerge,jdbcType=BIT}
-        </if>
-        <if test="'bis_enable'.toString() == column.value">
-          #{item.bisEnable,jdbcType=BIT}
-        </if>
-        <if test="'bis_set_function'.toString() == column.value">
-          #{item.bisSetFunction,jdbcType=BIT}
-        </if>
-        <if test="'sorting'.toString() == column.value">
-          #{item.sorting,jdbcType=INTEGER}
-        </if>
-        <if test="'creator'.toString() == column.value">
-          #{item.creator,jdbcType=VARCHAR}
-        </if>
-        <if test="'gmt_created'.toString() == column.value">
-          #{item.gmtCreated,jdbcType=TIMESTAMP}
-        </if>
-        <if test="'gmt_modified'.toString() == column.value">
-          #{item.gmtModified,jdbcType=TIMESTAMP}
-        </if>
-      </foreach>
-      )
-    </foreach>
-  </insert>
 </mapper>

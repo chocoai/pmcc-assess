@@ -42,18 +42,18 @@
                 <label class="col-sm-1 control-label">
                     键<span class="symbol required"></span>
                 </label>
-                <div class="col-sm-2">
-                    <input type="text" required class="form-control input-full" name="key" value="{key}">
+                <div class="col-sm-3">
+                    <textarea type="text" required class="form-control input-full" name="key" value="{key}">{key}</textarea>
                 </div>
                 <label class="col-sm-1 control-label">
                     值<span class="symbol required"></span>
                 </label>
-                <div class="col-sm-4">
-                    <input type="text" required class="form-control input-full" name="value" value="{value}">
+                <div class="col-sm-3">
+                    <textarea type="text" required class="form-control input-full" name="value" value="{value}">{value}</textarea>
                 </div>
                 <label class="col-sm-1 control-label">说明</label>
                 <div class="col-sm-2">
-                    <input type="text" class="form-control input-full" name="explain" value="{explain}">
+                    <textarea type="text" class="form-control input-full" name="explain" value="{explain}">{explain}</textarea>
                 </div>
                 <div class="col-sm-1">
                     <input class='btn btn-warning btn-sm' type='button' value='X'

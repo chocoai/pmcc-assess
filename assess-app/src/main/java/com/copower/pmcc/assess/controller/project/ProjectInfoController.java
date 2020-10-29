@@ -2,6 +2,7 @@ package com.copower.pmcc.assess.controller.project;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.copower.pmcc.assess.common.enums.AssessProjectTypeEnum;
 import com.copower.pmcc.assess.common.enums.BaseParameterEnum;
 import com.copower.pmcc.assess.common.enums.ProjectStatusEnum;
 import com.copower.pmcc.assess.constant.AssessDataDicKeyConstant;
@@ -348,9 +349,16 @@ public class ProjectInfoController {
 
     @ResponseBody
     @RequestMapping(value = "/getRemarkEntrustPurpose", name = "取得委托目的描述", method = RequestMethod.POST)
-    public HttpResult getValueDefinition(Integer entrustAimType) {
+    public HttpResult getValueDefinition(Integer entrustAimType,Integer projectCategoryId) {
         try {
             BaseDataDic dataDicById = baseDataDicService.getDataDicById(entrustAimType);
+            AssessProjectTypeEnum projectType = projectInfoService.getAssessProjectType(projectCategoryId);
+            if(AssessProjectTypeEnum.ASSESS_PROJECT_TYPE_LAND.equals(projectType)){
+                String value = baseDataDicService.getValueByKey(AssessDataDicKeyConstant.EXTEND_PROP_ENTRUST_PURPOSE_DESC, dataDicById);
+                if(StringUtils.isNotBlank(value)){
+                    dataDicById.setRemark(value);
+                }
+            }
             return HttpResult.newCorrectResult(dataDicById);
         } catch (Exception e) {
             baseService.writeExceptionInfo(e, "取得委托目的描述");

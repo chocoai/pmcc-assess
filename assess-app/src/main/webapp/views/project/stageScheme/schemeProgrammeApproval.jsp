@@ -342,6 +342,20 @@
                                 <tbody id="applicableTbody">
                                 </tbody>
                             </table>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th width="98%">单一方法理由</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <label class="form-control input-full" name="singleMethodRationale"></label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="col-sm-12">
                             <table class="table">
@@ -908,6 +922,11 @@
                             $("#notApplicableTbody").append(trHtml.replace(/{content}/g, AssessCommon.toString(item.notApplicableReason)));
                         }
                     })
+                    if (result.data.singleMethodRationale) {
+                        $('#modal_method_info').find('[name=singleMethodRationale]').text(result.data.singleMethodRationale).closest('table').show();
+                    } else {
+                        $('#modal_method_info').find('[name=singleMethodRationale]').text('').closest('table').hide();
+                    }
                 }
             }
         })

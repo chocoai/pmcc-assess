@@ -184,6 +184,18 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <div class="form-inline x-valid">
+                                            <label class="col-sm-2 control-label">
+                                                单一方法理由
+                                            </label>
+                                            <div class="col-sm-10">
+                                                <textarea placeholder="单一方法理由" class="form-control input-full" name="singleMethodRationale"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
