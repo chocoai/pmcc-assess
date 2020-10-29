@@ -83,6 +83,7 @@ public class ScriptTemplateService {
      */
     private Expression fetchExpression(ScriptTemplateWithBLOBs scriptTemplateWithBLOBs) {
         Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getId().toString(), scriptTemplateWithBLOBs.getScriptTemplate(), true);
+//        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getScriptTemplate(), true);
         return expression;
     }
 
@@ -138,22 +139,31 @@ public class ScriptTemplateService {
 
 
     public String executeScriptTemplate(ScriptTemplateWithBLOBs scriptTemplate, Map<String, Object> evn) throws BusinessException {
-        String contentResult = "";
+        Object contentResult = "";
         if (scriptTemplate == null) {
             throw new BusinessException("未找到配置的脚本模板");
         }
         if (StringUtils.isBlank(scriptTemplate.getScriptTemplate())) {
-            return contentResult;
+            return "";
         }
+        //失效
+//        invalidateScriptTemplate(scriptTemplate.getId()) ;
         //脚本执行
         Expression expression = fetchExpression(scriptTemplate);
         if (evn != null && !evn.isEmpty()) {
-            contentResult = (String) expression.execute();
+            List<Object> objectList = new ArrayList<>() ;
+            evn.entrySet().forEach(obj -> {
+                objectList.add(obj.getKey()) ;
+                objectList.add(obj.getValue()) ;
+            });
+            Object[] toArray = objectList.toArray();
+            Map<String, Object> stringObjectMap = expression.newEnv(toArray);
+            contentResult =  expression.execute(stringObjectMap);
         }else {
-            contentResult = (String) expression.execute(evn);
+            contentResult = expression.execute();
         }
 
-        return contentResult;
+        return contentResult.toString();
     }
 
 
