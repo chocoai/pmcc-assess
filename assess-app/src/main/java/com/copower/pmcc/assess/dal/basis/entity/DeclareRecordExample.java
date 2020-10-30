@@ -6,19 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 public class DeclareRecordExample {
-    /**
-     * tb_declare_record
-     */
     protected String orderByClause;
 
-    /**
-     * tb_declare_record
-     */
     protected boolean distinct;
 
-    /**
-     * tb_declare_record
-     */
     protected List<Criteria> oredCriteria;
 
     public DeclareRecordExample() {
@@ -74,9 +65,6 @@ public class DeclareRecordExample {
         distinct = false;
     }
 
-    /**
-     * tb_declare_record
-     */
     protected abstract static class GeneratedCriteria {
         protected List<Criterion> criteria;
 
@@ -2078,6 +2066,76 @@ public class DeclareRecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andLandAcquisitionMethodIsNull() {
+            addCriterion("land_acquisition_method is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodIsNotNull() {
+            addCriterion("land_acquisition_method is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodEqualTo(String value) {
+            addCriterion("land_acquisition_method =", value, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodNotEqualTo(String value) {
+            addCriterion("land_acquisition_method <>", value, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodGreaterThan(String value) {
+            addCriterion("land_acquisition_method >", value, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodGreaterThanOrEqualTo(String value) {
+            addCriterion("land_acquisition_method >=", value, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodLessThan(String value) {
+            addCriterion("land_acquisition_method <", value, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodLessThanOrEqualTo(String value) {
+            addCriterion("land_acquisition_method <=", value, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodLike(String value) {
+            addCriterion("land_acquisition_method like", value, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodNotLike(String value) {
+            addCriterion("land_acquisition_method not like", value, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodIn(List<String> values) {
+            addCriterion("land_acquisition_method in", values, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodNotIn(List<String> values) {
+            addCriterion("land_acquisition_method not in", values, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodBetween(String value1, String value2) {
+            addCriterion("land_acquisition_method between", value1, value2, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
+        public Criteria andLandAcquisitionMethodNotBetween(String value1, String value2) {
+            addCriterion("land_acquisition_method not between", value1, value2, "landAcquisitionMethod");
+            return (Criteria) this;
+        }
+
         public Criteria andLandRightTypeIsNull() {
             addCriterion("land_right_type is null");
             return (Criteria) this;
@@ -3226,9 +3284,6 @@ public class DeclareRecordExample {
         }
     }
 
-    /**
-     * tb_declare_record
-     */
     public static class Criterion {
         private String condition;
 

@@ -729,4 +729,26 @@ public class PublicService {
         activityDtos = activityDtos.stream().sorted(Comparator.comparing(BoxReActivityDto::getSortMultilevel).reversed()).collect(Collectors.toList());
         return activityDtos.get(0);
     }
+
+    /**
+     * StringBuilder字符串替换
+     * @param stb
+     * @param oldStr
+     * @param newStr
+     * @return
+     */
+    public StringBuilder replaceAll(StringBuilder stb, String oldStr, String newStr) {
+        if (stb == null || oldStr == null || newStr == null || stb.length() == 0 || oldStr.length() == 0)
+            return stb;
+        int index = stb.indexOf(oldStr);
+        if (index > -1 && !oldStr.equals(newStr)) {
+            int lastIndex = 0;
+            while (index > -1) {
+                stb.replace(index, index + oldStr.length(), newStr);
+                lastIndex = index + newStr.length();
+                index = stb.indexOf(oldStr, lastIndex);
+            }
+        }
+        return stb;
+    }
 }

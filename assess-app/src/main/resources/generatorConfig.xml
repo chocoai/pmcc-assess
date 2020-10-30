@@ -43,10 +43,7 @@
         <!--<columnOverride column="json_content" jdbcType="VARCHAR"></columnOverride>-->
 
         <!-- 具体表 -->
-        <table tableName="tb_scheme_judge_object" domainObjectName="SchemeJudgeObject" >
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
-        <table tableName="tb_data_evaluation_method" domainObjectName="DataEvaluationMethod" >
+        <table tableName="tb_declare_record" domainObjectName="DeclareRecord" >
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
     </context>

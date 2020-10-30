@@ -14,21 +14,17 @@ public interface DeclareRecordMapper {
 
     int insert(DeclareRecord record);
 
-    int insertSelective(@Param("record") DeclareRecord record, @Param("selective") DeclareRecord.Column ... selective);
+    int insertSelective(DeclareRecord record);
 
     List<DeclareRecord> selectByExample(DeclareRecordExample example);
 
     DeclareRecord selectByPrimaryKey(Integer id);
 
-    int updateByExampleSelective(@Param("record") DeclareRecord record, @Param("example") DeclareRecordExample example, @Param("selective") DeclareRecord.Column ... selective);
+    int updateByExampleSelective(@Param("record") DeclareRecord record, @Param("example") DeclareRecordExample example);
 
     int updateByExample(@Param("record") DeclareRecord record, @Param("example") DeclareRecordExample example);
 
-    int updateByPrimaryKeySelective(@Param("record") DeclareRecord record, @Param("selective") DeclareRecord.Column ... selective);
+    int updateByPrimaryKeySelective(DeclareRecord record);
 
     int updateByPrimaryKey(DeclareRecord record);
-
-    int batchInsert(@Param("list") List<DeclareRecord> list);
-
-    int batchInsertSelective(@Param("list") List<DeclareRecord> list, @Param("selective") DeclareRecord.Column ... selective);
 }

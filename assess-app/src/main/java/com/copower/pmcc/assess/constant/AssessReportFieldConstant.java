@@ -37,8 +37,10 @@ public class AssessReportFieldConstant {
     public static final String ALTERATION_PRINCIPLE = "alteration.principle";  //变动原则
     public static final String EXPECTED_RETURN_PRINCIPLE = "expected.return.principle";  //预期收益原则
     public static final String INCREASING_DECREASING_RETURNS_PRINCIPLE = "increasing.decreasing.returns.principle";  //报酬递增递减原则
-    public static final String CAUTIOUS_PRINCIPLE = "cautious.principle";  //谨慎原则
-    public static final String LEGAL_PRINCIPLE = "legal.principle";  //合法原则
+    public static final String CAUTIOUS_PRINCIPLE = "cautious.principle";  //谨慎原则（房产）
+    public static final String LEGAL_PRINCIPLE = "legal.principle";  //合法原则（房产）
+    public static final String BEST_USE_PRINCIPLE = "best.use.principle";  //最佳使用原则（土地）
+    public static final String COORDINATION_PRINCIPLE = "coordination.principle";  //协调原则（土地）
     public static final String EVALUATE_RESULTS = "evaluate.results";  //估价结果
 
 
