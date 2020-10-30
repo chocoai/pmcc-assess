@@ -3,10 +3,8 @@
 <html>
 <head>
     <title>脚本模板编辑</title>
-
     <%@include file="/views/share/main_css.jsp" %>
     <%@include file="template_css.jsp" %>
-
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/bootstrap-drawer/css/bootstrap-drawer.min.css">
 </head>
@@ -59,7 +57,7 @@
                                             脚本参数字符串
                                         </label>
                                         <div class="col-sm-11">
-                                            <textarea class="form-control input-full" rows="12" name="paramJsonStr"></textarea>
+                                            <textarea class="form-control input-full" rows="12" name="parameter">${template.parameter}'</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -243,8 +241,8 @@
         var box = scriptTemplateObj.previewBox;
         var frm = box.find("form") ;
         var scriptTemplate = scriptTemplateObj.templateEditor.getValue();
-        var paramJsonStr = frm.find("[name=paramJsonStr]").val() ;
-        var data = {templateKey:'${template.templateKey}' , id:'${template.id}',scriptTemplate:scriptTemplate,paramJsonStr:paramJsonStr};
+        var parameter = frm.find("[name=parameter]").val() ;
+        var data = {templateKey:'${template.templateKey}' , id:'${template.id}',scriptTemplate:scriptTemplate,parameter:parameter};
         console.log(data);
         AssessCommon.ajaxServerMethod(data, "/scriptTemplate/previewScriptTemplate", "post", function (result) {
             frm.find("[name=result]").html(result) ;
