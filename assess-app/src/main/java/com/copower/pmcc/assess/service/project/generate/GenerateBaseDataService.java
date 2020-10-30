@@ -1267,7 +1267,7 @@ public class GenerateBaseDataService {
             }
             String value = null;
             switch (baseReportEnum) {
-                case LAND_ENUM_RESTRICTIONS:{
+                case LAND_ENUM_RESTRICTIONS: {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
                         continue;
@@ -1277,11 +1277,11 @@ public class GenerateBaseDataService {
                     }
                     GenerateBaseExamineService generateBaseExamineService = new GenerateBaseExamineService(basicApply);
                     BasicHouseTrading basicTrading = generateBaseExamineService.getBasicTrading();
-                    if (basicTrading == null){
+                    if (basicTrading == null) {
                         continue;
                     }
-                    if (StringUtils.isNotBlank(basicTrading.getRestrictions()) && StringUtils.isNotBlank(basicTrading.getRestrictionsRemark())){
-                        value = String.format("%s : %s",basicTrading.getRestrictions() ,basicTrading.getRestrictionsRemark()) ;
+                    if (StringUtils.isNotBlank(basicTrading.getRestrictions()) && StringUtils.isNotBlank(basicTrading.getRestrictionsRemark())) {
+                        value = String.format("%s : %s", basicTrading.getRestrictions(), basicTrading.getRestrictionsRemark());
                     }
                     break;
                 }
@@ -1339,11 +1339,11 @@ public class GenerateBaseDataService {
                     break;
                 }
                 case LAND_ENUM_JudgeObjectPRINCIPLE_UseCert: {
-                    if (declareRecord.getHasCert() != null){
-                        if (declareRecord.getHasCert()){
-                            value = "土地使用权人已按国家、省、市法律法规一次性交纳完土地出让金及其它各种税费，并取得相应的产权依据和其它法律保护依据。" ;
-                        }else {
-                            value = "设定土地使用权人已按国家、省、市法律法规一次性交纳完土地出让金及其它各种税费，并能依法取得相应的产权且能得到其它相关法律保护。" ;
+                    if (declareRecord.getHasCert() != null) {
+                        if (declareRecord.getHasCert()) {
+                            value = "土地使用权人已按国家、省、市法律法规一次性交纳完土地出让金及其它各种税费，并取得相应的产权依据和其它法律保护依据。";
+                        } else {
+                            value = "设定土地使用权人已按国家、省、市法律法规一次性交纳完土地出让金及其它各种税费，并能依法取得相应的产权且能得到其它相关法律保护。";
                         }
                     }
                     break;
@@ -1376,9 +1376,9 @@ public class GenerateBaseDataService {
                     }
                     if (StringUtils.isNotBlank(value)) {
                         if ("国用".equals(value)) {
-                            value = "国有" ;
-                        }else if ("集用".equals(value)) {
-                            value = "集体" ;
+                            value = "国有";
+                        } else if ("集用".equals(value)) {
+                            value = "集体";
                         }
                     }
                     break;
@@ -1488,7 +1488,7 @@ public class GenerateBaseDataService {
                     value = basicEstateLandState.getCompatibleRatio();
                     break;
                 }
-                case LAND_ENUM_PLANNING_CONSTRAINTS:{
+                case LAND_ENUM_PLANNING_CONSTRAINTS: {
                     BasicApply basicApply = generateCommonMethod.getBasicApplyBySchemeJudgeObject(schemeJudgeObject);
                     if (basicApply == null) {
                         continue;
@@ -1500,30 +1500,30 @@ public class GenerateBaseDataService {
                     BasicEstateLandStateVo basicEstateLandState = generateBaseExamineService.getBasicEstateLandState();
                     StringBuilder stringBuilder = new StringBuilder(12);
                     int count = 0;
-                    List<String> stringList = new ArrayList<>() ;
+                    List<String> stringList = new ArrayList<>();
                     if (StringUtils.isNotBlank(basicEstateLandState.getPlotRatio())) {
                         stringBuilder.append("容积率").append(basicEstateLandState.getPlotRatio()).append("、");
-                        stringList.add(String.join("" ,"容积率" ,basicEstateLandState.getPlotRatio())) ;
+                        stringList.add(String.join("", "容积率", basicEstateLandState.getPlotRatio()));
                         count++;
                     }
                     if (StringUtils.isNotBlank(basicEstateLandState.getBuildingDensity())) {
-                        stringList.add(String.join("" ,"建筑密度" ,basicEstateLandState.getBuildingDensity())) ;
+                        stringList.add(String.join("", "建筑密度", basicEstateLandState.getBuildingDensity()));
                         count++;
                     }
                     if (StringUtils.isNotBlank(basicEstateLandState.getGreenSpaceRate())) {
-                        stringList.add(String.join("" ,"绿地率" ,basicEstateLandState.getGreenSpaceRate())) ;
+                        stringList.add(String.join("", "绿地率", basicEstateLandState.getGreenSpaceRate()));
                         count++;
                     }
                     if (StringUtils.isNotBlank(basicEstateLandState.getCompatibleRatio())) {
-                        stringList.add(String.join("" ,"兼容比" ,basicEstateLandState.getCompatibleRatio())) ;
+                        stringList.add(String.join("", "兼容比", basicEstateLandState.getCompatibleRatio()));
                         count++;
                     }
                     if (basicEstateLandState.getBuildingHeightLimit() != null) {
-                        stringList.add(String.join("" ,"建筑高度" ,ArithmeticUtils.getBigDecimalString(basicEstateLandState.getBuildingHeightLimit()))) ;
+                        stringList.add(String.join("", "建筑高度", ArithmeticUtils.getBigDecimalString(basicEstateLandState.getBuildingHeightLimit())));
                         count++;
                     }
                     if (count != 0) {
-                        value = StringUtils.join(stringList,"、");
+                        value = StringUtils.join(stringList, "、");
                     }
                     break;
                 }
@@ -1581,6 +1581,7 @@ public class GenerateBaseDataService {
 
     /**
      * 土地报告 区域因素描述表
+     *
      * @return
      * @throws Exception
      */
@@ -1631,7 +1632,7 @@ public class GenerateBaseDataService {
 
                 stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("6、规划条件:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getPlanningConditions(judgeObjects)))));
 
-                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("区域土地利用状况:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getSummaryRregionalFactors( basicEstate,judgeObjects)))));
+                stringBuilder.append(generateCommonMethod.getIndentHtml(String.format("区域土地利用状况:%s", generateCommonMethod.trim(generateLandRegionalFactorsDescService.getSummaryRregionalFactors(basicEstate, judgeObjects)))));
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml(stringBuilder.toString()), true);
             }
         }
@@ -3628,6 +3629,7 @@ public class GenerateBaseDataService {
         }
         return errorStr;
     }
+
     public String getStatementPurposeEntrustmentLimit() {
         String entrustPurposeLimit = getSchemeAreaGroup().getEntrustPurposeLimit();
         if (StringUtils.isNotEmpty(entrustPurposeLimit)) {
@@ -3938,7 +3940,7 @@ public class GenerateBaseDataService {
                 case PRINCIPLE:
                     result = evaluationPrincipleService.getReportPrinciple(this.projectInfo, areaId);
                     break;
-                case LAND_PRINCIPLE:{
+                case LAND_PRINCIPLE: {
                     result = evaluationPrincipleService.getLandReportPrinciple(this.projectInfo, areaId);
                 }
                 default:
@@ -3949,6 +3951,32 @@ public class GenerateBaseDataService {
         builder.insertHtml(generateCommonMethod.getWarpCssHtml(result), true);
         AsposeUtils.saveWord(localPath, document);
         return localPath;
+    }
+
+    /**
+     * 获取变现时间
+     *
+     * @return
+     */
+    public String getLiquidTime() {
+        SchemeLiquidationAnalysis data = schemeLiquidationAnalysisService.getDataByAreaId(areaId);
+        if (data != null && data.getLiquidTime() != null) {
+            return data.getLiquidTime();
+        }
+        return "";
+    }
+
+    /**
+     * 获取变现比率
+     *
+     * @return
+     */
+    public String getLiquidRatios() {
+        SchemeLiquidationAnalysis data = schemeLiquidationAnalysisService.getDataByAreaId(areaId);
+        if (data != null && data.getLiquidRatios() != null) {
+            return data.getLiquidRatios();
+        }
+        return "";
     }
 
     /**
@@ -4003,7 +4031,7 @@ public class GenerateBaseDataService {
         return localPath;
     }
 
-    public String getReportGeneralFactorsSetting()throws Exception{
+    public String getReportGeneralFactorsSetting() throws Exception {
         String localPath = getLocalPath();
         Document document = new Document();
         DocumentBuilder documentBuilder = getDefaultDocumentBuilderSetting(document);
@@ -4015,7 +4043,7 @@ public class GenerateBaseDataService {
             while (iterator.hasNext()) {
                 Map.Entry<String, String> stringEntry = iterator.next();
                 documentBuilder.insertHtml(generateCommonMethod.getWarpCssHtml("<div style='text-align:center;;font-size:16.0pt;'>" + stringEntry.getKey() + "</div>"), true);
-                documentBuilder.insertHtml(stringEntry.getValue(),false);
+                documentBuilder.insertHtml(stringEntry.getValue(), false);
             }
         }
         AsposeUtils.saveWord(localPath, document);
@@ -4272,6 +4300,7 @@ public class GenerateBaseDataService {
 
     /**
      * 只对证载地址的清查进行判断
+     *
      * @return
      */
     protected String getLandInventoryAddRessText() {
@@ -4303,30 +4332,27 @@ public class GenerateBaseDataService {
                 }
             }
         }
-        stringBuilder.append("本次评估以证载地址与现场查看地址界定估价对象系同一标的物为前提。") ;
+        stringBuilder.append("本次评估以证载地址与现场查看地址界定估价对象系同一标的物为前提。");
         String value = stringBuilder.toString();
         return StringUtils.isNotBlank(value) ? value : errorStr;
     }
 
-    protected String getLandNumberDenominations(){
+    /**
+     * 取宗数
+     *
+     * @return
+     */
+    protected String getLandNumberDenominations() {
         //取评估方案中对应的权证数或无证时的地块数
-        int index = 0;
+        Set<Integer> set = Sets.newHashSet();
         List<SchemeJudgeObject> schemeJudgeObjectList = getSchemeJudgeObjectList();
-        for (SchemeJudgeObject schemeJudgeObject:schemeJudgeObjectList) {
-            BasicApply basicApply = basicApplyService.getByBasicApplyId(schemeJudgeObject.getBasicApplyId());
-            if (basicApply == null || basicApply.getId() == 0) {
-                continue;
+        for (SchemeJudgeObject schemeJudgeObject : schemeJudgeObjectList) {
+            if (schemeJudgeObject.getDeclareRecordId() != null && schemeJudgeObject.getDeclareRecordId() > 0) {
+                set.add(schemeJudgeObject.getDeclareRecordId());
             }
-            if (schemeJudgeObject.getDeclareRecordId() == null) {
-                continue;
-            }
-            DeclareRecord declareRecord = declareRecordService.getDeclareRecordById(schemeJudgeObject.getDeclareRecordId());
-            if (declareRecord == null) {
-                continue;
-            }
-            index++;
         }
-        return String.format("%s宗数",String.valueOf(index)) ;
+        if (set.size() <= 1) return "";
+        return String.format("%s宗", set.size());
     }
 
     /**

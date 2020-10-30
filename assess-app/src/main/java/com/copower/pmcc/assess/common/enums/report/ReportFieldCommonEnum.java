@@ -31,6 +31,8 @@ public enum ReportFieldCommonEnum implements Serializable {
     CommonAssessTotal("公共评估总价"),
     CommonAssessTotalRMB("公共评估总价大写"),
     CommonCertificationPurpose("公共证载用途"),
+    CommonLiquidTime("公共变现时间"),
+    CommonLiquidRatios("公共变现比率"),
 
     CommonValuationProjectName("公共估价项目名称"),
     CommonPracticalUse("公共实际用途"),

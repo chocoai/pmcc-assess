@@ -17,6 +17,7 @@ import com.copower.pmcc.assess.service.PublicService;
 import com.copower.pmcc.assess.service.base.BaseDataDicService;
 import com.copower.pmcc.assess.service.base.BaseProjectClassifyService;
 import com.copower.pmcc.assess.service.basic.BasicApplyBatchService;
+import com.copower.pmcc.assess.service.project.ProjectInfoService;
 import com.copower.pmcc.assess.service.project.generate.GenerateCommonMethod;
 import com.copower.pmcc.assess.service.project.generate.GenerateHouseEntityService;
 import com.copower.pmcc.assess.service.project.generate.GenerateLandEntityService;
@@ -87,6 +88,8 @@ public class DataReportAnalysisService {
     private SurveyAssetInfoService surveyAssetInfoService;
     @Autowired
     private BaseProjectClassifyService baseProjectClassifyService;
+    @Autowired
+    private ProjectInfoService projectInfoService;
 
     /**
      * 保存数据
@@ -152,6 +155,18 @@ public class DataReportAnalysisService {
      */
     public List<DataReportAnalysis> getReportAnalysisList(Integer reportAnalysisType) {
         return dataReportAnalysisDao.getReportAnalysisList(reportAnalysisType);
+    }
+
+    public List<DataReportAnalysis> getReportAnalysisList(Integer reportAnalysisType, Integer areaId) {
+        String type = "";
+        String category = "";
+        String strEntrustmentPurpose = "";
+        SchemeAreaGroup areaGroup = schemeAreaGroupService.getSchemeAreaGroup(areaId);
+        ProjectInfo projectInfo = projectInfoService.getProjectInfoById(areaGroup.getProjectId());
+        type = String.format(",%s,", projectInfo.getProjectTypeId());
+        category = String.format(",%s,", projectInfo.getProjectCategoryId());
+        strEntrustmentPurpose=String.format(",%s,", areaGroup.getEntrustPurpose());
+        return dataReportAnalysisDao.getReportAnalysisList(reportAnalysisType, type, category, strEntrustmentPurpose);
     }
 
 

@@ -711,6 +711,18 @@ public class PoiTest {
             return number;
         }
     }
+
+    @Test
+    public  void testGxy(){
+        try {
+            String path="C:\\Users\\wangpc\\Downloads\\结果报告2020年10月29日.doc";
+            Document doc = new Document(path);
+            doc.updateFields();// 更新域
+            AsposeUtils.saveWord(path,doc);
+        } catch (Exception e) {
+
+        }
+    }
 }
 
 

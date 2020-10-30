@@ -354,12 +354,18 @@ public final class GenerateReportAssembleHelp {
         if (Objects.equal(ReportFieldCommonEnum.CommonValueTimePointRemark.getName(), name)) {
             return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getValueTimePointRemark());
         }
-
         //估价技术思路
         if (Objects.equal(ReportFieldCommonEnum.CommonEvaluationThink.getName(), name)) {
             return putValue(false, false, true, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getEvaluationThink());
         }
-
+        //变现比率
+        if (Objects.equal(ReportFieldCommonEnum.CommonLiquidRatios.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidRatios());
+        }
+        //变现时间
+        if (Objects.equal(ReportFieldCommonEnum.CommonLiquidTime.getName(), name)) {
+            return putValue(true, true, false, textMap, bookmarkMap, fileMap, name, generateBaseDataService.getLiquidTime());
+        }
         //法定优先受偿款总金额
         if (Objects.equal(ReportFieldCommonEnum.CommonStatutoryPriorityAmountTotal.getName(), name)) {
             BigDecimal bigDecimal = generateBaseDataService.getSchemeReimbursementKnowTotalPrice();

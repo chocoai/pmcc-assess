@@ -41,6 +41,8 @@ public class DataReportAnalysisRiskService {
     private SchemeJudgeObjectService schemeJudgeObjectService;
     @Autowired
     private SurveyAssetInfoService surveyAssetInfoService;
+    @Autowired
+    private DataReportAnalysisService dataReportAnalysisService;
 
 
     /**
@@ -69,7 +71,7 @@ public class DataReportAnalysisRiskService {
     public String getReportRisk(Integer areaGroupId) {
         BaseDataDic baseDataDic = baseDataDicService.getCacheDataDicByFieldName(AssessDataDicKeyConstant.REPORT_ANALYSIS_CATEGORY_RISK);
         if (baseDataDic == null) return "";
-        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisDao.getReportAnalysisList(baseDataDic.getId());
+        List<DataReportAnalysis> reportAnalysisList = dataReportAnalysisService.getReportAnalysisList(baseDataDic.getId(),areaGroupId);
         if (CollectionUtils.isEmpty(reportAnalysisList)) return "";
         StringBuilder stringBuilder = new StringBuilder();
         //对应委估对象

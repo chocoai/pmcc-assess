@@ -26,35 +26,35 @@ public class DataReportAnalysisDao {
         return dataReportAnalysisMapper.updateByPrimaryKeySelective(evaluationReportAnalysis) == 1;
     }
 
-    public List<DataReportAnalysis> getReportAnalysisList(String name, Integer type,Integer reportAnalysisType) {
+    public List<DataReportAnalysis> getReportAnalysisList(String name, Integer type, Integer reportAnalysisType) {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = example.createCriteria();
         if (StringUtils.isNotBlank(name)) {
             criteria.andNameLike(String.format("%%%s%%", name));
         }
-        if(type!=null){
+        if (type != null) {
             criteria.andMarketBackgroundTypeEqualTo(type);
         }
-        if(reportAnalysisType!=null){
+        if (reportAnalysisType != null) {
             criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
         }
         example.setOrderByClause("sorting");
         return dataReportAnalysisMapper.selectByExample(example);
     }
 
-    public List<DataReportAnalysis> getReportAnalysisList(String province,String city,String district,Integer reportAnalysisType,String entrustmentPurpose) {
+    public List<DataReportAnalysis> getReportAnalysisList(String province, String city, String district, Integer reportAnalysisType, String entrustmentPurpose) {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = example.createCriteria();
-        if(StringUtils.isNotBlank(province)){
+        if (StringUtils.isNotBlank(province)) {
             criteria.andProvinceEqualTo(province);
         }
-        if(StringUtils.isNotBlank(city)){
+        if (StringUtils.isNotBlank(city)) {
             criteria.andCityEqualTo(city);
         }
-        if(StringUtils.isNotBlank(district)){
+        if (StringUtils.isNotBlank(district)) {
             criteria.andDistrictEqualTo(district);
         }
-        if(reportAnalysisType!=null){
+        if (reportAnalysisType != null) {
             criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
         }
         if (StringUtils.isNotBlank(entrustmentPurpose)) {
@@ -68,6 +68,23 @@ public class DataReportAnalysisDao {
         DataReportAnalysisExample example = new DataReportAnalysisExample();
         DataReportAnalysisExample.Criteria criteria = example.createCriteria();
         criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
+        example.setOrderByClause("sorting");
+        return dataReportAnalysisMapper.selectByExample(example);
+    }
+
+    public List<DataReportAnalysis> getReportAnalysisList(Integer reportAnalysisType, String type, String category,String entrustmentPurpose) {
+        DataReportAnalysisExample example = new DataReportAnalysisExample();
+        DataReportAnalysisExample.Criteria criteria = example.createCriteria();
+        criteria.andReportAnalysisTypeEqualTo(reportAnalysisType);
+        if(StringUtils.isNotBlank(type)){
+            criteria.andTypeLike(String.format("%%%s%%",type));
+        }
+        if(StringUtils.isNotBlank(category)){
+            criteria.andCategoryLike(String.format("%%%s%%",category));
+        }
+        if(StringUtils.isNotBlank(entrustmentPurpose)){
+            criteria.andEntrustmentPurposeLike(String.format("%%%s%%",entrustmentPurpose));
+        }
         example.setOrderByClause("sorting");
         return dataReportAnalysisMapper.selectByExample(example);
     }
