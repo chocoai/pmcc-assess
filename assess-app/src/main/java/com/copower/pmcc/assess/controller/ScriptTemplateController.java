@@ -35,14 +35,15 @@ public class ScriptTemplateController extends BaseController {
     }
 
     @PostMapping(value = "/previewScriptTemplate", name = "预览脚本模板")
-    public HttpResult previewScriptTemplate(ScriptTemplateWithBLOBs scriptTemplate, String paramJsonStr) {
+    public HttpResult previewScriptTemplate(ScriptTemplateWithBLOBs scriptTemplate) {
         try {
             //paramJson 实际是一个key-value map
             JSONObject paramJson = null;
-            if (StringUtils.isNotBlank(paramJsonStr)) {
-                paramJson = JSONObject.parseObject(paramJsonStr);
+            if (StringUtils.isNotBlank(scriptTemplate.getParameter())) {
+                paramJson = JSONObject.parseObject(scriptTemplate.getParameter());
             }
             String result = scriptTemplateService.executeScriptTemplate(scriptTemplate, paramJson);
+            scriptTemplateService.saveAndUpdateScriptTemplate(scriptTemplate);
             return HttpResult.newCorrectResult(200, result);
         } catch (Exception e) {
             logger.error("预览脚本模板", e);

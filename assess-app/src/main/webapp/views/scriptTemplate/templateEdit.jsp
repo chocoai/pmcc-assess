@@ -3,12 +3,14 @@
 <html>
 <head>
     <title>脚本模板编辑</title>
-
     <%@include file="/views/share/main_css.jsp" %>
     <%@include file="template_css.jsp" %>
-
     <link rel="stylesheet"
           href="${pageContext.request.contextPath}/assets/bootstrap-drawer/css/bootstrap-drawer.min.css">
+
+    <style>
+        .CodeMirror { text-align: left!important; }
+    </style>
 </head>
 <body>
 
@@ -59,7 +61,7 @@
                                             脚本参数字符串
                                         </label>
                                         <div class="col-sm-11">
-                                            <textarea class="form-control input-full" rows="12" name="paramJsonStr"></textarea>
+                                            <textarea class="form-control input-full" rows="12" name="parameter">${template.parameter}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -201,23 +203,7 @@
         script_template_form: $('#script_template_form'),
         previewBox: $('#previewBox'),
         //代码编辑器
-        templateEditor: CodeMirror.fromTextArea(document.getElementById("scriptTemplate"), {
-            styleActiveLine: true,
-            //Java高亮显示
-            mode: "text/x-java",
-            //显示行号
-            lineNumbers: true,
-            //设置主题
-            theme: "xq-light",
-            //代码折叠
-            lineWrapping: true,
-            foldGutter: true,
-            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-            //括号匹配
-            matchBrackets: true,
-            //智能提示
-            extraKeys: {"Ctrl-Space": "autocomplete"}//ctrl-space唤起智能提示
-        })
+        templateEditor: null,
     };
 
 
@@ -243,8 +229,8 @@
         var box = scriptTemplateObj.previewBox;
         var frm = box.find("form") ;
         var scriptTemplate = scriptTemplateObj.templateEditor.getValue();
-        var paramJsonStr = frm.find("[name=paramJsonStr]").val() ;
-        var data = {templateKey:'${template.templateKey}' , id:'${template.id}',scriptTemplate:scriptTemplate,paramJsonStr:paramJsonStr};
+        var parameter = frm.find("[name=parameter]").val() ;
+        var data = {templateKey:'${template.templateKey}' , id:'${template.id}',scriptTemplate:scriptTemplate,parameter:parameter};
         console.log(data);
         AssessCommon.ajaxServerMethod(data, "/scriptTemplate/previewScriptTemplate", "post", function (result) {
             frm.find("[name=result]").html(result) ;
@@ -294,6 +280,46 @@
                 }
             }, 400);
         }('${template.templateOriginalText}'));
+
+        scriptTemplateObj.templateEditor = CodeMirror.fromTextArea(document.getElementById("scriptTemplate"), {
+            //Java高亮显示
+            mode: "text/x-java",
+            //显示行号
+            lineNumbers: true,
+            autofocus: true,
+            //设置主题
+            theme: "xq-light",
+            foldGutter: true,
+            gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+            indentUnit: 4,         // 缩进单位为4
+            styleActiveLine: true, // 当前行背景高亮
+            matchBrackets: true,   // 括号匹配
+            lineWrapping: true,    // 自动换行
+            // theme: 'monokai',      // 使用monokai模版
+            //智能提示
+            extraKeys: {"Ctrl-Space": "autocomplete"}//ctrl-space唤起智能提示
+        }) ;
+
+        scriptTemplateObj.templateEditor.setOption("extraKeys", {
+            // Tab键换成4个空格
+            Tab: function(cm) {
+                var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+                cm.replaceSelection(spaces);
+            },
+            // F11键切换全屏
+            "F11": function(cm) {
+                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+            },
+            // Esc键退出全屏
+            "Esc": function(cm) {
+                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+            }
+        });
+
+        // setTimeout(() => {
+        //     scriptTemplateObj.templateEditor.refresh()
+        //
+        // },50);
 
         //开启编辑器
         // scriptTemplateObj.templateEditor;
