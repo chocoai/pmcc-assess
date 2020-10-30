@@ -7,11 +7,11 @@ import com.googlecode.aviator.runtime.function.AbstractFunction;
 import com.googlecode.aviator.runtime.function.FunctionUtils;
 import com.googlecode.aviator.runtime.type.AviatorDouble;
 import com.googlecode.aviator.runtime.type.AviatorObject;
+import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class RunScriptExample {
 
@@ -49,7 +49,7 @@ public class RunScriptExample {
         // Run the exprssion.
 //        exp.execute();
         Map<String, Object> stringObjectMap = new HashMap<>();
-       stringObjectMap.put("parcelStandard", "可分割");
+        stringObjectMap.put("parcelStandard", "可分割");
         String string = JSONObject.toJSONString(stringObjectMap);
         Object execute = exp.execute(stringObjectMap);
         System.out.println(string.toString());
@@ -65,6 +65,7 @@ public class RunScriptExample {
 
     /**
      * 传入参数和值
+     *
      * @throws Exception
      */
     @Test
@@ -153,6 +154,7 @@ public class RunScriptExample {
 
     /**
      * tuple 创建数组  有点类似于object类型数组，意思是用这个可以创建任何类型数组
+     *
      * @throws Exception
      */
     @Test
@@ -173,6 +175,7 @@ public class RunScriptExample {
 
     /**
      * 好像这个表达式函数 没有类似fori 的形式 用这个range可以模拟这个形式,最后一个参数相当于迭代步长
+     *
      * @throws Exception
      */
     @Test
@@ -187,6 +190,7 @@ public class RunScriptExample {
 
     /**
      * 变量作用域问题
+     *
      * @throws Exception
      */
     @Test
@@ -204,6 +208,7 @@ public class RunScriptExample {
 
     /**
      * null的用法
+     *
      * @throws Exception
      */
     @Test
@@ -219,6 +224,7 @@ public class RunScriptExample {
 
     /**
      * 类似于java lambda 以及lambda实现的匿名函数 这里lambda有两种写法
+     *
      * @throws Exception
      */
     @Test
@@ -226,37 +232,39 @@ public class RunScriptExample {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("let f = ( lambda(x,y) -> x+ y end )(2,4);");
         stringBuilder.append("println('f:'+f) ;");
-        stringBuilder.append(" add = (lambda(a,b) -> a + b end) ;")  ;
-        stringBuilder.append("mul = (lambda (a,b,c) -> a*b*c end);") ;
-        stringBuilder.append("println('add:'+add(4,6));") ;
-        stringBuilder.append("println('mul:'+mul(2,3,5));") ;
+        stringBuilder.append(" add = (lambda(a,b) -> a + b end) ;");
+        stringBuilder.append("mul = (lambda (a,b,c) -> a*b*c end);");
+        stringBuilder.append("println('add:'+add(4,6));");
+        stringBuilder.append("println('mul:'+mul(2,3,5));");
 
-        stringBuilder.append("fn square(x){x*2} ") ;
-        stringBuilder.append("add_n  = (lambda(a,b,f) -> f(a) +f(b) end) ;") ;
-        stringBuilder.append("println('add_n:' +  add_n(4,5,square) ) ;") ;
+        stringBuilder.append("fn square(x){x*2} ");
+        stringBuilder.append("add_n  = (lambda(a,b,f) -> f(a) +f(b) end) ;");
+        stringBuilder.append("println('add_n:' +  add_n(4,5,square) ) ;");
 
-        stringBuilder.append("                println(  'lambda简写:' + lambda(g,h) -> g+h end(5,7)   )    ;                ") ;
+        stringBuilder.append("                println(  'lambda简写:' + lambda(g,h) -> g+h end(5,7)   )    ;                ");
 
         AviatorEvaluator.compile(stringBuilder.toString()).execute();
     }
 
     /**
      * 闭包环境  需要小心
+     *
      * @throws Exception
      */
     @Test
-    public void testClosure()throws Exception{
+    public void testClosure() throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
-        String fn1 = "lambda() -> let result = c; c = c+1; return result ; end" ;
-        stringBuilder.append(String.format("let counter  = lambda() -> let c = 0; %s end   ;" ,fn1)) ;
-        stringBuilder.append("let c1 = counter();") ;
-        stringBuilder.append("for n in range(1,10){  v = c1();  println( v ) ;  } ;") ;
+        String fn1 = "lambda() -> let result = c; c = c+1; return result ; end";
+        stringBuilder.append(String.format("let counter  = lambda() -> let c = 0; %s end   ;", fn1));
+        stringBuilder.append("let c1 = counter();");
+        stringBuilder.append("for n in range(1,10){  v = c1();  println( v ) ;  } ;");
         System.out.println(stringBuilder.toString());
         AviatorEvaluator.compile(stringBuilder.toString()).execute();
     }
 
     /**
      * 集合运用
+     *
      * @throws Exception
      */
     @Test
@@ -299,10 +307,11 @@ public class RunScriptExample {
 
     /**
      * 调用自定义函数
+     *
      * @throws Exception
      */
     @Test
-    public void testDefaultFun()throws Exception{
+    public void testDefaultFun() throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         //注册函数
         AviatorEvaluator.addFunction(new AddFunction());
@@ -314,27 +323,47 @@ public class RunScriptExample {
 
     /**
      * 引入java的静态方法
+     *
      * @throws Exception
      */
     @Test
-    public void testStaticClassFun()throws Exception{
+    public void testStaticClassFun() throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
         AviatorEvaluator.addStaticFunctions("stringUtils", StringUtils.class);
-        stringBuilder.append("println(        stringUtils.contains('你好啊!' ,'你')     ) ;") ;
+        stringBuilder.append("println(        stringUtils.contains('你好啊!' ,'你')     ) ;");
         Object execute = AviatorEvaluator.compile(stringBuilder.toString()).execute();
     }
 
 
     /**
      * 引入java 实例方法
+     *
      * @throws Exception
      */
     @Test
-    public void testInstanceFun()throws Exception{
+    public void testInstanceFun() throws Exception {
         StringBuilder stringBuilder = new StringBuilder();
-        AviatorEvaluator.addInstanceFunctions("string",String.class) ;
-        stringBuilder.append(" println(   string.contains('hello' ,'h')  )    ;") ;
+        AviatorEvaluator.addInstanceFunctions("string", String.class);
+        stringBuilder.append(" println(   string.contains('hello' ,'h')  )    ;");
         AviatorEvaluator.compile(stringBuilder.toString()).execute();
+    }
+
+    @Test
+    public void testJavaObject(){
+        StringBuilder stringBuilder = new StringBuilder();
+        List<TestObjK> objKList = new ArrayList<>() ;
+        for (int i = 0; i < 8; i++) {
+            objKList.add(new TestObjK(UUID.randomUUID().toString(), RandomUtils.nextLong(10,10000000)));
+        }
+        stringBuilder.append("( lambda() -> {} end) ;");
+        stringBuilder.append("let land_rights_status = 0  ;");
+        stringBuilder.append("let a1 = 0  ;");
+        stringBuilder.append("for item in kList {") ;
+        stringBuilder.append("println( 'name:' +item.name +' id:'+item.id )    ;") ;
+        stringBuilder.append("}") ;
+        Map<String,Object> map = new HashMap<>() ;
+        map.put("kList" ,objKList) ;
+        AviatorEvaluator.compile(stringBuilder.toString()).execute(map);
     }
 
     /*
@@ -348,8 +377,43 @@ public class RunScriptExample {
             Number right = FunctionUtils.getNumberValue(arg2, env);
             return new AviatorDouble(left.doubleValue() + right.doubleValue());
         }
+
         public String getName() {
             return "add";
+        }
+    }
+
+    public static class TestObjK {
+        private String name;
+        private Long id;
+
+        public TestObjK(String name, Long id) {
+            this.name = name;
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        @Override
+        public String toString() {
+            return "TestObjK{" +
+                    "name='" + name + '\'' +
+                    ", id=" + id +
+                    '}';
         }
     }
 
