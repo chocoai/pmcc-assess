@@ -57,7 +57,7 @@
                                             脚本参数字符串
                                         </label>
                                         <div class="col-sm-11">
-                                            <textarea class="form-control input-full" rows="12" name="parameter">${template.parameter}'</textarea>
+                                            <textarea class="form-control input-full" rows="12" name="parameter">${template.parameter}</textarea>
                                         </div>
                                     </div>
                                 </div>
