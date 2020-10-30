@@ -13,6 +13,7 @@ import com.googlecode.aviator.AviatorEvaluatorInstance;
 import com.googlecode.aviator.Expression;
 import com.copower.pmcc.erp.common.CommonService;
 import com.copower.pmcc.erp.common.exception.BusinessException;
+import com.googlecode.aviator.Options;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -71,6 +72,7 @@ public class ScriptTemplateService {
          * 初始化脚本引擎实例对象
          */
         this.aviatorEvaluatorInstance = AviatorEvaluator.getInstance();
+        aviatorEvaluatorInstance.setOption(Options.OPTIMIZE_LEVEL, AviatorEvaluator.COMPILE) ;
         //this.aviatorEvaluatorInstance.importFunctions(ScriptTemplateExtensionFunctionUtils.class);//外部工具类，引用
     }
 
@@ -82,8 +84,8 @@ public class ScriptTemplateService {
      * @return
      */
     private Expression fetchExpression(ScriptTemplateWithBLOBs scriptTemplateWithBLOBs) {
-        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getId().toString(), scriptTemplateWithBLOBs.getScriptTemplate(), true);
-//        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getScriptTemplate(), true);
+//        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getId().toString(), scriptTemplateWithBLOBs.getScriptTemplate(), true);
+        Expression expression = this.aviatorEvaluatorInstance.compile(scriptTemplateWithBLOBs.getScriptTemplate(), false);
         return expression;
     }
 
@@ -146,6 +148,7 @@ public class ScriptTemplateService {
         if (StringUtils.isBlank(scriptTemplate.getScriptTemplate())) {
             return "";
         }
+//        clearScriptTemplateCache() ;
         //失效
 //        invalidateScriptTemplate(scriptTemplate.getId()) ;
         //脚本执行
